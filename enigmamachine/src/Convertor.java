@@ -1,5 +1,5 @@
 public interface Convertor<T> {
 
-    public T convert(T character);
+    T convert(T character);
 
 }
