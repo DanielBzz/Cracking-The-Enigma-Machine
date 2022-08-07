@@ -7,8 +7,15 @@ public class PlugBoard implements Convertor<Character>{
 
     public void init(){}
 
+    public void add(Character key,Character value){
+
+        plugChars.put(key, value);
+        plugChars.put(value, key);
+    }
+
     @Override
     public Character convert(Character character) {
+
         return plugChars.get(character);
     }
 }

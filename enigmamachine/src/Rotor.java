@@ -5,13 +5,19 @@ public class Rotor implements Convertor<Integer> {
 
     private int id;
     private int notchPosition;
-    private List<Conversion> rotorConversions = new ArrayList<>();
+    private Conversion rotorConversions = new Conversion();
+    private boolean rightToLeft = true;
 
     public Rotor(int idValue, int notchValue){
 
         id = idValue;
         notchPosition = notchValue;
     }
+
+    public Conversion getRotorConversions() {
+        return rotorConversions;
+    }
+
     public int getId() {
         return id;
     }
@@ -20,17 +26,24 @@ public class Rotor implements Convertor<Integer> {
         return notchPosition;
     }
 
-    public List<Conversion> getRotorConversions() {
-        return rotorConversions;
-    }
-
-    public void setRotorConversions(List<Conversion> rotorConversions) {
-        this.rotorConversions = rotorConversions;
-    }
-
+    /**
+     * get an initial position of the rotor and the right location
+     * and return the initial location that connect to the position we ask for
+     */
     @Override
     public Integer convert(Integer position) {
 
-        return null;
+        int nextPosition;
+
+        if(rightToLeft){
+            nextPosition = rotorConversions.getCharIndexInLeft(rotorConversions.getRightCharacter(position));
+        }
+        else {
+            nextPosition = rotorConversions.getCharIndexInRight(rotorConversions.getLeftCharacter(position));
+        }
+
+        rightToLeft = !rightToLeft;
+
+        return nextPosition;
     }
 }

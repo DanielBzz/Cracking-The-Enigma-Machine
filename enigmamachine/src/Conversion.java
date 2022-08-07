@@ -1,21 +1,34 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Conversion {
 
-    private final String right;
-    private final String left;
+    private final List<Character> rightValues = new ArrayList<>();
+    private final List<Character> leftValues = new ArrayList<>();
 
-    Conversion(String rightValue, String leftValue){
+    public Character getRightCharacter(int position){
 
-        right = rightValue;
-        left = leftValue;
+        return rightValues.get(position);
     }
 
-    public String getRight(){
+    public Character getLeftCharacter(int position){
 
-        return right;
+        return leftValues.get(position);
     }
 
-    public String getLeft(){
+    public int getCharIndexInRight(char character){
 
-        return left;
+        return rightValues.indexOf(character);
+    }
+
+    public int getCharIndexInLeft(char character){
+
+        return leftValues.indexOf(character);
+    }
+
+    public void add(Character right , Character left){
+
+        rightValues.add(right);
+        leftValues.add(left);
     }
 }

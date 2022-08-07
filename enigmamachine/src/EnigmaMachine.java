@@ -1,5 +1,5 @@
 public interface EnigmaMachine {
 
-    String encryption(String value);
+    Character encryption(Character value);
     void rotateRotors();
 }
