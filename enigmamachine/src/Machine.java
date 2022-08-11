@@ -12,7 +12,7 @@ public class Machine implements EnigmaMachine {
     private Reflector reflector;
     private PlugBoard plugBoard;
 
-    public Machine(Reflector reflector, Rotor rotor1, Rotor rotor2, int rotor1P, int rotor2P, List<Character> abc, PlugBoard o) {
+    /*public Machine(Reflector reflector, Rotor rotor1, Rotor rotor2, int rotor1P, int rotor2P, List<Character> abc, PlugBoard o) {
 
         this.reflector = reflector;
         rotors.add(rotor1);
@@ -21,7 +21,7 @@ public class Machine implements EnigmaMachine {
         rotorsPosition.add(rotor2P);
         ABC = abc;
         plugBoard = o;
-    }
+    }*/
 
     @Override
     public Character encryption(Character value) {

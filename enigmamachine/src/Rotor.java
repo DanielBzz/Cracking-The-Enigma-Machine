@@ -1,17 +1,15 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Rotor implements Convertor<Integer> {
 
-    private int id;
-    private int notchPosition;
-    private Conversion rotorConversions = new Conversion();
+    private final int id;
+    private final int notchPosition;
+    private final Conversion rotorConversions;
     private boolean rightToLeft = true;
 
-    public Rotor(int idValue, int notchValue){
+    public Rotor(int idValue, int notchValue, Conversion conversionTable){
 
         id = idValue;
         notchPosition = notchValue;
+        rotorConversions = conversionTable;
     }
 
     public Conversion getRotorConversions() {

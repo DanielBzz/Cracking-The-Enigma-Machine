@@ -7,12 +7,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-public class EngineLogic {
+public class EngineLogic  {
 
     public static CTEEnigma createEnigmaFromFile(String path) {
 
@@ -43,6 +40,7 @@ public class EngineLogic {
 
         if (machine.getABC().trim().length() % 2 != 0) {
             validMachine = false;
+
         }
         else if (!rotorsIsValid(machine.getCTERotors(), machine.getRotorsCount(), machine.getABC().trim())) {
             validMachine = false;
