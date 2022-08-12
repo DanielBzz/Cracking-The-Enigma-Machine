@@ -1,9 +1,9 @@
-import jdk.nashorn.internal.runtime.ECMAException;
+import exceptions.CharacterNotInAbcException;
+import exceptions.MachineNotDefinedException;
 import scheme.generated.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EnigmaEngine implements EnigmaSystemEngine{
 
@@ -29,6 +29,7 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         ABC = enigmaMachineCTE.getABC().trim();
         rotorsCount = enigmaMachineCTE.getRotorsCount();
 
+        optionalRotors.clear();
         for (CTERotor rotor : enigmaMachineCTE.getCTERotors().getCTERotor()) {
 
             Conversion conversionTable = new Conversion();
@@ -37,6 +38,7 @@ public class EnigmaEngine implements EnigmaSystemEngine{
             optionalRotors.add(new Rotor(rotor.getId(), rotor.getNotch(), conversionTable));
         }
 
+        optionalReflectors.clear();
         for (CTEReflector reflector : enigmaMachineCTE.getCTEReflectors().getCTEReflector()){
 
             Map<Integer,Integer> reflectorMap = new HashMap<>();
@@ -59,11 +61,57 @@ public class EnigmaEngine implements EnigmaSystemEngine{
     @Override
     public void automaticMachineInit() {
 
+        Random rand = new Random();
+        List<Rotor> rotorsForMachine = new ArrayList<>();
+        List<Integer> rotorsPositionsForMachine = new ArrayList<>();
+        Reflector reflectorForMachine = optionalReflectors.get(rand.nextInt(optionalReflectors.size()));;
+        PlugBoard plugBoardForMachine = automaticCreatePlugBoard(rand);
+
+        for(int i=0; i < rotorsCount; ++i){
+            rotorsForMachine.add((optionalRotors.get(rand.nextInt(optionalRotors.size()))));
+            rotorsPositionsForMachine.add(rand.nextInt(ABC.length()));
+        }
+
+        enigmaMachine = new Machine(rotorsForMachine,rotorsPositionsForMachine,reflectorForMachine,ABC,plugBoardForMachine);
+    }
+
+    private PlugBoard automaticCreatePlugBoard(Random rand){
+
+        PlugBoard plugBoard = new PlugBoard();
+
+        int numOfPlugs = rand.nextInt(ABC.length()/2 + 1);
+        List<Character> listOfAvailableChars = ABC.chars().mapToObj(e->(char)e).collect(Collectors.toList());
+        Character first,second;
+
+        for(int i=0; i < numOfPlugs; ++i) {
+
+            first = listOfAvailableChars.get(rand.nextInt(listOfAvailableChars.size()));
+            listOfAvailableChars.remove(first);
+            second = listOfAvailableChars.get(rand.nextInt(listOfAvailableChars.size()));
+            listOfAvailableChars.remove(second);
+            plugBoard.add(first,second);
+        }
+
+        return plugBoard;
     }
 
     @Override
-    public void encryptString(String input) {
+    public String encryptString(String input) {
 
+        StringBuilder encryptedString = new StringBuilder();
+
+        if(enigmaMachine == null){
+            throw new MachineNotDefinedException();
+        }
+
+        for (Character c:input.toCharArray()) {
+            if(!ABC.contains(c.toString().toUpperCase())){
+                throw new CharacterNotInAbcException(c);
+            }
+            encryptedString.append(enigmaMachine.encryption(c));
+        }
+
+        return encryptedString.toString();
     }
 
     @Override

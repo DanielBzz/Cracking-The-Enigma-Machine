@@ -6,9 +6,9 @@ public interface EnigmaSystemEngine {
 
     void manualMachineInit();               // get some paramaters according to the format in the file
 
-    void automaticMachineInit();               // get some paramaters according to the format in the file
+    void automaticMachineInit();
 
-    void encryptString(String input);
+    String encryptString(String input);
 
     void resetTheMachine();
 

@@ -3,25 +3,24 @@ import sun.plugin.net.protocol.jar.CachedJarURLConnection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Machine implements EnigmaMachine {
 
-    private List<Rotor> rotors = new ArrayList<>();
-    private List<Integer> rotorsPosition = new ArrayList<>();
-    private List<Character> ABC = new ArrayList<>();
-    private Reflector reflector;
-    private PlugBoard plugBoard;
+    private final List<Rotor> rotors;
+    private final List<Integer> rotorsPositions;
+    private final List<Character> ABC;
+    private final Reflector reflector;
+    private final PlugBoard plugBoard;
 
-    /*public Machine(Reflector reflector, Rotor rotor1, Rotor rotor2, int rotor1P, int rotor2P, List<Character> abc, PlugBoard o) {
+    public Machine(List<Rotor> rotorsList, List<Integer> rotorsPositions, Reflector reflector,  String abc, PlugBoard plugBoard) {
 
         this.reflector = reflector;
-        rotors.add(rotor1);
-        rotors.add(rotor2);
-        rotorsPosition.add(rotor1P);
-        rotorsPosition.add(rotor2P);
-        ABC = abc;
-        plugBoard = o;
-    }*/
+        rotors = rotorsList;
+        this.rotorsPositions = rotorsPositions;
+        ABC = abc.chars().mapToObj((c)->(char)c).collect(Collectors.toList());
+        this.plugBoard = plugBoard;
+    }
 
     @Override
     public Character encryption(Character value) {
@@ -31,14 +30,14 @@ public class Machine implements EnigmaMachine {
 
         rotateRotors();
         for (int i = 0; i < rotors.size(); i++) {   // maybe change it to lambda exp?
-            position = rotors.get(i).convert((position + rotorsPosition.get(i))% ABC.size());
-            position = (ABC.size() + position - rotorsPosition.get(i)) % ABC.size();
+            position = rotors.get(i).convert((position + rotorsPositions.get(i))% ABC.size());
+            position = (ABC.size() + position - rotorsPositions.get(i)) % ABC.size();
         }
 
         position = reflector.convert(position);
         for (int i = rotors.size() - 1; i >= 0; i--) {
-            position = rotors.get(i).convert((position + rotorsPosition.get(i)) % ABC.size());
-            position = (ABC.size() + position - rotorsPosition.get(i)) % ABC.size();
+            position = rotors.get(i).convert((position + rotorsPositions.get(i)) % ABC.size());
+            position = (ABC.size() + position - rotorsPositions.get(i)) % ABC.size();
         }
 
         newChar = ABC.get(position);
@@ -55,17 +54,17 @@ public class Machine implements EnigmaMachine {
             setNewPositionForRotor(index);
             ++index;
         }
-        while(rotors.size() > index && rotors.get(index - 1).getNotchPosition() - 1 == rotorsPosition.get(index - 1));
+        while(rotors.size() > index && rotors.get(index - 1).getNotchPosition() - 1 == rotorsPositions.get(index - 1));
     }       // FIX THE NOTCH TO BE ALREADY WITH THE -1 (COUNT START FROM 0)
 
     private void setNewPositionForRotor(int index){
 
-        int  newValue = rotorsPosition.get(index) + 1;
+        int  newValue = rotorsPositions.get(index) + 1;
 
         if (ABC.size() == newValue){
             newValue = 0;
         }
 
-        rotorsPosition.set(index, newValue);
+        rotorsPositions.set(index, newValue);
     }
 }

@@ -175,37 +175,11 @@ public class EngineLogic  {
 
     private static int idDecoder(String id){
 
-        switch (id){
-            case "I":
-                return 1;
-            case "II":
-                return 2;
-            case "III":
-                return 3;
-            case "IV":
-                return 4;
-            case "V":
-                return 5;
-        }
-
-        return -1;
+        return RomanNumeral.valueOf(id).evaluateNumber();
     }
         // switch encoder and decoder with ENUMS
-    private static String idEncoder(int id){
+    private static RomanNumeral idEncoder(int id){
 
-        switch (id){
-            case 1:
-                return "I";
-            case 2:
-                return "II";
-            case 3:
-                return "III";
-            case 4:
-                return "IV";
-            case 5:
-                return "V";
-        }
-
-        return null;
+        return Arrays.stream(RomanNumeral.values()).filter((romanNumeral) -> romanNumeral.evaluateNumber() == id).findFirst().get();
     }
 }
