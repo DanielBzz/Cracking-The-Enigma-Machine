@@ -1,3 +1,4 @@
+import jdk.nashorn.internal.runtime.ECMAException;
 import scheme.generated.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public class EnigmaEngine implements EnigmaSystemEngine{
 
 
     @Override
-    public void loadXmlFile(String path) {
+    public void loadXmlFile(String path) throws Exception {
 
         CTEEnigma enigmaMachineCTE = EngineLogic.createEnigmaFromFile(path.trim());
         EngineLogic.checkMachineIsValid(enigmaMachineCTE.getCTEMachine());

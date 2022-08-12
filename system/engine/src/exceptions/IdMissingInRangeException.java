@@ -1,11 +1,11 @@
 package exceptions;
 
-public class IdOutOfRangeException extends Exception{
+public class IdMissingInRangeException extends Exception{
 
     Object obj;
     Object id;
 
-    public IdOutOfRangeException(Object obj, Object id){
+    public IdMissingInRangeException(Object obj, Object id){
         this.obj = obj;
         this.id = id;
     }
@@ -26,7 +26,7 @@ public class IdOutOfRangeException extends Exception{
 
             clazz = clazz.getSuperclass();
         }*/
-        return String.format(obj.getClass().getSimpleName() + " with id number - " + id + " is out of range ");
+        return String.format(obj.getClass().getSimpleName() + " with id number - " + id + " does not exist in the system");
     }
 }
 

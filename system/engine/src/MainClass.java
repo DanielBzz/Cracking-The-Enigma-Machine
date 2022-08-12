@@ -1,4 +1,4 @@
-import exceptions.IdOutOfRangeException;
+import exceptions.IdMissingInRangeException;
 
 public class MainClass {
 
@@ -8,7 +8,7 @@ public class MainClass {
 
        // engine.loadXmlFile("C:\\Users\\DanielBazis\\IdeaProjects\\CarckingTheEnigma\\resources\\ex1-error-3.xml");
 
-        IdOutOfRangeException check = new IdOutOfRangeException(new Reflector("III", null), "III");
+        IdMissingInRangeException check = new IdMissingInRangeException(new Reflector("III", null), "III");
 
         System.out.println(check.getMessage());
     }
