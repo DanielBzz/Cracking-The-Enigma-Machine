@@ -33,10 +33,10 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         optionalRotors.clear();
         for (CTERotor rotor : enigmaMachineCTE.getCTERotors().getCTERotor()) {
 
-            Conversion conversionTable = new Conversion();
+            ConversionTable conversionTable = new ConversionTable();
             rotor.getCTEPositioning().forEach((position) ->
                     conversionTable.add(position.getRight().charAt(0), position.getLeft().charAt(0)));
-            optionalRotors.add(new Rotor(rotor.getId(), rotor.getNotch(), conversionTable));
+            optionalRotors.add(new Rotor(rotor.getId(), rotor.getNotch() - 1, conversionTable));
         }
 
         optionalReflectors.clear();
@@ -49,6 +49,10 @@ public class EnigmaEngine implements EnigmaSystemEngine{
             });
             optionalReflectors.add(new Reflector(reflector.getId(), reflectorMap));
         }
+
+        enigmaMachine = null;
+        currentMachineInfo = null;
+        encryptedStrings = new HashMap<>(); // maybe reset in other way;
     }
 
     @Override
@@ -79,9 +83,17 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         Reflector reflectorForMachine = optionalReflectors.get(rand.nextInt(optionalReflectors.size()));;
         PlugBoard plugBoardForMachine = automaticCreatePlugBoard(rand);
 
+        boolean[] chosenRotors = new boolean[optionalRotors.size()];
+        int rotorChosenIndex;
+
         for(int i=0; i < rotorsCount; ++i){
-            rotorsForMachine.add((optionalRotors.get(rand.nextInt(optionalRotors.size()))));
-            rotorsPositionsForMachine.add(rand.nextInt(ABC.length()));
+            rotorChosenIndex = rand.nextInt(optionalRotors.size());
+            if(!chosenRotors[rotorChosenIndex]){
+
+                rotorsForMachine.add((optionalRotors.get(rotorChosenIndex)));
+                rotorsPositionsForMachine.add(rand.nextInt(ABC.length()));
+                chosenRotors[rotorChosenIndex] = true;
+            }
         }
 
         enigmaMachine = new Machine(rotorsForMachine,rotorsPositionsForMachine,reflectorForMachine,ABC,plugBoardForMachine);
@@ -135,14 +147,10 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         }
 
         input = input.toUpperCase();
-        if(!input.chars().mapToObj(c->(char)c).allMatch(c->ABC.contains(c.toString()))){
-            throw new CharacterNotInAbcException('A');
+        Set<Character> notInAbcChars = input.chars().mapToObj(c->(char)c).filter(c->ABC.contains(c.toString())).collect(Collectors.toSet());
+        if(notInAbcChars.size() != 0){
+            throw new CharacterNotInAbcException(notInAbcChars);
         }
-        /*        for (Character c:input.toCharArray()) {
-            if(!ABC.contains(c.toString().toUpperCase())){
-                throw new CharacterNotInAbcException(c);
-            }
-        }*/
 
         for (Character c:input.toCharArray()) {
             encryptedString.append(enigmaMachine.encryption(c).toString());

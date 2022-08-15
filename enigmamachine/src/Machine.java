@@ -54,8 +54,8 @@ public class Machine implements EnigmaMachine {
             setNewPositionForRotor(index);
             ++index;
         }
-        while(rotors.size() > index && rotors.get(index - 1).getNotchPosition() - 1 == rotorsPositions.get(index - 1));
-    }       // FIX THE NOTCH TO BE ALREADY WITH THE -1 (COUNT START FROM 0)
+        while(rotors.size() > index && rotors.get(index - 1).getNotchPosition() == rotorsPositions.get(index - 1));
+    }
 
     private void setNewPositionForRotor(int index){
 

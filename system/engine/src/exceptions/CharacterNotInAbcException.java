@@ -1,11 +1,13 @@
 package exceptions;
 
+import java.util.Set;
+
 public class CharacterNotInAbcException extends Error{
 
     private final String exceptionMsg;
 
-    public CharacterNotInAbcException(Character c){
-        exceptionMsg = "The character" + c + "is not part of the ABC";
+    public CharacterNotInAbcException(Set<Character> characters){
+        exceptionMsg = "The characters" + characters + "is not part of the ABC";
     }
 
     @Override

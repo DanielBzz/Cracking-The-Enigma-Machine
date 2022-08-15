@@ -2,18 +2,14 @@ public class Rotor implements Convertor<Integer> {
 
     private final int id;
     private final int notchPosition;
-    private final Conversion rotorConversions;
+    private final ConversionTable rotorConversions;
     private boolean rightToLeft = true;
 
-    public Rotor(int idValue, int notchValue, Conversion conversionTable){
+    public Rotor(int idValue, int notchValue, ConversionTable conversionTable){
 
         id = idValue;
         notchPosition = notchValue;
         rotorConversions = conversionTable;
-    }
-
-    public Conversion getRotorConversions() {
-        return rotorConversions;
     }
 
     public int getId() {
