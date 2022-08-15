@@ -2,7 +2,7 @@ public interface EnigmaSystemEngine {
 
     void loadXmlFile(String path) throws Exception;
 
-    EngineInfoDTO displayingMachineSpecification();  // SHOULD RETURN MACHINE DTO THAT I CAN ACCESS TO ALL THE DETAILS FROM THERE
+    EngineInfoDTO displayingMachineSpecification();
 
     void manualMachineInit();               // get some paramaters according to the format in the file
 

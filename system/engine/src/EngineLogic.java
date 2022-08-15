@@ -12,7 +12,7 @@ import java.util.*;
 
 public class EngineLogic  {
 
-    public static CTEEnigma createEnigmaFromFile(String path) {
+    public static CTEEnigma createEnigmaFromFile(String path) throws FileNotFoundException, JAXBException {
 
         CTEEnigma enigmaMachine = null;
 
@@ -20,10 +20,9 @@ public class EngineLogic  {
             InputStream inputStream = new FileInputStream(new File(path.trim()));
             enigmaMachine = deserializeFrom(inputStream);
         } catch (FileNotFoundException var3) {
-            System.out.println("shittttttttttttt");
+            throw new FileNotFoundException("There isn't file according to the path that you insert");
         } catch (JAXBException var3) {
-            System.out.println("tihsss");
-            var3.printStackTrace();
+            throw new JAXBException("Your xml file is not following the rules of the scheme");
         }
 
         return enigmaMachine;
@@ -83,7 +82,7 @@ public class EngineLogic  {
 
         for (CTEReflector reflector : reflectorsList.getCTEReflector()) {
             int index = idDecoder(reflector.getId()) - 1;
-            if(index<reflectorsList.getCTEReflector().size() && index > 0) {
+            if(index<reflectorsList.getCTEReflector().size() && index >= 0) {
                 checkId[index] = true;
             }
 
@@ -105,16 +104,16 @@ public class EngineLogic  {
         Set<String> rightSet = new HashSet<>();
 
         for (CTEPositioning positioning : currentRotor.getCTEPositioning()) {
-            if (!ABC.contains(positioning.getLeft())) {
+            if (ABC.contains(positioning.getLeft())) {
                 leftSet.add(positioning.getLeft());
             }
 
-            if (!ABC.contains(positioning.getRight())) {
+            if (ABC.contains(positioning.getRight())) {
                 rightSet.add(positioning.getRight());
             }
         }
 
-        return leftSet.size() == rightSet.size() && rightSet.size() == ABC.length();
+        return leftSet.size() == rightSet.size() && rightSet.size() == ABC.trim().length();
     }
 
     private static boolean checkReflectSingleValueMapping(List<CTEReflect> reflectList, String ABC) {

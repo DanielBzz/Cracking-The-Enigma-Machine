@@ -67,4 +67,14 @@ public class Machine implements EnigmaMachine {
 
         rotorsPositions.set(index, newValue);
     }
+
+    public void setInitPositionForRotor(int index, int position){
+
+        rotorsPositions.set(index, position);
+    }
+
+    public int getNotchDistanceFromPosition(int index){
+
+        return (ABC.size() + rotors.get(index).getNotchPosition() - rotorsPositions.get(index)) % ABC.size();
+    }
 }

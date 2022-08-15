@@ -4,17 +4,20 @@ import java.util.Map;
 public class MachineInfoDTO {
 
     private final List<Integer> rotorsID;
+
+    private final List<Integer> notchDistanceFromPositions;
     private final List<Character> rotorsInitPosition;
     private final String reflectorID;
     private final Map<Character,Character> plugs;
 
     // add details about the notch position;
 
-    public MachineInfoDTO(List<Integer> rotorsID, List<Character> rotorsInitPosition, String reflectorID, Map<Character, Character> plugs) {
+    public MachineInfoDTO(List<Integer> rotorsID,List<Integer> notchDistance,List<Character> rotorsInitPosition, String reflectorID, Map<Character, Character> plugs) {
         this.rotorsID = rotorsID;
         this.rotorsInitPosition = rotorsInitPosition;
         this.reflectorID = reflectorID;
         this.plugs = plugs;
+        notchDistanceFromPositions = notchDistance;
     }
 
     public List<Integer> getRotorsID() {
@@ -31,5 +34,9 @@ public class MachineInfoDTO {
 
     public Map<Character, Character> getPlugs() {
         return plugs;
+    }
+
+    public List<Integer> getNotchDistanceFromPositions() {
+        return notchDistanceFromPositions;
     }
 }

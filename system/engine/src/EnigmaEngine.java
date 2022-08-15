@@ -1,8 +1,10 @@
 import exceptions.CharacterNotInAbcException;
 import exceptions.MachineNotDefinedException;
+import exceptions.NoFileLoadedException;
 import scheme.generated.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class EnigmaEngine implements EnigmaSystemEngine{
@@ -13,8 +15,7 @@ public class EnigmaEngine implements EnigmaSystemEngine{
     private List<Rotor> optionalRotors = new ArrayList<>();
     private List<Reflector> optionalReflectors = new ArrayList<>();
     private int rotorsCount;
-    private Map<Map<String,String>,Integer> encryptedStrings;
-
+    private Map<Map<String,String>,Integer> encryptedStrings = new HashMap<>();
 
     @Override
     public void loadXmlFile(String path) throws Exception {
@@ -42,13 +43,20 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         for (CTEReflector reflector : enigmaMachineCTE.getCTEReflectors().getCTEReflector()){
 
             Map<Integer,Integer> reflectorMap = new HashMap<>();
-            reflector.getCTEReflect().forEach((reflect)-> reflectorMap.put(reflect.getInput(), reflect.getOutput()));
+            reflector.getCTEReflect().forEach((reflect)-> {
+                reflectorMap.put(reflect.getInput() - 1, reflect.getOutput() - 1);
+                reflectorMap.put(reflect.getOutput() - 1,reflect.getInput() - 1);
+            });
             optionalReflectors.add(new Reflector(reflector.getId(), reflectorMap));
         }
     }
 
     @Override
     public EngineInfoDTO displayingMachineSpecification() {
+
+        if(ABC == null){
+            throw new NoFileLoadedException();
+        }
 
         return new EngineInfoDTO(optionalRotors.size(), optionalReflectors.size(), rotorsCount, encryptedStrings.size(), currentMachineInfo);
     }
@@ -60,6 +68,10 @@ public class EnigmaEngine implements EnigmaSystemEngine{
 
     @Override
     public void automaticMachineInit() {
+
+        if(ABC == null){
+            throw new NoFileLoadedException();
+        }
 
         Random rand = new Random();
         List<Rotor> rotorsForMachine = new ArrayList<>();
@@ -73,6 +85,24 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         }
 
         enigmaMachine = new Machine(rotorsForMachine,rotorsPositionsForMachine,reflectorForMachine,ABC,plugBoardForMachine);
+        initMachineInfo(rotorsForMachine, rotorsPositionsForMachine, reflectorForMachine.getId(), plugBoardForMachine);
+    }
+
+    private void initMachineInfo(List<Rotor> rotors, List<Integer> positions, String reflectorId, PlugBoard plugs){
+
+        List<Integer> rotorsId = new ArrayList<>();
+        rotors.forEach(rotor-> rotorsId.add(0,rotor.getId()));
+
+        List<Character> rotorsPositions = new ArrayList<>();
+        positions.forEach(position->rotorsPositions.add(0,ABC.charAt(position)));
+
+        List<Integer> notchDistanceInRotors =new ArrayList<>();
+
+        for(int i = rotors.size() - 1 ; i >= 0 ; --i) {
+            notchDistanceInRotors.add(enigmaMachine.getNotchDistanceFromPosition(i));
+        }
+
+        currentMachineInfo = new MachineInfoDTO(rotorsId,notchDistanceInRotors, rotorsPositions ,reflectorId, plugs.getPlugChars());
     }
 
     private PlugBoard automaticCreatePlugBoard(Random rand){
@@ -104,11 +134,18 @@ public class EnigmaEngine implements EnigmaSystemEngine{
             throw new MachineNotDefinedException();
         }
 
-        for (Character c:input.toCharArray()) {
+        input = input.toUpperCase();
+        if(!input.chars().mapToObj(c->(char)c).allMatch(c->ABC.contains(c.toString()))){
+            throw new CharacterNotInAbcException('A');
+        }
+        /*        for (Character c:input.toCharArray()) {
             if(!ABC.contains(c.toString().toUpperCase())){
                 throw new CharacterNotInAbcException(c);
             }
-            encryptedString.append(enigmaMachine.encryption(c));
+        }*/
+
+        for (Character c:input.toCharArray()) {
+            encryptedString.append(enigmaMachine.encryption(c).toString());
         }
 
         return encryptedString.toString();
@@ -117,10 +154,23 @@ public class EnigmaEngine implements EnigmaSystemEngine{
     @Override
     public void resetTheMachine() {
 
+        if(enigmaMachine == null){
+            throw new MachineNotDefinedException();
+        }
+
+        List<Character> rotorsInitPositions = currentMachineInfo.getRotorsInitPosition();
+        AtomicInteger rotorIndex = new AtomicInteger(rotorsInitPositions.size() - 1);
+
+        rotorsInitPositions.forEach(C-> {
+            enigmaMachine.setInitPositionForRotor(rotorIndex.get(), ABC.indexOf(C));
+            rotorIndex.decrementAndGet();
+        });
     }
 
     @Override
     public void getHistoryAndStatistics() {
+
+
 
     }
 

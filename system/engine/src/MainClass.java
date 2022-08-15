@@ -4,12 +4,38 @@ public class MainClass {
 
     public static void main(String[] args) {
 
-       // EnigmaEngine engine = new EnigmaEngine();
+        EnigmaEngine engine = new EnigmaEngine();
 
-       // engine.loadXmlFile("C:\\Users\\DanielBazis\\IdeaProjects\\CarckingTheEnigma\\resources\\ex1-error-3.xml");
+        try {
+            engine.loadXmlFile("C:\\Users\\DanielBazis\\IdeaProjects\\CarckingTheEnigma\\resources\\ex1-sanity-small.xml");
+            engine.automaticMachineInit();
 
-        IdMissingInRangeException check = new IdMissingInRangeException(new Reflector("III", null), "III");
+       /*     EngineInfoDTO info = engine.displayingMachineSpecification();
 
-        System.out.println(check.getMessage());
+            System.out.println(info.getNumOfOptionalReflectors());
+            System.out.println(info.getNumOfOptionalRotors());
+            System.out.println(info.getNumOfUsedRotors());
+
+            MachineInfoDTO machineInfo = info.getMachineInfo();
+            System.out.println(machineInfo.getRotorsID());
+            System.out.println(machineInfo.getReflectorID());
+            System.out.println(machineInfo.getPlugs());
+            System.out.println(machineInfo.getRotorsInitPosition());
+            System.out.println(machineInfo.getNotchDistanceFromPositions());
+*/
+
+            System.out.println(engine.encryptString("aaa"));
+
+            engine.resetTheMachine();
+
+            System.out.println(engine.encryptString("aaa"));
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+
+
     }
 }
