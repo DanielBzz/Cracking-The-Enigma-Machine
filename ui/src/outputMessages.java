@@ -1,3 +1,5 @@
+import java.nio.file.Path;
+import java.sql.SQLData;
 import java.text.MessageFormat;
 
 public class outputMessages {
@@ -59,6 +61,40 @@ public class outputMessages {
         }
 
         return msg.toString();
+    }
+
+    public static String getRotorsIdMsg(int numOfRotors){
+
+        return "Please insert " + numOfRotors + " rotor's IDs you want to use in the machine(with commas between them):";
+    }
+
+    public static String getRotorsPositionMsg(int numOfRotors){
+        return "Please enter sequence of " + numOfRotors + " initial positions from the ABC for the rotors(according to insertion order of the IDs):";
+    }
+
+    public static String invalidNumberOfInitialPositionsMsg(){
+        return "number of initial positions not compatible to number of rotors";
+    }
+
+    public static String getReflectorIdMenuMsg(int numOfReflectors){
+
+        StringBuilder msg = new StringBuilder();
+        msg.append("Which reflector you want to have in the machine, please choose one of the following numbers:");
+
+        for(int i = 1 ; i<= numOfReflectors ; i++){
+            msg.append(System.lineSeparator());
+            msg.append(i + ". " + EngineLogic.idEncoder(i));
+        }
+
+        return msg.toString();
+    }
+
+    public static String getPlugsMsg(){
+        return "Please insert all the plugs you want in the system as a sequence string that each 2 character represent a plug:";
+    }
+
+    public static String invalidNumberOfRotorsMsg(){
+        return "Number of rotors IDs not compatible with number of rotors you have in the machine";
     }
 
     public static String encryptedStringMsg(String encrypted){

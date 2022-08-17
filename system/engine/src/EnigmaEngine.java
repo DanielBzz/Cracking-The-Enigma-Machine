@@ -66,8 +66,11 @@ public class EnigmaEngine implements EnigmaSystemEngine{
     }
 
     @Override
-    public void manualMachineInit() {
+    public void manualMachineInit(EnigmaMachineDTO args) {
 
+        if(args instanceof MachineInfoDTO){
+            ((MachineInfoDTO) args).getRotorsID();
+        }
     }
 
     @Override

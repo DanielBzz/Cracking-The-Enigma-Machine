@@ -172,13 +172,15 @@ public class EngineLogic  {
     }
 */
 
-    private static int idDecoder(String id){
+    public static int idDecoder(String id){
 
         return RomanNumeral.valueOf(id).evaluateNumber();
     }
         // switch encoder and decoder with ENUMS
-    private static RomanNumeral idEncoder(int id){
+    public static RomanNumeral idEncoder(int id){
 
         return Arrays.stream(RomanNumeral.values()).filter((romanNumeral) -> romanNumeral.evaluateNumber() == id).findFirst().get();
     }
+
+
 }

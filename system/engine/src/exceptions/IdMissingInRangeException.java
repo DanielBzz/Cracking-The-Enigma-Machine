@@ -10,7 +10,6 @@ public class IdMissingInRangeException extends Exception{
         this.id = id;
     }
 
-
     public String getMessage(){
 
         /*while (!clazz.getSimpleName().equals("Object")) {

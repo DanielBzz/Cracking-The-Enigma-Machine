@@ -1,7 +1,7 @@
 import java.util.List;
 import java.util.Map;
 
-public class MachineInfoDTO {
+public class MachineInfoDTO implements EnigmaMachineDTO {
 
     private final List<Integer> rotorsID;
 

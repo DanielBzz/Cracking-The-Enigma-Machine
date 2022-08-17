@@ -4,7 +4,7 @@ public interface EnigmaSystemEngine {
 
     EngineInfoDTO displayingMachineSpecification();
 
-    void manualMachineInit();               // get some paramaters according to the format in the file
+    void manualMachineInit(EnigmaMachineDTO args);
 
     void automaticMachineInit();
 

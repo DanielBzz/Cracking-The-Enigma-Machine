@@ -1,6 +1,6 @@
 package exceptions;
 
-public class ConvertorsInMachineOutOfRangeException extends Exception{
+public class ConvertorsInMachineOutOfRangeException extends Error {
 
     String exceptionMsg;
 

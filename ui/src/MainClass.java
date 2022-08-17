@@ -2,6 +2,7 @@ import com.sun.org.apache.xml.internal.serialize.LineSeparator;
 import scheme.generated.CTEReflector;
 
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,12 +15,11 @@ public class MainClass {
         machineUI.getXmlFile();
 
         machineUI.displayingMachineSpecification();
-*/
-        String input = "ABCDDDDAFEFBRWDEFH";
-        String ABC = "ABCEFGL";
-        Set<Character> a = input.chars().mapToObj(c->(char)c).filter(c->!ABC.contains(c.toString())).collect(Collectors.toSet());
 
-        System.out.println(a);
+        */
+        System.out.println(outputMessages.getReflectorIdMenuMsg(4));
+
+        Scanner scanner = new Scanner(System.in);
+
     }
-
 }
