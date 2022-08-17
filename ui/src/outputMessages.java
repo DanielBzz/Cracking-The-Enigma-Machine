@@ -1,11 +1,46 @@
-import java.nio.file.Path;
-import java.sql.SQLData;
+import javafx.util.Pair;
+
+import java.lang.reflect.Method;
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class outputMessages {
 
-    public static String menu(){
-        return null;
+    public static String getMenuMsg() {
+
+        Class clazz = EnigmaMachineUI.class;
+        StringBuilder menuMsg = new StringBuilder("Please choose one of the following numbers:");
+        menuMsg.append(System.lineSeparator());
+
+        List<Method> methods =Arrays.stream(clazz.getDeclaredMethods()).collect(Collectors.toList());
+
+        methods.sort((method1, method2)-> {
+            return method1.getAnnotation(SortedMethod.class).value() - method2.getAnnotation(SortedMethod.class).value();
+        });
+
+        for (Method method : methods) {
+            menuMsg.append(method.getAnnotation(SortedMethod.class).value() + ". " + fixName(method.getName()));
+
+            menuMsg.append(System.lineSeparator());
+        }
+
+        return menuMsg.toString();
+    }
+
+    private static String fixName(String input){
+
+        StringBuilder output = new StringBuilder();
+
+        for(int i =0;i<input.length();++i ){
+            if(Character.isUpperCase(input.charAt(i))){
+                output.append(" ");
+            }
+            output.append(input.charAt(i));
+        }
+
+        return output.toString().toLowerCase();
     }
 
     public static String getPathMsg(){
@@ -29,6 +64,27 @@ public class outputMessages {
         msg.append(MessageFormat.format("Amount of messages that encrypt in the machine: {0}", engineInfo.getNumOfEncryptedMsg()));
         msg.append(System.lineSeparator());
         msg.append(currentMachineSpecification(engineInfo.getMachineInfo()));
+
+        return msg.toString();
+    }
+
+    public String historyMsg(HistoryAndStatisticDTO info){
+
+        StringBuilder msg = new StringBuilder();
+
+        for (MachineInfoDTO machineInfo : info.getHistoryAndStat().keySet())
+        {
+            msg.append(currentMachineSpecification(machineInfo));
+            msg.append(System.lineSeparator());
+            int i = 1;
+            for (Pair<String, String> pair : info.getHistoryAndStat().get(machineInfo).keySet()) {
+
+                msg.append(i + ". <" + pair.getKey() + "> --> <" + pair.getValue() + "> ");
+                msg.append("(" + info.getHistoryAndStat().get(machineInfo).get(pair) + "nano seconds)");
+                msg.append(System.lineSeparator());
+                i++;
+            }
+        }
 
         return msg.toString();
     }

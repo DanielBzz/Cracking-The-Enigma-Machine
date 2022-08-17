@@ -1,14 +1,8 @@
-import com.sun.org.apache.xml.internal.serialize.LineSeparator;
-import scheme.generated.CTEReflector;
-
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.io.IOException;
 
 public class MainClass {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
        /* EnigmaMachineUI machineUI = new EnigmaMachineUI();
 
@@ -17,9 +11,8 @@ public class MainClass {
         machineUI.displayingMachineSpecification();
 
         */
-        System.out.println(outputMessages.getReflectorIdMenuMsg(4));
 
-        Scanner scanner = new Scanner(System.in);
-
+        System.out.println(outputMessages.getMenuMsg());
+        while (true);
     }
 }

@@ -4,13 +4,10 @@ import java.util.Map;
 public class MachineInfoDTO implements EnigmaMachineDTO {
 
     private final List<Integer> rotorsID;
-
     private final List<Integer> notchDistanceFromPositions;
     private final List<Character> rotorsInitPosition;
     private final String reflectorID;
     private final Map<Character,Character> plugs;
-
-    // add details about the notch position;
 
     public MachineInfoDTO(List<Integer> rotorsID,List<Integer> notchDistance,List<Character> rotorsInitPosition, String reflectorID, Map<Character, Character> plugs) {
         this.rotorsID = rotorsID;

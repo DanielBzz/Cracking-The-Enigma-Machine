@@ -1,9 +1,11 @@
 import exceptions.CharacterNotInAbcException;
 import exceptions.MachineNotDefinedException;
 import exceptions.NoFileLoadedException;
+import javafx.util.Pair;
 import scheme.generated.*;
 
 import java.beans.IntrospectionException;
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -16,7 +18,8 @@ public class EnigmaEngine implements EnigmaSystemEngine{
     private List<Rotor> optionalRotors = new ArrayList<>();
     private List<Reflector> optionalReflectors = new ArrayList<>();
     private int rotorsCount;
-    private Map<Map<String,String>,Integer> encryptedStrings = new HashMap<>();
+    private File historyAndStatistics;
+    private Map<MachineInfoDTO, Map<Pair<String,String>, Long>> historyAndStat = new LinkedHashMap<>();
 
     @Override
     public void loadXmlFile(String path) throws Exception {
@@ -24,6 +27,7 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         CTEEnigma enigmaMachineCTE = EngineLogic.createEnigmaFromFile(path.trim());
         EngineLogic.checkMachineIsValid(enigmaMachineCTE.getCTEMachine());
         engineInit(enigmaMachineCTE.getCTEMachine());
+
     }
 
     private void engineInit(CTEMachine enigmaMachineCTE){
@@ -53,7 +57,7 @@ public class EnigmaEngine implements EnigmaSystemEngine{
 
         enigmaMachine = null;
         currentMachineInfo = null;
-        encryptedStrings = new HashMap<>(); // maybe reset in other way;
+        historyAndStat = new LinkedHashMap<>();
     }
 
     @Override
@@ -63,39 +67,37 @@ public class EnigmaEngine implements EnigmaSystemEngine{
             throw new NoFileLoadedException();
         }
 
-        return new EngineInfoDTO(optionalRotors.size(), optionalReflectors.size(), rotorsCount, encryptedStrings.size(), currentMachineInfo);
+        return new EngineInfoDTO(optionalRotors.size(), optionalReflectors.size(), rotorsCount, historyAndStat.size(), currentMachineInfo);
     }
 
     @Override
     public void manualMachineInit(EnigmaMachineDTO args) {
 
-        if(!isEngineInitialized()){
+        if (!isEngineInitialized()) {
             throw new NoFileLoadedException();
         }
 
-        if(args instanceof MachineInfoDTO){
-            MachineInfoDTO machineArgs = (MachineInfoDTO) args;
-            List<Rotor> rotors = new ArrayList<>();
-            List<Integer> rotorsPositions = new ArrayList<>();
-            Reflector reflector;
-            PlugBoard plugBoard = new PlugBoard();
+        List<Rotor> rotors = new ArrayList<>();
+        List<Integer> rotorsPositions = new ArrayList<>();
+        Reflector reflector;
+        PlugBoard plugBoard = new PlugBoard();
 
-            for (Integer id: machineArgs.getRotorsID()) {
-                rotors.add(optionalRotors.stream().filter(rotor -> rotor.getId() == id).findFirst().get());
-            }
-            for (Character initPosition : machineArgs.getRotorsInitPosition()) {
-                rotorsPositions.add(ABC.indexOf(initPosition));
-            }
-
-            reflector = optionalReflectors.stream().filter(reflector1 -> Objects.equals(reflector1.getId(), machineArgs.getReflectorID())).findFirst().get();
-
-            for (Character keyPlug :machineArgs.getPlugs().keySet()) {
-                plugBoard.add(keyPlug, machineArgs.getPlugs().get(keyPlug));
-            }
-
-            enigmaMachine = new Machine(rotors, rotorsPositions, reflector, ABC, plugBoard);
-            initMachineInfo(rotors, rotorsPositions, reflector.getId(), plugBoard);
+        for (Integer id : args.getRotorsID()) {
+            rotors.add(optionalRotors.stream().filter(rotor -> rotor.getId() == id).findFirst().get());
         }
+        for (Character initPosition : args.getRotorsInitPosition()) {
+            rotorsPositions.add(ABC.indexOf(initPosition));
+        }
+
+        reflector = optionalReflectors.stream().filter(reflector1 -> Objects.equals(reflector1.getId(), args.getReflectorID())).findFirst().get();
+
+        for (Character keyPlug : args.getPlugs().keySet()) {
+            plugBoard.add(keyPlug, args.getPlugs().get(keyPlug));
+        }
+
+        enigmaMachine = new Machine(rotors, rotorsPositions, reflector, ABC, plugBoard);
+        initMachineInfo(rotors, rotorsPositions, reflector.getId(), plugBoard);
+
     }
 
     @Override
@@ -143,6 +145,7 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         }
 
         currentMachineInfo = new MachineInfoDTO(rotorsId,notchDistanceInRotors, rotorsPositions ,reflectorId, plugs.getPlugChars());
+        historyAndStat.put(currentMachineInfo, new LinkedHashMap<>());
     }
 
     private PlugBoard automaticCreatePlugBoard(Random rand){
@@ -166,7 +169,7 @@ public class EnigmaEngine implements EnigmaSystemEngine{
     }
 
     @Override
-    public String encryptString(String input) {
+    public String encryptString(String message) {
 
         StringBuilder encryptedString = new StringBuilder();
 
@@ -174,13 +177,17 @@ public class EnigmaEngine implements EnigmaSystemEngine{
             throw new MachineNotDefinedException();
         }
 
-        input = input.toUpperCase();
-        checkIfCharactersInABC(input);
+        message = message.toUpperCase();
+        checkIfCharactersInABC(message);
 
-        for (Character c:input.toCharArray()) {
+        Long encryptedTime = System.nanoTime();
+        for (Character c:message.toCharArray()) {
             encryptedString.append(enigmaMachine.encryption(c).toString());
         }
 
+        encryptedTime = System.nanoTime() - encryptedTime;
+
+        historyAndStat.get(currentMachineInfo).put(new Pair<>(message,encryptedString.toString()),encryptedTime);
         return encryptedString.toString();
     }
 
@@ -201,10 +208,13 @@ public class EnigmaEngine implements EnigmaSystemEngine{
     }
 
     @Override
-    public void getHistoryAndStatistics() {
+    public HistoryAndStatisticDTO getHistoryAndStatistics() {
 
+        if(!isEngineInitialized()){
+            throw new NoFileLoadedException();
+        }
 
-
+        return new HistoryAndStatisticDTO(historyAndStat);
     }
 
     @Override
