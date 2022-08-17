@@ -3,6 +3,7 @@ import exceptions.MachineNotDefinedException;
 import exceptions.NoFileLoadedException;
 import scheme.generated.*;
 
+import java.beans.IntrospectionException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -68,15 +69,39 @@ public class EnigmaEngine implements EnigmaSystemEngine{
     @Override
     public void manualMachineInit(EnigmaMachineDTO args) {
 
+        if(!isEngineInitialized()){
+            throw new NoFileLoadedException();
+        }
+
         if(args instanceof MachineInfoDTO){
-            ((MachineInfoDTO) args).getRotorsID();
+            MachineInfoDTO machineArgs = (MachineInfoDTO) args;
+            List<Rotor> rotors = new ArrayList<>();
+            List<Integer> rotorsPositions = new ArrayList<>();
+            Reflector reflector;
+            PlugBoard plugBoard = new PlugBoard();
+
+            for (Integer id: machineArgs.getRotorsID()) {
+                rotors.add(optionalRotors.stream().filter(rotor -> rotor.getId() == id).findFirst().get());
+            }
+            for (Character initPosition : machineArgs.getRotorsInitPosition()) {
+                rotorsPositions.add(ABC.indexOf(initPosition));
+            }
+
+            reflector = optionalReflectors.stream().filter(reflector1 -> Objects.equals(reflector1.getId(), machineArgs.getReflectorID())).findFirst().get();
+
+            for (Character keyPlug :machineArgs.getPlugs().keySet()) {
+                plugBoard.add(keyPlug, machineArgs.getPlugs().get(keyPlug));
+            }
+
+            enigmaMachine = new Machine(rotors, rotorsPositions, reflector, ABC, plugBoard);
+            initMachineInfo(rotors, rotorsPositions, reflector.getId(), plugBoard);
         }
     }
 
     @Override
     public void automaticMachineInit() {
 
-        if(ABC == null){
+        if(!isEngineInitialized()){
             throw new NoFileLoadedException();
         }
 
@@ -150,10 +175,7 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         }
 
         input = input.toUpperCase();
-        Set<Character> notInAbcChars = input.chars().mapToObj(c->(char)c).filter(c->ABC.contains(c.toString())).collect(Collectors.toSet());
-        if(notInAbcChars.size() != 0){
-            throw new CharacterNotInAbcException(notInAbcChars);
-        }
+        checkIfCharactersInABC(input);
 
         for (Character c:input.toCharArray()) {
             encryptedString.append(enigmaMachine.encryption(c).toString());
@@ -188,5 +210,17 @@ public class EnigmaEngine implements EnigmaSystemEngine{
     @Override
     public void exit() {
 
+    }
+
+    public boolean isEngineInitialized(){
+        return ABC != null;
+    }
+
+    public void checkIfCharactersInABC(String input){       // maybe change it to Collection instead of string
+
+        Set<Character> notInAbcChars = input.chars().mapToObj(c->(char)c).filter(c->ABC.contains(c.toString())).collect(Collectors.toSet());
+        if(notInAbcChars.size() != 0){
+            throw new CharacterNotInAbcException(notInAbcChars);
+        }
     }
 }

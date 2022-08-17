@@ -97,8 +97,20 @@ public class outputMessages {
         return "Number of rotors IDs not compatible with number of rotors you have in the machine";
     }
 
+    public static String duplicateIdOfRotorsMsg(){
+        return "You insert the same rotor twice, you can use a rotor only once per initial";
+    }
+
     public static String encryptedStringMsg(String encrypted){
 
         return "Your message after the encryption is: " + encrypted;
+    }
+
+    public static String invalidPlugsInputMsg(){
+        return "there is odd number of chars, it means that one of the characters not have pair";
+    }
+
+    public static String outOfRangeInputMsg(){
+        return "Input number is out of range";
     }
 }

@@ -1,4 +1,6 @@
+import exceptions.MultipleMappingException;
 import exceptions.NoFileLoadedException;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -49,27 +51,24 @@ public class EnigmaMachineUI {
 
         EngineInfoDTO machineSpecification = enigmaSystem.displayingMachineSpecification();
 
+        if(enigmaSystem instanceof EnigmaEngine && !((EnigmaEngine) enigmaSystem).isEngineInitialized()){
+            throw new NoFileLoadedException();
+        }
+
         try{
             List<Integer> rotorsIDs = UILogic.getRotorsIDsInput(scanner,machineSpecification.getNumOfUsedRotors(), machineSpecification.getNumOfOptionalRotors());
-            //  need to throw exception instead of return boolean
-
-            List<Character> rotorsInitialPositions = UILogic.getRotorsInitialPositionsInput(scanner, machineSpecification.getNumOfUsedRotors());
-            // check if all the positions belong to the ABC;
-
+            List<Character> rotorsInitialPositions = UILogic.getRotorsInitialPositionsInput(enigmaSystem, scanner, machineSpecification.getNumOfUsedRotors());
             String reflectorId = UILogic.getReflectorIdInput(scanner, machineSpecification.getNumOfOptionalReflectors());
-
-            Map<Character,Character> plugs =UILogic.parseStringToPlugs(scanner);
+            Map<Character,Character> plugs =UILogic.getPlugsInput(enigmaSystem, scanner);
 
             MachineInfoDTO args = new MachineInfoDTO(rotorsIDs, null, rotorsInitialPositions,reflectorId, plugs);
             enigmaSystem.manualMachineInit(args);
 
         }catch (NumberFormatException e){
             System.out.println(e.getMessage() + " is not a valid ID");
-        }catch (Error e){
+        }catch (Error | MultipleMappingException e){
             System.out.println(e.getMessage());
         }
-
-        // add all the exceptions it should have...
     }
 
     public void automaticInitial() {      // 4
