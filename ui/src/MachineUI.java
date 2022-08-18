@@ -1,19 +1,46 @@
-import com.sun.org.glassfish.gmbal.NameValue;
 import exceptions.MultipleMappingException;
 import exceptions.NoFileLoadedException;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class MachineUI implements EnigmaMachineUI{
+public class MachineUI implements EnigmaMachineUI {
 
     private final EnigmaSystemEngine enigmaSystem = new EnigmaEngine();
-    private final Scanner scanner= new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
+    public void run() throws NoSuchMethodException {
 
+        String input;
+        AtomicInteger choice = new AtomicInteger();
+
+        do {
+            System.out.println(outputMessages.getMenuMsg());
+            input = scanner.nextLine();
+            try {
+                choice.set(Integer.parseInt(input));
+                Arrays.stream(EnigmaMachineUI.class.getDeclaredMethods()).filter(
+                        method -> method.getAnnotation(SortedMethod.class).value() == choice.get()).findFirst().get().
+                        invoke(this, null);
+
+            }catch(InvocationTargetException e){
+                System.out.println(e.getTargetException().getMessage());
+            } catch (NoFileLoadedException | NumberFormatException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalAccessException | NoSuchElementException e) {
+                e.printStackTrace();
+                System.out.println(outputMessages.outOfRangeInputMsg());
+            }
+
+        } while (choice.get() != EnigmaMachineUI.class.getMethod("exit", null).getAnnotation(SortedMethod.class).value());
+
+        System.out.println("BYE :)");
+    }
+
+    @Override
     public void loadNewXmlFile(){       // 1
 
         System.out.println(outputMessages.getPathMsg());
@@ -31,30 +58,30 @@ public class MachineUI implements EnigmaMachineUI{
 
         try{
             enigmaSystem.loadXmlFile(xmlPath);
+            System.out.println(outputMessages.getSuccessfullLoadMsg());
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
     }
 
-    public void displayingMachineSpecification(){       // 2
+    @Override
+    public void displayingMachineSpecification(){       // 2 // work good
 
         EngineInfoDTO machineSpecification;
 
         try {
             machineSpecification = enigmaSystem.displayingMachineSpecification();
-            System.out.print(outputMessages.machineSpecification(machineSpecification));
+            System.out.println(outputMessages.machineSpecification(machineSpecification));
         }catch (NoFileLoadedException e){
             System.out.println(e.getMessage());
         }
     }
 
+    @Override
     public void manualInitialCodeConfiguration(){        // 3
 
+        checkFileLoaded();
         EngineInfoDTO machineSpecification = enigmaSystem.displayingMachineSpecification();
-
-        if(enigmaSystem instanceof EnigmaEngine && !((EnigmaEngine) enigmaSystem).isEngineInitialized()){
-            throw new NoFileLoadedException();
-        }
 
         try{
             List<Integer> rotorsIDs = UILogic.getRotorsIDsInput(scanner,machineSpecification.getNumOfUsedRotors(), machineSpecification.getNumOfOptionalRotors());
@@ -72,6 +99,7 @@ public class MachineUI implements EnigmaMachineUI{
         }
     }
 
+    @Override
     public void automaticInitialCodeConfiguration() {      // 4
 
         try {
@@ -81,35 +109,40 @@ public class MachineUI implements EnigmaMachineUI{
         }
     }
 
+    @Override
     public void encryptInput(){        // 5
 
-        System.out.println(outputMessages.getPathMsg());
+        checkFileLoaded();
+        System.out.println(outputMessages.getStringMsg());
         String msgToEncrypt = scanner.nextLine();
 
         try{
             String encryptedMsg = enigmaSystem.encryptString(msgToEncrypt);
             System.out.println(outputMessages.encryptedStringMsg(encryptedMsg));
-
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
     }
 
+    @Override
     public void resetCurrentCode(){         // 6
 
         try{
             enigmaSystem.resetTheMachine();
+            System.out.println(outputMessages.resetCodeMsg());
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
     }
 
+    @Override
     public void getHistoryAndStatistics(){
+
         enigmaSystem.getHistoryAndStatistics();
 
         try {
             HistoryAndStatisticDTO details = enigmaSystem.getHistoryAndStatistics();
-            // made the message;System.out.print(outputMessages.machineSpecification(machineSpecification));
+            System.out.println(outputMessages.historyMsg(details));
         }catch (NoFileLoadedException e){
             System.out.println(e.getMessage());
         }
@@ -117,6 +150,12 @@ public class MachineUI implements EnigmaMachineUI{
 
     @Override
     public void exit() {
+    }
 
+    private void checkFileLoaded(){
+
+        if(enigmaSystem instanceof EnigmaEngine && !((EnigmaEngine) enigmaSystem).isEngineInitialized()){
+            throw new NoFileLoadedException();
+        }
     }
 }

@@ -40,8 +40,8 @@ public class EngineLogic  {
             throw new InvalidAbcException(machine.getABC().trim().length());
         }
 
-        rotorsIsValid(machine.getCTERotors(), machine.getRotorsCount(), machine.getABC().trim());
-        reflectorsIsValid(machine.getCTEReflectors(), machine.getABC());
+        rotorsIsValid(machine.getCTERotors(), machine.getRotorsCount(), machine.getABC().trim().toUpperCase());
+        reflectorsIsValid(machine.getCTEReflectors(), machine.getABC().trim().toUpperCase());
     }
 
     private static void rotorsIsValid(CTERotors rotorsList, int rotorsCount, String ABC) throws IdMissingInRangeException, NotchOutOfRangeException, MultipleMappingException, ConvertorsInMachineOutOfRangeException, TooManyRotorsInUseException {
@@ -113,7 +113,7 @@ public class EngineLogic  {
             }
         }
 
-        return leftSet.size() == rightSet.size() && rightSet.size() == ABC.trim().length();
+        return leftSet.size() == rightSet.size() && rightSet.size() == ABC.length();
     }
 
     private static boolean checkReflectSingleValueMapping(List<CTEReflect> reflectList, String ABC) {
@@ -122,11 +122,11 @@ public class EngineLogic  {
         Set<Integer> rightSet = new HashSet<>();
 
         for (CTEReflect reflect : reflectList) {
-            if ((reflect.getInput() < ABC.length())) {
+            if ((reflect.getInput() <= ABC.length())) {
                 leftSet.add(reflect.getInput());
             }
 
-            if (reflect.getOutput() < ABC.length()) {
+            if (reflect.getOutput() <= ABC.length()) {
                 rightSet.add(reflect.getOutput());
             }
 
@@ -176,7 +176,7 @@ public class EngineLogic  {
 
         return RomanNumeral.valueOf(id).evaluateNumber();
     }
-        // switch encoder and decoder with ENUMS
+
     public static RomanNumeral idEncoder(int id){
 
         return Arrays.stream(RomanNumeral.values()).filter((romanNumeral) -> romanNumeral.evaluateNumber() == id).findFirst().get();

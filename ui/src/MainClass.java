@@ -2,17 +2,13 @@ import java.io.IOException;
 
 public class MainClass {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-       /* EnigmaMachineUI machineUI = new EnigmaMachineUI();
-
-        machineUI.getXmlFile();
-
-        machineUI.displayingMachineSpecification();
-
-        */
-
-        System.out.println(outputMessages.getMenuMsg());
-        while (true);
+        MachineUI enigmaMachine = new MachineUI();
+        try {
+            enigmaMachine.run();
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

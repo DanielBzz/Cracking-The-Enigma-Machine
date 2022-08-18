@@ -13,11 +13,11 @@ public class UILogic {
         List<Integer> IDs = UILogic.getIntListFromString(input);        // throw exception
 
 
-        if(IDs.size() != numberOfIds){
+        if(IDs.size() != numberOfIds){                              // different number of ids
             throw new Error(outputMessages.invalidNumberOfRotorsMsg());
         }
 
-        if(IDs.size() == new HashSet<>(IDs).size()){
+        if(IDs.size() != new HashSet<>(IDs).size()){                // if insert same id twice or more
             throw new Error(outputMessages.duplicateIdOfRotorsMsg());
         }
 
@@ -66,7 +66,7 @@ public class UILogic {
     public static Map<Character, Character> getPlugsInput(EnigmaSystemEngine enigmaMachine , Scanner scanner) throws MultipleMappingException {
 
         System.out.println(outputMessages.getPlugsMsg());
-        String input = scanner.nextLine();
+        String input = scanner.nextLine().toUpperCase();
 
         if(input.length() % 2 != 0){
             throw new Error(outputMessages.invalidPlugsInputMsg());
@@ -77,12 +77,13 @@ public class UILogic {
 
         Map<Character, Character> plugPairs = new HashMap<>();
         for(int i=0 ; i<input.length(); i+=2){
-            plugPairs.put(input.charAt(i),input.charAt(i+1));
             if(input.charAt(i) == input.charAt(i+1) || plugPairs.containsKey(input.charAt(i)) || plugPairs.containsValue(input.charAt(i))){
                 throw new MultipleMappingException(input.charAt(i));
             }
             else if(plugPairs.containsKey(input.charAt(i+1)) || plugPairs.containsValue(input.charAt(i+1))){
                 throw new MultipleMappingException(input.charAt(i+1));
+            }else {
+                plugPairs.put(input.charAt(i),input.charAt(i+1));
             }
         }
 
@@ -92,7 +93,7 @@ public class UILogic {
     public static List<Character> getRotorsInitialPositionsInput(EnigmaSystemEngine enigmaEngine, Scanner scanner, int numberOfRotors){
 
         System.out.println(outputMessages.getRotorsPositionMsg(numberOfRotors));
-        String input = scanner.nextLine();
+        String input = scanner.nextLine().toUpperCase();
 
         if(input.length() != numberOfRotors){
             throw new Error(outputMessages.invalidNumberOfInitialPositionsMsg());
@@ -105,5 +106,4 @@ public class UILogic {
 
         return initialPositions;
     }
-
 }

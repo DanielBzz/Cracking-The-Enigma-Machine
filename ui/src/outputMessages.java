@@ -12,7 +12,6 @@ public class outputMessages {
 
         Class clazz = EnigmaMachineUI.class;
         StringBuilder menuMsg = new StringBuilder("Please choose one of the following numbers:");
-        menuMsg.append(System.lineSeparator());
 
         List<Method> methods =Arrays.stream(clazz.getDeclaredMethods()).collect(Collectors.toList());
 
@@ -21,9 +20,8 @@ public class outputMessages {
         });
 
         for (Method method : methods) {
-            menuMsg.append(method.getAnnotation(SortedMethod.class).value() + ". " + fixName(method.getName()));
-
             menuMsg.append(System.lineSeparator());
+            menuMsg.append(method.getAnnotation(SortedMethod.class).value() + ". " + fixName(method.getName()));
         }
 
         return menuMsg.toString();
@@ -48,6 +46,10 @@ public class outputMessages {
         return "Please enter path for your xml file:";
     }
 
+    public static String getSuccessfullLoadMsg(){
+        return "file loaded successfully";
+    }
+
     public static String invalidPathMsg(){
 
         return "The path you insert is not a valid path, please enter a new path:";
@@ -62,18 +64,22 @@ public class outputMessages {
         msg.append("Number of reflectors: " + engineInfo.getNumOfOptionalReflectors());
         msg.append(System.lineSeparator());
         msg.append(MessageFormat.format("Amount of messages that encrypt in the machine: {0}", engineInfo.getNumOfEncryptedMsg()));
-        msg.append(System.lineSeparator());
-        msg.append(currentMachineSpecification(engineInfo.getMachineInfo()));
+
+        if(engineInfo.getMachineInitialInfo()!= null) {
+            msg.append(System.lineSeparator());
+            msg.append(currentMachineSpecification(engineInfo.getMachineInitialInfo()));
+        }
 
         return msg.toString();
     }
 
-    public String historyMsg(HistoryAndStatisticDTO info){
+    public static String historyMsg(HistoryAndStatisticDTO info){
 
         StringBuilder msg = new StringBuilder();
 
         for (MachineInfoDTO machineInfo : info.getHistoryAndStat().keySet())
         {
+            msg.append("for code configuration: ");
             msg.append(currentMachineSpecification(machineInfo));
             msg.append(System.lineSeparator());
             int i = 1;
@@ -84,6 +90,10 @@ public class outputMessages {
                 msg.append(System.lineSeparator());
                 i++;
             }
+        }
+
+        if(info.getHistoryAndStat().keySet().size() == 0){
+            msg.append("You haven't done any actions on the machine yet");
         }
 
         return msg.toString();
@@ -157,8 +167,11 @@ public class outputMessages {
         return "You insert the same rotor twice, you can use a rotor only once per initial";
     }
 
-    public static String encryptedStringMsg(String encrypted){
+    public static String getStringMsg(){
+        return "Please enter a message that you want to encrypt";
+    }
 
+    public static String encryptedStringMsg(String encrypted){
         return "Your message after the encryption is: " + encrypted;
     }
 
@@ -168,5 +181,9 @@ public class outputMessages {
 
     public static String outOfRangeInputMsg(){
         return "Input number is out of range";
+    }
+
+    public static String resetCodeMsg(){
+        return "code reset to the initial code configuration";
     }
 }
