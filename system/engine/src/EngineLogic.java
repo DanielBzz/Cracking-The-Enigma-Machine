@@ -4,10 +4,7 @@ import scheme.generated.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 public class EngineLogic  {
@@ -34,17 +31,17 @@ public class EngineLogic  {
         return (CTEEnigma) u.unmarshal(in);
     }
 
-    public static void checkMachineIsValid(CTEMachine machine) throws InvalidAbcException, MultipleMappingException, NotchOutOfRangeException, IdMissingInRangeException, ConvertorsInMachineOutOfRangeException, TooManyRotorsInUseException {
+    public static void checkMachineIsValid(CTEMachine machine) throws InvalidAbcException, MultipleMappingException, NotchOutOfRangeException, IdMissingInRangeException, ConvertorsInMachineOutOfRangeException, TooManyRotorsInUseException, MissingMapException {
 
         if (machine.getABC().trim().length() % 2 != 0) {
             throw new InvalidAbcException(machine.getABC().trim().length());
         }
 
-        rotorsIsValid(machine.getCTERotors(), machine.getRotorsCount(), machine.getABC().trim().toUpperCase());
-        reflectorsIsValid(machine.getCTEReflectors(), machine.getABC().trim().toUpperCase());
+        rotorsIsValid(machine.getCTERotors(), machine.getRotorsCount(), machine.getABC().toUpperCase().trim());
+        reflectorsIsValid(machine.getCTEReflectors(), machine.getABC().toUpperCase().trim());
     }
 
-    private static void rotorsIsValid(CTERotors rotorsList, int rotorsCount, String ABC) throws IdMissingInRangeException, NotchOutOfRangeException, MultipleMappingException, ConvertorsInMachineOutOfRangeException, TooManyRotorsInUseException {
+    private static void rotorsIsValid(CTERotors rotorsList, int rotorsCount, String ABC) throws IdMissingInRangeException, NotchOutOfRangeException, MultipleMappingException, ConvertorsInMachineOutOfRangeException, TooManyRotorsInUseException, MissingMapException {
 
         int i = 1, notchLocation;
 
@@ -64,15 +61,13 @@ public class EngineLogic  {
             else if (notchLocation > ABC.length() || notchLocation < 1) {
                 throw new NotchOutOfRangeException(rotor.getId(), notchLocation, ABC.length());
             }
-            else if (!checkPositioningSingleValueMapping(rotor, ABC)) {
-                throw new MultipleMappingException(rotor, rotor.getId());
-            }
+            checkPositioningSingleValueMapping(rotor, ABC);
 
             i++;
         }
     }
 
-    private static void reflectorsIsValid(CTEReflectors reflectorsList, String ABC) throws MultipleMappingException, IdMissingInRangeException, ConvertorsInMachineOutOfRangeException {
+    private static void reflectorsIsValid(CTEReflectors reflectorsList, String ABC) throws MultipleMappingException, IdMissingInRangeException, ConvertorsInMachineOutOfRangeException, MissingMapException {
 
         boolean[] checkId = new boolean[reflectorsList.getCTEReflector().size()];
 
@@ -86,9 +81,7 @@ public class EngineLogic  {
                 checkId[index] = true;
             }
 
-            if(!checkReflectSingleValueMapping(reflector.getCTEReflect(), ABC)) {
-                throw new MultipleMappingException(reflector, reflector.getId());
-            }
+            checkReflectSingleValueMapping(reflector, ABC);
         }
 
         for (int i=0 ; i< checkId.length ; ++i) {
@@ -98,44 +91,53 @@ public class EngineLogic  {
         }
     }
 
-    private static boolean checkPositioningSingleValueMapping(CTERotor currentRotor, String ABC) {
+    private static void checkPositioningSingleValueMapping(CTERotor currentRotor, String ABC) throws MultipleMappingException, MissingMapException {
 
         Set<String> leftSet = new HashSet<>();
         Set<String> rightSet = new HashSet<>();
 
         for (CTEPositioning positioning : currentRotor.getCTEPositioning()) {
-            if (ABC.contains(positioning.getLeft())) {
-                leftSet.add(positioning.getLeft());
+            if (!ABC.contains(positioning.getLeft().toUpperCase())) {
+                throw new CharacterNotInAbcException(positioning.getLeft().toUpperCase().charAt(0));
             }
-
-            if (ABC.contains(positioning.getRight())) {
-                rightSet.add(positioning.getRight());
+            else if(!leftSet.add(positioning.getLeft().toUpperCase())) {
+                throw new MultipleMappingException(positioning.getLeft().toUpperCase().charAt(0), currentRotor, currentRotor.getId());
+            }
+            else if(!ABC.contains(positioning.getRight().toUpperCase())){
+                throw new CharacterNotInAbcException(positioning.getRight().toUpperCase().charAt(0));
+            }
+            else if (!rightSet.add(positioning.getRight().toUpperCase())) {
+                throw new MultipleMappingException(positioning.getRight().toUpperCase().charAt(0), currentRotor, currentRotor.getId());
             }
         }
 
-        return leftSet.size() == rightSet.size() && rightSet.size() == ABC.length();
+        if(leftSet.size() != rightSet.size() || rightSet.size() != ABC.length()){
+            throw new MissingMapException(currentRotor,currentRotor.getId());
+        }
     }
 
-    private static boolean checkReflectSingleValueMapping(List<CTEReflect> reflectList, String ABC) {
+    private static void checkReflectSingleValueMapping(CTEReflector currentReflector, String ABC) throws MultipleMappingException, MissingMapException {
 
-        Set<Integer> leftSet = new HashSet<>();
-        Set<Integer> rightSet = new HashSet<>();
+        Set<Integer> mapSet = new HashSet<>();
 
-        for (CTEReflect reflect : reflectList) {
-            if ((reflect.getInput() <= ABC.length())) {
-                leftSet.add(reflect.getInput());
+        for (CTEReflect reflect : currentReflector.getCTEReflect()) {
+            if ((reflect.getInput() > ABC.length() || reflect.getInput() < 1)) {
+                throw new reflectOutOfRangeException(reflect.getInput(),currentReflector.getId());
             }
-
-            if (reflect.getOutput() <= ABC.length()) {
-                rightSet.add(reflect.getOutput());
+            else if (!mapSet.add(reflect.getInput())) {
+                throw new MultipleMappingException(reflect.getInput(),currentReflector,currentReflector.getId());
             }
-
-            if(reflect.getInput() == reflect.getOutput()){
-                return false;
+            else if (reflect.getOutput() > ABC.length() || reflect.getOutput() < 1) {
+                throw new reflectOutOfRangeException(reflect.getOutput(),currentReflector.getId());
+            }
+            else if (!mapSet.add(reflect.getOutput())) {
+                throw new MultipleMappingException(reflect.getOutput(),currentReflector,currentReflector.getId());
             }
         }
-        // need to improve the check here
-        return (leftSet.size() + rightSet.size()) == ABC.trim().length();
+
+        if(mapSet.size() != ABC.length()){
+            throw new MissingMapException(currentReflector,currentReflector.getId());
+        }
     }
 /*
     private static <T> boolean f(List<T> reflectList, String ABC) {
@@ -174,7 +176,11 @@ public class EngineLogic  {
 
     public static int idDecoder(String id){
 
-        return RomanNumeral.valueOf(id).evaluateNumber();
+        try {
+            return RomanNumeral.valueOf(id).evaluateNumber();
+        }catch (IllegalArgumentException e){
+            return 0;
+        }
     }
 
     public static RomanNumeral idEncoder(int id){

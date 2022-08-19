@@ -6,7 +6,7 @@ public class ConvertorsInMachineOutOfRangeException extends Error {
 
     public ConvertorsInMachineOutOfRangeException(String objectName, int currAmount, int minAmount, int maxAmount){
         exceptionMsg = "You have " + currAmount + " " + objectName + "." + System.lineSeparator() +
-                "You should have at least" + minAmount + objectName + "in the system for using the machine and at most " + maxAmount;
+                "You should have at least " + minAmount + " "+ objectName + " in the system for using the machine and at most " + maxAmount;
     }
 
     @Override

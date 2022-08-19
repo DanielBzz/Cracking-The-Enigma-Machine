@@ -68,6 +68,7 @@ public class outputMessages {
         if(engineInfo.getMachineInitialInfo()!= null) {
             msg.append(System.lineSeparator());
             msg.append(currentMachineSpecification(engineInfo.getMachineInitialInfo()));
+            msg.append(currentMachineSpecification(engineInfo.getMachineCurrentInfo()));
         }
 
         return msg.toString();

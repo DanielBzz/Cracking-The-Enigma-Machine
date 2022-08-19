@@ -35,4 +35,8 @@ public class EngineInfoDTO {
         public MachineInfoDTO getMachineInitialInfo() {
                 return machineInitialInfo;
         }
+
+        public MachineInfoDTO getMachineCurrentInfo() {
+                return machineCurrentInfo;
+        }
 }

@@ -66,7 +66,8 @@ public class EnigmaEngine implements EnigmaSystemEngine{
             throw new NoFileLoadedException();
         }
 
-        currentMachineInfo = null;
+        currentMachineInfo = new MachineInfoDTO(enigmaMachine.getRotorsId(),enigmaMachine.getNotchDistanceFromPositions(),
+                enigmaMachine.getRotorsPositions(),enigmaMachine.getReflectorId(),enigmaMachine.getPlugs());
 
         return new EngineInfoDTO(optionalRotors.size(), optionalReflectors.size(), rotorsCount, historyAndStat.size(), currentInitialMachineInfo,currentMachineInfo);
     }
@@ -140,11 +141,7 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         List<Character> rotorsPositions = new ArrayList<>();
         positions.forEach(position->rotorsPositions.add(ABC.charAt(position)));
 
-        List<Integer> notchDistanceInRotors =new ArrayList<>();
-
-        for(int i = 0 ; i < rotors.size() ; ++i) {
-            notchDistanceInRotors.add(enigmaMachine.getNotchDistanceFromPosition(i));
-        }
+        List<Integer> notchDistanceInRotors = enigmaMachine.getNotchDistanceFromPositions();
 
         return new MachineInfoDTO(rotorsId,notchDistanceInRotors, rotorsPositions ,reflectorId, plugs.getPlugChars());
     }

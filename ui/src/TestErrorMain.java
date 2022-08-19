@@ -30,10 +30,7 @@ public class TestErrorMain {
                     System.out.println((++i) +" # "+fileName+":");
 
                     engine.loadXmlFile(folderPath+fileName);//enter your implement
-                }
-                catch (RuntimeException e) {
-                    System.out.println(e.getMessage());
-                } catch (Exception e) {
+                } catch (Exception | Error e) {
                     System.out.println(e.getMessage());
                 }
             }

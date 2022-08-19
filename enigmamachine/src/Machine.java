@@ -3,6 +3,7 @@ import sun.plugin.net.protocol.jar.CachedJarURLConnection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Machine implements EnigmaMachine {
@@ -20,6 +21,30 @@ public class Machine implements EnigmaMachine {
         this.rotorsPositions = rotorsPositions;
         ABC = abc.chars().mapToObj((c)->(char)c).collect(Collectors.toList());
         this.plugBoard = plugBoard;
+    }
+
+    public List<Integer> getRotorsId(){
+
+        List<Integer> rotorsId = new ArrayList<>();
+        rotors.forEach(rotor-> rotorsId.add(rotor.getId()));
+
+        return rotorsId;
+    }
+
+    public String getReflectorId(){
+        return reflector.getId();
+    }
+
+    public List<Character> getRotorsPositions(){
+
+        List<Character> positions = new ArrayList<>();
+        rotorsPositions.forEach(position->positions.add(ABC.get(position)));
+
+        return positions;
+    }
+
+    public Map<Character,Character> getPlugs(){
+        return plugBoard.getPlugChars();
     }
 
     @Override
@@ -75,6 +100,18 @@ public class Machine implements EnigmaMachine {
 
     public int getNotchDistanceFromPosition(int index){
 
+
         return (ABC.size() + rotors.get(index).getNotchPosition() - rotorsPositions.get(index)) % ABC.size();
+    }
+
+    public List<Integer> getNotchDistanceFromPositions(){
+
+        List<Integer> notchDistanceFromPositions = new ArrayList<>();
+
+        for(int i = 0 ; i < rotors.size() ; ++i) {
+            notchDistanceFromPositions.add(getNotchDistanceFromPosition(i));
+        }
+
+        return notchDistanceFromPositions;
     }
 }
