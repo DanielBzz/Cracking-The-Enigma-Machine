@@ -4,7 +4,6 @@ import exceptions.NoFileLoadedException;
 import javafx.util.Pair;
 import scheme.generated.*;
 
-import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -15,8 +14,8 @@ public class EnigmaEngine implements EnigmaSystemEngine{
     private MachineInfoDTO currentInitialMachineInfo = null;
     private MachineInfoDTO currentMachineInfo = null;
     private String ABC;
-    private List<Rotor> optionalRotors = new ArrayList<>();
-    private List<Reflector> optionalReflectors = new ArrayList<>();
+    private final List<Rotor> optionalRotors = new ArrayList<>();
+    private final List<Reflector> optionalReflectors = new ArrayList<>();
     private int rotorsCount;
     private Map<MachineInfoDTO, Map<Pair<String,String>, Long>> historyAndStat = new LinkedHashMap<>();
 
@@ -66,10 +65,11 @@ public class EnigmaEngine implements EnigmaSystemEngine{
             throw new NoFileLoadedException();
         }
 
-        currentMachineInfo = new MachineInfoDTO(enigmaMachine.getRotorsId(),enigmaMachine.getNotchDistanceFromPositions(),
-                enigmaMachine.getRotorsPositions(),enigmaMachine.getReflectorId(),enigmaMachine.getPlugs());
+        if(currentInitialMachineInfo!= null) {
+            currentMachineInfo = initMachineInfo();
+        }
 
-        return new EngineInfoDTO(optionalRotors.size(), optionalReflectors.size(), rotorsCount, historyAndStat.size(), currentInitialMachineInfo,currentMachineInfo);
+        return new EngineInfoDTO(optionalRotors.size(), optionalReflectors.size(), rotorsCount, encryptedMsgSum() , currentInitialMachineInfo,currentMachineInfo);
     }
 
     @Override
@@ -87,9 +87,12 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         for (Integer id : args.getRotorsID()) {
             rotors.add(optionalRotors.stream().filter(rotor -> rotor.getId() == id).findFirst().get());
         }
+        int i=0;
         for (Character initPosition : args.getRotorsInitPosition()) {
-            rotorsPositions.add(ABC.indexOf(initPosition));
+            rotorsPositions.add(rotors.get(i).getCharacterPosition(initPosition));
+            i++;
         }
+
 
         reflector = optionalReflectors.stream().filter(reflector1 -> Objects.equals(reflector1.getId(), args.getReflectorID())).findFirst().get();
 
@@ -98,7 +101,7 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         }
 
         enigmaMachine = new Machine(rotors, rotorsPositions, reflector, ABC, plugBoard);
-        currentInitialMachineInfo = initMachineInfo(rotors, rotorsPositions, reflector.getId(), plugBoard);
+        currentInitialMachineInfo = initMachineInfo();
         historyAndStat.put(currentInitialMachineInfo, new LinkedHashMap<>());
     }
 
@@ -129,21 +132,18 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         }
 
         enigmaMachine = new Machine(rotors,rotorsPositions,reflector,ABC,plugBoard);
-        currentInitialMachineInfo = initMachineInfo(rotors, rotorsPositions, reflector.getId(), plugBoard);
+        currentInitialMachineInfo = initMachineInfo();
         historyAndStat.put(currentInitialMachineInfo, new LinkedHashMap<>());
     }
 
-    private MachineInfoDTO initMachineInfo(List<Rotor> rotors, List<Integer> positions, String reflectorId, PlugBoard plugs){
+    private MachineInfoDTO initMachineInfo(){
 
-        List<Integer> rotorsId = new ArrayList<>();
-        rotors.forEach(rotor-> rotorsId.add(rotor.getId()));
-
-        List<Character> rotorsPositions = new ArrayList<>();
-        positions.forEach(position->rotorsPositions.add(ABC.charAt(position)));
-
+        List<Integer> rotorsId = enigmaMachine.getRotorsId();
+        List<Character> rotorsPositions = enigmaMachine.getRotorsPositions();
         List<Integer> notchDistanceInRotors = enigmaMachine.getNotchDistanceFromPositions();
-
-        return new MachineInfoDTO(rotorsId,notchDistanceInRotors, rotorsPositions ,reflectorId, plugs.getPlugChars());
+        String reflectorId = enigmaMachine.getReflectorId();
+        Map<Character,Character> plugs = enigmaMachine.getPlugs();
+        return new MachineInfoDTO(rotorsId,notchDistanceInRotors, rotorsPositions ,reflectorId, plugs);
     }
 
     private PlugBoard automaticCreatePlugBoard(Random rand){
@@ -197,11 +197,11 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         }
 
         List<Character> rotorsInitPositions = currentInitialMachineInfo.getRotorsInitPosition();
-        AtomicInteger rotorIndex = new AtomicInteger(rotorsInitPositions.size() - 1);
+        AtomicInteger rotorIndex = new AtomicInteger(0);
 
         rotorsInitPositions.forEach(C-> {
-            enigmaMachine.setInitPositionForRotor(rotorIndex.get(), ABC.indexOf(C));
-            rotorIndex.decrementAndGet();
+            enigmaMachine.setInitPositionForRotor(rotorIndex.get(), C);
+            rotorIndex.incrementAndGet();
         });
     }
 
@@ -228,8 +228,27 @@ public class EnigmaEngine implements EnigmaSystemEngine{
 
         Set<Character> notInAbcChars = input.chars().mapToObj(c->(char)c).filter(c->!ABC.contains(c.toString())).collect(Collectors.toSet());
         if(notInAbcChars.size() != 0){
-            System.out.println(ABC);
             throw new CharacterNotInAbcException(notInAbcChars);
         }
     }
+
+    private int encryptedMsgSum(){
+        return historyAndStat.values().stream().mapToInt(Map::size).sum();
+    }
+//
+//    //This method write the Engine details to a file.
+//    public void writeToFile(String fileName) throws IOException{
+//        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))){
+//            out.writeObject(this);
+//            out.flush();
+//        }
+//    }
+//    //This method read the Engine details from a file.
+//    public EngineImp readFromFile(String fileName) throws Exception{
+//        try(ObjectInputStream in = (new ObjectInputStream(new FileInputStream(fileName)))){
+//            EngineImp tempEngine = (EngineImp) in.readObject();
+//            return tempEngine;
+//        }
+//
+//    }
 }

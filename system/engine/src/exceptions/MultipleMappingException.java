@@ -11,7 +11,7 @@ public class MultipleMappingException extends Exception{
 
     public MultipleMappingException(Object sign, Object objName, Object id){
 
-        exceptionMsg = objName.getClass().getSimpleName() + " with id number - " + id + " have multiple mapping for " + sign;
+        exceptionMsg = objName.getClass().getSimpleName() + " with id number - " + id + " have multiple mapping for \"" + sign + "\"";
     }
 
     @Override

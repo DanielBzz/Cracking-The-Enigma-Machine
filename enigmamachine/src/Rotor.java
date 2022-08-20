@@ -20,6 +20,14 @@ public class Rotor implements Convertor<Integer> {
         return notchPosition;
     }
 
+    public int getCharacterPosition(char c) {
+        return rotorConversions.getCharIndexInRight(c);
+    }
+
+    public char getCharacterFromPosition(int position) {
+        return rotorConversions.getRightCharacter(position);
+    }
+
     /**
      * get an initial position of the rotor and the right location
      * and return the initial location that connect to the position we ask for

@@ -1,3 +1,4 @@
+import exceptions.IdOutOfRangeException;
 import exceptions.MultipleMappingException;
 import exceptions.NoFileLoadedException;
 
@@ -14,6 +15,7 @@ public class MachineUI implements EnigmaMachineUI {
 
     public void run() throws NoSuchMethodException {
 
+        outputMessages.initMenuMsg();
         String input;
         AtomicInteger choice = new AtomicInteger();
 
@@ -28,10 +30,9 @@ public class MachineUI implements EnigmaMachineUI {
 
             }catch(InvocationTargetException e){
                 System.out.println(e.getTargetException().getMessage());
-            } catch (NoFileLoadedException | NumberFormatException e) {
-                System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println(e.getMessage() + " - invalid input");
             } catch (IllegalAccessException | NoSuchElementException e) {
-                e.printStackTrace();
                 System.out.println(outputMessages.outOfRangeInputMsg());
             }
 
@@ -48,17 +49,16 @@ public class MachineUI implements EnigmaMachineUI {
 
         while(!Files.exists(Paths.get(xmlPath)) && !xmlPath.toString().substring(xmlPath.lastIndexOf(".") + 1).equals("xml")){
 
-            if(Files.exists(Paths.get(xmlPath))){
-                System.out.println(xmlPath);
-            }
-
             System.out.println(outputMessages.invalidPathMsg());
             xmlPath = scanner.nextLine();
+            if(xmlPath.toUpperCase().equals("Q")){
+                return;
+            }
         }
 
         try{
             enigmaSystem.loadXmlFile(xmlPath);
-            System.out.println(outputMessages.getSuccessfullLoadMsg());
+            System.out.println(outputMessages.getSuccessfulLoadMsg());
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -94,7 +94,7 @@ public class MachineUI implements EnigmaMachineUI {
 
         }catch (NumberFormatException e){
             System.out.println(e.getMessage() + " is not a valid ID");
-        }catch (Error | MultipleMappingException e){
+        } catch (Error | MultipleMappingException e){
             System.out.println(e.getMessage());
         }
     }

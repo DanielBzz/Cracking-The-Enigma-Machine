@@ -6,7 +6,7 @@ public class NotchOutOfRangeException extends Exception{
 
     public NotchOutOfRangeException(int id, int notch, int size){
 
-        exceptionMsg = "rotor with the id " + id + " have notch number " + notch + " the range is between 1 - " + size;
+        exceptionMsg = "Rotor with id - " + id + " have notch in position \"" + notch + "\" the range is between 1 - " + size;
     }
 
     @Override

@@ -127,6 +127,9 @@ public class EngineLogic  {
             else if (!mapSet.add(reflect.getInput())) {
                 throw new MultipleMappingException(reflect.getInput(),currentReflector,currentReflector.getId());
             }
+            else if (reflect.getInput() == reflect.getOutput()) {
+                throw new ReflectorSelfMapException(currentReflector.getId(), reflect.getInput());
+            }
             else if (reflect.getOutput() > ABC.length() || reflect.getOutput() < 1) {
                 throw new reflectOutOfRangeException(reflect.getOutput(),currentReflector.getId());
             }

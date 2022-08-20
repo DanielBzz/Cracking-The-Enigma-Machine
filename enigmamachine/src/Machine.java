@@ -1,6 +1,3 @@
-import javafx.util.Pair;
-import sun.plugin.net.protocol.jar.CachedJarURLConnection;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +35,12 @@ public class Machine implements EnigmaMachine {
     public List<Character> getRotorsPositions(){
 
         List<Character> positions = new ArrayList<>();
-        rotorsPositions.forEach(position->positions.add(ABC.get(position)));
+
+        int i=0;
+        for (Rotor rotor:rotors) {
+            positions.add(rotor.getCharacterFromPosition(rotorsPositions.get(i)));
+            i++;
+        }
 
         return positions;
     }
@@ -54,6 +56,7 @@ public class Machine implements EnigmaMachine {
         int position = newChar == null ? ABC.indexOf(value) : ABC.indexOf(newChar);
 
         rotateRotors();
+
         for (int i = 0; i < rotors.size(); i++) {   // maybe change it to lambda exp?
             position = rotors.get(i).convert((position + rotorsPositions.get(i))% ABC.size());
             position = (ABC.size() + position - rotorsPositions.get(i)) % ABC.size();
@@ -93,13 +96,12 @@ public class Machine implements EnigmaMachine {
         rotorsPositions.set(index, newValue);
     }
 
-    public void setInitPositionForRotor(int index, int position){
+    public void setInitPositionForRotor(int index, char initChar){
 
-        rotorsPositions.set(index, position);
+        rotorsPositions.set(index, rotors.get(index).getCharacterPosition(initChar));
     }
 
     public int getNotchDistanceFromPosition(int index){
-
 
         return (ABC.size() + rotors.get(index).getNotchPosition() - rotorsPositions.get(index)) % ABC.size();
     }

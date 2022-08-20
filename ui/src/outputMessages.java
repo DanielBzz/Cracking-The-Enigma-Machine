@@ -8,23 +8,29 @@ import java.util.stream.Collectors;
 
 public class outputMessages {
 
-    public static String getMenuMsg() {
+    private static String menuMsg;
+
+     public static void initMenuMsg() {
 
         Class clazz = EnigmaMachineUI.class;
-        StringBuilder menuMsg = new StringBuilder("Please choose one of the following numbers:");
+        StringBuilder menu = new StringBuilder("                  MENU");
+        menu.append(System.lineSeparator());
+        menu.append("Please choose one of the following numbers:");
 
-        List<Method> methods =Arrays.stream(clazz.getDeclaredMethods()).collect(Collectors.toList());
-
-        methods.sort((method1, method2)-> {
+        List<Method> methods = Arrays.stream(clazz.getDeclaredMethods()).sorted((method1, method2) -> {
             return method1.getAnnotation(SortedMethod.class).value() - method2.getAnnotation(SortedMethod.class).value();
-        });
+        }).collect(Collectors.toList());
 
         for (Method method : methods) {
-            menuMsg.append(System.lineSeparator());
-            menuMsg.append(method.getAnnotation(SortedMethod.class).value() + ". " + fixName(method.getName()));
+            menu.append(System.lineSeparator());
+            menu.append(method.getAnnotation(SortedMethod.class).value() + ". " + fixName(method.getName()));
         }
 
-        return menuMsg.toString();
+        menuMsg = menu.toString();
+    }
+
+    public static String getMenuMsg(){
+        return menuMsg;
     }
 
     private static String fixName(String input){
@@ -46,13 +52,13 @@ public class outputMessages {
         return "Please enter path for your xml file:";
     }
 
-    public static String getSuccessfullLoadMsg(){
+    public static String getSuccessfulLoadMsg(){
         return "file loaded successfully";
     }
 
     public static String invalidPathMsg(){
 
-        return "The path you insert is not a valid path, please enter a new path:";
+        return "The path you insert is not a valid path, please enter a new path or Q for main menu:";
     }
 
     public static String machineSpecification(EngineInfoDTO engineInfo){
@@ -68,6 +74,7 @@ public class outputMessages {
         if(engineInfo.getMachineInitialInfo()!= null) {
             msg.append(System.lineSeparator());
             msg.append(currentMachineSpecification(engineInfo.getMachineInitialInfo()));
+            msg.append(System.lineSeparator());
             msg.append(currentMachineSpecification(engineInfo.getMachineCurrentInfo()));
         }
 
@@ -87,7 +94,7 @@ public class outputMessages {
             for (Pair<String, String> pair : info.getHistoryAndStat().get(machineInfo).keySet()) {
 
                 msg.append(i + ". <" + pair.getKey() + "> --> <" + pair.getValue() + "> ");
-                msg.append("(" + info.getHistoryAndStat().get(machineInfo).get(pair) + "nano seconds)");
+                msg.append("(" + info.getHistoryAndStat().get(machineInfo).get(pair) + " nano seconds)");
                 msg.append(System.lineSeparator());
                 i++;
             }
@@ -187,4 +194,5 @@ public class outputMessages {
     public static String resetCodeMsg(){
         return "code reset to the initial code configuration";
     }
+
 }
