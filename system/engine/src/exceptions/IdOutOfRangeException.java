@@ -1,32 +1,13 @@
 package exceptions;
 
-public class IdOutOfRangeException extends Exception{
+import java.util.Collection;
 
-    Object obj;
-    Object id;
+public class IdOutOfRangeException extends Error {
 
-    public IdOutOfRangeException(Object obj, Object id){
-        this.obj = obj;
-        this.id = id;
-    }
+    //String exceptionMsg;
 
-
-    public String getMessage(){
-
-        /*while (!clazz.getSimpleName().equals("Object")) {
-            for (Field clazzField : clazz.getDeclaredFields()) {
-                if(clazzField.getName().toUpperCase().equals("ID")){
-
-                    try {
-                        idValue = clazzField.get(()obj);
-                    } catch (IllegalAccessException ignored) {
-                    }
-                }
-            }
-
-            clazz = clazz.getSuperclass();
-        }*/
-        return String.format(obj.getClass().getSimpleName() + " with id number - " + id + " is out of range ");
+    public IdOutOfRangeException(Collection<Integer> collection){
+        super("The next IDs are out of range " + collection);
+        //exceptionMsg = "The next IDs are out of range" + collection;
     }
 }
-

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Conversion {
+public class ConversionTable {
 
     private final List<Character> rightValues = new ArrayList<>();
     private final List<Character> leftValues = new ArrayList<>();
