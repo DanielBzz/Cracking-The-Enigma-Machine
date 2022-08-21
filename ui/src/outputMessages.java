@@ -1,10 +1,12 @@
 import javafx.util.Pair;
 
+import javax.naming.InitialContext;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class outputMessages {
 
@@ -12,14 +14,15 @@ public class outputMessages {
 
      public static void initMenuMsg() {
 
-        Class clazz = EnigmaMachineUI.class;
+        Class clazz = MachineUI.class;
         StringBuilder menu = new StringBuilder("                  MENU");
         menu.append(System.lineSeparator());
         menu.append("Please choose one of the following numbers:");
 
-        List<Method> methods = Arrays.stream(clazz.getDeclaredMethods()).sorted((method1, method2) -> {
-            return method1.getAnnotation(SortedMethod.class).value() - method2.getAnnotation(SortedMethod.class).value();
-        }).collect(Collectors.toList());
+        List<Method> methods = Arrays.stream(clazz.getDeclaredMethods()).filter(
+                method -> method.isAnnotationPresent(SortedMethod.class)).sorted(
+                        (method1, method2) -> method1.getAnnotation(SortedMethod.class).value() - method2.getAnnotation(SortedMethod.class).value())
+                .collect(Collectors.toList());
 
         for (Method method : methods) {
             menu.append(System.lineSeparator());
@@ -30,21 +33,8 @@ public class outputMessages {
     }
 
     public static String getMenuMsg(){
-        return menuMsg;
-    }
 
-    private static String fixName(String input){
-
-        StringBuilder output = new StringBuilder();
-
-        for(int i =0;i<input.length();++i ){
-            if(Character.isUpperCase(input.charAt(i))){
-                output.append(" ");
-            }
-            output.append(input.charAt(i));
-        }
-
-        return output.toString().toLowerCase();
+         return menuMsg;
     }
 
     public static String getPathMsg(){
@@ -53,7 +43,13 @@ public class outputMessages {
     }
 
     public static String getSuccessfulLoadMsg(){
-        return "file loaded successfully";
+
+         return "file loaded successfully";
+    }
+
+    public static String getSuccessfulSaveMsg(){
+
+        return "file saved successfully";
     }
 
     public static String invalidPathMsg(){
@@ -98,6 +94,11 @@ public class outputMessages {
                 msg.append(System.lineSeparator());
                 i++;
             }
+
+            if(info.getHistoryAndStat().get(machineInfo).keySet().size() == 0){
+                msg.append("#There are no encrypted messages for this code");
+                msg.append(System.lineSeparator());
+            }
         }
 
         if(info.getHistoryAndStat().keySet().size() == 0){
@@ -105,6 +106,78 @@ public class outputMessages {
         }
 
         return msg.toString();
+    }
+
+    public static String getRotorsIdMsg(int numOfRotors){
+
+        return "Please insert " + numOfRotors + " rotor's IDs you want to use in the machine(with commas between them):";
+    }
+
+    public static String getRotorsPositionMsg(int numOfRotors){
+
+        return "Please enter sequence of " + numOfRotors + " initial positions from the ABC for the rotors(according to insertion order of the IDs):";
+    }
+
+    public static String invalidNumberOfInitialPositionsMsg(){
+
+        return "number of initial positions not compatible to number of rotors";
+    }
+
+    public static String getReflectorIdMenuMsg(int numOfReflectors){
+
+        StringBuilder msg = new StringBuilder("Which reflector you want to have in the machine, please choose one of the following numbers:");
+
+        for(int i = 1 ; i<= numOfReflectors ; i++){
+            msg.append(System.lineSeparator());
+            msg.append(i + ". " + EngineLogic.idEncoder(i));
+        }
+
+        return msg.toString();
+    }
+
+    public static String getPlugsMsg(){
+
+        return "Please insert all the plugs you want in the system as a sequence string that each 2 character represent a plug:";
+    }
+
+    public static String invalidNumberOfRotorsMsg(){
+
+        return "Number of rotors IDs not compatible with number of rotors you have in the machine";
+    }
+
+    public static String duplicateIdOfRotorsMsg(){
+
+        return "You insert the same rotor twice, you can use a rotor only once per initial";
+    }
+
+    public static String getStringMsg(){
+
+         return "Please enter a message that you want to encrypt";
+    }
+
+    public static String encryptedStringMsg(String encrypted){
+
+         return "Your message after the encryption is: " + encrypted;
+    }
+
+    public static String invalidPlugsInputMsg(){
+
+         return "there is odd number of chars, it means that one of the characters not have pair";
+    }
+
+    public static String outOfRangeInputMsg(){
+
+         return "Input number is out of range";
+    }
+
+    public static String resetCodeMsg(){
+
+         return "code reset to the initial code configuration";
+    }
+
+    public static String getSaveFileMsg(){
+
+         return "Enter name of file for the machine:";
     }
 
     private static String currentMachineSpecification(MachineInfoDTO machineInfo){
@@ -137,62 +210,18 @@ public class outputMessages {
         return msg.toString();
     }
 
-    public static String getRotorsIdMsg(int numOfRotors){
+    private static String fixName(String input){
 
-        return "Please insert " + numOfRotors + " rotor's IDs you want to use in the machine(with commas between them):";
-    }
+        StringBuilder output = new StringBuilder();
 
-    public static String getRotorsPositionMsg(int numOfRotors){
-        return "Please enter sequence of " + numOfRotors + " initial positions from the ABC for the rotors(according to insertion order of the IDs):";
-    }
+        for(int i =0;i<input.length();++i ){
+            if(Character.isUpperCase(input.charAt(i))){
+                output.append(" ");
+            }
 
-    public static String invalidNumberOfInitialPositionsMsg(){
-        return "number of initial positions not compatible to number of rotors";
-    }
-
-    public static String getReflectorIdMenuMsg(int numOfReflectors){
-
-        StringBuilder msg = new StringBuilder();
-        msg.append("Which reflector you want to have in the machine, please choose one of the following numbers:");
-
-        for(int i = 1 ; i<= numOfReflectors ; i++){
-            msg.append(System.lineSeparator());
-            msg.append(i + ". " + EngineLogic.idEncoder(i));
+            output.append(input.charAt(i));
         }
 
-        return msg.toString();
+        return output.toString().toLowerCase();
     }
-
-    public static String getPlugsMsg(){
-        return "Please insert all the plugs you want in the system as a sequence string that each 2 character represent a plug:";
-    }
-
-    public static String invalidNumberOfRotorsMsg(){
-        return "Number of rotors IDs not compatible with number of rotors you have in the machine";
-    }
-
-    public static String duplicateIdOfRotorsMsg(){
-        return "You insert the same rotor twice, you can use a rotor only once per initial";
-    }
-
-    public static String getStringMsg(){
-        return "Please enter a message that you want to encrypt";
-    }
-
-    public static String encryptedStringMsg(String encrypted){
-        return "Your message after the encryption is: " + encrypted;
-    }
-
-    public static String invalidPlugsInputMsg(){
-        return "there is odd number of chars, it means that one of the characters not have pair";
-    }
-
-    public static String outOfRangeInputMsg(){
-        return "Input number is out of range";
-    }
-
-    public static String resetCodeMsg(){
-        return "code reset to the initial code configuration";
-    }
-
 }

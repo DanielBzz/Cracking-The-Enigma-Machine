@@ -1,14 +1,13 @@
-import exceptions.CharacterNotInAbcException;
-import exceptions.MachineNotDefinedException;
-import exceptions.NoFileLoadedException;
+import exceptions.*;
 import javafx.util.Pair;
 import scheme.generated.*;
 
+import java.io.*;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-public class EnigmaEngine implements EnigmaSystemEngine{
+public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
 
     private Machine enigmaMachine = null;
     private MachineInfoDTO currentInitialMachineInfo = null;
@@ -25,7 +24,6 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         CTEEnigma enigmaMachineCTE = EngineLogic.createEnigmaFromFile(path.trim());
         EngineLogic.checkMachineIsValid(enigmaMachineCTE.getCTEMachine());
         engineInit(enigmaMachineCTE.getCTEMachine());
-
     }
 
     private void engineInit(CTEMachine enigmaMachineCTE){
@@ -37,8 +35,10 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         for (CTERotor rotor : enigmaMachineCTE.getCTERotors().getCTERotor()) {
 
             ConversionTable conversionTable = new ConversionTable();
+
             rotor.getCTEPositioning().forEach((position) ->
-                    conversionTable.add(position.getRight().charAt(0), position.getLeft().charAt(0)));
+                    conversionTable.add(position.getRight().toUpperCase().charAt(0), position.getLeft().toUpperCase().charAt(0)));
+
             optionalRotors.add(new Rotor(rotor.getId(), rotor.getNotch() - 1, conversionTable));
         }
 
@@ -87,18 +87,14 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         for (Integer id : args.getRotorsID()) {
             rotors.add(optionalRotors.stream().filter(rotor -> rotor.getId() == id).findFirst().get());
         }
-        int i=0;
-        for (Character initPosition : args.getRotorsInitPosition()) {
-            rotorsPositions.add(rotors.get(i).getCharacterPosition(initPosition));
-            i++;
-        }
 
+        IntStream.range(0,args.getRotorsInitPosition().size()).forEach(
+                i-> rotorsPositions.add(rotors.get(i).getPositionOfChar(args.getRotorsInitPosition().get(i))));
 
-        reflector = optionalReflectors.stream().filter(reflector1 -> Objects.equals(reflector1.getId(), args.getReflectorID())).findFirst().get();
+        reflector = optionalReflectors.stream().filter(
+                reflector1 -> Objects.equals(reflector1.getId(), args.getReflectorID())).findFirst().get();
 
-        for (Character keyPlug : args.getPlugs().keySet()) {
-            plugBoard.add(keyPlug, args.getPlugs().get(keyPlug));
-        }
+        args.getPlugs().keySet().forEach(key -> plugBoard.add(key, args.getPlugs().get(key)));
 
         enigmaMachine = new Machine(rotors, rotorsPositions, reflector, ABC, plugBoard);
         currentInitialMachineInfo = initMachineInfo();
@@ -136,6 +132,84 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         historyAndStat.put(currentInitialMachineInfo, new LinkedHashMap<>());
     }
 
+    @Override
+    public String encryptString(String message) {
+
+        StringBuilder encryptedString = new StringBuilder();
+
+        if(enigmaMachine == null){
+            throw new MachineNotDefinedException();
+        }
+
+        message = message.toUpperCase();
+        checkIfCharactersInABC(message);
+
+        long encryptedTime = System.nanoTime();
+
+        for (Character c:message.toCharArray()) {
+            encryptedString.append(enigmaMachine.encryption(c).toString());
+        }
+
+        encryptedTime = System.nanoTime() - encryptedTime;
+        historyAndStat.get(currentInitialMachineInfo).put(new Pair<>(message,encryptedString.toString()),encryptedTime);
+
+        return encryptedString.toString();
+    }
+
+    @Override
+    public void resetTheMachine() {
+
+        if (enigmaMachine == null) {
+            throw new MachineNotDefinedException();
+        }
+
+        List<Character> rotorsInitPositions = currentInitialMachineInfo.getRotorsInitPosition();
+
+        IntStream.range(0, rotorsInitPositions.size()).forEach(
+                rotorIndex -> enigmaMachine.setInitPositionForRotor(rotorIndex, rotorsInitPositions.get(rotorIndex)));
+    }
+
+    @Override
+    public HistoryAndStatisticDTO getHistoryAndStatistics() {
+
+        if (!isEngineInitialized()) {
+            throw new NoFileLoadedException();
+        }
+
+        return new HistoryAndStatisticDTO(historyAndStat);
+    }
+
+    public void writeEngineToFile(String fileName) throws IOException {
+
+        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))){
+            out.writeObject(this);
+            out.flush();
+        }
+    }
+
+    public static EnigmaEngine readEngineFromFile(String fileName) throws Exception{
+
+        try(ObjectInputStream in = (new ObjectInputStream(new FileInputStream(fileName)))) {
+
+            return (EnigmaEngine) in.readObject();
+        }catch (StreamCorruptedException e){
+            throw new Exception("the file you insert is not compatible to engine");
+        }
+    }
+
+    public boolean isEngineInitialized(){
+
+        return ABC != null;
+    }
+
+    public void checkIfCharactersInABC(String input){       // maybe change it to Collection instead of string
+
+        Set<Character> notInAbcChars = input.chars().mapToObj(c->(char)c).filter(c->!ABC.contains(c.toString())).collect(Collectors.toSet());
+        if(notInAbcChars.size() != 0){
+            throw new CharacterNotInAbcException(notInAbcChars);
+        }
+    }
+
     private MachineInfoDTO initMachineInfo(){
 
         List<Integer> rotorsId = enigmaMachine.getRotorsId();
@@ -166,89 +240,8 @@ public class EnigmaEngine implements EnigmaSystemEngine{
         return plugBoard;
     }
 
-    @Override
-    public String encryptString(String message) {
-
-        StringBuilder encryptedString = new StringBuilder();
-
-        if(enigmaMachine == null){
-            throw new MachineNotDefinedException();
-        }
-
-        message = message.toUpperCase();
-        checkIfCharactersInABC(message);
-
-        Long encryptedTime = System.nanoTime();
-        for (Character c:message.toCharArray()) {
-            encryptedString.append(enigmaMachine.encryption(c).toString());
-        }
-
-        encryptedTime = System.nanoTime() - encryptedTime;
-
-        historyAndStat.get(currentInitialMachineInfo).put(new Pair<>(message,encryptedString.toString()),encryptedTime);
-        return encryptedString.toString();
-    }
-
-    @Override
-    public void resetTheMachine() {
-
-        if(enigmaMachine == null){
-            throw new MachineNotDefinedException();
-        }
-
-        List<Character> rotorsInitPositions = currentInitialMachineInfo.getRotorsInitPosition();
-        AtomicInteger rotorIndex = new AtomicInteger(0);
-
-        rotorsInitPositions.forEach(C-> {
-            enigmaMachine.setInitPositionForRotor(rotorIndex.get(), C);
-            rotorIndex.incrementAndGet();
-        });
-    }
-
-    @Override
-    public HistoryAndStatisticDTO getHistoryAndStatistics() {
-
-        if(!isEngineInitialized()){
-            throw new NoFileLoadedException();
-        }
-
-        return new HistoryAndStatisticDTO(historyAndStat);
-    }
-
-    @Override
-    public void exit() {
-
-    }
-
-    public boolean isEngineInitialized(){
-        return ABC != null;
-    }
-
-    public void checkIfCharactersInABC(String input){       // maybe change it to Collection instead of string
-
-        Set<Character> notInAbcChars = input.chars().mapToObj(c->(char)c).filter(c->!ABC.contains(c.toString())).collect(Collectors.toSet());
-        if(notInAbcChars.size() != 0){
-            throw new CharacterNotInAbcException(notInAbcChars);
-        }
-    }
-
     private int encryptedMsgSum(){
+
         return historyAndStat.values().stream().mapToInt(Map::size).sum();
     }
-//
-//    //This method write the Engine details to a file.
-//    public void writeToFile(String fileName) throws IOException{
-//        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))){
-//            out.writeObject(this);
-//            out.flush();
-//        }
-//    }
-//    //This method read the Engine details from a file.
-//    public EngineImp readFromFile(String fileName) throws Exception{
-//        try(ObjectInputStream in = (new ObjectInputStream(new FileInputStream(fileName)))){
-//            EngineImp tempEngine = (EngineImp) in.readObject();
-//            return tempEngine;
-//        }
-//
-//    }
 }

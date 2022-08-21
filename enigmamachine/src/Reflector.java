@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Reflector implements Convertor<Integer>{
+public class Reflector implements Convertor<Integer>, Serializable {
 
     private final String id;
     private final Map<Integer, Integer> reflectorConversions;
@@ -13,14 +14,8 @@ public class Reflector implements Convertor<Integer>{
     }
 
     public String getId() {
+
         return id;
-    }
-
-    public void add(Integer key, Integer value){
-
-        reflectorConversions.put(key,value);
-
-        reflectorConversions.put(value,key);
     }
 
     @Override

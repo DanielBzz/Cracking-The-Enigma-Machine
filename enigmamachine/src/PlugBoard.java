@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlugBoard implements Convertor<Character>{
+public class PlugBoard implements Convertor<Character>, Serializable {
 
     private final Map<Character, Character> plugChars = new HashMap<>();
 

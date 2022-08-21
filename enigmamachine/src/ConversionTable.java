@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConversionTable {
+public class ConversionTable implements Serializable {
 
     private final List<Character> rightValues = new ArrayList<>();
     private final List<Character> leftValues = new ArrayList<>();

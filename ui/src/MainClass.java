@@ -1,4 +1,3 @@
-import java.io.IOException;
 
 public class MainClass {
 
@@ -7,8 +6,8 @@ public class MainClass {
         MachineUI enigmaMachine = new MachineUI();
         try {
             enigmaMachine.run();
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

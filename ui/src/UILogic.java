@@ -10,14 +10,18 @@ public class UILogic {
 
         System.out.println(outputMessages.getRotorsIdMsg(numberOfIds));
         String input = scanner.nextLine();
-        List<Integer> IDs = UILogic.getIntListFromString(input);        // throw exception
+        List<Integer> IDs;
 
+        try {
+            IDs = UILogic.getIntListFromString(input);        // throw exception
+        } catch (NumberFormatException e){
+            throw new NumberFormatException(e.getMessage() + " is not a valid ID");
+        }
 
         if(IDs.size() != numberOfIds){                              // different number of ids
             throw new Error(outputMessages.invalidNumberOfRotorsMsg());
         }
-
-        if(IDs.size() != new HashSet<>(IDs).size()){                // if insert same id twice or more
+        else if(IDs.size() != new HashSet<>(IDs).size()){                // if insert same id twice or more
             throw new Error(outputMessages.duplicateIdOfRotorsMsg());
         }
 
@@ -76,13 +80,15 @@ public class UILogic {
         }
 
         Map<Character, Character> plugPairs = new HashMap<>();
+
         for(int i=0 ; i<input.length(); i+=2){
             if(input.charAt(i) == input.charAt(i+1) || plugPairs.containsKey(input.charAt(i)) || plugPairs.containsValue(input.charAt(i))){
                 throw new MultipleMappingException(input.charAt(i));
             }
             else if(plugPairs.containsKey(input.charAt(i+1)) || plugPairs.containsValue(input.charAt(i+1))){
                 throw new MultipleMappingException(input.charAt(i+1));
-            }else {
+            }
+            else {
                 plugPairs.put(input.charAt(i),input.charAt(i+1));
             }
         }
@@ -97,7 +103,8 @@ public class UILogic {
 
         if(input.length() != numberOfRotors){
             throw new Error(outputMessages.invalidNumberOfInitialPositionsMsg());
-        } else if (enigmaEngine instanceof EnigmaEngine) {
+        }
+        else if (enigmaEngine instanceof EnigmaEngine) {
             ((EnigmaEngine) enigmaEngine).checkIfCharactersInABC(input);
         }
 

@@ -26,8 +26,10 @@ public class EngineLogic  {
     }
 
     private static CTEEnigma deserializeFrom(InputStream in) throws JAXBException {
+
         JAXBContext jc = JAXBContext.newInstance("scheme.generated");
         Unmarshaller u = jc.createUnmarshaller();
+
         return (CTEEnigma) u.unmarshal(in);
     }
 
@@ -142,40 +144,6 @@ public class EngineLogic  {
             throw new MissingMapException(currentReflector,currentReflector.getId());
         }
     }
-/*
-    private static <T> boolean f(List<T> reflectList, String ABC) {
-
-        Set<Integer> leftSet = new HashSet<>();
-        Set<Integer> rightSet = new HashSet<>();
-
-        for (T reflect : reflectList) {
-
-            if(reflect instanceof CTEReflect){
-                ((CTEReflect) reflect).getInput();
-                ((CTEReflect) reflect).getOutput();
-            }
-            if(reflect instanceof CTEPositioning){
-                ((CTEPositioning) reflect).getLeft();
-                ((CTEPositioning) reflect).getRight();
-
-            }
-
-            if ((reflect.getInput() < ABC.length())) {
-                leftSet.add(reflect.getInput());
-            }
-
-            if (reflect.getOutput() < ABC.length()) {
-                rightSet.add(reflect.getOutput());
-            }
-
-            if(reflect.getInput() == reflect.getOutput()){
-                return false;
-            }
-        }
-
-        return (leftSet.size() + rightSet.size()) == ABC.trim().length();
-    }
-*/
 
     public static int idDecoder(String id){
 
@@ -190,6 +158,4 @@ public class EngineLogic  {
 
         return Arrays.stream(RomanNumeral.values()).filter((romanNumeral) -> romanNumeral.evaluateNumber() == id).findFirst().get();
     }
-
-
 }

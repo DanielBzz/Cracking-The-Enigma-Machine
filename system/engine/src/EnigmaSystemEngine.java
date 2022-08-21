@@ -12,7 +12,5 @@ public interface EnigmaSystemEngine {
 
     void resetTheMachine();
 
-    HistoryAndStatisticDTO  getHistoryAndStatistics();     // return values according the format
-
-    void exit();
+    HistoryAndStatisticDTO  getHistoryAndStatistics();
 }

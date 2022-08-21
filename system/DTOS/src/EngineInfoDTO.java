@@ -17,26 +17,32 @@ public class EngineInfoDTO {
         }
 
         public int getNumOfOptionalRotors() {
+
                 return numOfOptionalRotors;
         }
 
         public int getNumOfOptionalReflectors() {
+
                 return numOfOptionalReflectors;
         }
 
         public int getNumOfUsedRotors() {
+
                 return numOfUsedRotors;
         }
 
         public int getNumOfEncryptedMsg() {
+
                 return numOfEncryptedMsg;
         }
 
         public MachineInfoDTO getMachineInitialInfo() {
+
                 return machineInitialInfo;
         }
 
         public MachineInfoDTO getMachineCurrentInfo() {
+
                 return machineCurrentInfo;
         }
 }
