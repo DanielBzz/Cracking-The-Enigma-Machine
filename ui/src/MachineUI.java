@@ -1,4 +1,10 @@
 import exceptions.*;
+import logic.EnigmaEngine;
+import logic.EnigmaMachineUI;
+import logic.EnigmaSystemEngine;
+import machineDtos.EngineInfoDTO;
+import machineDtos.HistoryAndStatisticDTO;
+import machineDtos.MachineInfoDTO;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;

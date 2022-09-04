@@ -1,5 +1,8 @@
 import exceptions.IdOutOfRangeException;
 import exceptions.MultipleMappingException;
+import logic.EngineLogic;
+import logic.EnigmaEngine;
+import logic.EnigmaSystemEngine;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{}CTE-Machine"/>
+ *         &lt;element ref="{}CTE-machine.Machine"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "CTE-Enigma")
 public class CTEEnigma {
 
-    @XmlElement(name = "CTE-Machine", required = true)
+    @XmlElement(name = "CTE-machine.Machine", required = true)
     protected CTEMachine cteMachine;
 
     /**

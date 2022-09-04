@@ -52,7 +52,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "cteReflect"
 })
-@XmlRootElement(name = "CTE-Reflector")
+@XmlRootElement(name = "CTE-components.Reflector")
 public class CTEReflector {
 
     @XmlElement(name = "CTE-Reflect", required = true)

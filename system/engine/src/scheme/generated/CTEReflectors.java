@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence maxOccurs="5">
- *         &lt;element ref="{}CTE-Reflector"/>
+ *         &lt;element ref="{}CTE-components.Reflector"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "CTE-Reflectors")
 public class CTEReflectors {
 
-    @XmlElement(name = "CTE-Reflector", required = true)
+    @XmlElement(name = "CTE-components.Reflector", required = true)
     protected List<CTEReflector> cteReflector;
 
     /**

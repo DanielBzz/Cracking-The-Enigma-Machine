@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "ctePositioning"
 })
-@XmlRootElement(name = "CTE-Rotor")
+@XmlRootElement(name = "CTE-components.Rotor")
 public class CTERotor {
 
     @XmlElement(name = "CTE-Positioning", required = true)
