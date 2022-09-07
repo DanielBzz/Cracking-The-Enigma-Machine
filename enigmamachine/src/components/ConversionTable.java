@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConversionTable implements Serializable {
+public class ConversionTable implements Serializable, Cloneable {
 
     private final List<Character> rightValues = new ArrayList<>();
     private final List<Character> leftValues = new ArrayList<>();
@@ -29,9 +29,27 @@ public class ConversionTable implements Serializable {
         return leftValues.indexOf(character);
     }
 
+    public int getTableSize(){
+        return rightValues.size();
+    }
+
     public void add(Character right , Character left){
 
         rightValues.add(right);
         leftValues.add(left);
+    }
+
+    @Override
+    public ConversionTable clone() {
+        try {
+            ConversionTable clone = (ConversionTable) super.clone();
+            clone.rightValues.addAll(rightValues);
+            clone.leftValues.addAll(leftValues);
+
+            return clone;
+
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

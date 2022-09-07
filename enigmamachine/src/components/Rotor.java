@@ -2,7 +2,7 @@ package components;
 
 import java.io.Serializable;
 
-public class Rotor implements Convertor<Integer>, Serializable {
+public class Rotor implements Convertor<Integer>, Serializable, Cloneable {
 
     private final int id;
     private final int notchPosition;
@@ -26,6 +26,10 @@ public class Rotor implements Convertor<Integer>, Serializable {
         return notchPosition;
     }
 
+    public int getConversionTableSize(){
+        return rotorConversions.getTableSize();
+    }
+
     public int getPositionOfChar(char c) {
 
         return rotorConversions.getCharIndexInRight(c);
@@ -45,5 +49,14 @@ public class Rotor implements Convertor<Integer>, Serializable {
         rightToLeft = !rightToLeft;
 
         return nextPosition;
+    }
+
+    @Override
+    public Rotor clone() {
+
+        Rotor clone = new Rotor(id, notchPosition, rotorConversions.clone());
+        clone.rightToLeft = rightToLeft;
+
+        return clone;
     }
 }

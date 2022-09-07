@@ -18,27 +18,22 @@ public class HeaderController {
     @FXML
     private Label filePathLabel;
 
-    public HeaderController() {
-        System.out.println("ctor header");
-    }
-
     public void setMainController(EnigmaAppController appController) {
         this.mainController = appController;
     }
 
     public void initial() {
-        this.filePathLabel.textProperty().bind(this.mainController.selectedFilePropertyProperty());
+        this.filePathLabel.textProperty().bind(this.mainController.selectedFileProperty());
     }
 
     @FXML
     public void loadFileActionListener(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("load xml file");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", new String[]{"*.xml"}));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
         File chosenFile = fileChooser.showOpenDialog((Window)null);
         if (chosenFile != null) {
-            this.mainController.setSelectedFileProperty(chosenFile.getAbsolutePath());
+            this.mainController.setSelectedFile(chosenFile.getAbsolutePath());
         }
-
     }
 }

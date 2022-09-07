@@ -4,7 +4,7 @@ import exceptions.MultipleMappingException;
 
 public interface EnigmaMachineUI {
 
-    public void loadNewXmlFile() throws Exception;
+    public void loadNewXmlFile();
 
     public void displayingMachineSpecification();
 

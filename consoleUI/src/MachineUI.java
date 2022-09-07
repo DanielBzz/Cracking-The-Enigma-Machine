@@ -51,7 +51,7 @@ public class MachineUI implements EnigmaMachineUI {
 
     @Override
     @SortedMethod(value = 1)
-    public void loadNewXmlFile() throws Exception {
+    public void loadNewXmlFile(){
 
         System.out.println(outputMessages.getPathMsg());
         String xmlPath = scanner.nextLine();
@@ -64,9 +64,12 @@ public class MachineUI implements EnigmaMachineUI {
                 return;
             }
         }
-
-        enigmaSystem.loadXmlFile(xmlPath);
-        System.out.println(outputMessages.getSuccessfulLoadMsg());
+        try{
+            enigmaSystem.loadXmlFile(xmlPath);
+            System.out.println(outputMessages.getSuccessfulLoadMsg());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override

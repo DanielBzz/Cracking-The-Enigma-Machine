@@ -2,25 +2,33 @@ package logic;
 
 import components.main.EnigmaAppController;
 import exceptions.MultipleMappingException;
+import machineDtos.EngineInfoDTO;
 
 public class MachineLogicUI implements EnigmaMachineUI {
 
-    EnigmaAppController appController;
-    EnigmaSystemEngine machine = new EnigmaEngine();
+    private EnigmaAppController appController;
+    private EnigmaSystemEngine machine = new EnigmaEngine();
 
     public MachineLogicUI(EnigmaAppController controller){
         appController = controller;
     }
 
     @Override
-    public void loadNewXmlFile() throws Exception {
+    public void loadNewXmlFile() {
 
-        machine.loadXmlFile(appController.selectedFilePropertyProperty().get());
+        try {
+            machine.loadXmlFile(appController.getSelectedFile());
+        } catch (Exception | Error e) {
+            appController.setSelectedFile("-");
+            appController.showPopUpMessage(e.getMessage());
+        }
     }
 
     @Override
     public void displayingMachineSpecification() {
 
+        EngineInfoDTO machineSpecification = machine.displayingMachineSpecification();
+        appController.setMachineSpecification(machineSpecification);
     }
 
     @Override

@@ -1,9 +1,10 @@
 package components;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
-public class Reflector implements Convertor<Integer>, Serializable {
+public class Reflector implements Convertor<Integer>, Serializable, Cloneable {
 
     private final String id;
     private final Map<Integer, Integer> reflectorConversions;
@@ -23,5 +24,13 @@ public class Reflector implements Convertor<Integer>, Serializable {
     public Integer convert(Integer position) {
 
         return reflectorConversions.get(position);
+    }
+
+    @Override
+    public Reflector clone() {
+
+        Reflector clone = new Reflector(id, new HashMap<>(reflectorConversions));
+
+        return clone;
     }
 }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlugBoard implements Convertor<Character>, Serializable {
+public class PlugBoard implements Convertor<Character>, Serializable, Cloneable {
 
     private final Map<Character, Character> plugChars = new HashMap<>();
 
@@ -31,5 +31,17 @@ public class PlugBoard implements Convertor<Character>, Serializable {
     public Character convert(Character character) {
 
         return plugChars.get(character);
+    }
+
+    @Override
+    public PlugBoard clone() {
+        try {
+            PlugBoard clone = (PlugBoard) super.clone();
+            clone.plugChars.putAll(plugChars);
+
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

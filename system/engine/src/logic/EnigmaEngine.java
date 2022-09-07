@@ -6,10 +6,7 @@ import exceptions.MachineNotDefinedException;
 import exceptions.NoFileLoadedException;
 import javafx.util.Pair;
 import machine.Machine;
-import machineDtos.EngineInfoDTO;
-import machineDtos.EnigmaMachineDTO;
-import machineDtos.HistoryAndStatisticDTO;
-import machineDtos.MachineInfoDTO;
+import machineDtos.*;
 import scheme.generated.CTEEnigma;
 import scheme.generated.CTEMachine;
 import scheme.generated.CTEReflector;
@@ -82,7 +79,8 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
             currentMachineInfo = initMachineInfo();
         }
 
-        return new EngineInfoDTO(optionalRotors.size(), optionalReflectors.size(), rotorsCount, encryptedMsgSum() , currentInitialMachineInfo,currentMachineInfo);
+        return new EngineInfoDTO(optionalRotors.size(), optionalReflectors.size(), rotorsCount, encryptedMsgSum() ,
+                currentInitialMachineInfo,currentMachineInfo, new EngineComponentsDTO(optionalRotors,optionalReflectors));
     }
 
     @Override
