@@ -2,7 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -13,9 +15,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="255.0" minWidth="300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.body.details.CodeCalibrationController">
+<BorderPane minHeight="265.0" minWidth="340.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.body.details.CodeCalibrationController">
    <bottom>
-      <HBox alignment="CENTER" fillHeight="false" minHeight="50.0" minWidth="280.0" spacing="40.0">
+      <HBox alignment="CENTER" fillHeight="false" minHeight="50.0" minWidth="280.0" spacing="40.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="randomButton" minHeight="40.0" minWidth="120.0" mnemonicParsing="false" onAction="#randomCodeActionListener" text="Random Code" />
             <Button fx:id="manualSetButton" minHeight="40.0" minWidth="120.0" mnemonicParsing="false" onAction="#manualSetCodeActionListener" text="Set Code" />
@@ -24,16 +26,16 @@
             <Insets />
          </opaqueInsets>
          <padding>
-            <Insets bottom="10.0" />
+            <Insets bottom="10.0" top="10.0" />
          </padding>
       </HBox>
    </bottom>
    <center>
       <GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="180.0" minWidth="300.0" BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="ALWAYS" minWidth="80.0" prefWidth="80.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="80.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="180.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints fillHeight="false" maxHeight="34.0" minHeight="34.0" prefHeight="34.0" valignment="CENTER" vgrow="NEVER" />
@@ -74,6 +76,18 @@
                   </VBox>
                </content>
             </ScrollPane>
+            <VBox alignment="TOP_CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <children>
+                  <ListView fx:id="plugsPane" editable="true" maxWidth="100.0" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#onMouseClickedPlug" />
+                  <HBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <ChoiceBox fx:id="leftPlugChoiceBox" />
+                        <Button fx:id="connectPlugsButton" mnemonicParsing="false" onAction="#connectPlugsButtonActionListener" text="&lt; - &gt;" />
+                        <ChoiceBox fx:id="rightPlugChoiceBox" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
          </children>
       </GridPane>
    </center>

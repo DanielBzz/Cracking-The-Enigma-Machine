@@ -82,7 +82,7 @@ public class MachineUI implements EnigmaMachineUI {
 
     @Override
     @SortedMethod(value = 3)
-    public void manualInitialCodeConfiguration() throws MultipleMappingException {
+    public void manualInitialCodeConfiguration() {
 
         checkFileLoaded();
         EngineInfoDTO machineSpecification = enigmaSystem.displayingMachineSpecification();
@@ -90,7 +90,12 @@ public class MachineUI implements EnigmaMachineUI {
         List<Integer> rotorsIDs = UILogic.getRotorsIDsInput(scanner, machineSpecification.getNumOfUsedRotors(), machineSpecification.getNumOfOptionalRotors());
         List<Character> rotorsInitialPositions = UILogic.getRotorsInitialPositionsInput(enigmaSystem, scanner, machineSpecification.getNumOfUsedRotors());
         String reflectorId = UILogic.getReflectorIdInput(scanner, machineSpecification.getNumOfOptionalReflectors());
-        Map<Character, Character> plugs = UILogic.getPlugsInput(enigmaSystem, scanner);
+        Map<Character, Character> plugs = null;
+        try {
+            plugs = UILogic.getPlugsInput(enigmaSystem, scanner);
+        } catch (MultipleMappingException e) {
+            throw new Error(e.getMessage());
+        }
 
         MachineInfoDTO args = new MachineInfoDTO(rotorsIDs, null, rotorsInitialPositions, reflectorId, plugs);
         enigmaSystem.manualMachineInit(args);

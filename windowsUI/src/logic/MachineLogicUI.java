@@ -1,10 +1,10 @@
 package logic;
 
 import components.main.EnigmaAppController;
-import exceptions.MultipleMappingException;
 import machineDtos.EngineInfoDTO;
+import machineDtos.MachineInfoDTO;
 
-public class MachineLogicUI implements EnigmaMachineUI {
+public class MachineLogicUI  {
 
     private EnigmaAppController appController;
     private EnigmaSystemEngine machine = new EnigmaEngine();
@@ -13,50 +13,45 @@ public class MachineLogicUI implements EnigmaMachineUI {
         appController = controller;
     }
 
-    @Override
-    public void loadNewXmlFile() {
+    public void loadNewXmlFile(String path) {
 
         try {
-            machine.loadXmlFile(appController.getSelectedFile());
+            machine.loadXmlFile(path);
         } catch (Exception | Error e) {
             appController.setSelectedFile("-");
             appController.showPopUpMessage(e.getMessage());
         }
     }
 
-    @Override
     public void displayingMachineSpecification() {
 
         EngineInfoDTO machineSpecification = machine.displayingMachineSpecification();
         appController.setMachineSpecification(machineSpecification);
     }
 
-    @Override
-    public void manualInitialCodeConfiguration() throws MultipleMappingException {
+    public void manualInitialCodeConfiguration(MachineInfoDTO initialArgs) {
 
+        machine.manualMachineInit(initialArgs);
     }
 
-    @Override
+
     public void automaticInitialCodeConfiguration() {
 
+        machine.automaticMachineInit();
     }
 
-    @Override
     public void encryptInput() {
 
     }
 
-    @Override
     public void resetCurrentCode() {
 
     }
 
-    @Override
     public void getHistoryAndStatistics() {
 
     }
 
-    @Override
     public void exit() {
 
     }

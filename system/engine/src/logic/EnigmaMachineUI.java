@@ -1,14 +1,12 @@
 package logic;
 
-import exceptions.MultipleMappingException;
-
 public interface EnigmaMachineUI {
 
     public void loadNewXmlFile();
 
     public void displayingMachineSpecification();
 
-    public void manualInitialCodeConfiguration() throws MultipleMappingException;
+    public void manualInitialCodeConfiguration();
 
     public void automaticInitialCodeConfiguration();
 

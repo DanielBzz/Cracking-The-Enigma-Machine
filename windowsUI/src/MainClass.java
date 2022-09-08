@@ -17,7 +17,7 @@ public class MainClass extends Application {
         EnigmaAppController appController = loader.getController();
 
         MachineLogicUI machine = new MachineLogicUI(appController);
-        appController.setMachineLogic(machine);
+        appController.setMachineUI(machine);
 
         primaryStage.setTitle("Cracking The Enigma");
         Scene scene = new Scene(load, 800.0, 500.0);

@@ -5,38 +5,32 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <SplitPane dividerPositions="0.2" orientation="VERTICAL" prefHeight="200.0">
-         <items>
-            <HBox>
+<SplitPane dividerPositions="0.2" minHeight="50.0" minWidth="100.0" orientation="VERTICAL" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <items>
+      <HBox>
+         <children>
+            <StackPane prefHeight="36.0" prefWidth="75.0">
                <children>
-                  <StackPane prefHeight="36.0" prefWidth="75.0">
-                     <children>
-                        <Label text="components.Reflector">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </StackPane>
-                  <StackPane>
-                     <children>
-                        <Label prefWidth="20.0" text="II">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </StackPane>
+                  <Label text="Reflector">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
                </children>
-            </HBox>
-            <ListView />
-         </items>
-      </SplitPane>
-   </children>
-</VBox>
+            </StackPane>
+            <StackPane>
+               <children>
+                  <Label fx:id="reflectorId" prefWidth="20.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </StackPane>
+         </children>
+      </HBox>
+      <ListView fx:id="reflectorList" />
+   </items>
+</SplitPane>

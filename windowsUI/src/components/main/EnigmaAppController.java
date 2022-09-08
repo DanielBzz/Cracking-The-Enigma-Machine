@@ -5,16 +5,14 @@ import components.header.HeaderController;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
-import logic.EnigmaMachineUI;
+import logic.MachineLogicUI;
 import machineDtos.EngineInfoDTO;
 
 public class EnigmaAppController {
 
-    private EnigmaMachineUI machineUI;
+    private MachineLogicUI machineUI;
     @FXML
     private ScrollPane headerComponent;
     @FXML
@@ -35,15 +33,20 @@ public class EnigmaAppController {
             headerComponentController.initial();
             bodyComponentController.initial();
             bodyComponent.disableProperty().bind(isFileSelected.not());
-        }
+            bodyComponentController.getMachineInfoProperty().addListener(
+                    (observable, oldValue, newValue) -> machineUI.manualInitialCodeConfiguration(newValue));
 
-        isFileSelected.bind(selectedFileProperty.isNotEqualTo("-"));
-        selectedFileProperty.addListener((observable, oldValue, newValue) -> machineUI.loadNewXmlFile());
-        selectedFileProperty.addListener((observable, oldValue, newValue) -> machineUI.displayingMachineSpecification());
+            isFileSelected.bind(selectedFileProperty.isNotEqualTo("-"));
+            selectedFileProperty.addListener((observable, oldValue, newValue) -> {
+                machineUI.loadNewXmlFile(newValue);
+                machineUI.displayingMachineSpecification();
+                bodyComponentController.initialCodeCalibration();
+                bodyComponentController.initialEngineDetails();
+            });
+        }
     }
 
-    public void setMachineLogic(EnigmaMachineUI machine){
-
+    public void setMachineUI(MachineLogicUI machine){
         machineUI = machine;
     }
 
@@ -64,7 +67,7 @@ public class EnigmaAppController {
 
     public void showPopUpMessage(String messageToShow){
 
-        new Alert(Alert.AlertType.ERROR, messageToShow, ButtonType.OK).show();
+        // new Alert(Alert.AlertType.ERROR, messageToShow, ButtonType.OK).show();
     }
 
     public void setMachineSpecification(EngineInfoDTO details){
@@ -72,7 +75,8 @@ public class EnigmaAppController {
         bodyComponentController.setEngineDetails(details);
     }
 
+    public void initialRandomCode(){
 
-
-
+        machineUI.automaticInitialCodeConfiguration();
+    }
 }

@@ -80,7 +80,7 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
         }
 
         return new EngineInfoDTO(optionalRotors.size(), optionalReflectors.size(), rotorsCount, encryptedMsgSum() ,
-                currentInitialMachineInfo,currentMachineInfo, new EngineComponentsDTO(optionalRotors,optionalReflectors));
+                currentInitialMachineInfo,currentMachineInfo, new EngineComponentsDTO(optionalRotors,optionalReflectors,ABC));
     }
 
     @Override

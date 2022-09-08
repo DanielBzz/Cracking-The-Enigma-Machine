@@ -2,18 +2,20 @@ package components.body.machine;
 
 import components.Rotor;
 import components.body.details.CodeCalibrationController;
-import components.body.details.rotorParent;
+import components.body.details.RotorParent;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 
 import java.util.List;
 
 public class RotorController {
 
-    rotorParent parentController;
+    RotorParent parentController;
 
     @FXML
     private ChoiceBox<Integer> rotorIdChoiceBox;
@@ -39,28 +41,35 @@ public class RotorController {
     @FXML
     void currentButtonActionListener(ActionEvent event) {
 
+        if(!(this.parentController instanceof CodeCalibrationController)){
+
+            new Alert(Alert.AlertType.INFORMATION, "should show all the rotor", ButtonType.OK).show();
+        }
     }
 
     @FXML
     void nextButtonActionListener(ActionEvent event) {
 
-        previousButton.setText(String.valueOf(currentButton.getText()));
-        currentButton.setText(String.valueOf(nextButton.getText()));
-        nextButton.setText(String.valueOf(currentRotor.getCharInPosition(
-                (currentRotor.getPositionOfChar(nextButton.getText().charAt(0)) + 1) % currentRotor.getConversionTableSize())));
+        if(this.parentController instanceof CodeCalibrationController && !nextButton.getText().equals("")) {
+            previousButton.setText(String.valueOf(currentButton.getText()));
+            currentButton.setText(String.valueOf(nextButton.getText()));
+            nextButton.setText(String.valueOf(currentRotor.getCharInPosition(
+                    (currentRotor.getPositionOfChar(nextButton.getText().charAt(0)) + 1) % currentRotor.getConversionTableSize())));
+        }
     }
 
     @FXML
     void previousButtonActionListener(ActionEvent event) {
 
-        nextButton.setText(String.valueOf(currentButton.getText()));
-        currentButton.setText(String.valueOf(previousButton.getText()));
-        previousButton.setText(String.valueOf(currentRotor.getCharInPosition(
-                (currentRotor.getPositionOfChar(previousButton.getText().charAt(0)) - 1 + currentRotor.getConversionTableSize()) % currentRotor.getConversionTableSize())));
-
+        if(this.parentController instanceof CodeCalibrationController && !previousButton.getText().equals("")) {
+            nextButton.setText(String.valueOf(currentButton.getText()));
+            currentButton.setText(String.valueOf(previousButton.getText()));
+            previousButton.setText(String.valueOf(currentRotor.getCharInPosition(
+                    (currentRotor.getPositionOfChar(previousButton.getText().charAt(0)) - 1 + currentRotor.getConversionTableSize()) % currentRotor.getConversionTableSize())));
+        }
     }
 
-    public void setParentController(rotorParent controller) {
+    public void setParentController(RotorParent controller) {
 
         this.parentController = controller;
         rotorIdChoiceBox.valueProperty().addListener(((observable, oldValue, newValue) -> setCurrentRotor(this.parentController.getRotor(newValue))));
@@ -73,6 +82,12 @@ public class RotorController {
     public void setRotorIdChoiceBox(List<Integer> options){
 
         rotorIdChoiceBox.setItems(FXCollections.observableList(options));
+    }
+
+    public void setRotorIdChoiceBox(int rotorId){
+
+        rotorIdChoiceBox.getItems().add(rotorId);
+        rotorIdChoiceBox.setValue(rotorId);
     }
 
     public void addRotorIdValue(int id){
