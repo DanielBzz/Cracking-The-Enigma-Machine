@@ -18,9 +18,10 @@ public class MainClass extends Application {
 
         MachineLogicUI machine = new MachineLogicUI(appController);
         appController.setMachineUI(machine);
+        appController.initial();
 
         primaryStage.setTitle("Cracking The Enigma");
-        Scene scene = new Scene(load, 800.0, 500.0);
+        Scene scene = new Scene(load, 1000.0, 800.0);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

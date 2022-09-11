@@ -4,9 +4,13 @@ import components.body.main.BodyController;
 import components.header.HeaderController;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
+import logic.events.CodeSetEventListener;
+import logic.events.EncryptMessageEventListener;
+import logic.events.handler.MachineEventHandler;
 import logic.MachineLogicUI;
 import machineDtos.EngineInfoDTO;
 
@@ -24,8 +28,7 @@ public class EnigmaAppController {
     private final SimpleStringProperty selectedFileProperty = new SimpleStringProperty("-");
     private final SimpleBooleanProperty isFileSelected = new SimpleBooleanProperty(false);
 
-    @FXML
-    public void initialize() throws Exception {
+    public void initial() {
 
         if (headerComponentController != null && bodyComponentController != null) {
             headerComponentController.setMainController(this);
@@ -35,6 +38,12 @@ public class EnigmaAppController {
             bodyComponent.disableProperty().bind(isFileSelected.not());
             bodyComponentController.getMachineInfoProperty().addListener(
                     (observable, oldValue, newValue) -> machineUI.manualInitialCodeConfiguration(newValue));
+            bodyComponentController.encryptMessageEventHandler().addListener(new EncryptMessageEventListener() {
+                @Override
+                public void invoke(String arg) {
+                    machineUI.encryptInput(arg);
+                }
+            });
 
             isFileSelected.bind(selectedFileProperty.isNotEqualTo("-"));
             selectedFileProperty.addListener((observable, oldValue, newValue) -> {
@@ -42,7 +51,11 @@ public class EnigmaAppController {
                 machineUI.displayingMachineSpecification();
                 bodyComponentController.initialCodeCalibration();
                 bodyComponentController.initialEngineDetails();
+
             });
+
+            bodyComponentController.codeCalibrationRandomCodeOnAction().set(
+                    observable -> machineUI.automaticInitialCodeConfiguration());
         }
     }
 
@@ -75,8 +88,14 @@ public class EnigmaAppController {
         bodyComponentController.setEngineDetails(details);
     }
 
-    public void initialRandomCode(){
+    public MachineEventHandler<CodeSetEventListener> CodeSetEventHandler()  {
 
-        machineUI.automaticInitialCodeConfiguration();
+        return machineUI.codeSetEventHandler;
     }
+
+    public StringProperty getMachineEncryptedMessageProperty(){
+
+        return machineUI.getEncryptedMessageProperty();
+    }
+
 }

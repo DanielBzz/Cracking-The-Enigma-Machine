@@ -4,11 +4,13 @@ import components.Rotor;
 import components.body.machine.DynamicMachineComponentFactory;
 import components.body.machine.RotorController;
 import components.body.main.BodyController;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -38,8 +40,12 @@ public class CodeCalibrationController implements RotorParent {
     @FXML private ChoiceBox<Character> rightPlugChoiceBox;
     private final ToggleGroup availableReflectorsGroup = new ToggleGroup();
     private final List<RotorController> rotorsChosen = new ArrayList<>();
-    private SimpleBooleanProperty isCodeConfigurationSet = new SimpleBooleanProperty(false);
-    private SimpleObjectProperty<MachineInfoDTO> machineInfoProperty = new SimpleObjectProperty<>();
+    private final SimpleObjectProperty<MachineInfoDTO> machineInfoProperty = new SimpleObjectProperty<>();
+    private final SimpleBooleanProperty isCodeConfigurationSet = new SimpleBooleanProperty(false);
+
+    public ObjectProperty<EventHandler<ActionEvent>> getRandomButtonOnActionListener() {
+        return randomButton.onActionProperty();
+    }
 
     public SimpleObjectProperty<MachineInfoDTO> getMachineInfoProperty() {
         return machineInfoProperty;
@@ -57,7 +63,6 @@ public class CodeCalibrationController implements RotorParent {
 
     public void initialComponent(EngineInfoDTO engineDetails){
 
-        isCodeConfigurationSet.set(false);
         setReflectorPane(engineDetails.getNumOfOptionalReflectors());
         setRotorsPane(engineDetails.getEngineComponentsInfo().getOptionalRotors(),engineDetails.getNumOfUsedRotors());
         setPlugsPane(engineDetails.getEngineComponentsInfo().getABC());
@@ -123,8 +128,8 @@ public class CodeCalibrationController implements RotorParent {
     @FXML
     public void randomCodeActionListener(ActionEvent event) {
 
-        parentController.randomCodeClicked();
-        isCodeConfigurationSet.set(true);
+        isCodeConfigurationSet.set(true);       // need to move to logic this initial and property (variable)
+
     }
 
     private void setPlugsPane(List<Character> ABC) {

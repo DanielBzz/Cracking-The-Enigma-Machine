@@ -30,11 +30,6 @@ public class RotorController {
     private Button nextButton;
     private Rotor currentRotor;
 
-//    public RotorController(rotorParent a){
-//
-//        parentController =a;
-//    }
-
     @FXML
     public void initialize(){}
 

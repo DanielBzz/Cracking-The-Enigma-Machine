@@ -11,7 +11,7 @@ public class UILogic {
 
     public static List<Integer> getRotorsIDsInput(Scanner scanner, int numberOfIds, int maxId) {
 
-        System.out.println(outputMessages.getRotorsIdMsg(numberOfIds));
+        System.out.println(OutputMessages.getRotorsIdMsg(numberOfIds));
         String input = scanner.nextLine();
         List<Integer> IDs;
 
@@ -22,10 +22,10 @@ public class UILogic {
         }
 
         if(IDs.size() != numberOfIds){                              // different number of ids
-            throw new Error(outputMessages.invalidNumberOfRotorsMsg());
+            throw new Error(OutputMessages.invalidNumberOfRotorsMsg());
         }
         else if(IDs.size() != new HashSet<>(IDs).size()){                // if insert same id twice or more
-            throw new Error(outputMessages.duplicateIdOfRotorsMsg());
+            throw new Error(OutputMessages.duplicateIdOfRotorsMsg());
         }
 
         Set<Integer> idsOutOfRange =  IDs.stream().filter(id-> id<1 || id > maxId).collect(Collectors.toSet());
@@ -52,7 +52,7 @@ public class UILogic {
 
     public static String getReflectorIdInput(Scanner scanner, int numOfReflectorsInSystem){
 
-        System.out.println(outputMessages.getReflectorIdMenuMsg(numOfReflectorsInSystem));
+        System.out.println(OutputMessages.getReflectorIdMenuMsg(numOfReflectorsInSystem));
         String input = scanner.nextLine();
         int reflectorIdChoice = UILogic.parseStringToIntInRange(input, 1 , numOfReflectorsInSystem);    // throw exception
 
@@ -64,7 +64,7 @@ public class UILogic {
         int number = Integer.parseInt(input);   // throw numberFormat
 
         if(number < min || number > max){
-            throw new Error(outputMessages.outOfRangeInputMsg());
+            throw new Error(OutputMessages.outOfRangeInputMsg());
         }
 
         return number;
@@ -72,11 +72,11 @@ public class UILogic {
 
     public static Map<Character, Character> getPlugsInput(EnigmaSystemEngine enigmaMachine , Scanner scanner) throws MultipleMappingException {
 
-        System.out.println(outputMessages.getPlugsMsg());
+        System.out.println(OutputMessages.getPlugsMsg());
         String input = scanner.nextLine().toUpperCase();
 
         if(input.length() % 2 != 0){
-            throw new Error(outputMessages.invalidPlugsInputMsg());
+            throw new Error(OutputMessages.invalidPlugsInputMsg());
         }
         else if (enigmaMachine instanceof EnigmaEngine) {
             ((EnigmaEngine) enigmaMachine).checkIfCharactersInABC(input);
@@ -101,11 +101,11 @@ public class UILogic {
 
     public static List<Character> getRotorsInitialPositionsInput(EnigmaSystemEngine enigmaEngine, Scanner scanner, int numberOfRotors){
 
-        System.out.println(outputMessages.getRotorsPositionMsg(numberOfRotors));
+        System.out.println(OutputMessages.getRotorsPositionMsg(numberOfRotors));
         String input = scanner.nextLine().toUpperCase();
 
         if(input.length() != numberOfRotors){
-            throw new Error(outputMessages.invalidNumberOfInitialPositionsMsg());
+            throw new Error(OutputMessages.invalidNumberOfInitialPositionsMsg());
         }
         else if (enigmaEngine instanceof EnigmaEngine) {
             ((EnigmaEngine) enigmaEngine).checkIfCharactersInABC(input);

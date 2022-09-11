@@ -20,12 +20,12 @@ public class MachineUI implements EnigmaMachineUI {
 
     public void run() throws NoSuchMethodException {
 
-        outputMessages.initMenuMsg();
+        OutputMessages.initMenuMsg();
         String input;
         AtomicInteger choice = new AtomicInteger();
 
         do {
-            System.out.println(outputMessages.getMenuMsg());
+            System.out.println(OutputMessages.getMenuMsg());
             input = scanner.nextLine();
             try {
                 choice.set(Integer.parseInt(input));
@@ -39,7 +39,7 @@ public class MachineUI implements EnigmaMachineUI {
             } catch (NumberFormatException e) {
                 System.out.println(e.getMessage() + " - invalid input");
             } catch (IllegalAccessException | NoSuchElementException e) {
-                System.out.println(outputMessages.outOfRangeInputMsg());
+                System.out.println(OutputMessages.outOfRangeInputMsg());
             } catch (Exception | Error e) {
                 System.out.println(e.getMessage());
             }
@@ -53,12 +53,12 @@ public class MachineUI implements EnigmaMachineUI {
     @SortedMethod(value = 1)
     public void loadNewXmlFile(){
 
-        System.out.println(outputMessages.getPathMsg());
+        System.out.println(OutputMessages.getPathMsg());
         String xmlPath = scanner.nextLine();
 
         while (!Files.exists(Paths.get(xmlPath)) || !xmlPath.toString().substring(xmlPath.lastIndexOf(".") + 1).equals("xml")) {
 
-            System.out.println(outputMessages.invalidPathMsg());
+            System.out.println(OutputMessages.invalidPathMsg());
             xmlPath = scanner.nextLine();
             if (xmlPath.toUpperCase().equals("Q")) {
                 return;
@@ -66,7 +66,7 @@ public class MachineUI implements EnigmaMachineUI {
         }
         try{
             enigmaSystem.loadXmlFile(xmlPath);
-            System.out.println(outputMessages.getSuccessfulLoadMsg());
+            System.out.println(OutputMessages.getSuccessfulLoadMsg());
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -77,7 +77,7 @@ public class MachineUI implements EnigmaMachineUI {
     public void displayingMachineSpecification() {
 
         EngineInfoDTO machineSpecification = enigmaSystem.displayingMachineSpecification();
-        System.out.println(outputMessages.machineSpecification(machineSpecification));
+        System.out.println(OutputMessages.machineSpecification(machineSpecification));
     }
 
     @Override
@@ -113,11 +113,11 @@ public class MachineUI implements EnigmaMachineUI {
     public void encryptInput(){
 
         checkFileLoaded();
-        System.out.println(outputMessages.getStringMsg());
+        System.out.println(OutputMessages.getStringMsg());
 
         String msgToEncrypt = scanner.nextLine();
         String encryptedMsg = enigmaSystem.encryptString(msgToEncrypt);
-        System.out.println(outputMessages.encryptedStringMsg(encryptedMsg));
+        System.out.println(OutputMessages.encryptedStringMsg(encryptedMsg));
     }
 
     @Override
@@ -125,7 +125,7 @@ public class MachineUI implements EnigmaMachineUI {
     public void resetCurrentCode(){
 
         enigmaSystem.resetTheMachine();
-        System.out.println(outputMessages.resetCodeMsg());
+        System.out.println(OutputMessages.resetCodeMsg());
     }
 
     @Override
@@ -133,7 +133,7 @@ public class MachineUI implements EnigmaMachineUI {
     public void getHistoryAndStatistics() {
 
         HistoryAndStatisticDTO details = enigmaSystem.getHistoryAndStatistics();
-        System.out.println(outputMessages.historyMsg(details));
+        System.out.println(OutputMessages.historyMsg(details));
     }
 
     @Override
@@ -143,24 +143,24 @@ public class MachineUI implements EnigmaMachineUI {
     @SortedMethod(value = 9)
     public void writeCurrentMachineStateToFile() throws IOException {
 
-        System.out.println(outputMessages.getSaveFileMsg());
+        System.out.println(OutputMessages.getSaveFileMsg());
         String fileName = scanner.nextLine();
 
         if(enigmaSystem instanceof EnigmaEngine){
             ((EnigmaEngine) enigmaSystem).writeEngineToFile(fileName);
-            System.out.println(outputMessages.getSuccessfulSaveMsg());
+            System.out.println(OutputMessages.getSuccessfulSaveMsg());
         }
     }
 
     @SortedMethod(value = 10)
     public void readMachineStateFromFile() throws Exception{
 
-        System.out.println(outputMessages.getSaveFileMsg());
+        System.out.println(OutputMessages.getSaveFileMsg());
         String fileName = scanner.nextLine();
 
         if(enigmaSystem instanceof EnigmaEngine) {
             enigmaSystem = EnigmaEngine.readEngineFromFile(fileName);
-            System.out.println(outputMessages.getSuccessfulLoadMsg());
+            System.out.println(OutputMessages.getSuccessfulLoadMsg());
         }
     }
 

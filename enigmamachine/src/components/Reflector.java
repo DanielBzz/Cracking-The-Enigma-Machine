@@ -15,6 +15,10 @@ public class Reflector implements Convertor<Integer>, Serializable, Cloneable {
         reflectorConversions = reflectorMap;
     }
 
+    public Map<Integer, Integer> getReflectorConversions() {
+        return new HashMap<>(reflectorConversions);
+    }
+
     public String getId() {
 
         return id;
