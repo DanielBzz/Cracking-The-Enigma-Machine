@@ -1,37 +1,65 @@
 package components.body.details;
 
+import components.Reflector;
+import components.Rotor;
+import components.body.machine.DynamicMachineComponentFactory;
+import components.body.machine.ReflectorController;
+import components.body.machine.RotorController;
 import components.body.main.BodyController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import logic.events.CodeSetEventListener;
-import machineDtos.EngineInfoDTO;
+import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 
 import java.text.MessageFormat;
 
-public class MachineConfigurationController implements CodeSetEventListener {
+public class MachineConfigurationController implements CodeSetEventListener, ReflectorParent, RotorParent {
 
     BodyController parentController;
     @FXML private Label stringConfiguration;
+    @FXML private StackPane reflectorPane;
+    @FXML private HBox rotorsPane;
+    @FXML private StackPane plugBoardPane;
 
     public void setParentController(BodyController controller){
 
         parentController = controller;
     }
 
+    public void bind(MachineConfigurationController controller){
+
+        stringConfiguration.textProperty().bind(controller.stringConfiguration.textProperty());
+    }
+
     @Override
-    public void invoke(EngineInfoDTO updatedValue) {
+    public void invoke(EngineDTO updatedValue) {
 
         stringConfiguration.setText(currentMachineSpecification(updatedValue.getMachineCurrentInfo()));
 
+        Reflector chosenReflector = updatedValue.getEngineComponentsInfo().getOptionalReflectors().stream().filter(
+                reflector -> reflector.getId().equals(updatedValue.getMachineCurrentInfo().getReflectorID())).findFirst().get();
+        ReflectorController controller = DynamicMachineComponentFactory.createReflectorOnPane(reflectorPane, this);
+        controller.setCurrentReflector(chosenReflector);
+
+
+        for (int i = 0; i<updatedValue.getNumOfUsedRotors(); i++) {
+
+            int currentId = updatedValue.getMachineInitialInfo().getRotorsID().get(i);
+            Rotor chosenRotor = updatedValue.getEngineComponentsInfo().getOptionalRotors().stream().filter(
+                rotor -> rotor.getId() == currentId).findFirst().get();
+
+            RotorController rotorController = DynamicMachineComponentFactory.createRotorOnPane(rotorsPane, this);
+            rotorController.setCurrentRotor(chosenRotor,updatedValue.getMachineCurrentInfo().getRotorsInitPosition().get(i));
+        }
         // logic finish ... should initial here the ui component and show them in that pane
 
-        /*updatedValue.getMachineCurrentInfo().getPlugs()
-        updatedValue.getMachineCurrentInfo().getRotorsInitPosition()
-        updatedValue.getMachineCurrentInfo().getReflectorID()
-        updatedValue.getMachineCurrentInfo().getNotchDistanceFromPositions()
-        updatedValue.getMachineCurrentInfo().getRotorsID()*/
 
+        /*updatedValue.getMachineCurrentInfo().getPlugs()
+
+        updatedValue.getMachineCurrentInfo().getNotchDistanceFromPositions()*/
     }
 
     private String currentMachineSpecification(MachineInfoDTO machineInfo){
@@ -62,5 +90,10 @@ public class MachineConfigurationController implements CodeSetEventListener {
         }
 
         return msg.toString();
+    }
+
+    @Override
+    public Rotor getRotor(int id) {
+        return null;
     }
 }

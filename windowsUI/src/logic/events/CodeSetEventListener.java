@@ -1,9 +1,9 @@
 package logic.events;
 
 import logic.events.handler.Invokable;
-import machineDtos.EngineInfoDTO;
+import machineDtos.EngineDTO;
 
-public interface CodeSetEventListener extends Invokable<EngineInfoDTO> {
+public interface CodeSetEventListener extends Invokable<EngineDTO> {
 
-    void invoke(EngineInfoDTO updatedValue);
+    void invoke(EngineDTO updatedValue);
 }

@@ -2,7 +2,7 @@ import exceptions.*;
 import logic.EnigmaEngine;
 import logic.EnigmaMachineUI;
 import logic.EnigmaSystemEngine;
-import machineDtos.EngineInfoDTO;
+import machineDtos.EngineDTO;
 import machineDtos.HistoryAndStatisticDTO;
 import machineDtos.MachineInfoDTO;
 
@@ -76,7 +76,7 @@ public class MachineUI implements EnigmaMachineUI {
     @SortedMethod(value = 2)
     public void displayingMachineSpecification() {
 
-        EngineInfoDTO machineSpecification = enigmaSystem.displayingMachineSpecification();
+        EngineDTO machineSpecification = enigmaSystem.displayingMachineSpecification();
         System.out.println(OutputMessages.machineSpecification(machineSpecification));
     }
 
@@ -85,7 +85,7 @@ public class MachineUI implements EnigmaMachineUI {
     public void manualInitialCodeConfiguration() {
 
         checkFileLoaded();
-        EngineInfoDTO machineSpecification = enigmaSystem.displayingMachineSpecification();
+        EngineDTO machineSpecification = enigmaSystem.displayingMachineSpecification();
 
         List<Integer> rotorsIDs = UILogic.getRotorsIDsInput(scanner, machineSpecification.getNumOfUsedRotors(), machineSpecification.getNumOfOptionalRotors());
         List<Character> rotorsInitialPositions = UILogic.getRotorsInitialPositionsInput(enigmaSystem, scanner, machineSpecification.getNumOfUsedRotors());

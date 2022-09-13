@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import logic.events.CodeSetEventListener;
 import logic.events.handler.MachineEventHandler;
-import machineDtos.EngineInfoDTO;
+import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 
 public class MachineLogicUI {
@@ -35,7 +35,7 @@ public class MachineLogicUI {
 
     public void displayingMachineSpecification() {
 
-        EngineInfoDTO machineSpecification = machine.displayingMachineSpecification();
+        EngineDTO machineSpecification = machine.displayingMachineSpecification();
         appController.setMachineSpecification(machineSpecification);
     }
 
@@ -55,11 +55,13 @@ public class MachineLogicUI {
     public void encryptInput(String msg) {
 
         encryptedMessage.set(machine.encryptString(msg));
+        codeSetEventHandler.fireEvent(machine.displayingMachineSpecification());
     }
 
     public void resetCurrentCode() {
 
         machine.resetTheMachine();
+        codeSetEventHandler.fireEvent(machine.displayingMachineSpecification());
     }
 
     public void getHistoryAndStatistics() {
@@ -69,4 +71,7 @@ public class MachineLogicUI {
     public void exit() {
 
     }
+
+    /* problem to do fire event every time cause we do clone and duplicate every time the components --> create exception of space
+*/
 }

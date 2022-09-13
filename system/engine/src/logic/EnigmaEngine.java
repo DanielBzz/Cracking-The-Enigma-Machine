@@ -69,7 +69,7 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
     }
 
     @Override
-    public EngineInfoDTO displayingMachineSpecification() {
+    public EngineDTO displayingMachineSpecification() {
 
         if(!isEngineInitialized()){
             throw new NoFileLoadedException();
@@ -79,7 +79,7 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
             currentMachineInfo = initMachineInfo();
         }
 
-        return new EngineInfoDTO(optionalRotors.size(), optionalReflectors.size(), rotorsCount, encryptedMsgSum() ,
+        return new EngineDTO(optionalRotors.size(), optionalReflectors.size(), rotorsCount, encryptedMsgSum() ,
                 currentInitialMachineInfo,currentMachineInfo, new EngineComponentsDTO(optionalRotors,optionalReflectors,ABC));
     }
 

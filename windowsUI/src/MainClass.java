@@ -21,7 +21,7 @@ public class MainClass extends Application {
         appController.initial();
 
         primaryStage.setTitle("Cracking The Enigma");
-        Scene scene = new Scene(load, 1000.0, 800.0);
+        Scene scene = new Scene(load, 1400.0, 900.0);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

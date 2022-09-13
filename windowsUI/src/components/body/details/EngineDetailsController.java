@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import machineDtos.EngineInfoDTO;
+import machineDtos.EngineDTO;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class EngineDetailsController implements RotorParent, ReflectorParent{
         parentController = controller;
     }
 
-    public void initialComponent(EngineInfoDTO engineDetails){
+    public void initialComponent(EngineDTO engineDetails){
 
         setReflectorPane(engineDetails.getEngineComponentsInfo().getOptionalReflectors());
         setRotorsPane(engineDetails.getEngineComponentsInfo().getOptionalRotors());
@@ -50,9 +50,9 @@ public class EngineDetailsController implements RotorParent, ReflectorParent{
         }
     }
 
-    private void setAbcPane(List<Character> abc){
+    private void setAbcPane(String abc){
 
-        for (Character c: abc) {
+        for (Character c: abc.toCharArray()) {
 
             Label charLabel = new Label(c.toString());
             charLabel.setPrefWidth(charLabel.getWidth()+5);

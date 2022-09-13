@@ -1,12 +1,12 @@
 package components.body.main;
 
-import com.gluonhq.charm.glisten.control.ToggleButtonGroup;
+import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import logic.events.EncryptMessageEventListener;
 import logic.events.handler.MachineEventHandler;
 
@@ -16,7 +16,7 @@ public class EncryptController {
     @FXML private Button processButton;
     @FXML private Button doneButton;
     @FXML private Button clearButton;
-    @FXML private ToggleButtonGroup stateSwitchButton;
+    private final ToggleGroup stateSwitchButton = new ToggleGroup();
     @FXML private ToggleButton autoStateButton;
     @FXML private ToggleButton manualStateButton;
     @FXML private Button resetButton;
@@ -31,27 +31,74 @@ public class EncryptController {
 
     public void setEncryptedMessageLabel(String encryptedMessage) {
 
-        encryptedMessageLabel.setText(encryptedMessage);
+        encryptedMessageLabel.setText(encryptedMessageLabel.getText() + encryptedMessage);
     }
 
+    public ObjectProperty<EventHandler<ActionEvent>> getResetButtonActionProperty(){
+
+        return resetButton.onActionProperty();
+    }
     @FXML
     public void initialize(){
 
-        doneButton.disableProperty().bind(manualStateButton.selectedProperty());
-        processButton.disableProperty().bind(autoStateButton.selectedProperty());
-        clearButton.disableProperty().bind(autoStateButton.selectedProperty());
+        doneButton.disableProperty().bind(manualStateButton.selectedProperty().not());
+        processButton.disableProperty().bind(autoStateButton.selectedProperty().not());
+        clearButton.disableProperty().bind(autoStateButton.selectedProperty().not());
+        autoStateButton.setToggleGroup(stateSwitchButton);
+        manualStateButton.setToggleGroup(stateSwitchButton);
+    }
 
+    @FXML
+    void processButtonActionListener(ActionEvent event) {
+
+        activateEncryptEventHandler.fireEvent(messageToEncryptTF.getText());
+        messageToEncryptTF.setEditable(false);
+        // add it to statistics
     }
 
     @FXML
     void clearButtonActionListener(ActionEvent event) {
 
+        messageToEncryptTF.setText("");
+        encryptedMessageLabel.setText("");
+        messageToEncryptTF.setEditable(true);
     }
 
     @FXML
     void doneButtonActionListener(ActionEvent event) {
 
-        activateEncryptEventHandler.fireEvent(messageToEncryptTF.getText());
-
+        messageToEncryptTF.setEditable(false);
+        // add it to statistics
     }
+
+    @FXML
+    void onKeyTypedActionListener(KeyEvent event) {
+
+        if(!parentController.getEngineDetails().getEngineComponentsInfo().getABC().contains(event.getCharacter().toUpperCase())){
+            event.consume();
+        }
+        else if (manualStateButton.isSelected()) {
+            activateEncryptEventHandler.fireEvent(event.getCharacter());
+        }
+    }
+
+    @FXML
+    void onKeyPressedActionListener(KeyEvent event) {
+
+        if(manualStateButton.isSelected() && !event.getCode().isDigitKey()){
+            event.consume();
+            System.out.println(event.getCode().isDigitKey());
+        }
+    }
+
+    @FXML
+    void stateButtonActionListener(Event event) {
+
+        if(stateSwitchButton.getSelectedToggle() == null){
+            ((ToggleButton) event.getSource()).setSelected(true);
+        }else {
+            clearButtonActionListener(new ActionEvent());
+        }
+    }
+
 }

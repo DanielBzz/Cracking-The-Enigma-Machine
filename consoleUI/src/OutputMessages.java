@@ -1,6 +1,6 @@
 import javafx.util.Pair;
 import logic.EngineLogic;
-import machineDtos.EngineInfoDTO;
+import machineDtos.EngineDTO;
 import machineDtos.HistoryAndStatisticDTO;
 import machineDtos.MachineInfoDTO;
 
@@ -59,7 +59,7 @@ public class OutputMessages {
         return "The path you insert is not a valid path, please enter a new path or Q for main menu:";
     }
 
-    public static String machineSpecification(EngineInfoDTO engineInfo){
+    public static String machineSpecification(EngineDTO engineInfo){
 
         StringBuilder msg = new StringBuilder();
 

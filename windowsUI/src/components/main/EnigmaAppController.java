@@ -6,13 +6,15 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
+import logic.MachineLogicUI;
 import logic.events.CodeSetEventListener;
 import logic.events.EncryptMessageEventListener;
 import logic.events.handler.MachineEventHandler;
-import logic.MachineLogicUI;
-import machineDtos.EngineInfoDTO;
+import machineDtos.EngineDTO;
 
 public class EnigmaAppController {
 
@@ -54,8 +56,8 @@ public class EnigmaAppController {
 
             });
 
-            bodyComponentController.codeCalibrationRandomCodeOnAction().set(
-                    observable -> machineUI.automaticInitialCodeConfiguration());
+            bodyComponentController.codeCalibrationRandomCodeOnAction().set(observable -> machineUI.automaticInitialCodeConfiguration());
+            bodyComponentController.encryptResetButtonActionProperty().set(observable -> machineUI.resetCurrentCode());
         }
     }
 
@@ -80,10 +82,10 @@ public class EnigmaAppController {
 
     public void showPopUpMessage(String messageToShow){
 
-        // new Alert(Alert.AlertType.ERROR, messageToShow, ButtonType.OK).show();
+         new Alert(Alert.AlertType.ERROR, messageToShow, ButtonType.OK).show();
     }
 
-    public void setMachineSpecification(EngineInfoDTO details){
+    public void setMachineSpecification(EngineDTO details){
 
         bodyComponentController.setEngineDetails(details);
     }
@@ -97,5 +99,7 @@ public class EnigmaAppController {
 
         return machineUI.getEncryptedMessageProperty();
     }
+
+
 
 }

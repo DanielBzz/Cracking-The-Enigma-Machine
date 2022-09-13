@@ -59,8 +59,8 @@ public class RotorController {
         if(this.parentController instanceof CodeCalibrationController && !previousButton.getText().equals("")) {
             nextButton.setText(String.valueOf(currentButton.getText()));
             currentButton.setText(String.valueOf(previousButton.getText()));
-            previousButton.setText(String.valueOf(currentRotor.getCharInPosition(
-                    (currentRotor.getPositionOfChar(previousButton.getText().charAt(0)) - 1 + currentRotor.getConversionTableSize()) % currentRotor.getConversionTableSize())));
+            previousButton.setText(String.valueOf(currentRotor.getCharInPosition((currentRotor.getPositionOfChar
+                    (previousButton.getText().charAt(0)) - 1 + currentRotor.getConversionTableSize()) % currentRotor.getConversionTableSize())));
         }
     }
 
@@ -98,6 +98,13 @@ public class RotorController {
         currentButton.setText(String.valueOf(currentRotor.getCharInPosition(0)));
         nextButton.setText(String.valueOf(currentRotor.getCharInPosition(1)));
         previousButton.setText(String.valueOf(currentRotor.getCharInPosition(currentRotor.getConversionTableSize() - 1)));
+    }
+
+    public void setCurrentRotor(Rotor rotor, Character initialPosition){
+        currentRotor = rotor;
+        currentButton.setText(String.valueOf(initialPosition));
+        nextButton.setText(String.valueOf(currentRotor.getCharInPosition((currentRotor.getPositionOfChar(initialPosition) + 1) % currentRotor.getConversionTableSize())));
+        previousButton.setText(String.valueOf(currentRotor.getCharInPosition((currentRotor.getPositionOfChar(initialPosition) - 1 + currentRotor.getConversionTableSize()) % currentRotor.getConversionTableSize())));
     }
 
     public Integer getChosenRotorId(){

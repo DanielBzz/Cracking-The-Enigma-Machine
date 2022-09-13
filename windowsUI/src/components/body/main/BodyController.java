@@ -13,7 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import logic.events.EncryptMessageEventListener;
 import logic.events.handler.MachineEventHandler;
-import machineDtos.EngineInfoDTO;
+import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 
 public class BodyController {
@@ -26,10 +26,10 @@ public class BodyController {
     @FXML private BorderPane engineDetailsComponent;
     @FXML private EngineDetailsController engineDetailsComponentController;
     @FXML private BorderPane encryptScreenMachineConfigurationComponent;
+    @FXML private MachineConfigurationController encryptScreenMachineConfigurationComponentController;
     @FXML private GridPane encryptComponent;
     @FXML private EncryptController encryptComponentController;
-
-    private EngineInfoDTO engineDetails;
+    private EngineDTO engineDetails;
 
     public void initial() {
 
@@ -39,11 +39,15 @@ public class BodyController {
             machineConfigurationComponentController.setParentController(this);
             engineDetailsComponentController.setParentController(this);
             encryptComponentController.setParentController(this);
-            machineConfigurationComponent.disableProperty().bind(codeCalibrationComponentController.getIsCodeConfigurationSetProperty().not());
             mainController.CodeSetEventHandler().addListener(machineConfigurationComponentController);
             mainController.getMachineEncryptedMessageProperty().addListener(
                     (observable, oldValue, newValue) -> encryptComponentController.setEncryptedMessageLabel(newValue));
+
         }
+
+        machineConfigurationComponent.disableProperty().bind(codeCalibrationComponentController.getIsCodeConfigurationSetProperty().not());
+        //encryptScreenMachineConfigurationComponent.disableProperty().bind(machineConfigurationComponent.disableProperty());
+        encryptScreenMachineConfigurationComponentController.bind(machineConfigurationComponentController);
     }
 
     public void setMainController(EnigmaAppController appController) {
@@ -51,11 +55,11 @@ public class BodyController {
         mainController = appController;
     }
 
-    public EngineInfoDTO getEngineDetails(){
+    public EngineDTO getEngineDetails(){
 
         return engineDetails;
     }
-    public void setEngineDetails(EngineInfoDTO details) {
+    public void setEngineDetails(EngineDTO details) {
 
         engineDetails = details;
     }
@@ -82,6 +86,11 @@ public class BodyController {
     public MachineEventHandler<EncryptMessageEventListener> encryptMessageEventHandler()  {
 
         return encryptComponentController.activateEncryptEventHandler;
+    }
+
+    public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){
+
+        return encryptComponentController.getResetButtonActionProperty();
     }
 }
 

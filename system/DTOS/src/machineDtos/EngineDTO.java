@@ -1,6 +1,6 @@
 package machineDtos;
 
-public class EngineInfoDTO {
+public class EngineDTO {
 
         private final int numOfOptionalRotors;
         private final int numOfOptionalReflectors;
@@ -10,8 +10,8 @@ public class EngineInfoDTO {
         private final MachineInfoDTO machineCurrentInfo;
         private final EngineComponentsDTO engineComponentsInfo;
 
-        public EngineInfoDTO(int numOfOptionalRotors, int numOfOptionalReflectors, int numOfUsedRotors, int numOfEncryptedMsg,
-                             MachineInfoDTO initialInfo,MachineInfoDTO currentInfo,EngineComponentsDTO componentsInfo ) {
+        public EngineDTO(int numOfOptionalRotors, int numOfOptionalReflectors, int numOfUsedRotors, int numOfEncryptedMsg,
+                         MachineInfoDTO initialInfo, MachineInfoDTO currentInfo, EngineComponentsDTO componentsInfo ) {
 
                 this.numOfOptionalRotors = numOfOptionalRotors;
                 this.numOfOptionalReflectors = numOfOptionalReflectors;

@@ -28,48 +28,51 @@
    <center>
       <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
          <content>
-            <GridPane prefHeight="171.0" prefWidth="300.0">
+            <GridPane>
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="37.0" minHeight="25.0" prefHeight="37.0" vgrow="NEVER" />
+                <RowConstraints maxHeight="40.0" minHeight="30.0" vgrow="NEVER" />
                 <RowConstraints vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
+                  <StackPane GridPane.columnIndex="1">
                      <children>
                         <Label text="Reflectors" />
                      </children>
                   </StackPane>
-                  <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2">
+                  <StackPane GridPane.columnIndex="2">
                      <children>
                         <Label text="Rotors" />
                      </children>
                   </StackPane>
-                  <StackPane prefHeight="150.0" prefWidth="200.0">
+                  <StackPane>
                      <children>
                         <Label text="ABC" />
                      </children>
                   </StackPane>
-                  <HBox fx:id="rotorsPane" alignment="CENTER" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <HBox fx:id="rotorsPane" alignment="CENTER" minHeight="225.0" minWidth="110.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <padding>
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </HBox>
-                  <HBox fx:id="reflectorsPane" alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <HBox fx:id="reflectorsPane" alignment="CENTER_LEFT" minHeight="50.0" minWidth="100.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <padding>
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </HBox>
                   <StackPane GridPane.rowIndex="1">
                      <children>
-                        <FlowPane fx:id="abcPane" prefWrapLength="30.0">
+                        <FlowPane fx:id="abcPane" alignment="CENTER" columnHalignment="CENTER" prefWrapLength="1000.0">
                            <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
+                           <opaqueInsets>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </opaqueInsets>
                         </FlowPane>
                      </children>
                   </StackPane>

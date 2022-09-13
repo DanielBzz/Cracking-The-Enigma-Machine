@@ -17,7 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import logic.EngineLogic;
-import machineDtos.EngineInfoDTO;
+import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class CodeCalibrationController implements RotorParent {
         parentController = controller;
     }
 
-    public void initialComponent(EngineInfoDTO engineDetails){
+    public void initialComponent(EngineDTO engineDetails){
 
         setReflectorPane(engineDetails.getNumOfOptionalReflectors());
         setRotorsPane(engineDetails.getEngineComponentsInfo().getOptionalRotors(),engineDetails.getNumOfUsedRotors());
@@ -132,9 +132,9 @@ public class CodeCalibrationController implements RotorParent {
 
     }
 
-    private void setPlugsPane(List<Character> ABC) {
+    private void setPlugsPane(String ABC) {
 
-        ObservableList<Character> observableList = FXCollections.observableArrayList(ABC);
+        ObservableList<Character> observableList = FXCollections.observableArrayList(ABC.chars().mapToObj(e->(char)e).collect(Collectors.toList()));
         leftPlugChoiceBox.setItems(observableList);
         rightPlugChoiceBox.itemsProperty().bind(leftPlugChoiceBox.itemsProperty());
     }

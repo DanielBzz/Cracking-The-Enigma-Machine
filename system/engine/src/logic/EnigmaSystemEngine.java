@@ -1,6 +1,6 @@
 package logic;
 
-import machineDtos.EngineInfoDTO;
+import machineDtos.EngineDTO;
 import machineDtos.EnigmaMachineDTO;
 import machineDtos.HistoryAndStatisticDTO;
 
@@ -8,7 +8,7 @@ public interface EnigmaSystemEngine {
 
     void loadXmlFile(String path) throws Exception;
 
-    EngineInfoDTO displayingMachineSpecification();
+    EngineDTO displayingMachineSpecification();
 
     void manualMachineInit(EnigmaMachineDTO args);
 
