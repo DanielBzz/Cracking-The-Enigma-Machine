@@ -1,6 +1,5 @@
 package agent;
 
-import javafx.concurrent.Task;
 import logic.AgentAnswerDTO;
 import logic.DecipherLogic;
 import machine.Machine;
@@ -11,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class AgentTask extends Task<Boolean> {
+public class AgentTask implements Runnable {
 
     private final Machine enigmaMachine;
     private final List<List<Character>> initialPositions;
@@ -30,7 +29,7 @@ public class AgentTask extends Task<Boolean> {
     }
 
     @Override
-    protected Boolean call() throws Exception {
+    public void run() {
         System.out.println("in agent task");
 
         long taskDuration = System.nanoTime();
@@ -56,8 +55,6 @@ public class AgentTask extends Task<Boolean> {
         if(decryptedMessagesCandidates.size() != 0){
             update.accept(new AgentAnswerDTO(decryptedMessagesCandidates,Thread.currentThread().getName(),taskDuration ));
         }
-
-        return Boolean.TRUE;
     }
 
     private void initializeConfigurationInMachine(List<Character> initialPosition){
@@ -68,4 +65,5 @@ public class AgentTask extends Task<Boolean> {
             i++;
         }
     }
+
 }

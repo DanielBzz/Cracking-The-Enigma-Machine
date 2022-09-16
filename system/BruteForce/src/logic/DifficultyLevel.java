@@ -36,7 +36,11 @@ public enum DifficultyLevel {
 
             Machine machine = new Machine(rotors, rotorsPositions, reflector , details.getEngineComponentsDTO().getABC(), new PlugBoard());
 
-            tasksQueue.add(new AgentTask(machine,details.getInitialPositions(), details.getMessageToDecrypt(),details.getDictionary(), details.getUpdateAnswer()));
+            try {
+                tasksQueue.put(new AgentTask(machine,details.getInitialPositions(), details.getMessageToDecrypt(),details.getDictionary(), details.getUpdateAnswer()));
+            } catch (InterruptedException e) {
+                e.printStackTrace();        // handle here....
+            }
         }
     },
     MEDIUM {
@@ -53,9 +57,9 @@ public enum DifficultyLevel {
         @Override
         public void initialTasks(AgentTaskDTO details, BlockingQueue<Runnable> tasksQueue) {
 
-           Permutations permuter = new Permutations(details.getRotorsId().stream().mapToInt(i->(int)i).toArray());
+           Permutations permutations = new Permutations(details.getRotorsId().stream().mapToInt(i->(int)i).toArray());
 
-            for (List<Integer> permutation:permuter) {
+            for (List<Integer> permutation:permutations) {
 
                 details.setRotorsId(permutation);
                 MEDIUM.initialTasks(details,tasksQueue);
@@ -76,7 +80,6 @@ public enum DifficultyLevel {
                 details.setRotorsId(rotorsId);
                 HARD.initialTasks(details,tasksQueue);
             }
-
         }
     };
 

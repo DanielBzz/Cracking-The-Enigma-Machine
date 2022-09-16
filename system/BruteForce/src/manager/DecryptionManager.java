@@ -16,7 +16,7 @@ public class DecryptionManager {
     private ThreadPoolExecutor threadPool;
     private BlockingQueue<Runnable> agentTasks;
     private DifficultyLevel level;
-    private int taskSize = 100;
+    private int taskSize = 1000;
     private final AgentsAnswersQueue answersQueue = new AgentsAnswersQueue();
     Consumer<AgentAnswerDTO> updateQueue;
 
@@ -36,13 +36,7 @@ public class DecryptionManager {
         System.out.println(wordsDictionary);
         this.excludeChars = excludeChars;
         agentTasks = new LinkedBlockingQueue<>(1000);
-        RejectedExecutionHandler a = new RejectedExecutionHandler() {
-            @Override
-            public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                System.out.println("rejected");
-            }
-        };
-        threadPool = new ThreadPoolExecutor(10,20,5, TimeUnit.SECONDS,agentTasks,threadFactory,a);
+        threadPool = new ThreadPoolExecutor(agentsNumber,agentsNumber,5, TimeUnit.SECONDS,agentTasks,threadFactory);
         updateQueue = answersQueue::add;
     }
 

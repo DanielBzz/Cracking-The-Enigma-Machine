@@ -1,47 +1,42 @@
 package logic;
 
-import javafx.concurrent.Worker;
-
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import javafx.concurrent.Task;
 
 public class smallMain {
 
     public static void main(String[] args) {
 
-        BlockingQueue<Runnable> agentTasks = new LinkedBlockingQueue<>(5);
-        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(5, 5, 3, TimeUnit.NANOSECONDS, agentTasks);
-        System.out.println(agentTasks.remainingCapacity());
+       // BlockingQueue<Runnable> agentTasks = new LinkedBlockingQueue<>(10);
+       // ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, 1, TimeUnit.SECONDS, agentTasks);
+       // threadPool.prestartAllCoreThreads();
+       // Runnable r = () -> System.out.println(Thread.currentThread().getName());
 
-        for (int i = 0; i < 1000; i++) {
-            int finalI = i;
-            try {
-                agentTasks.put(() -> {
-                        System.out.println(Worker.State.CANCELLED);
-                } /*System.out.println(finalI)*/);
+        new Thread(new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                System.out.println("daniel");
+                return true;
+            }}).start();
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        int i = 0;
-        while (i <= 3){
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            System.out.println(agentTasks.remainingCapacity());
-            i++;
-        }
-
-        threadPool.shutdown();
-        try {
-            threadPool.awaitTermination(1,TimeUnit.NANOSECONDS);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+//        for (int i = 0; i < 10; i++) {
+//            try {
+//                agentTasks.put(new Task<>() {
+//                    @Override
+//                    protected Object call() throws Exception {
+//                        System.out.println(Thread.currentThread().getName());
+//
+//                    }
+//                });
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        threadPool.shutdown();
+//        try {
+//            threadPool.awaitTermination(1,TimeUnit.NANOSECONDS);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }
