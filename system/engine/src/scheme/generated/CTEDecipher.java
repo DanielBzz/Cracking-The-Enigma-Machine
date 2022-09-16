@@ -8,10 +8,10 @@
 
 package scheme.generated;
 
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -25,8 +25,10 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType>
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="right" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="left" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;sequence>
+ *         &lt;element ref="{}CTE-Dictionary"/>
+ *       &lt;/sequence>
+ *       &lt;attribute name="agents" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -35,61 +37,55 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "")
-@XmlRootElement(name = "CTE-Positioning")
-public class CTEPositioning {
+@XmlType(name = "", propOrder = {
+    "cteDictionary"
+})
+@XmlRootElement(name = "CTE-Decipher")
+public class CTEDecipher {
 
-    @XmlAttribute(name = "right", required = true)
-    protected String right;
-    @XmlAttribute(name = "left", required = true)
-    protected String left;
+    @XmlElement(name = "CTE-Dictionary", required = true)
+    protected CTEDictionary cteDictionary;
+    @XmlAttribute(name = "agents", required = true)
+    protected int agents;
 
     /**
-     * Gets the value of the right property.
+     * Gets the value of the cteDictionary property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link CTEDictionary }
      *     
      */
-    public String getRight() {
-        return right;
+    public CTEDictionary getCTEDictionary() {
+        return cteDictionary;
     }
 
     /**
-     * Sets the value of the right property.
+     * Sets the value of the cteDictionary property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link CTEDictionary }
      *     
      */
-    public void setRight(String value) {
-        this.right = value;
+    public void setCTEDictionary(CTEDictionary value) {
+        this.cteDictionary = value;
     }
 
     /**
-     * Gets the value of the left property.
+     * Gets the value of the agents property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getLeft() {
-        return left;
+    public int getAgents() {
+        return agents;
     }
 
     /**
-     * Sets the value of the left property.
+     * Sets the value of the agents property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setLeft(String value) {
-        this.left = value;
+    public void setAgents(int value) {
+        this.agents = value;
     }
 
 }

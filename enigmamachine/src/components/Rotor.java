@@ -27,6 +27,7 @@ public class Rotor implements Convertor<Integer>, Serializable, Cloneable {
     }
 
     public int getConversionTableSize(){
+
         return rotorConversions.getTableSize();
     }
 

@@ -54,8 +54,8 @@ public class MachineLogicUI {
 
     public void encryptInput(String msg) {
 
-        encryptedMessage.set(machine.encryptString(msg));
-        codeSetEventHandler.fireEvent(machine.displayingMachineSpecification());
+        //encryptedMessage.set(machine.encryptString(msg));
+        //codeSetEventHandler.fireEvent(machine.displayingMachineSpecification());
     }
 
     public void resetCurrentCode() {

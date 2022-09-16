@@ -1,12 +1,16 @@
 package logic;
 
-import components.*;
+import components.ConversionTable;
+import components.PlugBoard;
+import components.Reflector;
+import components.Rotor;
 import exceptions.CharacterNotInAbcException;
 import exceptions.MachineNotDefinedException;
 import exceptions.NoFileLoadedException;
 import javafx.util.Pair;
 import machine.Machine;
 import machineDtos.*;
+import manager.DecryptionManager;
 import scheme.generated.CTEEnigma;
 import scheme.generated.CTEMachine;
 import scheme.generated.CTEReflector;
@@ -27,13 +31,15 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
     private final List<Reflector> optionalReflectors = new ArrayList<>();
     private int rotorsCount;
     private Map<MachineInfoDTO, Map<Pair<String,String>, Long>> historyAndStat = new LinkedHashMap<>();
-
+    private DecryptionManager dm;
     @Override
     public void loadXmlFile(String path) throws Exception {
 
         CTEEnigma enigmaMachineCTE = EngineLogic.createEnigmaFromFile(path.trim());
         EngineLogic.checkMachineIsValid(enigmaMachineCTE.getCTEMachine());
         engineInit(enigmaMachineCTE.getCTEMachine());
+        DecipherLogic.checkDecipherIsValid(enigmaMachineCTE.getCTEDecipher());
+        dm = DecipherLogic.initDecipher(enigmaMachineCTE.getCTEDecipher());
     }
 
     private void engineInit(CTEMachine enigmaMachineCTE){
@@ -146,6 +152,21 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
     @Override
     public String encryptString(String message) {
 
+//        dm.setMachineEngine(this);
+//        dm.setLevel(DifficultyLevel.EASY);
+//        dm.decryptMessage(message,enigmaMachine.getRotorsId(),enigmaMachine.getReflectorId());
+//        List<Set<String>> answer = new ArrayList<>();
+//        AgentsAnswersQueue answersQueue = dm.getAnswersQueue();
+//
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//        while(!answersQueue.isEmpty()){
+//            System.out.println("not empty");
+//            answer.add(answersQueue.get().getDecryptedMessagesCandidates().keySet());
+//        }
         StringBuilder encryptedString = new StringBuilder();
 
         if(enigmaMachine == null){
@@ -165,6 +186,8 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
         historyAndStat.get(currentInitialMachineInfo).put(new Pair<>(message,encryptedString.toString()),encryptedTime);
 
         return encryptedString.toString();
+
+//        return answer;
     }
 
     @Override

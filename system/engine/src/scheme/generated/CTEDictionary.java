@@ -8,10 +8,10 @@
 
 package scheme.generated;
 
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -25,8 +25,10 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType>
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="right" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="left" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;sequence>
+ *         &lt;element name="Words" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *       &lt;/sequence>
+ *       &lt;attribute name="exclude-chars" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -35,61 +37,63 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "")
-@XmlRootElement(name = "CTE-Positioning")
-public class CTEPositioning {
+@XmlType(name = "", propOrder = {
+    "words"
+})
+@XmlRootElement(name = "CTE-Dictionary")
+public class CTEDictionary {
 
-    @XmlAttribute(name = "right", required = true)
-    protected String right;
-    @XmlAttribute(name = "left", required = true)
-    protected String left;
+    @XmlElement(name = "Words", required = true)
+    protected String words;
+    @XmlAttribute(name = "exclude-chars", required = true)
+    protected String excludeChars;
 
     /**
-     * Gets the value of the right property.
+     * Gets the value of the words property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getRight() {
-        return right;
+    public String getWords() {
+        return words;
     }
 
     /**
-     * Sets the value of the right property.
+     * Sets the value of the words property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setRight(String value) {
-        this.right = value;
+    public void setWords(String value) {
+        this.words = value;
     }
 
     /**
-     * Gets the value of the left property.
+     * Gets the value of the excludeChars property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getLeft() {
-        return left;
+    public String getExcludeChars() {
+        return excludeChars;
     }
 
     /**
-     * Sets the value of the left property.
+     * Sets the value of the excludeChars property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setLeft(String value) {
-        this.left = value;
+    public void setExcludeChars(String value) {
+        this.excludeChars = value;
     }
 
 }
