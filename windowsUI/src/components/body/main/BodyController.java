@@ -9,12 +9,16 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import logic.EnigmaSystemEngine;
 import logic.events.EncryptMessageEventListener;
 import logic.events.handler.MachineEventHandler;
 import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
+import manager.DecryptionManager;
+
 
 public class BodyController {
 
@@ -29,6 +33,8 @@ public class BodyController {
     @FXML private MachineConfigurationController encryptScreenMachineConfigurationComponentController;
     @FXML private GridPane encryptComponent;
     @FXML private EncryptController encryptComponentController;
+    @FXML private ScrollPane bruteForceComponent;
+    @FXML private  BruteForceController bruteForceComponentController;
     private EngineDTO engineDetails;
 
     public void initial() {
@@ -48,6 +54,7 @@ public class BodyController {
         machineConfigurationComponent.disableProperty().bind(codeCalibrationComponentController.getIsCodeConfigurationSetProperty().not());
         //encryptScreenMachineConfigurationComponent.disableProperty().bind(machineConfigurationComponent.disableProperty());
         encryptScreenMachineConfigurationComponentController.bind(machineConfigurationComponentController);
+        bruteForceComponentController.setParentController(this);
     }
 
     public void setMainController(EnigmaAppController appController) {
@@ -91,6 +98,10 @@ public class BodyController {
     public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){
 
         return encryptComponentController.getResetButtonActionProperty();
+    }
+
+    public void setDecryptionManager(EnigmaSystemEngine engine){
+        bruteForceComponentController.setDecryptionManager(new DecryptionManager(engine));
     }
 }
 

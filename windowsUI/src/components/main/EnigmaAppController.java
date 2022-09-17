@@ -53,7 +53,7 @@ public class EnigmaAppController {
                 machineUI.displayingMachineSpecification();
                 bodyComponentController.initialCodeCalibration();
                 bodyComponentController.initialEngineDetails();
-
+                bodyComponentController.setDecryptionManager(machineUI.getMachineEngine());
             });
 
             bodyComponentController.codeCalibrationRandomCodeOnAction().set(observable -> machineUI.automaticInitialCodeConfiguration());

@@ -12,5 +12,6 @@
     <orderEntry type="module" module-name="enigmamachine" />
     <orderEntry type="module" module-name="consoleUI" />
     <orderEntry type="library" name="charm-glisten-4.4.1" level="project" />
+    <orderEntry type="module" module-name="BruteForce" />
   </component>
 </module>

@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="enigmamachine" />
+    <orderEntry type="module" module-name="BruteForce" />
   </component>
 </module>

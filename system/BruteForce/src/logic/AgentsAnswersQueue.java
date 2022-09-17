@@ -1,5 +1,7 @@
 package logic;
 
+import decryptionDtos.AgentAnswerDTO;
+
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.Supplier;
@@ -16,14 +18,14 @@ public class AgentsAnswersQueue implements Supplier<AgentAnswerDTO> {
     @Override
     public synchronized AgentAnswerDTO get() {
 
-        while (dataQueue.isEmpty()){
-            try {
+        try {
+            while (dataQueue.isEmpty()){
                 wait();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             }
+        } catch (InterruptedException e) {
+                throw new RuntimeException(e);
         }
-
+            // not good need to fix it
         return dataQueue.remove();
     }
 

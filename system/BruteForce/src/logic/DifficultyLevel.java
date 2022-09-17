@@ -5,6 +5,7 @@ import components.PlugBoard;
 import components.Reflector;
 import components.Rotor;
 import machine.Machine;
+import decryptionDtos.AgentTaskDTO;
 
 import java.util.ArrayList;
 import java.util.Arrays;

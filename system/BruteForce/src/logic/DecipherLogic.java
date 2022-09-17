@@ -20,7 +20,7 @@ public class DecipherLogic {
         }
     }
 
-    public static DecryptionManager initDecipher(CTEDecipher decipher) {
+    public static void initDecipher(CTEDecipher decipher) {
 
         Set<String> dictionary = stringToWords(decipher.getCTEDictionary().getWords());
         String excludeChars = decipher.getCTEDictionary().getExcludeChars();
@@ -31,7 +31,9 @@ public class DecipherLogic {
                 dictionaryAfter.add(excludeSpecialCharactersFromWord(word,excludeChars));
         }
 
-        return new DecryptionManager(decipher.getAgents(), dictionaryAfter,excludeChars);
+        DecryptionManager.setMaxNumberOfAgents(decipher.getAgents());
+        DecryptionManager.setWordsDictionary(dictionaryAfter);
+        DecryptionManager.setExcludeChars(excludeChars);
     }
 
     public static Set<String> stringToWords(String str){
@@ -39,28 +41,7 @@ public class DecipherLogic {
         return Arrays.stream(str.split(" ")).collect(Collectors.toSet());
     }
 
-    public static List<List<Character>> createSubTask(int tasksMade, double taskSize, int numOfRotors, String ABC){
 
-        List<List<Character>> initialPositions = new ArrayList<>() ;
-        List<Character> newInitialPosition;
-        int tasksMadeCopy = tasksMade;
-
-        for (int i=0; i<taskSize;i++){
-
-            newInitialPosition = new ArrayList<>();
-            tasksMadeCopy = tasksMade;
-
-            for(int j=0; j<numOfRotors; j++){
-                newInitialPosition.add(ABC.charAt(tasksMadeCopy % ABC.length()));
-                tasksMadeCopy /= ABC.length();
-            }
-            initialPositions.add(newInitialPosition);
-
-            tasksMade++;
-        }
-
-        return initialPositions;
-    }
 
 
     protected static String excludeSpecialCharactersFromWord(String word, String specialChars){

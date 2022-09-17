@@ -1,6 +1,8 @@
 package manager;
 
 import logic.*;
+import decryptionDtos.AgentAnswerDTO;
+import decryptionDtos.AgentTaskDTO;
 import machineDtos.EngineDTO;
 import java.util.List;
 import java.util.Set;
@@ -9,20 +11,17 @@ import java.util.function.Consumer;
 
 public class DecryptionManager {
 
-    private final int numberOfAgents;
-    private Set<String> wordsDictionary;
-    private final String excludeChars;
-    private EnigmaEngine machineEngine;
+    private static int maxNumberOfAgents;
+    private static Set<String> wordsDictionary;
+    private static String excludeChars;
+    private EnigmaSystemEngine machineEngine;
     private ThreadPoolExecutor threadPool;
     private BlockingQueue<Runnable> agentTasks;
-    private DifficultyLevel level;
-    private int taskSize = 1000;
     private final AgentsAnswersQueue answersQueue = new AgentsAnswersQueue();
     Consumer<AgentAnswerDTO> updateQueue;
 
-    public DecryptionManager(int agentsNumber, Set<String> dictionary,String excludeChars ){
+    public DecryptionManager(EnigmaSystemEngine engine){
 
-        numberOfAgents = agentsNumber;
         ThreadFactory threadFactory = new ThreadFactory() {
             final String name = "Agent";
             int agentNumber = 1;
@@ -32,13 +31,24 @@ public class DecryptionManager {
                 return new Thread(r,name + agentNumber++);
             }
         };
-        wordsDictionary = dictionary;
-        System.out.println(wordsDictionary);
-        this.excludeChars = excludeChars;
         agentTasks = new LinkedBlockingQueue<>(1000);
-        threadPool = new ThreadPoolExecutor(agentsNumber,agentsNumber,5, TimeUnit.SECONDS,agentTasks,threadFactory);
+        threadPool = new ThreadPoolExecutor(maxNumberOfAgents, maxNumberOfAgents,5, TimeUnit.SECONDS,agentTasks,threadFactory);
         updateQueue = answersQueue::add;
+        machineEngine = engine;
     }
+
+    public static void setMaxNumberOfAgents(int maxNumberOfAgents) {
+        DecryptionManager.maxNumberOfAgents = maxNumberOfAgents;
+    }
+
+    public static void setWordsDictionary(Set<String> wordsDictionary) {
+        DecryptionManager.wordsDictionary = wordsDictionary;
+    }
+
+    public static void setExcludeChars(String excludeChars) {
+        DecryptionManager.excludeChars = excludeChars;
+    }
+
 
     public AgentsAnswersQueue getAnswersQueue(){
         return answersQueue;
@@ -49,7 +59,7 @@ public class DecryptionManager {
 
     public int getNumberOfAgents() {
 
-        return numberOfAgents;
+        return maxNumberOfAgents;
     }
 
     public Set<String> getWordsDictionary() {
@@ -57,7 +67,7 @@ public class DecryptionManager {
         return wordsDictionary;
     }
 
-    public void decryptMessage(String message, List<Integer> rotorsId, String reflectorId){
+    public void decryptMessage(int taskSize, DifficultyLevel level,String message, List<Integer> rotorsId, String reflectorId){
 
         AgentTaskDTO details = new AgentTaskDTO();
         EngineDTO engineDetails = machineEngine.displayingMachineSpecification();
@@ -72,11 +82,7 @@ public class DecryptionManager {
 
         threadPool.prestartAllCoreThreads();
 
-        new Thread(new TasksProducer(details,taskSize,agentTasks,level)).start();
-    }
-
-    public void setLevel(DifficultyLevel level) {
-        this.level = level;
+        new TasksProducer(details,taskSize,agentTasks,level).run();
     }
 
     public void shoutDown(){

@@ -1,6 +1,7 @@
 package components.body.main;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -34,6 +35,11 @@ public class EncryptController {
         encryptedMessageLabel.setText(encryptedMessageLabel.getText() + encryptedMessage);
     }
 
+    public StringProperty getEncryptedMessage(){
+
+        return encryptedMessageLabel.textProperty();
+    }
+
     public ObjectProperty<EventHandler<ActionEvent>> getResetButtonActionProperty(){
 
         return resetButton.onActionProperty();
@@ -46,6 +52,13 @@ public class EncryptController {
         clearButton.disableProperty().bind(autoStateButton.selectedProperty().not());
         autoStateButton.setToggleGroup(stateSwitchButton);
         manualStateButton.setToggleGroup(stateSwitchButton);
+    }
+
+    public void setAutoStateOnly(){
+
+        autoStateButton.setSelected(true);
+        manualStateButton.setDisable(true);
+        stateSwitchButton.getToggles().remove(manualStateButton);
     }
 
     @FXML

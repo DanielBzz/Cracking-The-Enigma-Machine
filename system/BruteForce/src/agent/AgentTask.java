@@ -1,6 +1,6 @@
 package agent;
 
-import logic.AgentAnswerDTO;
+import decryptionDtos.AgentAnswerDTO;
 import logic.DecipherLogic;
 import machine.Machine;
 

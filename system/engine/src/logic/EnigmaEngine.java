@@ -30,6 +30,7 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
     private final List<Reflector> optionalReflectors = new ArrayList<>();
     private int rotorsCount;
     private Map<MachineInfoDTO, Map<Pair<String,String>, Long>> historyAndStat = new LinkedHashMap<>();
+
     @Override
     public void loadXmlFile(String path) throws Exception {
 
@@ -259,4 +260,6 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
 
         return historyAndStat.values().stream().mapToInt(Map::size).sum();
     }
+
+
 }

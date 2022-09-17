@@ -72,6 +72,9 @@ public class MachineLogicUI {
 
     }
 
+    public EnigmaSystemEngine getMachineEngine(){
+        return machine;
+    }
     /* problem to do fire event every time cause we do clone and duplicate every time the components --> create exception of space
 */
 }

@@ -1,4 +1,4 @@
-package logic;
+package decryptionDtos;
 
 import machineDtos.EngineComponentsDTO;
 
