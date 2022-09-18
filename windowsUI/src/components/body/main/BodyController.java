@@ -3,6 +3,7 @@ package components.body.main;
 import components.body.details.CodeCalibrationController;
 import components.body.details.EngineDetailsController;
 import components.body.details.MachineConfigurationController;
+import components.body.details.StatisticsController;
 import components.main.EnigmaAppController;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -20,21 +21,23 @@ import machineDtos.MachineInfoDTO;
 import manager.DecryptionManager;
 
 
-public class BodyController {
+public class BodyController implements encryptParentController {
 
     private EnigmaAppController mainController;
     @FXML private BorderPane codeCalibrationComponent;
     @FXML private CodeCalibrationController codeCalibrationComponentController;
     @FXML private BorderPane machineConfigurationComponent;
-    @FXML private MachineConfigurationController machineConfigurationComponentController;
+    @FXML private MachineConfigurationController machineConfigurationComponentController;   ////
     @FXML private BorderPane engineDetailsComponent;
     @FXML private EngineDetailsController engineDetailsComponentController;
     @FXML private BorderPane encryptScreenMachineConfigurationComponent;
-    @FXML private MachineConfigurationController encryptScreenMachineConfigurationComponentController;
+    @FXML private MachineConfigurationController encryptScreenMachineConfigurationComponentController;  ////
     @FXML private GridPane encryptComponent;
     @FXML private EncryptController encryptComponentController;
     @FXML private ScrollPane bruteForceComponent;
     @FXML private  BruteForceController bruteForceComponentController;
+    @FXML private ScrollPane statisticsComponent;
+    @FXML private StatisticsController statisticsComponentController;
     private EngineDTO engineDetails;
 
     public void initial() {
@@ -46,13 +49,14 @@ public class BodyController {
             engineDetailsComponentController.setParentController(this);
             encryptComponentController.setParentController(this);
             mainController.CodeSetEventHandler().addListener(machineConfigurationComponentController);
+            mainController.statisticsUpdateEventHandler().addListener(statisticsComponentController);
             mainController.getMachineEncryptedMessageProperty().addListener(
                     (observable, oldValue, newValue) -> encryptComponentController.setEncryptedMessageLabel(newValue));
-
         }
 
-        machineConfigurationComponent.disableProperty().bind(codeCalibrationComponentController.getIsCodeConfigurationSetProperty().not());
-        //encryptScreenMachineConfigurationComponent.disableProperty().bind(machineConfigurationComponent.disableProperty());
+        machineConfigurationComponent.disableProperty().bind(machineConfigurationComponentController.getIsCodeConfigurationSetProperty().not());
+        encryptScreenMachineConfigurationComponent.disableProperty().bind(machineConfigurationComponent.disableProperty());
+        encryptScreenMachineConfigurationComponentController.setParentController(this);
         encryptScreenMachineConfigurationComponentController.bind(machineConfigurationComponentController);
         bruteForceComponentController.setParentController(this);
     }
@@ -102,6 +106,10 @@ public class BodyController {
 
     public void setDecryptionManager(EnigmaSystemEngine engine){
         bruteForceComponentController.setDecryptionManager(new DecryptionManager(engine));
+    }
+
+    public void setIsCodeConfigurationSet(Boolean codeSet){
+        machineConfigurationComponentController.getIsCodeConfigurationSetProperty().set(codeSet);
     }
 }
 

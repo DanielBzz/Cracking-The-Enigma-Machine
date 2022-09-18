@@ -1,3 +1,5 @@
+package consoleComponents;
+
 import exceptions.IdOutOfRangeException;
 import exceptions.MultipleMappingException;
 import logic.EngineLogic;

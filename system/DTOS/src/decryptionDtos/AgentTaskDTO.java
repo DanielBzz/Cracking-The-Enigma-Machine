@@ -1,5 +1,6 @@
 package decryptionDtos;
 
+import logic.TasksMade;
 import machineDtos.EngineComponentsDTO;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class AgentTaskDTO {
     private Set<String> dictionary;
     private EngineComponentsDTO engineComponentsDTO;
     private Consumer<AgentAnswerDTO> updateAnswer;
+    private TasksMade tasksMade;
 
 
     public List<List<Character>> getInitialPositions() {
@@ -80,5 +82,13 @@ public class AgentTaskDTO {
 
     public void setUpdateAnswer(Consumer<AgentAnswerDTO> updateAnswer) {
         this.updateAnswer = updateAnswer;
+    }
+
+    public void setTasksMade(TasksMade tasksMade) {
+        this.tasksMade = tasksMade;
+    }
+
+    public TasksMade getTasksMade() {
+        return tasksMade;
     }
 }

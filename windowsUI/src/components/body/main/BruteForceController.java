@@ -5,9 +5,10 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
+import machineDtos.EngineDTO;
 import manager.DecryptionManager;
 
-public class BruteForceController {
+public class BruteForceController implements encryptParentController {
 
     private BodyController parentController;
     @FXML private GridPane encryptComponent;
@@ -24,17 +25,24 @@ public class BruteForceController {
     @FXML public void initialize(){
 
         decryptionManagerComponentController.setParentController(this);
-        decryptionManagerComponentController.initial(10,10000);
         encryptedWordIsAvailable.bind(encryptComponentController.getEncryptedMessage().isNotEqualTo(""));
-        decryptionManagerComponent.disableProperty().bind(encryptedWordIsAvailable.not());
+        //decryptionManagerComponent.disableProperty().bind(encryptedWordIsAvailable.not());
         encryptComponentController.setAutoStateOnly();
+        encryptComponentController.setParentController(this);
     }
 
     public void setDecryptionManager(DecryptionManager decryptionManager) {
         decryptionManagerComponentController.setDecryptionManager(decryptionManager);
+        decryptionManagerComponentController.initial();
     }
 
     public String getEncryptedMessage(){
-        return encryptComponentController.getEncryptedMessage().getValue();
+//        return encryptComponentController.getEncryptedMessage().getValue();
+        return "XYV";
+    }
+
+    @Override
+    public EngineDTO getEngineDetails() {
+        return parentController.getEngineDetails();
     }
 }

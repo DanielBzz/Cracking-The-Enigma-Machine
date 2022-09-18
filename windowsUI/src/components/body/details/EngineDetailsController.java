@@ -34,6 +34,7 @@ public class EngineDetailsController implements RotorParent, ReflectorParent{
 
     private void setRotorsPane(List<Rotor> optionalRotors){
 
+        rotorsPane.getChildren().clear();
         for(int i=0 ; i < optionalRotors.size(); i++){
 
             RotorController newController = DynamicMachineComponentFactory.createRotorOnPane(rotorsPane,this);
@@ -43,6 +44,7 @@ public class EngineDetailsController implements RotorParent, ReflectorParent{
 
     private void setReflectorPane(List<Reflector> optionalReflectors){
 
+        reflectorsPane.getChildren().clear();
         for (Reflector reflector: optionalReflectors){
 
             ReflectorController newReflector = DynamicMachineComponentFactory.createReflectorOnPane(reflectorsPane, this);
@@ -55,7 +57,6 @@ public class EngineDetailsController implements RotorParent, ReflectorParent{
         for (Character c: abc.toCharArray()) {
 
             Label charLabel = new Label(c.toString());
-            charLabel.setPrefWidth(charLabel.getWidth()+5);
             abcPane.getChildren().add(charLabel);
         }
 

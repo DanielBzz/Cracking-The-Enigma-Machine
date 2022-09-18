@@ -13,7 +13,7 @@ import logic.events.handler.MachineEventHandler;
 
 public class EncryptController {
 
-    private BodyController parentController;
+    private encryptParentController parentController;
     @FXML private Button processButton;
     @FXML private Button doneButton;
     @FXML private Button clearButton;
@@ -25,7 +25,7 @@ public class EncryptController {
     @FXML private Label encryptedMessageLabel;
     public MachineEventHandler<EncryptMessageEventListener> activateEncryptEventHandler = new MachineEventHandler<>();
 
-    public void setParentController(BodyController parentController) {
+    public void setParentController(encryptParentController parentController) {
 
         this.parentController = parentController;
     }

@@ -36,16 +36,16 @@ public class DecryptionManagerController {
     private BruteForceController parentController;
     DecryptLogicUI decryptLogic = new DecryptLogicUI();
 
-    public void initial(int numberOfAgents,int amountOfTasks){
+    public void initial(){
 
         levelComboBox.setItems(FXCollections.observableList(
                 Arrays.stream(DifficultyLevel.values()).map(v->(String)v.toString()).collect(Collectors.toList())));
         taskSizeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE));
         agentsNumberSlider.setMin(2);
-        agentsNumberSlider.setMax(numberOfAgents);
+        agentsNumberSlider.setMax(decryptLogic.getMaxAgentTask());
         agentNumberLabel.textProperty().bind(agentsNumberSlider.valueProperty().asString());
         taskSizeSpinner.valueProperty().addListener((
-                observable, oldValue, newValue) -> tasksAmountLabel.setText(String.valueOf(amountOfTasks / newValue)));
+                observable, oldValue, newValue) -> tasksAmountLabel.setText(String.valueOf((int)Math.ceil(decryptLogic.getTaskSize() / (double)newValue))));
 
         pauseButton.setDisable(true);
         resumeButton.setDisable(true);
@@ -89,6 +89,9 @@ public class DecryptionManagerController {
             args.setMessageToDecrypt(parentController.getEncryptedMessage());
             args.setTaskSize(taskSizeSpinner.getValue());
             args.setAgentsNumber(agentsNumberSlider.valueProperty().intValue());
+            args.setAmountOfTasks(Integer.parseInt(tasksAmountLabel.getText()));
+            args.setReflectorId(parentController.getEngineDetails().getMachineInitialInfo().getReflectorID());
+            args.setRotorsId(parentController.getEngineDetails().getMachineInitialInfo().getRotorsID());
             startButton.setDisable(true);
             decryptLogic.decryptMessage(updateCandidates,args);
         }

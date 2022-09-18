@@ -38,7 +38,7 @@ public enum DifficultyLevel {
             Machine machine = new Machine(rotors, rotorsPositions, reflector , details.getEngineComponentsDTO().getABC(), new PlugBoard());
 
             try {
-                tasksQueue.put(new AgentTask(machine,details.getInitialPositions(), details.getMessageToDecrypt(),details.getDictionary(), details.getUpdateAnswer()));
+                tasksQueue.put(new AgentTask(machine,details.getInitialPositions(), details.getMessageToDecrypt(),details.getDictionary(), details.getUpdateAnswer(),details.getTasksMade()));
             } catch (InterruptedException e) {
                 e.printStackTrace();        // handle here....
             }

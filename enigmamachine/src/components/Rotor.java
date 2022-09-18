@@ -1,5 +1,7 @@
 package components;
 
+import javafx.util.Pair;
+
 import java.io.Serializable;
 
 public class Rotor implements Convertor<Integer>, Serializable, Cloneable {
@@ -39,6 +41,11 @@ public class Rotor implements Convertor<Integer>, Serializable, Cloneable {
     public char getCharInPosition(int position) {
 
         return rotorConversions.getRightCharacter(position);
+    }
+
+    public Pair<Character,Character> getPosition(int index){
+
+        return new Pair<Character,Character>(rotorConversions.getLeftCharacter(index),rotorConversions.getRightCharacter(index));
     }
 
     @Override

@@ -1,3 +1,4 @@
+package consoleComponents;
 
 public class MainClass {
 

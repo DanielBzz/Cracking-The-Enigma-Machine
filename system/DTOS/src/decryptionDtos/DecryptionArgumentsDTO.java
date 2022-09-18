@@ -12,6 +12,7 @@ public class DecryptionArgumentsDTO {
     private List<Integer> rotorsId;
     private String reflectorId;
     private int agentsNumber;
+    private int amountOfTasks;
 
     public int getTaskSize() {
         return taskSize;
@@ -59,5 +60,13 @@ public class DecryptionArgumentsDTO {
 
     public int getAgentsNumber() {
         return agentsNumber;
+    }
+
+    public int getAmountOfTasks() {
+        return amountOfTasks;
+    }
+
+    public void setAmountOfTasks(int amountOfTasks) {
+        this.amountOfTasks = amountOfTasks;
     }
 }

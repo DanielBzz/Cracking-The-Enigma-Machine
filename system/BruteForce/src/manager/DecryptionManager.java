@@ -1,9 +1,10 @@
 package manager;
 
-import logic.*;
 import decryptionDtos.AgentAnswerDTO;
 import decryptionDtos.AgentTaskDTO;
+import logic.*;
 import machineDtos.EngineDTO;
+
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
@@ -19,6 +20,7 @@ public class DecryptionManager {
     private BlockingQueue<Runnable> agentTasks;
     private final AgentsAnswersQueue answersQueue = new AgentsAnswersQueue();
     Consumer<AgentAnswerDTO> updateQueue;
+    double tasksAmount;
 
     public DecryptionManager(EnigmaSystemEngine engine){
 
@@ -35,8 +37,13 @@ public class DecryptionManager {
         threadPool = new ThreadPoolExecutor(maxNumberOfAgents, maxNumberOfAgents,5, TimeUnit.SECONDS,agentTasks,threadFactory);
         updateQueue = answersQueue::add;
         machineEngine = engine;
+        EngineDTO details = engine.displayingMachineSpecification();
+        tasksAmount = Math.pow(details.getEngineComponentsInfo().getABC().length(), details.getNumOfUsedRotors());
     }
 
+    public double getTaskAmount(){
+        return tasksAmount;
+    }
     public static void setMaxNumberOfAgents(int maxNumberOfAgents) {
         DecryptionManager.maxNumberOfAgents = maxNumberOfAgents;
     }
@@ -67,7 +74,7 @@ public class DecryptionManager {
         return wordsDictionary;
     }
 
-    public void decryptMessage(int taskSize, DifficultyLevel level,String message, List<Integer> rotorsId, String reflectorId){
+    public void decryptMessage(int taskSize, DifficultyLevel level, String message, List<Integer> rotorsId, String reflectorId, TasksMade tasksMade){
 
         AgentTaskDTO details = new AgentTaskDTO();
         EngineDTO engineDetails = machineEngine.displayingMachineSpecification();
@@ -77,12 +84,13 @@ public class DecryptionManager {
         details.setMessageToDecrypt(message);
         details.setRotorsId(rotorsId);
         details.setReflectorId(reflectorId);
+        details.setTasksMade(tasksMade);
         answersQueue.clear();
         details.setUpdateAnswer(updateQueue);
 
         threadPool.prestartAllCoreThreads();
 
-        new TasksProducer(details,taskSize,agentTasks,level).run();
+        new Thread(new TasksProducer(details,taskSize,agentTasks,level)).start();
     }
 
     public void shoutDown(){

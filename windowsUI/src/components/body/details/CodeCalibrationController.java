@@ -2,10 +2,10 @@ package components.body.details;
 
 import components.Rotor;
 import components.body.machine.DynamicMachineComponentFactory;
+import components.body.machine.PlugBoardController;
 import components.body.machine.RotorController;
 import components.body.main.BodyController;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import logic.EngineLogic;
@@ -21,27 +20,26 @@ import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class CodeCalibrationController implements RotorParent {
+public class CodeCalibrationController implements RotorParent, PlugBoardParent {
 
     BodyController parentController;
     @FXML private Button randomButton;
     @FXML private Button manualSetButton;
     @FXML private HBox rotorsPane;
     @FXML private VBox reflectorPane;
-    @FXML private ListView<String> plugsPane;
     @FXML private ChoiceBox<Character> leftPlugChoiceBox;
     @FXML private Button connectPlugsButton;
     @FXML private ChoiceBox<Character> rightPlugChoiceBox;
+    @FXML private SplitPane plugBoardComponent;
+    @FXML private PlugBoardController plugBoardComponentController;
     private final ToggleGroup availableReflectorsGroup = new ToggleGroup();
     private final List<RotorController> rotorsChosen = new ArrayList<>();
     private final SimpleObjectProperty<MachineInfoDTO> machineInfoProperty = new SimpleObjectProperty<>();
-    private final SimpleBooleanProperty isCodeConfigurationSet = new SimpleBooleanProperty(false);
+
 
     public ObjectProperty<EventHandler<ActionEvent>> getRandomButtonOnActionListener() {
         return randomButton.onActionProperty();
@@ -52,16 +50,12 @@ public class CodeCalibrationController implements RotorParent {
 
     }
 
-    public SimpleBooleanProperty getIsCodeConfigurationSetProperty(){
-
-        return isCodeConfigurationSet;
-    }
-
     public void setParentController(BodyController controller){
         parentController = controller;
     }
 
     public void initialComponent(EngineDTO engineDetails){
+
 
         setReflectorPane(engineDetails.getNumOfOptionalReflectors());
         setRotorsPane(engineDetails.getEngineComponentsInfo().getOptionalRotors(),engineDetails.getNumOfUsedRotors());
@@ -70,6 +64,7 @@ public class CodeCalibrationController implements RotorParent {
 
     private void setRotorsPane(List<Rotor> optionalRotors, int numberOfUsedRotors){
 
+        rotorsPane.getChildren().clear();
         for(int i=0 ; i < numberOfUsedRotors; i++){
 
                 RotorController newController = DynamicMachineComponentFactory.createRotorOnPane(rotorsPane,this);
@@ -97,6 +92,7 @@ public class CodeCalibrationController implements RotorParent {
 
     private void setReflectorPane(int numOfOptionalReflectors){
 
+        reflectorPane.getChildren().clear();
         for(int i=0 ; i < numOfOptionalReflectors;i++) {
 
             RadioButton newRadioButton = new RadioButton();
@@ -120,20 +116,14 @@ public class CodeCalibrationController implements RotorParent {
                         rotorsInitialPositions.add(rotor.getChosenInitialPosition());
                     });
 
-            isCodeConfigurationSet.setValue(true);
-            machineInfoProperty.set( new MachineInfoDTO(rotorsIDs, null, rotorsInitialPositions, reflectorId, setPlugsMap()));
+            machineInfoProperty.set( new MachineInfoDTO(rotorsIDs, null, rotorsInitialPositions, reflectorId, plugBoardComponentController.createPlugsMap()));
         }
-    }
-
-    @FXML
-    public void randomCodeActionListener(ActionEvent event) {
-
-        isCodeConfigurationSet.set(true);       // need to move to logic this initial and property (variable)
-
     }
 
     private void setPlugsPane(String ABC) {
 
+        plugBoardComponentController.setParent(this);
+        plugBoardComponentController.clear();
         ObservableList<Character> observableList = FXCollections.observableArrayList(ABC.chars().mapToObj(e->(char)e).collect(Collectors.toList()));
         leftPlugChoiceBox.setItems(observableList);
         rightPlugChoiceBox.itemsProperty().bind(leftPlugChoiceBox.itemsProperty());
@@ -144,7 +134,7 @@ public class CodeCalibrationController implements RotorParent {
 
         if(rightPlugChoiceBox.getValue() != null && leftPlugChoiceBox.getValue()!= null && leftPlugChoiceBox.getValue() != rightPlugChoiceBox.getValue())
         {
-            plugsPane.getItems().add(leftPlugChoiceBox.getValue() + connectPlugsButton.getText() + rightPlugChoiceBox.getValue());
+            plugBoardComponentController.addPlug(leftPlugChoiceBox.getValue(),rightPlugChoiceBox.getValue());
             rightPlugChoiceBox.getItems().remove(rightPlugChoiceBox.getValue());
             rightPlugChoiceBox.getItems().remove(leftPlugChoiceBox.getValue());
             leftPlugChoiceBox.setValue(null);
@@ -152,26 +142,9 @@ public class CodeCalibrationController implements RotorParent {
         }
     }
 
-    @FXML
-    public void onMouseClickedPlug(MouseEvent event) {
+    public void onMouseClickedPlug(String chars) {
 
-        if(event.getClickCount() == 2 && plugsPane.getSelectionModel().getSelectedItems().size() != 0){
-
-            String chars = plugsPane.getSelectionModel().getSelectedItem().replaceAll(connectPlugsButton.getText(),"");
             rightPlugChoiceBox.getItems().add(chars.charAt(0));
             rightPlugChoiceBox.getItems().add(chars.charAt(1));
-            plugsPane.getItems().remove(plugsPane.getSelectionModel().getSelectedIndex());
-        }
-    }
-
-    private Map<Character,Character> setPlugsMap(){
-
-        Map<Character,Character> plugs = new HashMap<>();
-        List<String> pairs = new ArrayList<>();
-
-        plugsPane.getItems().forEach(str ->pairs.add(str.replaceAll(connectPlugsButton.getText(),"")));
-        pairs.forEach(pair-> plugs.put(pair.charAt(0),pair.charAt(1)));
-
-        return plugs;
     }
 }

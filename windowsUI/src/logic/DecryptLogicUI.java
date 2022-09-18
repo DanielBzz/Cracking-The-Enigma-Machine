@@ -39,4 +39,12 @@ public class DecryptLogicUI {
     public void cancelTask(){
         currentTask.cancel();
     }
+
+    public int getMaxAgentTask(){
+        return decryptionManager.getNumberOfAgents();
+    }
+
+    public double getTaskSize(){
+        return decryptionManager.getTaskAmount();
+    }
 }

@@ -1,3 +1,5 @@
+package consoleComponents;
+
 import javafx.util.Pair;
 import logic.EngineLogic;
 import machineDtos.EngineDTO;
@@ -182,19 +184,19 @@ public class OutputMessages {
          return "Enter name of file for the machine:";
     }
 
-    private static String currentMachineSpecification(MachineInfoDTO machineInfo){
+    public static String currentMachineSpecification(MachineInfoDTO machineInfo){
 
         StringBuilder msg = new StringBuilder();
 
         msg.append("<");
         for (int i = machineInfo.getRotorsInitPosition().size() - 1; i >= 0; --i) {
-            msg.append(MessageFormat.format("{0}({1}),", machineInfo.getRotorsID().get(i), machineInfo.getNotchDistanceFromPositions().get(i)));
+            msg.append(MessageFormat.format("{0},", machineInfo.getRotorsID().get(i)));
         }
 
         msg.replace(msg.length() - 1, msg.length(),">");
         msg.append("<");
         for (int i = machineInfo.getRotorsInitPosition().size() - 1; i >= 0; --i) {
-            msg.append(machineInfo.getRotorsInitPosition().get(i));
+            msg.append(MessageFormat.format("{0}({1}),", machineInfo.getRotorsInitPosition().get(i), machineInfo.getNotchDistanceFromPositions().get(i)));
         }
 
         msg.append(">");

@@ -4,6 +4,7 @@ import components.main.EnigmaAppController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import logic.events.CodeSetEventListener;
+import logic.events.StatisticsUpdateEventListener;
 import logic.events.handler.MachineEventHandler;
 import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
@@ -14,12 +15,16 @@ public class MachineLogicUI {
     private EnigmaSystemEngine machine = new EnigmaEngine();
     private final StringProperty encryptedMessage = new SimpleStringProperty();
     public MachineEventHandler<CodeSetEventListener> codeSetEventHandler = new MachineEventHandler<>();
+    public MachineEventHandler<StatisticsUpdateEventListener> statisticsUpdateEventHandler = new MachineEventHandler<>();
+
 
     public StringProperty getEncryptedMessageProperty() {
+
         return encryptedMessage;
     }
 
     public MachineLogicUI(EnigmaAppController controller){
+
         appController = controller;
     }
 
@@ -27,8 +32,10 @@ public class MachineLogicUI {
 
         try {
             machine.loadXmlFile(path);
+            appController.setIsGoodFileSelected(true);
         } catch (Exception | Error e) {
             appController.setSelectedFile("-");
+            appController.setIsGoodFileSelected(false);
             appController.showPopUpMessage(e.getMessage());
         }
     }
@@ -43,19 +50,23 @@ public class MachineLogicUI {
 
         machine.manualMachineInit(initialArgs);
         codeSetEventHandler.fireEvent(machine.displayingMachineSpecification());
-    }
+        appController.setMachineSpecification(machine.displayingMachineSpecification());
 
+    }
 
     public void automaticInitialCodeConfiguration() {
 
         machine.automaticMachineInit();
         codeSetEventHandler.fireEvent(machine.displayingMachineSpecification());
+        appController.setMachineSpecification(machine.displayingMachineSpecification());
+
     }
 
     public void encryptInput(String msg) {
 
-        //encryptedMessage.set(machine.encryptString(msg));
-        //codeSetEventHandler.fireEvent(machine.displayingMachineSpecification());
+        encryptedMessage.set(machine.encryptString(msg));
+        codeSetEventHandler.fireEvent(machine.displayingMachineSpecification());
+        statisticsUpdateEventHandler.fireEvent(machine.getHistoryAndStatistics());
     }
 
     public void resetCurrentCode() {
@@ -66,6 +77,7 @@ public class MachineLogicUI {
 
     public void getHistoryAndStatistics() {
 
+        machine.getHistoryAndStatistics();
     }
 
     public void exit() {

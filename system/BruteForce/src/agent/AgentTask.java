@@ -2,6 +2,7 @@ package agent;
 
 import decryptionDtos.AgentAnswerDTO;
 import logic.DecipherLogic;
+import logic.TasksMade;
 import machine.Machine;
 
 import java.util.HashMap;
@@ -18,14 +19,16 @@ public class AgentTask implements Runnable {
     private final Map<String,List<Character>> decryptedMessagesCandidates = new HashMap<>();
     private final Set<String> wordsDictionary;
     private final Consumer<AgentAnswerDTO> update;
+    private final TasksMade tasksMadeProperty;
 
-    public AgentTask(Machine enigmaMachine, List<List<Character>> initialPositions,String message, Set<String> dictionary,Consumer<AgentAnswerDTO> update ){
+    public AgentTask(Machine enigmaMachine, List<List<Character>> initialPositions, String message, Set<String> dictionary, Consumer<AgentAnswerDTO> update, TasksMade tasksMadeProperty){
 
         this.enigmaMachine = enigmaMachine;
         this.initialPositions = initialPositions;
         messageToDecrypt = message;
         wordsDictionary = dictionary;
         this.update = update;
+        this.tasksMadeProperty = tasksMadeProperty;
     }
 
     @Override
@@ -55,6 +58,8 @@ public class AgentTask implements Runnable {
         if(decryptedMessagesCandidates.size() != 0){
             update.accept(new AgentAnswerDTO(decryptedMessagesCandidates,Thread.currentThread().getName(),taskDuration ));
         }
+
+        tasksMadeProperty.put(tasksMadeProperty.get()+1);
     }
 
     private void initializeConfigurationInMachine(List<Character> initialPosition){

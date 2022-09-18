@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.body.details.EngineDetailsController">
+<BorderPane minHeight="287.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.body.details.EngineDetailsController">
    <top>
       <VBox alignment="CENTER" minHeight="25.0" BorderPane.alignment="CENTER">
          <children>
@@ -26,59 +26,60 @@
       </VBox>
    </top>
    <center>
-      <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
-         <content>
-            <GridPane>
-              <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="40.0" minHeight="30.0" vgrow="NEVER" />
-                <RowConstraints vgrow="SOMETIMES" />
-              </rowConstraints>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" />
+          <ColumnConstraints hgrow="SOMETIMES" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="40.0" minHeight="30.0" vgrow="NEVER" />
+          <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <StackPane>
                <children>
-                  <StackPane GridPane.columnIndex="1">
-                     <children>
-                        <Label text="Reflectors" />
-                     </children>
-                  </StackPane>
-                  <StackPane GridPane.columnIndex="2">
-                     <children>
-                        <Label text="Rotors" />
-                     </children>
-                  </StackPane>
+                  <Label text="ABC" />
+               </children>
+            </StackPane>
+            <StackPane GridPane.columnIndex="1">
+               <children>
+                  <Label text="Reflectors" />
+               </children>
+            </StackPane>
+            <StackPane GridPane.columnIndex="2">
+               <children>
+                  <Label text="Rotors" />
+               </children>
+            </StackPane>
+            <ScrollPane fitToHeight="true" fitToWidth="true" minWidth="80.0" GridPane.rowIndex="1">
+               <content>
                   <StackPane>
                      <children>
-                        <Label text="ABC" />
+                        <FlowPane fx:id="abcPane" hgap="10.0" maxHeight="200.0" vgap="10.0" StackPane.alignment="CENTER" />
                      </children>
                   </StackPane>
-                  <HBox fx:id="rotorsPane" alignment="CENTER" minHeight="225.0" minWidth="110.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               </content>
+            </ScrollPane>
+            <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="50.0" minWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <content>
+                  <HBox fx:id="reflectorsPane" alignment="CENTER_LEFT" spacing="10.0">
                      <padding>
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </HBox>
-                  <HBox fx:id="reflectorsPane" alignment="CENTER_LEFT" minHeight="50.0" minWidth="100.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               </content>
+            </ScrollPane>
+            <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="10.0" layoutY="10.0" minHeight="230.0" minWidth="115.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <content>
+                  <HBox fx:id="rotorsPane" alignment="CENTER" spacing="10.0">
                      <padding>
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </HBox>
-                  <StackPane GridPane.rowIndex="1">
-                     <children>
-                        <FlowPane fx:id="abcPane" alignment="CENTER" columnHalignment="CENTER" prefWrapLength="1000.0">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                           <opaqueInsets>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </opaqueInsets>
-                        </FlowPane>
-                     </children>
-                  </StackPane>
-               </children>
-            </GridPane>
-         </content>
-      </ScrollPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </GridPane>
    </center>
 </BorderPane>

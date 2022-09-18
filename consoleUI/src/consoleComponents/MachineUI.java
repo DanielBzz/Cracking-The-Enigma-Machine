@@ -1,3 +1,5 @@
+package consoleComponents;
+
 import exceptions.*;
 import logic.EnigmaEngine;
 import logic.EnigmaMachineUI;
