@@ -78,13 +78,16 @@ public class DecryptionManager {
 
         AgentTaskDTO details = new AgentTaskDTO();
         EngineDTO engineDetails = machineEngine.displayingMachineSpecification();
-        details.setEngineComponentsDTO(engineDetails.getEngineComponentsInfo());
         details.setNumOfUsedRotors(engineDetails.getNumOfUsedRotors());
         details.setDictionary(wordsDictionary);
         details.setMessageToDecrypt(message);
         details.setRotorsId(rotorsId);
         details.setReflectorId(reflectorId);
         details.setTasksMade(tasksMade);
+        if(machineEngine instanceof EnigmaEngine) {
+            details.setEngineComponentsDTO(((EnigmaEngine)machineEngine).getEngineComponentsDto());
+        }
+
         answersQueue.clear();
         details.setUpdateAnswer(updateQueue);
 

@@ -1,6 +1,5 @@
 package components.body.details;
 
-import components.Rotor;
 import components.body.machine.DynamicMachineComponentFactory;
 import components.body.machine.PlugBoardController;
 import components.body.machine.RotorController;
@@ -18,6 +17,7 @@ import javafx.scene.layout.VBox;
 import logic.EngineLogic;
 import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
+import scheme.generated.CTERotor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,7 @@ public class CodeCalibrationController implements RotorParent, PlugBoardParent {
         setPlugsPane(engineDetails.getEngineComponentsInfo().getABC());
     }
 
-    private void setRotorsPane(List<Rotor> optionalRotors, int numberOfUsedRotors){
+    private void setRotorsPane(List<CTERotor> optionalRotors, int numberOfUsedRotors){
 
         rotorsPane.getChildren().clear();
         for(int i=0 ; i < numberOfUsedRotors; i++){
@@ -74,7 +74,7 @@ public class CodeCalibrationController implements RotorParent, PlugBoardParent {
     }
 
     @Override
-    public Rotor getRotor(int id) {
+    public CTERotor getRotor(int id) {
 
         return parentController.getEngineDetails().getEngineComponentsInfo().getOptionalRotors().stream().
                 filter(rotor -> rotor.getId() == id).findFirst().get();

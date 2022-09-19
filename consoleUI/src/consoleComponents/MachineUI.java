@@ -119,6 +119,10 @@ public class MachineUI implements EnigmaMachineUI {
 
         String msgToEncrypt = scanner.nextLine();
         String encryptedMsg = enigmaSystem.encryptString(msgToEncrypt);
+        if(enigmaSystem instanceof EnigmaEngine){
+          ((EnigmaEngine) enigmaSystem).updateHistory();
+        }
+
         System.out.println(OutputMessages.encryptedStringMsg(encryptedMsg));
     }
 

@@ -1,7 +1,5 @@
 package components.body.details;
 
-import components.Reflector;
-import components.Rotor;
 import components.body.machine.DynamicMachineComponentFactory;
 import components.body.machine.PlugBoardController;
 import components.body.machine.ReflectorController;
@@ -16,6 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import logic.events.CodeSetEventListener;
 import machineDtos.EngineDTO;
+import scheme.generated.CTEReflector;
+import scheme.generated.CTERotor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +77,7 @@ public class MachineConfigurationController implements CodeSetEventListener, Ref
     private void setReflectorPane(EngineDTO updatedValue){
 
         reflectorPane.getChildren().clear();
-        Reflector chosenReflector = updatedValue.getEngineComponentsInfo().getOptionalReflectors().stream().filter(
+        CTEReflector chosenReflector = updatedValue.getEngineComponentsInfo().getOptionalReflectors().stream().filter(
                 reflector -> reflector.getId().equals(updatedValue.getMachineCurrentInfo().getReflectorID())).findFirst().get();
         ReflectorController controller = DynamicMachineComponentFactory.createReflectorOnPane(reflectorPane, this);
         controller.setCurrentReflector(chosenReflector);
@@ -89,7 +89,7 @@ public class MachineConfigurationController implements CodeSetEventListener, Ref
         for (int i = 0; i<updatedValue.getNumOfUsedRotors(); i++) {
 
             int currentId = updatedValue.getMachineInitialInfo().getRotorsID().get(i);
-            Rotor chosenRotor = updatedValue.getEngineComponentsInfo().getOptionalRotors().stream().filter(
+            CTERotor chosenRotor = updatedValue.getEngineComponentsInfo().getOptionalRotors().stream().filter(
                     rotor -> rotor.getId() == currentId).findFirst().get();
 
             RotorController rotorController = DynamicMachineComponentFactory.createRotorOnPane(rotorsPane, this);
@@ -99,7 +99,7 @@ public class MachineConfigurationController implements CodeSetEventListener, Ref
     }
 
     @Override
-    public Rotor getRotor(int id) {
+    public CTERotor getRotor(int id) {
         return parentController.getEngineDetails().getEngineComponentsInfo().getOptionalRotors().stream().
                 filter(rotor -> rotor.getId() == id).findFirst().get();
     }

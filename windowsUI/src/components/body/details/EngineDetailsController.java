@@ -1,7 +1,5 @@
 package components.body.details;
 
-import components.Reflector;
-import components.Rotor;
 import components.body.machine.DynamicMachineComponentFactory;
 import components.body.machine.ReflectorController;
 import components.body.machine.RotorController;
@@ -11,6 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import machineDtos.EngineDTO;
+import scheme.generated.CTEReflector;
+import scheme.generated.CTERotor;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class EngineDetailsController implements RotorParent, ReflectorParent{
         setAbcPane(engineDetails.getEngineComponentsInfo().getABC());
     }
 
-    private void setRotorsPane(List<Rotor> optionalRotors){
+    private void setRotorsPane(List<CTERotor> optionalRotors){
 
         rotorsPane.getChildren().clear();
         for(int i=0 ; i < optionalRotors.size(); i++){
@@ -42,10 +42,10 @@ public class EngineDetailsController implements RotorParent, ReflectorParent{
         }
     }
 
-    private void setReflectorPane(List<Reflector> optionalReflectors){
+    private void setReflectorPane(List<CTEReflector> optionalReflectors){
 
         reflectorsPane.getChildren().clear();
-        for (Reflector reflector: optionalReflectors){
+        for (CTEReflector reflector: optionalReflectors){
 
             ReflectorController newReflector = DynamicMachineComponentFactory.createReflectorOnPane(reflectorsPane, this);
             newReflector.setCurrentReflector(reflector);
@@ -63,7 +63,7 @@ public class EngineDetailsController implements RotorParent, ReflectorParent{
     }
 
     @Override
-    public Rotor getRotor(int id) {
+    public CTERotor getRotor(int id) {
 
         return parentController.getEngineDetails().getEngineComponentsInfo().getOptionalRotors().stream().
                 filter(rotor -> rotor.getId() == id).findFirst().get();

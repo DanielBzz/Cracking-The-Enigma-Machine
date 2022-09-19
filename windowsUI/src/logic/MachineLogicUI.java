@@ -80,10 +80,6 @@ public class MachineLogicUI {
         machine.getHistoryAndStatistics();
     }
 
-    public void exit() {
-
-    }
-
     public EnigmaSystemEngine getMachineEngine(){
         return machine;
     }

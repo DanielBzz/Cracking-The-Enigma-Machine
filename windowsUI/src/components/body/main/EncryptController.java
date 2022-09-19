@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import logic.HistoryUpdatable;
 import logic.events.EncryptMessageEventListener;
 import logic.events.handler.MachineEventHandler;
 
@@ -24,10 +25,15 @@ public class EncryptController {
     @FXML private TextField messageToEncryptTF;
     @FXML private Label encryptedMessageLabel;
     public MachineEventHandler<EncryptMessageEventListener> activateEncryptEventHandler = new MachineEventHandler<>();
+    private HistoryUpdatable listener;
 
     public void setParentController(encryptParentController parentController) {
 
         this.parentController = parentController;
+    }
+
+    public void setHistoryUpdatable(HistoryUpdatable listener){
+        this.listener = listener;
     }
 
     public void setEncryptedMessageLabel(String encryptedMessage) {
@@ -65,8 +71,8 @@ public class EncryptController {
     void processButtonActionListener(ActionEvent event) {
 
         activateEncryptEventHandler.fireEvent(messageToEncryptTF.getText());
+        listener.updateHistory();
         messageToEncryptTF.setEditable(false);
-        // add it to statistics
     }
 
     @FXML
@@ -81,7 +87,9 @@ public class EncryptController {
     void doneButtonActionListener(ActionEvent event) {
 
         messageToEncryptTF.setEditable(false);
-        // add it to statistics
+        listener.updateHistory();
+        messageToEncryptTF.setText("");
+        encryptedMessageLabel.setText("");
     }
 
     @FXML

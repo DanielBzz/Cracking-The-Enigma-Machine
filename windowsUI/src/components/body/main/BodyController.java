@@ -14,6 +14,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import logic.EnigmaSystemEngine;
+import logic.HistoryUpdatable;
 import logic.events.EncryptMessageEventListener;
 import logic.events.handler.MachineEventHandler;
 import machineDtos.EngineDTO;
@@ -110,6 +111,10 @@ public class BodyController implements encryptParentController {
 
     public void setIsCodeConfigurationSet(Boolean codeSet){
         machineConfigurationComponentController.getIsCodeConfigurationSetProperty().set(codeSet);
+    }
+
+    public void setListenerToHistoryUpdate(HistoryUpdatable listener){
+        encryptComponentController.setHistoryUpdatable(listener);
     }
 }
 

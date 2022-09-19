@@ -8,10 +8,10 @@ public class EngineDTO {
         private final int numOfEncryptedMsg;
         private final MachineInfoDTO machineInitialInfo;
         private final MachineInfoDTO machineCurrentInfo;
-        private final EngineComponentsDTO engineComponentsInfo;
+        private final EngineComponentsCTEDTO engineComponentsInfo;
 
         public EngineDTO(int numOfOptionalRotors, int numOfOptionalReflectors, int numOfUsedRotors, int numOfEncryptedMsg,
-                         MachineInfoDTO initialInfo, MachineInfoDTO currentInfo, EngineComponentsDTO componentsInfo ) {
+                         MachineInfoDTO initialInfo, MachineInfoDTO currentInfo, EngineComponentsCTEDTO componentsInfo ) {
 
                 this.numOfOptionalRotors = numOfOptionalRotors;
                 this.numOfOptionalReflectors = numOfOptionalReflectors;
@@ -52,7 +52,7 @@ public class EngineDTO {
                 return machineCurrentInfo;
         }
 
-        public EngineComponentsDTO getEngineComponentsInfo() {
+        public EngineComponentsCTEDTO getEngineComponentsInfo() {
                 return engineComponentsInfo;
         }
 }

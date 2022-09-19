@@ -20,7 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
+public class EnigmaEngine implements EnigmaSystemEngine, Serializable, HistoryUpdatable {
 
     private Machine enigmaMachine = null;
     private MachineInfoDTO currentInitialMachineInfo = null;
@@ -30,7 +30,7 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
     private final List<Reflector> optionalReflectors = new ArrayList<>();
     private int rotorsCount;
     private Map<MachineInfoDTO, Map<Pair<String,String>, Long>> historyAndStat = new LinkedHashMap<>();
-
+    private LastEncryptedMessage lastEncryptedDetails;
     @Override
     public void loadXmlFile(String path) throws Exception {
 
@@ -85,7 +85,7 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
         }
 
         return new EngineDTO(optionalRotors.size(), optionalReflectors.size(), rotorsCount, encryptedMsgSum() ,
-                currentInitialMachineInfo,currentMachineInfo, new EngineComponentsDTO(optionalRotors,optionalReflectors,ABC));
+                currentInitialMachineInfo,currentMachineInfo, new EngineComponentsCTEDTO(optionalRotors,optionalReflectors,ABC));
     }
 
     @Override
@@ -166,10 +166,23 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
             encryptedString.append(enigmaMachine.encryption(c).toString());
         }
 
-        encryptedTime = System.nanoTime() - encryptedTime;
-        historyAndStat.get(currentInitialMachineInfo).put(new Pair<>(message,encryptedString.toString()),encryptedTime);
-
+        if(lastEncryptedDetails == null) {
+            lastEncryptedDetails = new LastEncryptedMessage(message,encryptedString.toString(),encryptedTime);
+        }else {
+            lastEncryptedDetails.setMessage(lastEncryptedDetails.getMessage().concat(message));
+            lastEncryptedDetails.setMessage(lastEncryptedDetails.getEncrypted().concat(encryptedString.toString()));
+        }
         return encryptedString.toString();
+    }
+
+    public void updateHistory(){
+
+        long encryptedTime = System.nanoTime() - lastEncryptedDetails.getTime();
+
+        historyAndStat.get(currentInitialMachineInfo).put(new Pair<>(
+                lastEncryptedDetails.getMessage(), lastEncryptedDetails.getEncrypted()),encryptedTime);
+
+        lastEncryptedDetails = null;
     }
 
     @Override
@@ -259,6 +272,10 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
     private int encryptedMsgSum(){
 
         return historyAndStat.values().stream().mapToInt(Map::size).sum();
+    }
+
+    public EngineComponentsDTO getEngineComponentsDto(){
+        return new EngineComponentsDTO(optionalRotors,optionalReflectors, ABC);
     }
 
 

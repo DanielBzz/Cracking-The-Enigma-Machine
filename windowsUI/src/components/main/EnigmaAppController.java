@@ -10,6 +10,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
+import logic.EnigmaEngine;
+import logic.HistoryUpdatable;
 import logic.MachineLogicUI;
 import logic.events.CodeSetEventListener;
 import logic.events.EncryptMessageEventListener;
@@ -64,7 +66,9 @@ public class EnigmaAppController {
                     bodyComponentController.setIsCodeConfigurationSet(false);
                 }
             });
-
+            if(machineUI.getMachineEngine() instanceof EnigmaEngine){
+                bodyComponentController.setListenerToHistoryUpdate((HistoryUpdatable)machineUI.getMachineEngine());
+            }
 
             bodyComponentController.codeCalibrationRandomCodeOnAction().set(observable -> machineUI.automaticInitialCodeConfiguration());
             bodyComponentController.encryptResetButtonActionProperty().set(observable -> machineUI.resetCurrentCode());

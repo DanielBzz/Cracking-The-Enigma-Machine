@@ -1,15 +1,15 @@
 package components.body.machine;
 
-import components.Rotor;
 import components.body.details.CodeCalibrationController;
 import components.body.details.RotorParent;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+import scheme.generated.CTEPositioning;
+import scheme.generated.CTERotor;
 
 import java.util.List;
 
@@ -28,7 +28,8 @@ public class RotorController {
 
     @FXML
     private Button nextButton;
-    private Rotor currentRotor;
+    private CTERotor currentRotor;
+    private int indexOfChosenPosition;
 
     @FXML
     public void initialize(){}
@@ -38,7 +39,16 @@ public class RotorController {
 
         if(!(this.parentController instanceof CodeCalibrationController)){
 
-            new Alert(Alert.AlertType.INFORMATION, "should show all the rotor", ButtonType.OK).show();
+            ListView<String> rotorContent = new ListView<>();
+            for(CTEPositioning positioning : currentRotor.getCTEPositioning()) {
+                rotorContent.getItems().add("'" + positioning.getLeft() + "'" + " --- " + "'" + positioning.getRight() + "'");
+            }
+            Stage rotorStage = new Stage();
+            rotorStage.setTitle("rotor's positioning");
+            rotorStage.setScene(new Scene(rotorContent));
+            rotorStage.setAlwaysOnTop(true);
+            rotorStage.show();
+
         }
     }
 
@@ -46,22 +56,43 @@ public class RotorController {
     void nextButtonActionListener(ActionEvent event) {
 
         if(this.parentController instanceof CodeCalibrationController && !nextButton.getText().equals("")) {
-            previousButton.setText(String.valueOf(currentButton.getText()));
-            currentButton.setText(String.valueOf(nextButton.getText()));
-            nextButton.setText(String.valueOf(currentRotor.getCharInPosition(
-                    (currentRotor.getPositionOfChar(nextButton.getText().charAt(0)) + 1) % currentRotor.getConversionTableSize())));
+            indexOfChosenPosition++;
+            if(indexOfChosenPosition> currentRotor.getCTEPositioning().size()){
+                indexOfChosenPosition = indexOfChosenPosition % currentRotor.getCTEPositioning().size();
+            }
+            previousButton.setText(currentButton.getText());
+            currentButton.setText(nextButton.getText());
+            nextButton.setText(currentRotor.getCTEPositioning().get((indexOfChosenPosition+1)% currentRotor.getCTEPositioning().size()).getRight());
         }
+
+//        if(this.parentController instanceof CodeCalibrationController && !nextButton.getText().equals("")) {
+//            previousButton.setText(String.valueOf(currentButton.getText()));
+//            currentButton.setText(String.valueOf(nextButton.getText()));
+//            nextButton.setText(String.valueOf(currentRotor.getCharInPosition(
+//                    (currentRotor.getPositionOfChar(nextButton.getText().charAt(0)) + 1) % currentRotor.getConversionTableSize())));
+//        }
     }
 
     @FXML
     void previousButtonActionListener(ActionEvent event) {
 
-        if(this.parentController instanceof CodeCalibrationController && !previousButton.getText().equals("")) {
-            nextButton.setText(String.valueOf(currentButton.getText()));
-            currentButton.setText(String.valueOf(previousButton.getText()));
-            previousButton.setText(String.valueOf(currentRotor.getCharInPosition((currentRotor.getPositionOfChar
-                    (previousButton.getText().charAt(0)) - 1 + currentRotor.getConversionTableSize()) % currentRotor.getConversionTableSize())));
+        if(this.parentController instanceof CodeCalibrationController && !nextButton.getText().equals("")) {
+            indexOfChosenPosition--;
+            if(indexOfChosenPosition<0){
+                indexOfChosenPosition = (indexOfChosenPosition + currentRotor.getCTEPositioning().size()) % currentRotor.getCTEPositioning().size();
+            }
+            nextButton.setText(currentButton.getText());
+            currentButton.setText(previousButton.getText());
+            previousButton.setText(currentRotor.getCTEPositioning().get((
+                    indexOfChosenPosition -1+ currentRotor.getCTEPositioning().size()) % currentRotor.getCTEPositioning().size()).getRight());
         }
+
+//        if(this.parentController instanceof CodeCalibrationController && !previousButton.getText().equals("")) {
+//            nextButton.setText(String.valueOf(currentButton.getText()));
+//            currentButton.setText(String.valueOf(previousButton.getText()));
+//            previousButton.setText(String.valueOf(currentRotor.getCharInPosition((currentRotor.getPositionOfChar
+//                    (previousButton.getText().charAt(0)) - 1 + currentRotor.getConversionTableSize()) % currentRotor.getConversionTableSize())));
+//        }
     }
 
     public void setParentController(RotorParent controller) {
@@ -93,18 +124,32 @@ public class RotorController {
         rotorIdChoiceBox.getItems().removeAll(id);
     }
 
-    public void setCurrentRotor(Rotor rotor){
+    public void setCurrentRotor(CTERotor rotor){
         currentRotor = rotor;
-        currentButton.setText(String.valueOf(currentRotor.getCharInPosition(0)));
-        nextButton.setText(String.valueOf(currentRotor.getCharInPosition(1)));
-        previousButton.setText(String.valueOf(currentRotor.getCharInPosition(currentRotor.getConversionTableSize() - 1)));
+        indexOfChosenPosition = 0;
+        currentButton.setText(currentRotor.getCTEPositioning().get(0).getRight());
+        nextButton.setText(currentRotor.getCTEPositioning().get(1).getRight());
+        previousButton.setText(currentRotor.getCTEPositioning().get(rotor.getCTEPositioning().size()-1).getRight());
+//        currentButton.setText(String.valueOf(currentRotor.getCharInPosition(0)));
+//        nextButton.setText(String.valueOf(currentRotor.getCharInPosition(1)));
+//        previousButton.setText(String.valueOf(currentRotor.getCharInPosition(currentRotor.getConversionTableSize() - 1)));
     }
 
-    public void setCurrentRotor(Rotor rotor, Character initialPosition){
+    public void setCurrentRotor(CTERotor rotor, Character initialPosition){
         currentRotor = rotor;
+
+        for (int i=0 ;i < rotor.getCTEPositioning().size();i++){
+            if(rotor.getCTEPositioning().get(i).getRight().equals(initialPosition.toString())){
+                      indexOfChosenPosition = i;
+            }
+        }
+
+        nextButton.setText(currentRotor.getCTEPositioning().get((indexOfChosenPosition + 1)% rotor.getCTEPositioning().size()).getRight());
+        previousButton.setText(currentRotor.getCTEPositioning().get((indexOfChosenPosition - 1 + rotor.getCTEPositioning().size())% rotor.getCTEPositioning().size()).getRight());
         currentButton.setText(String.valueOf(initialPosition));
-        nextButton.setText(String.valueOf(currentRotor.getCharInPosition((currentRotor.getPositionOfChar(initialPosition) + 1) % currentRotor.getConversionTableSize())));
-        previousButton.setText(String.valueOf(currentRotor.getCharInPosition((currentRotor.getPositionOfChar(initialPosition) - 1 + currentRotor.getConversionTableSize()) % currentRotor.getConversionTableSize())));
+       // nextButton.setText(String.valueOf(currentRotor.getCharInPosition((currentRotor.getPositionOfChar(initialPosition) + 1) % currentRotor.getConversionTableSize())));
+       // previousButton.setText(String.valueOf(currentRotor.getCharInPosition((currentRotor.getPositionOfChar(initialPosition) - 1 + currentRotor.getConversionTableSize()) % currentRotor.getConversionTableSize())));
+
     }
 
     public Integer getChosenRotorId(){

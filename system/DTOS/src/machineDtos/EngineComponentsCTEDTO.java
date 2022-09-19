@@ -11,19 +11,18 @@ import scheme.generated.CTERotor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EngineComponentsDTO2 {
+public class EngineComponentsCTEDTO {
 
     private final List<CTERotor> optionalRotors = new ArrayList<>();
     private final List<CTEReflector> optionalReflectors = new ArrayList<>();
     private final String ABC;
 
-    public EngineComponentsDTO2(List<Rotor> rotors, List<Reflector> reflectors, String abc){
+    public EngineComponentsCTEDTO(List<Rotor> rotors, List<Reflector> reflectors, String abc){
 
         for (Rotor rotor: rotors) {
             CTERotor duplicate = new CTERotor();
             duplicate.setId(rotor.getId());
             duplicate.setNotch(rotor.getNotchPosition());
-            duplicate.getCTEPositioning();
 
             for(int i=0; i< rotor.getConversionTableSize();i++){
                 CTEPositioning positioning = new CTEPositioning();
@@ -32,6 +31,8 @@ public class EngineComponentsDTO2 {
                 positioning.setRight(pair.getValue().toString());
                 duplicate.getCTEPositioning().add(positioning);
             }
+
+            optionalRotors.add(duplicate);
         }
 
         for(Reflector reflector: reflectors){
@@ -44,6 +45,8 @@ public class EngineComponentsDTO2 {
                 reflect.setOutput(reflector.getReflectorConversions().get(key));
                 duplicate.getCTEReflect().add(reflect);
             }
+
+            optionalReflectors.add(duplicate);
         }
 
         ABC = abc;

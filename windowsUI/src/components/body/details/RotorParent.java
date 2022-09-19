@@ -1,8 +1,8 @@
 package components.body.details;
 
-import components.Rotor;
+import scheme.generated.CTERotor;
 
 public interface RotorParent {
 
-    public Rotor getRotor(int id);
+    public CTERotor getRotor(int id);
 }
