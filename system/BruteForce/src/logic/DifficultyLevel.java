@@ -4,8 +4,8 @@ import agent.AgentTask;
 import components.PlugBoard;
 import components.Reflector;
 import components.Rotor;
-import machine.Machine;
 import decryptionDtos.AgentTaskDTO;
+import machine.Machine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +24,9 @@ public enum DifficultyLevel {
             for (Integer rotorId : details.getRotorsId()){
                 details.getEngineComponentsDTO().getOptionalRotors().forEach(
                         rotor -> {
-                            if(rotor.getId() == rotorId) {rotors.add(rotor.clone());}
+                            if(rotor.getId() == rotorId) {
+                                rotors.add(rotor.clone());
+                            }
                         });
             }
 
@@ -32,13 +34,12 @@ public enum DifficultyLevel {
                     rotor -> rotor.getPositionOfChar(details.getEngineComponentsDTO().getABC().charAt(0))).boxed().collect(Collectors.toList());
 
             Reflector reflector = details.getEngineComponentsDTO().getOptionalReflectors().stream().filter(
-                    reflector1 -> reflector1.getId().equals(details.getReflectorId())).findFirst().get().clone();
+                    reflector1 -> reflector1.getId().equals(details.getReflectorId())).findFirst().get();
 
-
-            Machine machine = new Machine(rotors, rotorsPositions, reflector , details.getEngineComponentsDTO().getABC(), new PlugBoard());
+            Machine enigmaMachine = new Machine(rotors, rotorsPositions, reflector , details.getEngineComponentsDTO().getABC(), new PlugBoard());
 
             try {
-                tasksQueue.put(new AgentTask(machine,details.getInitialPositions(), details.getMessageToDecrypt(),details.getDictionary(), details.getUpdateAnswer(),details.getTasksMade()));
+                tasksQueue.put(new AgentTask(enigmaMachine,details));
             } catch (InterruptedException e) {
                 e.printStackTrace();        // handle here....
             }

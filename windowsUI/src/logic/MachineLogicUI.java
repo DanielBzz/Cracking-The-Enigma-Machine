@@ -9,7 +9,7 @@ import logic.events.handler.MachineEventHandler;
 import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 
-public class MachineLogicUI {
+public class MachineLogicUI  implements HistoryUpdatable {
 
     private EnigmaAppController appController;
     private EnigmaSystemEngine machine = new EnigmaEngine();
@@ -51,7 +51,6 @@ public class MachineLogicUI {
         machine.manualMachineInit(initialArgs);
         codeSetEventHandler.fireEvent(machine.displayingMachineSpecification());
         appController.setMachineSpecification(machine.displayingMachineSpecification());
-
     }
 
     public void automaticInitialCodeConfiguration() {
@@ -66,7 +65,6 @@ public class MachineLogicUI {
 
         encryptedMessage.set(machine.encryptString(msg));
         codeSetEventHandler.fireEvent(machine.displayingMachineSpecification());
-        statisticsUpdateEventHandler.fireEvent(machine.getHistoryAndStatistics());
     }
 
     public void resetCurrentCode() {
@@ -83,6 +81,13 @@ public class MachineLogicUI {
     public EnigmaSystemEngine getMachineEngine(){
         return machine;
     }
-    /* problem to do fire event every time cause we do clone and duplicate every time the components --> create exception of space
-*/
+
+    @Override
+    public void updateHistory() {
+        if (machine instanceof EnigmaEngine) {
+            ((EnigmaEngine) machine).updateHistory();
+        }
+
+        statisticsUpdateEventHandler.fireEvent(machine.getHistoryAndStatistics());
+    }
 }

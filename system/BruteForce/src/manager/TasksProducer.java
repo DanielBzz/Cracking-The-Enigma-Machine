@@ -30,13 +30,15 @@ public class TasksProducer implements Runnable{
         int tasksMade = 0;
 
         while (taskSize + tasksMade <tasksAmount){
-            details.setInitialPositions(createSubTask(tasksMade,taskSize,numOfRotors,ABC));
-            level.initialTasks(details,agentTasks);
+            AgentTaskDTO newDetails = new AgentTaskDTO(details);
+            newDetails.setInitialPositions(createSubTask(tasksMade,taskSize,numOfRotors,ABC));
+            level.initialTasks(newDetails,agentTasks);
             tasksMade+=taskSize;
         }
 
         if(tasksAmount % taskSize != 0){
-            details.setInitialPositions(createSubTask(tasksMade,tasksAmount % taskSize, numOfRotors,ABC));
+            AgentTaskDTO newDetails = new AgentTaskDTO(details);
+            newDetails.setInitialPositions(createSubTask(tasksMade,taskSize,numOfRotors,ABC));
             level.initialTasks(details,agentTasks);
         }
     }
@@ -57,7 +59,6 @@ public class TasksProducer implements Runnable{
                 tasksMadeCopy /= ABC.length();
             }
             initialPositions.add(newInitialPosition);
-
             tasksMade++;
         }
 

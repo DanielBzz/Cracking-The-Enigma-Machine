@@ -57,7 +57,6 @@
                     <rowConstraints>
                       <RowConstraints vgrow="SOMETIMES" />
                       <RowConstraints vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <AnchorPane GridPane.columnSpan="2147483647">
@@ -65,7 +64,7 @@
                               <fx:include fx:id="encryptScreenMachineConfigurationComponent" source="../details/machineConfigurationComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane GridPane.rowIndex="1">
+                        <AnchorPane minHeight="290.0" minWidth="600.0" GridPane.rowIndex="1">
                            <children>
                               <fx:include fx:id="encryptComponent" source="encryptComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>

@@ -15,4 +15,8 @@ public class StatisticsController implements StatisticsUpdateEventListener {
 
         statisticsLabel.setText(OutputMessages.historyMsg(arg));
     }
+
+    public void clearController() {
+        statisticsLabel.setText("");
+    }
 }

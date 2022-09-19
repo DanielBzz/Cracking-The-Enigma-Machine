@@ -15,7 +15,7 @@ public class Reflector implements Convertor<Integer>, Serializable, Cloneable {
         reflectorConversions = reflectorMap;
     }
 
-    public Map<Integer, Integer> getReflectorConversions() {
+    public synchronized Map<Integer, Integer> getReflectorConversions() {
         return new HashMap<>(reflectorConversions);
     }
 
@@ -25,7 +25,7 @@ public class Reflector implements Convertor<Integer>, Serializable, Cloneable {
     }
 
     @Override
-    public Integer convert(Integer position) {
+    public synchronized Integer convert(Integer position) {
 
         return reflectorConversions.get(position);
     }

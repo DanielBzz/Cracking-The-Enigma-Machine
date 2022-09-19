@@ -1,11 +1,12 @@
 package logic;
 
 import components.body.details.DecryptionManagerController;
-import logic.tasks.DecryptMessageTask;
 import decryptionDtos.AgentAnswerDTO;
 import decryptionDtos.DecryptionArgumentsDTO;
+import logic.tasks.DecryptMessageTask;
 import manager.DecryptionManager;
 
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class DecryptLogicUI {
@@ -22,13 +23,7 @@ public class DecryptLogicUI {
         this.controllerToUpdate = controllerToUpdate;
     }
 
-    public void setCurrentTask(DecryptMessageTask currentTask) {
-        this.currentTask = currentTask;
-    }
-
     public void decryptMessage(Consumer<AgentAnswerDTO> updateCandidates, DecryptionArgumentsDTO args){
-
-        //decryptionManager.decryptMessage(taskSize,difficultyLevel,encryptedMessage,);
 
         currentTask = new DecryptMessageTask(decryptionManager,args, updateCandidates);
         controllerToUpdate.bindTaskToController(currentTask);
@@ -46,5 +41,21 @@ public class DecryptLogicUI {
 
     public double getTaskSize(){
         return decryptionManager.getTaskAmount();
+    }
+
+    public String getSpecialChars(){
+        return decryptionManager.getExcludeChars();
+    }
+
+    public String getStringWithoutSpecialChars(String message){
+
+        return DecipherLogic.excludeSpecialCharactersFromWord(message, decryptionManager.getExcludeChars());
+    }
+
+    public Boolean isWordsInTheDictionary(String Message){
+
+        Set<String> words = DecipherLogic.stringToWords(Message.toLowerCase());
+
+        return decryptionManager.getWordsDictionary().containsAll(words);
     }
 }

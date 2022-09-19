@@ -18,7 +18,7 @@ public class DecryptionManager {
     private EnigmaSystemEngine machineEngine;
     private ThreadPoolExecutor threadPool;
     private BlockingQueue<Runnable> agentTasks;
-    private final AgentsAnswersQueue answersQueue = new AgentsAnswersQueue();
+    private final BlockingQueue<AgentAnswerDTO> answersQueue = new LinkedBlockingQueue<>();
     Consumer<AgentAnswerDTO> updateQueue;
     double tasksAmount;
 
@@ -35,7 +35,13 @@ public class DecryptionManager {
         };
         agentTasks = new LinkedBlockingQueue<>(1000);
         threadPool = new ThreadPoolExecutor(maxNumberOfAgents, maxNumberOfAgents,5, TimeUnit.SECONDS,agentTasks,threadFactory);
-        updateQueue = answersQueue::add;
+        updateQueue = e -> {
+            try {
+                answersQueue.put(e);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+        };
         machineEngine = engine;
         EngineDTO details = engine.displayingMachineSpecification();
         tasksAmount = Math.pow(details.getEngineComponentsInfo().getABC().length(), details.getNumOfUsedRotors());
@@ -56,8 +62,12 @@ public class DecryptionManager {
         DecryptionManager.excludeChars = excludeChars;
     }
 
+    public String getExcludeChars(){
+        return excludeChars;
+    }
 
-    public AgentsAnswersQueue getAnswersQueue(){
+
+    public BlockingQueue<AgentAnswerDTO> getAnswersQueue(){
         return answersQueue;
     }
     public void setMachineEngine(EnigmaEngine machineEngine) {
@@ -74,7 +84,7 @@ public class DecryptionManager {
         return wordsDictionary;
     }
 
-    public void decryptMessage(int taskSize, DifficultyLevel level, String message, List<Integer> rotorsId, String reflectorId, TasksMade tasksMade){
+    public void decryptMessage(int taskSize, DifficultyLevel level, String message, List<Integer> rotorsId, String reflectorId, TasksMadeData tasksMade, int agentsNumber){
 
         AgentTaskDTO details = new AgentTaskDTO();
         EngineDTO engineDetails = machineEngine.displayingMachineSpecification();
@@ -90,9 +100,9 @@ public class DecryptionManager {
 
         answersQueue.clear();
         details.setUpdateAnswer(updateQueue);
-
+        threadPool.setCorePoolSize(agentsNumber);
+        threadPool.setMaximumPoolSize(agentsNumber);
         threadPool.prestartAllCoreThreads();
-
         new Thread(new TasksProducer(details,taskSize,agentTasks,level)).start();
     }
 

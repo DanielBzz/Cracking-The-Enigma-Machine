@@ -1,16 +1,17 @@
 package components.body.details;
 
 import components.body.main.BruteForceController;
+import decryptionDtos.AgentAnswerDTO;
+import decryptionDtos.DecryptionArgumentsDTO;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import decryptionDtos.AgentAnswerDTO;
+import javafx.scene.input.KeyEvent;
 import logic.DecryptLogicUI;
 import logic.DifficultyLevel;
-import decryptionDtos.DecryptionArgumentsDTO;
 import manager.DecryptionManager;
 
 import java.util.Arrays;
@@ -40,6 +41,7 @@ public class DecryptionManagerController {
 
         levelComboBox.setItems(FXCollections.observableList(
                 Arrays.stream(DifficultyLevel.values()).map(v->(String)v.toString()).collect(Collectors.toList())));
+        levelComboBox.setValue(DifficultyLevel.EASY.name());
         taskSizeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE));
         agentsNumberSlider.setMin(2);
         agentsNumberSlider.setMax(decryptLogic.getMaxAgentTask());
@@ -47,12 +49,15 @@ public class DecryptionManagerController {
         taskSizeSpinner.valueProperty().addListener((
                 observable, oldValue, newValue) -> tasksAmountLabel.setText(String.valueOf((int)Math.ceil(decryptLogic.getTaskSize() / (double)newValue))));
 
+        taskSizeSpinner.getValueFactory().setValue(2);
+
         pauseButton.setDisable(true);
         resumeButton.setDisable(true);
         stopButton.disableProperty().bind(startButton.disabledProperty().not());
         startButton.disableProperty().addListener((observable, oldValue, newValue) -> pauseButton.setDisable(oldValue));
         startButton.disableProperty().addListener((observable, oldValue, newValue) -> resumeButton.setDisable(oldValue));
 
+        candidatesArea.setEditable(false);
         decryptLogic.setControllerToUpdate(this);
     }
 
@@ -77,13 +82,6 @@ public class DecryptionManagerController {
             new Alert(Alert.AlertType.WARNING, "You did not initial all the arguments", ButtonType.OK).show();
         }
         else{
-            Consumer<AgentAnswerDTO> updateCandidates = dto -> {
-                StringBuilder answer = new StringBuilder();
-                Map<String, List<Character>> candidates = dto.getDecryptedMessagesCandidates();
-                candidates.keySet().forEach(candidate -> answer.append(candidate + " Configuration is: " + candidates.get(candidate) + " by: " + dto.getAgentId()));
-                candidatesArea.setText(candidatesArea.getText() + System.lineSeparator() + answer.toString());
-            };
-
             DecryptionArgumentsDTO args = new DecryptionArgumentsDTO();
             args.setLevel(DifficultyLevel.valueOf(levelComboBox.getValue()));
             args.setMessageToDecrypt(parentController.getEncryptedMessage());
@@ -93,7 +91,8 @@ public class DecryptionManagerController {
             args.setReflectorId(parentController.getEngineDetails().getMachineInitialInfo().getReflectorID());
             args.setRotorsId(parentController.getEngineDetails().getMachineInitialInfo().getRotorsID());
             startButton.setDisable(true);
-            decryptLogic.decryptMessage(updateCandidates,args);
+            clearController();
+            decryptLogic.decryptMessage(updateCandidates(),args);
         }
     }
 
@@ -117,5 +116,53 @@ public class DecryptionManagerController {
                                 task.progressProperty(),
                                 100)),
                 " %"));
+
+        task.valueProperty().addListener((observable, oldValue, newValue) -> {
+            onTaskFinished();
+        });
+    }
+
+    public void onTaskFinished(){
+
+        decryptionProgressBar.progressProperty().unbind();
+        decryptionProgressLabel.textProperty().unbind();
+        startButton.setDisable(false);
+    }
+
+    public String getStringWithoutSpecialChars(String message){
+
+        return decryptLogic.getStringWithoutSpecialChars(message);
+    }
+
+    public Boolean isWordsInDictionary(String message){
+        return decryptLogic.isWordsInTheDictionary(message);
+    }
+
+    public Consumer<AgentAnswerDTO>  updateCandidates() {
+
+        return dto -> {
+            StringBuilder answer = new StringBuilder();
+            Map<String, List<Character>> candidates = dto.getDecryptedMessagesCandidates();
+
+            candidates.keySet().forEach(candidate -> answer.append(
+                    candidate + " Configuration is: " + candidates.get(candidate) + " by: " + dto.getAgentId() + System.lineSeparator()));
+
+            candidatesArea.setText(candidatesArea.getText() + answer.toString());
+        };
+    }
+
+    @FXML
+    void spinnerOnKeyTypeEventListener(KeyEvent event) {
+
+        if(!event.getCode().isDigitKey()){
+            event.consume();
+        }
+    }
+
+    public void clearController() {
+        candidatesArea.setText("");
+        //decryptionProgressLabel.setText("0%");
+        decryptionProgressBar.setProgress(0);
+
     }
 }

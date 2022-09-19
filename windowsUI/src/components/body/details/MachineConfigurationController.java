@@ -103,4 +103,13 @@ public class MachineConfigurationController implements CodeSetEventListener, Ref
         return parentController.getEngineDetails().getEngineComponentsInfo().getOptionalRotors().stream().
                 filter(rotor -> rotor.getId() == id).findFirst().get();
     }
+
+    public void clearComponent() {
+        if(!stringConfiguration.textProperty().isBound()) {
+            stringConfiguration.setText("");
+        }
+        reflectorPane.getChildren().clear();
+        rotorsPane.getChildren().clear();
+        plugBoardComponentController.clear();
+    }
 }

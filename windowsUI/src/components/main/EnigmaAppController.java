@@ -10,8 +10,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
-import logic.EnigmaEngine;
-import logic.HistoryUpdatable;
 import logic.MachineLogicUI;
 import logic.events.CodeSetEventListener;
 import logic.events.EncryptMessageEventListener;
@@ -40,20 +38,14 @@ public class EnigmaAppController {
             headerComponentController.setMainController(this);
             bodyComponentController.setMainController(this);
             headerComponentController.initial();
-            bodyComponentController.initial();
             bodyComponent.disableProperty().bind(isGoodFileSelected.not());
             bodyComponentController.getMachineInfoProperty().addListener(
                     (observable, oldValue, newValue) -> machineUI.manualInitialCodeConfiguration(newValue));
-            bodyComponentController.encryptMessageEventHandler().addListener(new EncryptMessageEventListener() {
-                @Override
-                public void invoke(String arg) {
-                    machineUI.encryptInput(arg);
-                }
-            });
 
             //isFileSelected.bind(selectedFileProperty.isNotEqualTo("-"));
             selectedFileProperty.addListener((observable, oldValue, newValue) -> {
                 isGoodFileSelected.set(false);
+                clearStage();
                 machineUI.loadNewXmlFile(newValue);
             });
 
@@ -66,12 +58,12 @@ public class EnigmaAppController {
                     bodyComponentController.setIsCodeConfigurationSet(false);
                 }
             });
-            if(machineUI.getMachineEngine() instanceof EnigmaEngine){
-                bodyComponentController.setListenerToHistoryUpdate((HistoryUpdatable)machineUI.getMachineEngine());
-            }
 
+            bodyComponentController.setListenerToHistoryUpdate(machineUI);
             bodyComponentController.codeCalibrationRandomCodeOnAction().set(observable -> machineUI.automaticInitialCodeConfiguration());
             bodyComponentController.encryptResetButtonActionProperty().set(observable -> machineUI.resetCurrentCode());
+            bodyComponentController.initial();
+
         }
     }
 
@@ -121,5 +113,18 @@ public class EnigmaAppController {
 
     public void setIsGoodFileSelected(Boolean isGood) {
         isGoodFileSelected.set(isGood);
+    }
+
+    public EncryptMessageEventListener getEncryptMessageEventListener(){
+        return new EncryptMessageEventListener() {
+            @Override
+            public void invoke(String arg) {
+                machineUI.encryptInput(arg);
+            }
+        };
+    }
+
+    public void clearStage(){
+        bodyComponentController.clearComponent();
     }
 }

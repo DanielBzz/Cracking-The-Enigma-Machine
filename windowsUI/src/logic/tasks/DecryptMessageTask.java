@@ -2,9 +2,8 @@ package logic.tasks;
 
 import decryptionDtos.AgentAnswerDTO;
 import decryptionDtos.DecryptionArgumentsDTO;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
-import logic.TasksMade;
+import logic.TasksMadeData;
 import manager.DecryptionManager;
 
 import java.util.function.Consumer;
@@ -14,8 +13,8 @@ public class DecryptMessageTask extends Task<Boolean> {
     DecryptionManager decryptionManager;
     DecryptionArgumentsDTO args;
     Consumer<AgentAnswerDTO> answersConsumer;
+    private TasksMadeData tasksMade = new TasksMadeData();
 
-    private TasksMade tasksMade = new TasksMade();
     public DecryptMessageTask(DecryptionManager decryptionManager, DecryptionArgumentsDTO args, Consumer<AgentAnswerDTO> answersConsumer){
 
         this.answersConsumer = answersConsumer;
@@ -27,20 +26,24 @@ public class DecryptMessageTask extends Task<Boolean> {
     @Override
     protected Boolean call() throws Exception {
 
-        tasksMade.put(0);
         decryptionManager.decryptMessage(
-                args.getTaskSize(),args.getLevel(),args.getMessageToDecrypt(),args.getRotorsId(),args.getReflectorId(),tasksMade);
+                args.getTaskSize(),args.getLevel(),args.getMessageToDecrypt(),args.getRotorsId(),args.getReflectorId(),tasksMade,args.getAgentsNumber());
 
-        while(tasksMade.get() != args.getAmountOfTasks() && !decryptionManager.getAnswersQueue().isEmpty() ){
+        Thread updateTask = new Thread(new UpdateAnswersTask(args.getAmountOfTasks(),tasksMade, decryptionManager.getAnswersQueue(),answersConsumer));
+        updateTask.start();
 
+        while(tasksMade.get() < args.getAmountOfTasks()){
             updateProgress(tasksMade.get(), args.getAmountOfTasks());
-
-            AgentAnswerDTO answer = decryptionManager.getAnswersQueue().get();
-            Platform.runLater(()-> answersConsumer.accept(answer));
+            System.out.println(tasksMade.get());
+            Thread.sleep(1000);
         }
 
-        decryptionManager.shoutDown();
+        updateProgress(tasksMade.get(), args.getAmountOfTasks());
+        if(decryptionManager.getAnswersQueue().isEmpty() && updateTask.isAlive()){
+            updateTask.interrupt();
+        }
 
+        //decryptionManager.shoutDown();
         return true;
     }
 }

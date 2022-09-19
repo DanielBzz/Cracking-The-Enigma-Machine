@@ -9,31 +9,31 @@ public class ConversionTable implements Serializable, Cloneable {
     private final List<Character> rightValues = new ArrayList<>();
     private final List<Character> leftValues = new ArrayList<>();
 
-    public Character getRightCharacter(int position){
+    public synchronized Character getRightCharacter(int position){
 
         return rightValues.get(position);
     }
 
-    public Character getLeftCharacter(int position){
+    public synchronized Character getLeftCharacter(int position){
 
         return leftValues.get(position);
     }
 
-    public int getCharIndexInRight(char character){
+    public synchronized int getCharIndexInRight(char character){
 
         return rightValues.indexOf(character);
     }
 
-    public int getCharIndexInLeft(char character){
+    public synchronized int getCharIndexInLeft(char character){
 
         return leftValues.indexOf(character);
     }
 
-    public int getTableSize(){
+    public synchronized int getTableSize(){
         return rightValues.size();
     }
 
-    public void add(Character right , Character left){
+    public synchronized void add(Character right , Character left){
 
         rightValues.add(right);
         leftValues.add(left);

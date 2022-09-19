@@ -4,6 +4,7 @@ import components.body.machine.DynamicMachineComponentFactory;
 import components.body.machine.PlugBoardController;
 import components.body.machine.RotorController;
 import components.body.main.BodyController;
+import consoleComponents.OutputMessages;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -15,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import logic.EngineLogic;
+import logic.events.CodeSetEventListener;
 import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 import scheme.generated.CTERotor;
@@ -24,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class CodeCalibrationController implements RotorParent, PlugBoardParent {
+public class CodeCalibrationController implements RotorParent, PlugBoardParent, CodeSetEventListener {
 
     BodyController parentController;
     @FXML private Button randomButton;
@@ -36,6 +38,8 @@ public class CodeCalibrationController implements RotorParent, PlugBoardParent {
     @FXML private ChoiceBox<Character> rightPlugChoiceBox;
     @FXML private SplitPane plugBoardComponent;
     @FXML private PlugBoardController plugBoardComponentController;
+    @FXML private Label initialConfigurationLabel;
+
     private final ToggleGroup availableReflectorsGroup = new ToggleGroup();
     private final List<RotorController> rotorsChosen = new ArrayList<>();
     private final SimpleObjectProperty<MachineInfoDTO> machineInfoProperty = new SimpleObjectProperty<>();
@@ -146,5 +150,18 @@ public class CodeCalibrationController implements RotorParent, PlugBoardParent {
 
             rightPlugChoiceBox.getItems().add(chars.charAt(0));
             rightPlugChoiceBox.getItems().add(chars.charAt(1));
+    }
+
+    @Override
+    public void invoke(EngineDTO updatedValue) {
+        initialConfigurationLabel.setText(OutputMessages.currentMachineSpecification(updatedValue.getMachineInitialInfo()));
+    }
+
+    public void clearComponent() {
+        initialConfigurationLabel.setText("");
+        reflectorPane.getChildren().clear();
+        rotorsPane.getChildren().clear();
+        rightPlugChoiceBox.getItems().clear();
+        plugBoardComponentController.clear();
     }
 }

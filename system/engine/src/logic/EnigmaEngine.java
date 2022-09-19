@@ -20,7 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class EnigmaEngine implements EnigmaSystemEngine, Serializable, HistoryUpdatable {
+public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
 
     private Machine enigmaMachine = null;
     private MachineInfoDTO currentInitialMachineInfo = null;
@@ -170,7 +170,7 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable, HistoryUp
             lastEncryptedDetails = new LastEncryptedMessage(message,encryptedString.toString(),encryptedTime);
         }else {
             lastEncryptedDetails.setMessage(lastEncryptedDetails.getMessage().concat(message));
-            lastEncryptedDetails.setMessage(lastEncryptedDetails.getEncrypted().concat(encryptedString.toString()));
+            lastEncryptedDetails.setEncrypted(lastEncryptedDetails.getEncrypted().concat(encryptedString.toString()));
         }
         return encryptedString.toString();
     }

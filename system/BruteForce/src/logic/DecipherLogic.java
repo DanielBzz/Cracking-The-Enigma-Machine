@@ -44,7 +44,7 @@ public class DecipherLogic {
 
 
 
-    protected static String excludeSpecialCharactersFromWord(String word, String specialChars){
+    public static String excludeSpecialCharactersFromWord(String word, String specialChars){
 
         StringBuilder tempWord = new StringBuilder(word);
         int index;
@@ -58,4 +58,5 @@ public class DecipherLogic {
 
         return tempWord.toString();
     }
+
 }

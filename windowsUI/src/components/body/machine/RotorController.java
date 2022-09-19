@@ -19,13 +19,10 @@ public class RotorController {
 
     @FXML
     private ChoiceBox<Integer> rotorIdChoiceBox;
-
     @FXML
     private Button previousButton;
-
     @FXML
     private Button currentButton;
-
     @FXML
     private Button nextButton;
     private CTERotor currentRotor;

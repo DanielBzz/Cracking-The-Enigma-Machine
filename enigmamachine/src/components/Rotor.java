@@ -62,7 +62,7 @@ public class Rotor implements Convertor<Integer>, Serializable, Cloneable {
     @Override
     public Rotor clone() {
 
-        Rotor clone = new Rotor(id, notchPosition, rotorConversions.clone());
+        Rotor clone = new Rotor(id, notchPosition, rotorConversions);
         clone.rightToLeft = rightToLeft;
 
         return clone;

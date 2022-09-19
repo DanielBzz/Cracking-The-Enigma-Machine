@@ -68,4 +68,10 @@ public class EngineDetailsController implements RotorParent, ReflectorParent{
         return parentController.getEngineDetails().getEngineComponentsInfo().getOptionalRotors().stream().
                 filter(rotor -> rotor.getId() == id).findFirst().get();
     }
+
+    public void clearComponent() {
+        rotorsPane.getChildren().clear();
+        reflectorsPane.getChildren().clear();
+        abcPane.getChildren().clear();
+    }
 }
