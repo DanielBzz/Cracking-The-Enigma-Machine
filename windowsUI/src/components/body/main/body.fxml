@@ -45,7 +45,7 @@
             </ScrollPane>
          </content>
     </Tab>
-    <Tab text="Encrypt / Decrypt">
+    <Tab fx:id="encryptTab" text="Encrypt / Decrypt">
          <content>
             <ScrollPane fitToHeight="true" fitToWidth="true">
                <content>
@@ -80,7 +80,7 @@
             </ScrollPane>
          </content>
     </Tab>
-      <Tab text="Brute Force">
+      <Tab fx:id="bruteForceTab" text="Brute Force">
          <content>
             <fx:include fx:id="bruteForceComponent" source="bruteForceComponent.fxml" />
          </content>

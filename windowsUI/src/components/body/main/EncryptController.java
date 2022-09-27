@@ -109,9 +109,7 @@ public class EncryptController {
     void doneButtonActionListener(ActionEvent event) {
 
         listener.updateHistory();
-        messageToEncryptTF.setText("");
-        encryptedMessageLabel.setText("");
-        bulbsBoardFlowPane.getChildren().forEach(Button->Button.setStyle(null));
+        clearButtonActionListener(event);
     }
 
     @FXML
@@ -128,7 +126,7 @@ public class EncryptController {
     @FXML
     void onKeyPressedActionListener(KeyEvent event) {
 
-        if(manualStateButton.isSelected() && !event.getCode().isDigitKey()){
+        if(manualStateButton.isSelected() && !event.getCode().isLetterKey()){
             event.consume();
         }
     }
@@ -138,6 +136,8 @@ public class EncryptController {
 
         if(stateSwitchButton.getSelectedToggle() == null){
             ((ToggleButton) event.getSource()).setSelected(true);
+        }else if(stateSwitchButton.getSelectedToggle() == autoStateButton) {
+            doneButtonActionListener(new ActionEvent());
         }else {
             clearButtonActionListener(new ActionEvent());
         }

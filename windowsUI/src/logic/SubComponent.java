@@ -1,4 +1,4 @@
-package components.main;
+package logic;
 
 public abstract class SubComponent implements UIComponentController {
 

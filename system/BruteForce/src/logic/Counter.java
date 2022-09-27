@@ -1,6 +1,6 @@
 package logic;
 
-public class TasksMadeData {
+public class Counter {
 
     private int data = 1;
 

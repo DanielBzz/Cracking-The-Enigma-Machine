@@ -1,6 +1,6 @@
 package decryptionDtos;
 
-import logic.TasksMadeData;
+import logic.Counter;
 import machineDtos.EngineComponentsDTO;
 
 import java.util.ArrayList;
@@ -17,8 +17,8 @@ public class AgentTaskDTO {
     private String messageToDecrypt;
     private Set<String> dictionary;
     private EngineComponentsDTO engineComponentsDTO;
-    private Consumer<AgentAnswerDTO> updateAnswer;
-    private TasksMadeData tasksMade;
+    private Consumer<AgentAnswerDTO> answerConsumer;
+    private Counter tasksMade;
 
     public AgentTaskDTO(){}
 
@@ -28,7 +28,7 @@ public class AgentTaskDTO {
         reflectorId = details.reflectorId;
         messageToDecrypt = details.messageToDecrypt;
         dictionary = details.dictionary;
-        updateAnswer = details.updateAnswer;
+        answerConsumer = details.answerConsumer;
         tasksMade = details.tasksMade;
         engineComponentsDTO = details.engineComponentsDTO;
         for(List<Character> list:details.initialPositions){
@@ -93,19 +93,19 @@ public class AgentTaskDTO {
         this.numOfUsedRotors = numOfUsedRotors;
     }
 
-    public Consumer<AgentAnswerDTO> getUpdateAnswer() {
-        return updateAnswer;
+    public Consumer<AgentAnswerDTO> getAnswerConsumer() {
+        return answerConsumer;
     }
 
-    public void setUpdateAnswer(Consumer<AgentAnswerDTO> updateAnswer) {
-        this.updateAnswer = updateAnswer;
+    public void setAnswerConsumer(Consumer<AgentAnswerDTO> answerConsumer) {
+        this.answerConsumer = answerConsumer;
     }
 
-    public void setTasksMade(TasksMadeData tasksMade) {
+    public void setTasksMade(Counter tasksMade) {
         this.tasksMade = tasksMade;
     }
 
-    public TasksMadeData getTasksMade() {
+    public Counter getTasksMade() {
         return tasksMade;
     }
 }

@@ -3,7 +3,7 @@ package logic.tasks;
 import decryptionDtos.AgentAnswerDTO;
 import decryptionDtos.DecryptionArgumentsDTO;
 import javafx.concurrent.Task;
-import logic.TasksMadeData;
+import logic.Counter;
 import manager.DecryptionManager;
 
 import java.util.function.Consumer;
@@ -13,7 +13,7 @@ public class DecryptMessageTask extends Task<Boolean> {
     DecryptionManager decryptionManager;
     DecryptionArgumentsDTO args;
     Consumer<AgentAnswerDTO> answersConsumer;
-    private TasksMadeData tasksMade = new TasksMadeData();
+    private Counter tasksMade = new Counter();
 
     public DecryptMessageTask(DecryptionManager decryptionManager, DecryptionArgumentsDTO args, Consumer<AgentAnswerDTO> answersConsumer){
 
@@ -21,7 +21,6 @@ public class DecryptMessageTask extends Task<Boolean> {
         this.decryptionManager = decryptionManager;
         this.args = args;
     }
-
 
     @Override
     protected Boolean call() throws Exception {
@@ -34,16 +33,15 @@ public class DecryptMessageTask extends Task<Boolean> {
 
         while(tasksMade.get() < args.getAmountOfTasks()){
             updateProgress(tasksMade.get(), args.getAmountOfTasks());
-            System.out.println(tasksMade.get());
             Thread.sleep(1000);
         }
 
         updateProgress(tasksMade.get(), args.getAmountOfTasks());
         if(decryptionManager.getAnswersQueue().isEmpty() && updateTask.isAlive()){
             updateTask.interrupt();
+            System.out.println("interrupted...");
         }
 
-        //decryptionManager.shoutDown();
         return true;
     }
 }

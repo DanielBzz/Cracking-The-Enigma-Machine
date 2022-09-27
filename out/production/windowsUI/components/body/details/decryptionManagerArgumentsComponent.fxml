@@ -36,7 +36,7 @@
       <Label text="Tasks size:" GridPane.rowIndex="2" />
       <Label text="Number of tasks:" GridPane.rowIndex="3" />
       <ComboBox fx:id="levelComboBox" prefWidth="120.0" GridPane.columnIndex="1" />
-      <Spinner fx:id="taskSizeSpinner" maxWidth="150.0" onKeyTyped="#spinnerOnKeyTypeEventListener" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Spinner fx:id="taskSizeSpinner" editable="true" maxWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Label fx:id="tasksAmountLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <VBox alignment="CENTER" minHeight="150.0" minWidth="160.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowSpan="4">
          <children>

@@ -9,7 +9,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
+import javafx.util.StringConverter;
 import logic.DecryptLogicUI;
 import logic.DifficultyLevel;
 import manager.DecryptionManager;
@@ -35,30 +35,44 @@ public class DecryptionManagerController {
     @FXML private Label decryptionProgressLabel;
     @FXML private TextArea candidatesArea;
     private BruteForceController parentController;
-    DecryptLogicUI decryptLogic = new DecryptLogicUI();
+    private final DecryptLogicUI decryptLogic = new DecryptLogicUI();
 
     public void initial(){
 
         levelComboBox.setItems(FXCollections.observableList(
                 Arrays.stream(DifficultyLevel.values()).map(v->(String)v.toString()).collect(Collectors.toList())));
         levelComboBox.setValue(DifficultyLevel.EASY.name());
-        taskSizeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE));
         agentsNumberSlider.setMin(2);
         agentsNumberSlider.setMax(decryptLogic.getMaxAgentTask());
         agentNumberLabel.textProperty().bind(agentsNumberSlider.valueProperty().asString());
-        taskSizeSpinner.valueProperty().addListener((
-                observable, oldValue, newValue) -> tasksAmountLabel.setText(String.valueOf((int)Math.ceil(decryptLogic.getTaskSize() / (double)newValue))));
-
-        taskSizeSpinner.getValueFactory().setValue(2);
-
+        initialTaskSpinner();
         pauseButton.setDisable(true);
         resumeButton.setDisable(true);
         stopButton.disableProperty().bind(startButton.disabledProperty().not());
         startButton.disableProperty().addListener((observable, oldValue, newValue) -> pauseButton.setDisable(oldValue));
         startButton.disableProperty().addListener((observable, oldValue, newValue) -> resumeButton.setDisable(oldValue));
-
         candidatesArea.setEditable(false);
         decryptLogic.setControllerToUpdate(this);
+    }
+
+    private void initialTaskSpinner(){
+
+        taskSizeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE));
+        taskSizeSpinner.valueProperty().addListener((
+                observable, oldValue, newValue) -> tasksAmountLabel.setText(String.valueOf((int)Math.ceil(decryptLogic.getTaskSize() / (double)newValue))));
+        taskSizeSpinner.getValueFactory().setConverter(new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer object) {return object.toString();}
+            @Override
+            public Integer fromString(String string) {
+                try {
+                    return Integer.parseInt(string);
+                }catch (NumberFormatException e){
+                    return 2;
+                }
+            }
+        });
+        taskSizeSpinner.getValueFactory().setValue(2);
     }
 
     public void setParentController(BruteForceController parentController) {
@@ -80,8 +94,9 @@ public class DecryptionManagerController {
 
         if(agentsNumberSlider.valueProperty() == null || taskSizeSpinner.valueProperty() == null || levelComboBox.valueProperty() == null){
             new Alert(Alert.AlertType.WARNING, "You did not initial all the arguments", ButtonType.OK).show();
-        }
-        else{
+        } else if (parentController.getEngineDetails().getMachineInitialInfo().getPlugs().size() != 0) {
+            new Alert(Alert.AlertType.WARNING, "You have plugs in your system", ButtonType.OK).show();
+        } else{
             DecryptionArgumentsDTO args = new DecryptionArgumentsDTO();
             args.setLevel(DifficultyLevel.valueOf(levelComboBox.getValue()));
             args.setMessageToDecrypt(parentController.getEncryptedMessage());
@@ -92,6 +107,8 @@ public class DecryptionManagerController {
             args.setRotorsId(parentController.getEngineDetails().getMachineInitialInfo().getRotorsID());
             startButton.setDisable(true);
             clearController();
+            System.out.println(parentController.getEngineDetails().getMachineInitialInfo().getRotorsID());
+            System.out.println(parentController.getEngineDetails().getMachineInitialInfo().getReflectorID());
             decryptLogic.decryptMessage(updateCandidates(),args);
         }
     }
@@ -149,14 +166,6 @@ public class DecryptionManagerController {
 
             candidatesArea.setText(candidatesArea.getText() + answer.toString());
         };
-    }
-
-    @FXML
-    void spinnerOnKeyTypeEventListener(KeyEvent event) {
-
-        if(!event.getCode().isDigitKey()){
-            event.consume();
-        }
     }
 
     public void clearController() {

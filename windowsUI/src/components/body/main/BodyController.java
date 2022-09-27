@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import logic.EnigmaSystemEngine;
@@ -28,48 +29,50 @@ public class BodyController implements encryptParentController {
     @FXML private BorderPane codeCalibrationComponent;
     @FXML private CodeCalibrationController codeCalibrationComponentController;
     @FXML private BorderPane machineConfigurationComponent;
-    @FXML private MachineConfigurationController machineConfigurationComponentController;   ////
+    @FXML private MachineConfigurationController machineConfigurationComponentController;
     @FXML private BorderPane engineDetailsComponent;
     @FXML private EngineDetailsController engineDetailsComponentController;
     @FXML private BorderPane encryptScreenMachineConfigurationComponent;
-    @FXML private MachineConfigurationController encryptScreenMachineConfigurationComponentController;  ////
+    @FXML private MachineConfigurationController encryptScreenMachineConfigurationComponentController;
     @FXML private GridPane encryptComponent;
     @FXML private EncryptController encryptComponentController;
     @FXML private ScrollPane bruteForceComponent;
     @FXML private  BruteForceController bruteForceComponentController;
     @FXML private ScrollPane statisticsComponent;
     @FXML private StatisticsController statisticsComponentController;
+    @FXML private Tab encryptTab;
     private EngineDTO engineDetails;
 
     public void initial() {
 
-        if (codeCalibrationComponentController != null && machineConfigurationComponentController != null &&
-                engineDetailsComponentController != null && encryptComponentController != null) {
+        if (codeCalibrationComponentController != null){
             codeCalibrationComponentController.setParentController(this);
+        }
+        if(machineConfigurationComponentController != null){
             machineConfigurationComponentController.setParentController(this);
+            machineConfigurationComponent.disableProperty().bind(machineConfigurationComponentController.getIsCodeConfigurationSetProperty().not());
+            encryptScreenMachineConfigurationComponentController.bind(machineConfigurationComponentController);
+            encryptComponent.disableProperty().bind(machineConfigurationComponentController.getIsCodeConfigurationSetProperty().not());
+            encryptScreenMachineConfigurationComponent.disableProperty().bind(machineConfigurationComponent.disableProperty());
+        }
+        if(engineDetailsComponentController != null){
             engineDetailsComponentController.setParentController(this);
+        }
+        if(encryptComponentController != null) {
             encryptComponentController.setParentController(this);
-            mainController.CodeSetEventHandler().addListener(machineConfigurationComponentController);
-            mainController.CodeSetEventHandler().addListener(bruteForceComponentController);
-            mainController.CodeSetEventHandler().addListener(codeCalibrationComponentController);
-            mainController.statisticsUpdateEventHandler().addListener(statisticsComponentController);
-            mainController.getMachineEncryptedMessageProperty().addListener(
-                    (observable, oldValue, newValue) -> {
-                        encryptComponentController.setEncryptedMessageLabel(newValue);
-                        bruteForceComponentController.setEncryptedMessageLabel(newValue);
-                    });
+            encryptComponentController.activateEncryptEventHandler.addListener(mainController.getEncryptMessageEventListener());
+            machineConfigurationComponentController.getIsCodeConfigurationSetProperty().addListener(observable -> encryptComponentController.createKeyboards(engineDetails.getEngineComponentsInfo().getABC()));
+        }
+        if(encryptScreenMachineConfigurationComponentController!= null){
+            encryptScreenMachineConfigurationComponentController.setParentController(this);
+        }
+        if(bruteForceComponentController!= null){
+            bruteForceComponentController.setParentController(this);
+            bruteForceComponentController.initial();
+            bruteForceComponentController.encryptMessageEventHandler().addListener(mainController.getEncryptMessageEventListener());
         }
 
-        bruteForceComponentController.setParentController(this);
-        bruteForceComponentController.initial();
-        machineConfigurationComponent.disableProperty().bind(machineConfigurationComponentController.getIsCodeConfigurationSetProperty().not());
-        encryptScreenMachineConfigurationComponent.disableProperty().bind(machineConfigurationComponent.disableProperty());
-        encryptScreenMachineConfigurationComponentController.setParentController(this);
-        encryptScreenMachineConfigurationComponentController.bind(machineConfigurationComponentController);
-        encryptComponent.disableProperty().bind(machineConfigurationComponentController.getIsCodeConfigurationSetProperty().not());
-        encryptComponentController.activateEncryptEventHandler.addListener(mainController.getEncryptMessageEventListener());
-        bruteForceComponentController.encryptMessageEventHandler().addListener(mainController.getEncryptMessageEventListener());
-        machineConfigurationComponentController.getIsCodeConfigurationSetProperty().addListener(observable -> encryptComponentController.createKeyboards(engineDetails.getEngineComponentsInfo().getABC()));
+        setLogicEventsToController();
     }
 
     public void setMainController(EnigmaAppController appController) {
@@ -139,6 +142,23 @@ public class BodyController implements encryptParentController {
         statisticsComponentController.clearController();
         encryptComponentController.clearButtonActionListener(new ActionEvent());
         encryptComponentController.removeOldAbcFromKeyboards();
+    }
+
+    private void setLogicEventsToController(){
+
+        mainController.statisticsUpdateEventHandler().addListener(statisticsComponentController);
+        mainController.getMachineEncryptedMessageProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if(encryptTab.isSelected()) {
+                        encryptComponentController.setEncryptedMessageLabel(newValue);
+                    } else {
+                        bruteForceComponentController.setEncryptedMessageLabel(newValue);
+                    }
+                });
+        mainController.CodeSetEventHandler().addListener(bruteForceComponentController);
+        mainController.CodeSetEventHandler().addListener(codeCalibrationComponentController);
+        mainController.CodeSetEventHandler().addListener(machineConfigurationComponentController);
+
     }
 }
 

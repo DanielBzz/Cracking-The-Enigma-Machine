@@ -34,6 +34,7 @@ public class BruteForceController implements encryptParentController, CodeSetEve
 
         decryptionManagerComponentController.setParentController(this);
         encryptedWordIsAvailable.bind(encryptComponentController.getEncryptedMessage().isNotEqualTo(""));
+
         decryptionManagerComponent.disableProperty().bind(encryptedWordIsAvailable.not());
         encryptComponentController.setAutoStateOnly();
         encryptComponentController.setParentController(this);

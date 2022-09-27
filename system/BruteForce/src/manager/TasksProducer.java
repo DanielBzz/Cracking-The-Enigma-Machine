@@ -13,6 +13,7 @@ public class TasksProducer implements Runnable{
     private final int taskSize;
     private final BlockingQueue<Runnable> agentTasks;
     DifficultyLevel level;
+
     public TasksProducer(AgentTaskDTO details, int taskSize,
                          BlockingQueue<Runnable> agentTasks, DifficultyLevel level) {
         this.details = details;
@@ -26,20 +27,25 @@ public class TasksProducer implements Runnable{
 
         String ABC = details.getEngineComponentsDTO().getABC();
         int numOfRotors = details.getNumOfUsedRotors();
-        double tasksAmount = Math.pow(ABC.length(),numOfRotors) ;
+        double tasksAmount = Math.pow(ABC.length(),numOfRotors);
         int tasksMade = 0;
+        int i=1;
 
-        while (taskSize + tasksMade <tasksAmount){
+        while (tasksMade < tasksAmount){
             AgentTaskDTO newDetails = new AgentTaskDTO(details);
             newDetails.setInitialPositions(createSubTask(tasksMade,taskSize,numOfRotors,ABC));
             level.initialTasks(newDetails,agentTasks);
             tasksMade+=taskSize;
+            System.out.println("task number " + i);
+            i++;
         }
 
         if(tasksAmount % taskSize != 0){
             AgentTaskDTO newDetails = new AgentTaskDTO(details);
-            newDetails.setInitialPositions(createSubTask(tasksMade,taskSize,numOfRotors,ABC));
+            newDetails.setInitialPositions(createSubTask(tasksMade,tasksAmount - tasksMade,numOfRotors,ABC));
             level.initialTasks(details,agentTasks);
+            System.out.println("task number " + i);
+            i++;
         }
     }
 
@@ -64,5 +70,4 @@ public class TasksProducer implements Runnable{
 
         return initialPositions;
     }
-
 }

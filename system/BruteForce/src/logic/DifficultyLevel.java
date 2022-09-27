@@ -26,9 +26,11 @@ public enum DifficultyLevel {
                         rotor -> {
                             if(rotor.getId() == rotorId) {
                                 rotors.add(rotor.clone());
+                                System.out.println("rotorId: " + rotor.getId());
                             }
                         });
             }
+
 
             List<Integer> rotorsPositions = rotors.stream().mapToInt(
                     rotor -> rotor.getPositionOfChar(details.getEngineComponentsDTO().getABC().charAt(0))).boxed().collect(Collectors.toList());
@@ -78,7 +80,6 @@ public enum DifficultyLevel {
 
             for (int[] combination : binomialCoefficient.getCombinations()) {
                 List<Integer> rotorsId = Arrays.stream(combination).boxed().collect(Collectors.toList());
-
                 details.setRotorsId(rotorsId);
                 HARD.initialTasks(details,tasksQueue);
             }

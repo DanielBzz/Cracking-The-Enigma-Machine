@@ -43,10 +43,6 @@ public class DecryptLogicUI {
         return decryptionManager.getTaskAmount();
     }
 
-    public String getSpecialChars(){
-        return decryptionManager.getExcludeChars();
-    }
-
     public String getStringWithoutSpecialChars(String message){
 
         return DecipherLogic.excludeSpecialCharactersFromWord(message, decryptionManager.getExcludeChars());

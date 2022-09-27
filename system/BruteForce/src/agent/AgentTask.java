@@ -12,18 +12,13 @@ import java.util.Set;
 
 public class AgentTask implements Runnable {
 
-    static int i = 0;
-    private Machine enigmaMachine;
+    private final Machine enigmaMachine;
     private final Map<String,List<Character>> decryptedMessagesCandidates = new HashMap<>();
-    private AgentTaskDTO details;
+    private final AgentTaskDTO details;
 
     public AgentTask(Machine machine , AgentTaskDTO details) {
         this.details = details;
         enigmaMachine = machine;
-    }
-
-    public synchronized void setI(){
-        i++;
     }
 
     @Override
@@ -43,33 +38,26 @@ public class AgentTask implements Runnable {
             decryptedWords = DecipherLogic.stringToWords(decryptedMessage.toString().toLowerCase());
 
             if(decryptedWords.stream().allMatch(details.getDictionary()::contains)){
-                System.out.println("match");
-                System.out.println(decryptedMessage.toString() + "  " + initialPosition);
                 decryptedMessagesCandidates.put(decryptedMessage.toString(), initialPosition);
             }
-            setI();
+
             decryptedMessage.delete(0,decryptedMessage.length());
         }
 
         taskDuration = System.nanoTime() - taskDuration;
-
         if(decryptedMessagesCandidates.size() != 0){
-            details.getUpdateAnswer().accept(new AgentAnswerDTO(decryptedMessagesCandidates,Thread.currentThread().getName(),taskDuration ));
+            details.getAnswerConsumer().accept(new AgentAnswerDTO(decryptedMessagesCandidates,Thread.currentThread().getName(),taskDuration ));
         }
+
         details.getTasksMade().update();
-        System.out.println(i);
     }
 
-    private void initializeConfigurationInMachine(List<Character> initialPosition){
+    private void initializeConfigurationInMachine(List<Character> initialPosition) {
 
         int i = 0;
         for (Character pos : initialPosition) {
-            enigmaMachine.setInitPositionForRotor(i,pos);
+            enigmaMachine.setInitPositionForRotor(i, pos);
             i++;
         }
-        if(initialPosition.size()!=3){
-            System.out.println(false);
-        }
     }
-
 }

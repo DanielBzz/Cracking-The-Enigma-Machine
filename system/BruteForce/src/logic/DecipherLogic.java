@@ -11,6 +11,8 @@ public class DecipherLogic {
 
     public static final int MINIMUM_AGENTS = 2;
     public static final int MAXIMUM_AGENTS = 50;
+    public static final int MAXIMUM_TASKS = 1000;
+
     public static void checkDecipherIsValid(CTEDecipher decipher) {
 
         int amountOfAgents = decipher.getAgents();
@@ -41,9 +43,6 @@ public class DecipherLogic {
         return Arrays.stream(str.split(" ")).collect(Collectors.toSet());
     }
 
-
-
-
     public static String excludeSpecialCharactersFromWord(String word, String specialChars){
 
         StringBuilder tempWord = new StringBuilder(word);
@@ -58,5 +57,4 @@ public class DecipherLogic {
 
         return tempWord.toString();
     }
-
 }

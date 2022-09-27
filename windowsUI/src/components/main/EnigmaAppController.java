@@ -20,54 +20,28 @@ import machineDtos.EngineDTO;
 public class EnigmaAppController {
 
     private MachineLogicUI machineUI;
-    @FXML
-    private ScrollPane headerComponent;
-    @FXML
-    private HeaderController headerComponentController;
-    @FXML
-    private TabPane bodyComponent;
-    @FXML
-    private BodyController bodyComponentController;
+    @FXML private ScrollPane headerComponent;
+    @FXML private HeaderController headerComponentController;
+    @FXML private TabPane bodyComponent;
+    @FXML private BodyController bodyComponentController;
     private final SimpleStringProperty selectedFileProperty = new SimpleStringProperty("-");
-    //private final SimpleBooleanProperty isFileSelected = new SimpleBooleanProperty(false);
     private final SimpleBooleanProperty isGoodFileSelected = new SimpleBooleanProperty(false);
 
     public void initial() {
 
         if (headerComponentController != null && bodyComponentController != null) {
             headerComponentController.setMainController(this);
-            bodyComponentController.setMainController(this);
             headerComponentController.initial();
-            bodyComponent.disableProperty().bind(isGoodFileSelected.not());
-            bodyComponentController.getMachineInfoProperty().addListener(
-                    (observable, oldValue, newValue) -> machineUI.manualInitialCodeConfiguration(newValue));
-
-            //isFileSelected.bind(selectedFileProperty.isNotEqualTo("-"));
-            selectedFileProperty.addListener((observable, oldValue, newValue) -> {
-                isGoodFileSelected.set(false);
-                clearStage();
-                machineUI.loadNewXmlFile(newValue);
-            });
-
-            isGoodFileSelected.addListener((observable, oldValue, newValue) -> {
-                if(newValue){
-                    machineUI.displayingMachineSpecification();
-                    bodyComponentController.initialCodeCalibration();
-                    bodyComponentController.initialEngineDetails();
-                    bodyComponentController.setDecryptionManager(machineUI.getMachineEngine());
-                    bodyComponentController.setIsCodeConfigurationSet(false);
-                }
-            });
-
-            bodyComponentController.setListenerToHistoryUpdate(machineUI);
-            bodyComponentController.codeCalibrationRandomCodeOnAction().set(observable -> machineUI.automaticInitialCodeConfiguration());
-            bodyComponentController.encryptResetButtonActionProperty().set(observable -> machineUI.resetCurrentCode());
+            bodyComponentController.setMainController(this);
             bodyComponentController.initial();
 
+            initialFileSelectedEvents();
+            initialControllerEventsToLogic();
         }
     }
 
     public void setMachineUI(MachineLogicUI machine){
+
         machineUI = machine;
     }
 
@@ -79,11 +53,6 @@ public class EnigmaAppController {
     public void setSelectedFile(String selectedFilePath) {
 
         selectedFileProperty.set(selectedFilePath);
-    }
-
-    public String getSelectedFile(){
-
-        return selectedFileProperty.get();
     }
 
     public void showPopUpMessage(String messageToShow){
@@ -112,6 +81,7 @@ public class EnigmaAppController {
     }
 
     public void setIsGoodFileSelected(Boolean isGood) {
+
         isGoodFileSelected.set(isGood);
     }
 
@@ -124,7 +94,38 @@ public class EnigmaAppController {
         };
     }
 
-    public void clearStage(){
+    private void initialFileSelectedEvents(){
+
+        bodyComponent.disableProperty().bind(isGoodFileSelected.not());
+        selectedFileProperty.addListener((observable, oldValue, newValue) -> {
+            isGoodFileSelected.set(false);
+            clearStage();
+            machineUI.loadNewXmlFile(newValue);
+        });
+
+        isGoodFileSelected.addListener((observable, oldValue, newValue) -> {
+            if(newValue){
+                machineUI.displayingMachineSpecification();
+                bodyComponentController.initialCodeCalibration();
+                bodyComponentController.initialEngineDetails();
+                bodyComponentController.setDecryptionManager(machineUI.getMachineEngine());
+                bodyComponentController.setIsCodeConfigurationSet(false);
+            }
+        });
+    }
+
+    private void initialControllerEventsToLogic(){
+
+        bodyComponentController.getMachineInfoProperty().addListener(
+                (observable, oldValue, newValue) -> machineUI.manualInitialCodeConfiguration(newValue));
+
+        bodyComponentController.setListenerToHistoryUpdate(machineUI);
+        bodyComponentController.codeCalibrationRandomCodeOnAction().set(observable -> machineUI.automaticInitialCodeConfiguration());
+        bodyComponentController.encryptResetButtonActionProperty().set(observable -> machineUI.resetCurrentCode());
+    }
+
+    private void clearStage(){
+
         bodyComponentController.clearComponent();
     }
 }

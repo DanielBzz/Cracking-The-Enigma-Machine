@@ -8,7 +8,8 @@ public class Permutations implements Iterable<List<Integer>>{
 
     private List<List<Integer>> permutations = new ArrayList<>();
 
-     public Permutations(int[] nums) {
+    public Permutations(int[] nums) {
+
         Permutation(0, nums);
     }
 
@@ -34,8 +35,6 @@ public class Permutations implements Iterable<List<Integer>>{
         }
     }
 
-    private Iterator<List<Integer>> itr = iterator();
-
     @Override
     public Iterator<List<Integer>> iterator() {
 
@@ -54,6 +53,8 @@ public class Permutations implements Iterable<List<Integer>>{
            }
        };
     }
+
+    private Iterator<List<Integer>> itr = iterator();
 
     public boolean hasNext(){
         return itr.hasNext();
