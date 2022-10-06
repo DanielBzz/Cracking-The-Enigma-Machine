@@ -17,7 +17,7 @@ public enum DifficultyLevel {
 
     EASY{
         @Override
-        public void initialTasks(AgentTaskDTO details, BlockingQueue<Runnable> tasksQueue) {
+        protected void initialTasks(AgentTaskDTO details, BlockingQueue<Runnable> tasksQueue) {
 
             List<Rotor> rotors = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public enum DifficultyLevel {
     },
     MEDIUM {
         @Override
-        public void initialTasks(AgentTaskDTO details, BlockingQueue<Runnable> tasksQueue) {
+        protected void initialTasks(AgentTaskDTO details, BlockingQueue<Runnable> tasksQueue) {
 
             for (Reflector reflector : details.getEngineComponentsDTO().getOptionalReflectors()) {
                 details.setReflectorId(reflector.getId());
@@ -59,7 +59,7 @@ public enum DifficultyLevel {
     },
     HARD{
         @Override
-        public void initialTasks(AgentTaskDTO details, BlockingQueue<Runnable> tasksQueue) {
+        protected void initialTasks(AgentTaskDTO details, BlockingQueue<Runnable> tasksQueue) {
 
            Permutations permutations = new Permutations(details.getRotorsId().stream().mapToInt(i->(int)i).toArray());
 
@@ -73,7 +73,7 @@ public enum DifficultyLevel {
     },
     IMPOSSIBLE{
         @Override
-        public void initialTasks(AgentTaskDTO details, BlockingQueue<Runnable> tasksQueue) {
+        protected void initialTasks(AgentTaskDTO details, BlockingQueue<Runnable> tasksQueue) {
 
             BinomialCoefficient binomialCoefficient = new BinomialCoefficient(
                     details.getEngineComponentsDTO().getOptionalRotors().size(),details.getNumOfUsedRotors());
@@ -86,5 +86,5 @@ public enum DifficultyLevel {
         }
     };
 
-    abstract public void initialTasks(AgentTaskDTO details, BlockingQueue<Runnable> tasksQueue);
+    abstract protected void initialTasks(AgentTaskDTO details, BlockingQueue<Runnable> tasksQueue);
 }

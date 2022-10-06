@@ -1,7 +1,6 @@
-package manager;
+package logic;
 
 import decryptionDtos.AgentTaskDTO;
-import logic.DifficultyLevel;
 
 import java.util.ArrayList;
 import java.util.List;
