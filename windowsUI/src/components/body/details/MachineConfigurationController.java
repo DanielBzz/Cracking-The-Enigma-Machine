@@ -4,7 +4,7 @@ import components.body.machine.DynamicMachineComponentFactory;
 import components.body.machine.PlugBoardController;
 import components.body.machine.ReflectorController;
 import components.body.machine.RotorController;
-import components.body.main.BodyController;
+import components.body.main.EngineDtoReturnableParentController;
 import consoleComponents.OutputMessages;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class MachineConfigurationController implements CodeSetEventListener, ReflectorParent, RotorParent,PlugBoardParent {
 
-    BodyController parentController;
+    private EngineDtoReturnableParentController parentController;
     @FXML private Label stringConfiguration;
     @FXML private StackPane reflectorPane;
     @FXML private HBox rotorsPane;
@@ -36,7 +36,7 @@ public class MachineConfigurationController implements CodeSetEventListener, Ref
         return isCodeConfigurationSet;
     }
 
-    public void setParentController(BodyController controller){
+    public void setParentController(EngineDtoReturnableParentController controller){
 
         parentController = controller;
     }

@@ -17,7 +17,7 @@ import logic.events.StatisticsUpdateEventListener;
 import logic.events.handler.MachineEventHandler;
 import machineDtos.EngineDTO;
 
-public class EnigmaAppController {
+public class EnigmaAppController implements FileLoadable{
 
     private MachineLogicUI machineUI;
     @FXML private ScrollPane headerComponent;
@@ -44,12 +44,12 @@ public class EnigmaAppController {
 
         machineUI = machine;
     }
-
+    @Override
     public SimpleStringProperty selectedFileProperty() {
 
         return this.selectedFileProperty;
     }
-
+    @Override
     public void setSelectedFile(String selectedFilePath) {
 
         selectedFileProperty.set(selectedFilePath);

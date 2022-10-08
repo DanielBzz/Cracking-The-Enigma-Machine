@@ -4,6 +4,7 @@ import components.body.machine.DynamicMachineComponentFactory;
 import components.body.machine.ReflectorController;
 import components.body.machine.RotorController;
 import components.body.main.BodyController;
+import components.body.main.EngineDtoReturnableParentController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
@@ -16,12 +17,12 @@ import java.util.List;
 
 public class EngineDetailsController implements RotorParent, ReflectorParent{
 
-    BodyController parentController;
+    EngineDtoReturnableParentController parentController;
     @FXML private HBox rotorsPane;
     @FXML private HBox reflectorsPane;
     @FXML private FlowPane abcPane;
 
-    public void setParentController(BodyController controller){
+    public void setParentController(EngineDtoReturnableParentController controller){
         parentController = controller;
     }
 
