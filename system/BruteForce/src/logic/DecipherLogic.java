@@ -1,10 +1,11 @@
 package logic;
 
-import exceptions.ConvertorsInMachineOutOfRangeException;
 import manager.DecryptionManager;
 import scheme.generated.CTEDecipher;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DecipherLogic {
@@ -13,29 +14,29 @@ public class DecipherLogic {
     public static final int MAXIMUM_AGENTS = 50;
     public static final int MAXIMUM_TASKS = 1000;
 
+
     public static void checkDecipherIsValid(CTEDecipher decipher) {
 
-        int amountOfAgents = decipher.getAgents();
-
-        if (!(amountOfAgents > MINIMUM_AGENTS && amountOfAgents < MAXIMUM_AGENTS)) {
-            throw new ConvertorsInMachineOutOfRangeException("Agents",amountOfAgents,MINIMUM_AGENTS,MAXIMUM_AGENTS);
-        }
+//        int amountOfAgents = decipher.getAgents();
+//
+//        if (!(amountOfAgents > MINIMUM_AGENTS && amountOfAgents < MAXIMUM_AGENTS)) {
+//            throw new ConvertorsInMachineOutOfRangeException("Agents",amountOfAgents,MINIMUM_AGENTS,MAXIMUM_AGENTS);
+//        }
     }
 
-    public static void initDecipher(CTEDecipher decipher) {
+    public static DecryptionManager createDecryptionMangerFromDecipher(EnigmaEngine engine){
 
+        CTEDecipher decipher = engine.getCTEDecipher();
         Set<String> dictionary = stringToWords(decipher.getCTEDictionary().getWords());
         String excludeChars = decipher.getCTEDictionary().getExcludeChars();
         Set<String> dictionaryAfter = new HashSet<>();
 
         for (String word:dictionary) {
 
-                dictionaryAfter.add(excludeSpecialCharactersFromWord(word,excludeChars));
+            dictionaryAfter.add(excludeSpecialCharactersFromWord(word,excludeChars));
         }
 
-        DecryptionManager.setMaxNumberOfAgents(decipher.getAgents());
-        DecryptionManager.setWordsDictionary(dictionaryAfter);
-        DecryptionManager.setExcludeChars(excludeChars);
+        return new DecryptionManager(engine,dictionaryAfter,excludeChars);
     }
 
     public static Set<String> stringToWords(String str){

@@ -9,6 +9,10 @@ import logic.events.handler.MachineEventHandler;
 import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class MachineLogicUI  implements HistoryUpdatable {
 
     private EnigmaAppController appController;
@@ -31,7 +35,8 @@ public class MachineLogicUI  implements HistoryUpdatable {
     public void loadNewXmlFile(String path) {
 
         try {
-            machine.loadXmlFile(path);
+            InputStream xmlFile = Files.newInputStream(Paths.get(path));
+            machine.loadXmlFile(xmlFile);
             appController.setIsGoodFileSelected(true);
         } catch (Exception | Error e) {
             appController.setSelectedFile("-");

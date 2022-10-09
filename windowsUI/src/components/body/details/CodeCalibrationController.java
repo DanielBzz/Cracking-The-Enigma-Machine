@@ -39,7 +39,6 @@ public class CodeCalibrationController implements RotorParent, PlugBoardParent, 
     @FXML private SplitPane plugBoardComponent;
     @FXML private PlugBoardController plugBoardComponentController;
     @FXML private Label initialConfigurationLabel;
-
     private final ToggleGroup availableReflectorsGroup = new ToggleGroup();
     private final List<RotorController> rotorsChosen = new ArrayList<>();
     private final SimpleObjectProperty<MachineInfoDTO> machineInfoProperty = new SimpleObjectProperty<>();

@@ -10,5 +10,6 @@
     <orderEntry type="module" module-name="enigmamachine" />
     <orderEntry type="module" module-name="DTOS" />
     <orderEntry type="module" module-name="BruteForce" />
+    <orderEntry type="module" module-name="enigmaServer" />
   </component>
 </module>

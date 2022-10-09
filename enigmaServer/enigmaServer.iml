@@ -10,5 +10,7 @@
     <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
     <orderEntry type="module" module-name="BruteForce" />
     <orderEntry type="module" module-name="DTOS" />
+    <orderEntry type="module" module-name="engine" />
+    <orderEntry type="module" module-name="consoleUI" />
   </component>
 </module>

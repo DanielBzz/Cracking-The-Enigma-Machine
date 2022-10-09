@@ -4,9 +4,11 @@ import machineDtos.EngineDTO;
 import machineDtos.EnigmaMachineDTO;
 import machineDtos.HistoryAndStatisticDTO;
 
+import java.io.InputStream;
+
 public interface EnigmaSystemEngine {
 
-    void loadXmlFile(String path) throws Exception;
+    void loadXmlFile(InputStream xmlFile) throws Exception;
 
     EngineDTO displayingMachineSpecification();
 
