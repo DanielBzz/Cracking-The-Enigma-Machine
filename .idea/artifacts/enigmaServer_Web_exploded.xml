@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="enigmaServer:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/enigmaServer_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="enigmaServer/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="enigmaServer" />
+          <element id="module-output" name="DTOS" />
+          <element id="module-output" name="engine" />
+          <element id="module-output" name="enigmamachine" />
+          <element id="module-output" name="BruteForce" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

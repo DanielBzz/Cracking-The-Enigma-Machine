@@ -179,4 +179,15 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
         uBoatRoomComponentController.clearComponent();
     }
 
+    public void setIsGoodFileSelected(boolean fileIsGood){
+        uBoatRoomComponentController.setIsGoodFileSelected(fileIsGood);
+    }
+
+    public void setSelectedFile(String filePath){
+        uBoatRoomComponentController.setSelectedFile(filePath);
+    }
+
+    public void showPopUpMessage(String message){
+        uBoatRoomComponentController.showPopUpMessage(message);
+    }
 }
