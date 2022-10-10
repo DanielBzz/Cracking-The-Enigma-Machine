@@ -24,7 +24,7 @@ import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 
 
-public class BodyController implements encryptParentController {
+public class BodyController implements encryptParentController, EngineDtoReturnableParentController {
 
     private EnigmaAppController mainController;
     @FXML private BorderPane codeCalibrationComponent;
@@ -81,6 +81,7 @@ public class BodyController implements encryptParentController {
         mainController = appController;
     }
 
+    @Override
     public EngineDTO getEngineDetails(){
 
         return engineDetails;

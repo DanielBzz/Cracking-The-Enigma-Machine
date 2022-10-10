@@ -97,7 +97,7 @@ public class EncryptController {
     }
 
     @FXML
-    void clearButtonActionListener(ActionEvent event) {
+    public void clearButtonActionListener(ActionEvent event) {
 
         messageToEncryptTF.setText("");
         encryptedMessageLabel.setText("");

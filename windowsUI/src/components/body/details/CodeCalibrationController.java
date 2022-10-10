@@ -3,7 +3,7 @@ package components.body.details;
 import components.body.machine.DynamicMachineComponentFactory;
 import components.body.machine.PlugBoardController;
 import components.body.machine.RotorController;
-import components.body.main.BodyController;
+import components.body.main.EngineDtoReturnableParentController;
 import consoleComponents.OutputMessages;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -28,7 +28,7 @@ import java.util.stream.IntStream;
 
 public class CodeCalibrationController implements RotorParent, PlugBoardParent, CodeSetEventListener {
 
-    BodyController parentController;
+    private EngineDtoReturnableParentController parentController;
     @FXML private Button randomButton;
     @FXML private Button manualSetButton;
     @FXML private HBox rotorsPane;
@@ -53,7 +53,7 @@ public class CodeCalibrationController implements RotorParent, PlugBoardParent, 
 
     }
 
-    public void setParentController(BodyController controller){
+    public void setParentController(EngineDtoReturnableParentController controller){
         parentController = controller;
     }
 

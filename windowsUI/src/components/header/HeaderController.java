@@ -2,6 +2,7 @@
 package components.header;
 
 import components.main.EnigmaAppController;
+import components.main.FileLoadable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,13 +13,13 @@ import javafx.stage.Window;
 import java.io.File;
 
 public class HeaderController {
-    EnigmaAppController mainController;
+    FileLoadable mainController;
     @FXML
     private Button loadFileButton;
     @FXML
     private Label filePathLabel;
 
-    public void setMainController(EnigmaAppController appController) {
+    public void setMainController(FileLoadable appController) {
         this.mainController = appController;
     }
 
