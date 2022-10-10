@@ -1,5 +1,7 @@
 package logic;
 
+import scheme.generated.CTEBattlefield;
+
 public class BattleField {
 
     private final String battleName;
@@ -13,6 +15,10 @@ public class BattleField {
         this.level = DifficultyLevel.valueOf(level.toUpperCase());
     }
 
+    public static BattleField createBattleField(CTEBattlefield cteBattlefield){
+
+        return new BattleField(cteBattlefield.getBattleName(),cteBattlefield.getAllies(),cteBattlefield.getLevel());
+    }
 
     public DifficultyLevel getLevel() {
         return level;

@@ -67,7 +67,8 @@ public class MachineUI implements EnigmaMachineUI {
             }
         }
         try{
-            enigmaSystem.loadXmlFile(xmlPath);
+            InputStream xmlFile = Files.newInputStream(Paths.get(xmlPath));
+            enigmaSystem.loadXmlFile(xmlFile);
             System.out.println(OutputMessages.getSuccessfulLoadMsg());
         }catch (Exception e){
             System.out.println(e.getMessage());

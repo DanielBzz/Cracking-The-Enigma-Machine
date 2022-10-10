@@ -6,25 +6,19 @@ import scheme.generated.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 public class EngineLogic  {
 
-    public static CTEEnigma createEnigmaFromFile(String path) throws FileNotFoundException, JAXBException {
+    public static CTEEnigma createEnigmaFromFile(InputStream input) throws FileNotFoundException, JAXBException {
 
         CTEEnigma enigmaMachine = null;
 
         try {
-            InputStream inputStream = new FileInputStream(new File(path.trim()));
-            enigmaMachine = deserializeFrom(inputStream);
-        } catch (FileNotFoundException var3) {
-            throw new FileNotFoundException("There isn't file according to the path that you insert");
+            enigmaMachine = deserializeFrom(input);
         } catch (JAXBException var3) {
             throw new JAXBException("Your xml file is not following the rules of the scheme");
         }

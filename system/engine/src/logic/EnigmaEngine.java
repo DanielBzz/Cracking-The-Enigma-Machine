@@ -10,10 +10,7 @@ import exceptions.NoFileLoadedException;
 import javafx.util.Pair;
 import machine.Machine;
 import machineDtos.*;
-import scheme.generated.CTEEnigma;
-import scheme.generated.CTEMachine;
-import scheme.generated.CTEReflector;
-import scheme.generated.CTERotor;
+import scheme.generated.*;
 
 import java.io.*;
 import java.util.*;
@@ -23,6 +20,7 @@ import java.util.stream.IntStream;
 public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
 
     private Machine enigmaMachine = null;
+    CTEEnigma enigmaMachineCTE = null;
     private MachineInfoDTO currentInitialMachineInfo = null;
     private MachineInfoDTO currentMachineInfo = null;
     private String ABC;
@@ -31,14 +29,14 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
     private int rotorsCount;
     private Map<MachineInfoDTO, Map<Pair<String,String>, Long>> historyAndStat = new LinkedHashMap<>();
     private LastEncryptedMessage lastEncryptedDetails;
-    @Override
-    public void loadXmlFile(String path) throws Exception {
 
-        CTEEnigma enigmaMachineCTE = EngineLogic.createEnigmaFromFile(path.trim());
+    @Override
+    public void loadXmlFile(InputStream xmlFile) throws Exception {
+
+        enigmaMachineCTE = EngineLogic.createEnigmaFromFile(xmlFile);
         EngineLogic.checkMachineIsValid(enigmaMachineCTE.getCTEMachine());
         engineInit(enigmaMachineCTE.getCTEMachine());
         DecipherLogic.checkDecipherIsValid(enigmaMachineCTE.getCTEDecipher());
-        DecipherLogic.initDecipher(enigmaMachineCTE.getCTEDecipher());
     }
 
     private void engineInit(CTEMachine enigmaMachineCTE){
@@ -278,5 +276,13 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
         return new EngineComponentsDTO(optionalRotors,optionalReflectors, ABC);
     }
 
+    public CTEDecipher getCTEDecipher(){
 
+        return enigmaMachineCTE.getCTEDecipher();
+    }
+
+    public CTEBattlefield getCTEBattleField(){
+
+        return enigmaMachineCTE.getCTEBattlefield();
+    }
 }

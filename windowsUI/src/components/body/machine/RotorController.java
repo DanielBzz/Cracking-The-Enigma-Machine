@@ -37,7 +37,6 @@ public class RotorController {
             rotorStage.setScene(new Scene(rotorContent));
             rotorStage.setAlwaysOnTop(true);
             rotorStage.show();
-
         }
     }
 

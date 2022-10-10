@@ -18,11 +18,11 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
-    <orderEntry type="module" module-name="BruteForce" />
-    <orderEntry type="inheritedJdk" />
     <orderEntry type="module" module-name="DTOS" />
-    <orderEntry type="library" name="Java EE 6-Java EE 6 (2)" level="project" />
-    <orderEntry type="library" exported="" name="Tomcat 10.0.26" level="application_server_libraries" />
+    <orderEntry type="module" module-name="BruteForce" />
+    <orderEntry type="library" name="Tomcat 10.0.26" level="application_server_libraries" />
+    <orderEntry type="module" module-name="engine" />
+    <orderEntry type="module" module-name="consoleUI" />
+    <orderEntry type="library" name="gson-2.8.8" level="project" />
   </component>
 </module>

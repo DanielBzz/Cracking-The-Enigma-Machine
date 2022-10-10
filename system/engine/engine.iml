@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="enigmamachine" />
+    <orderEntry type="module" module-name="enigmaMachine" />
     <orderEntry type="module" module-name="DTOS" />
     <orderEntry type="module" module-name="BruteForce" />
   </component>

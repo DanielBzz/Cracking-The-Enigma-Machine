@@ -7,9 +7,14 @@
         <element id="directory" name="classes">
           <element id="module-output" name="enigmaServer" />
           <element id="module-output" name="DTOS" />
-          <element id="module-output" name="engine" />
-          <element id="module-output" name="enigmamachine" />
+
+          <element id="module-output" name="enigmaMachine" />
           <element id="module-output" name="BruteForce" />
+          <element id="module-output" name="engine" />
+          <element id="module-output" name="consoleUI" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="gson-2.8.8" />
         </element>
       </element>
     </root>

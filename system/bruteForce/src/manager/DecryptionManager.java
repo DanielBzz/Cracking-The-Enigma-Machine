@@ -12,9 +12,9 @@ import java.util.function.Consumer;
 
 public class DecryptionManager {
 
-    private static int maxNumberOfAgents;
-    private static Set<String> wordsDictionary;
-    private static String excludeChars;
+    private final int maxNumberOfAgents;
+    private final Set<String> wordsDictionary;
+    private final String excludeChars;
     private EnigmaSystemEngine machineEngine;
     private ThreadPoolExecutor threadPool;
     private BlockingQueue<Runnable> agentTasks;
@@ -22,7 +22,11 @@ public class DecryptionManager {
     private final Consumer<AgentAnswerDTO> updateQueueConsumer;
     double tasksAmount;
 
-    public DecryptionManager(EnigmaSystemEngine engine){
+    public DecryptionManager(EnigmaSystemEngine engine,Set<String> dictionary, String excludeChars){
+
+        this.maxNumberOfAgents = DecipherLogic.MAXIMUM_AGENTS;
+        this.wordsDictionary = dictionary;
+        this.excludeChars = excludeChars;
 
         agentTasks = new LinkedBlockingQueue<>(DecipherLogic.MAXIMUM_TASKS);
         threadPool = new ThreadPoolExecutor(maxNumberOfAgents, maxNumberOfAgents,5, TimeUnit.SECONDS,agentTasks,createThreadFactory());
@@ -41,20 +45,6 @@ public class DecryptionManager {
     public double getTaskAmount(){
 
         return tasksAmount;
-    }
-    public static void setMaxNumberOfAgents(int maxNumberOfAgents) {
-
-        DecryptionManager.maxNumberOfAgents = maxNumberOfAgents;
-    }
-
-    public static void setWordsDictionary(Set<String> wordsDictionary) {
-
-        DecryptionManager.wordsDictionary = wordsDictionary;
-    }
-
-    public static void setExcludeChars(String excludeChars) {
-
-        DecryptionManager.excludeChars = excludeChars;
     }
 
     public String getExcludeChars(){

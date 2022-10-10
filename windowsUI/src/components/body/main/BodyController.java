@@ -16,11 +16,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import logic.DecipherLogic;
+import logic.EnigmaEngine;
 import logic.EnigmaSystemEngine;
 import logic.HistoryUpdatable;
 import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
-import manager.DecryptionManager;
 
 
 public class BodyController implements encryptParentController, EngineDtoReturnableParentController {
@@ -115,7 +116,7 @@ public class BodyController implements encryptParentController, EngineDtoReturna
     }
 
     public void setDecryptionManager(EnigmaSystemEngine engine){
-        bruteForceComponentController.setDecryptionManager(new DecryptionManager(engine));
+        bruteForceComponentController.setDecryptionManager(DecipherLogic.createDecryptionMangerFromDecipher((EnigmaEngine) engine));
     }
 
     public void setIsCodeConfigurationSet(Boolean codeSet){

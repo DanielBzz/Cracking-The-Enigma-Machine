@@ -18,10 +18,6 @@ public class UBoatLogic {
 
 
 
-
-
-
-
     public void uploadFileToServer(String filePath, String fileName) throws IOException {
 
         String RESOURCE = "/loadFile";
@@ -62,4 +58,5 @@ public class UBoatLogic {
 
         Response response = call.execute();
     }
+
 }
