@@ -1,5 +1,6 @@
 package logic;
 
+import machineDtos.EnigmaMachineDTO;
 import manager.DecryptionManager;
 
 public class ContestDetails {
@@ -25,4 +26,15 @@ public class ContestDetails {
     public BattleField getField() {
         return field;
     }
+
+    public void initialCodeConfiguration(EnigmaMachineDTO initialArgs) {
+
+        if(initialArgs == null){
+            machineEngine.automaticMachineInit();
+        }
+        else{
+            machineEngine.manualMachineInit(initialArgs);
+        }
+    }
+
 }

@@ -2,9 +2,13 @@ package servlets.utils;
 
 import logic.ContestsManager;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import java.io.IOException;
+import java.util.Collection;
 
 public class servletUtils {
 
@@ -34,5 +38,20 @@ public class servletUtils {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public static String getBody(HttpServletRequest req){
+
+        Collection<Part> fileParts = null;
+        try {
+            fileParts = req.getParts();
+        } catch (IOException | ServletException e) {
+            throw new RuntimeException(e);
+        }
+
+        StringBuilder fileContent = new StringBuilder();
+        fileParts.forEach(part -> fileContent.append(part.getContentType()));
+
+        return fileContent.toString();
     }
 }

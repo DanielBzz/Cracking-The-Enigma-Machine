@@ -1,5 +1,7 @@
 package logic;
 
+import machineDtos.EnigmaMachineDTO;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,5 +44,12 @@ public class ContestsManager {
         }
 
         return contestIsAdded;
+    }
+
+    public void initialMachineForUser(String userName, EnigmaMachineDTO args){
+
+        if(isUserExists(userName) && userToContestMap.get(userName)!=null){
+            userToContestMap.get(userName).initialCodeConfiguration(args);
+        }
     }
 }
