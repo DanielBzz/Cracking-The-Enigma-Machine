@@ -1,7 +1,6 @@
 package chat.util;
 
 import com.google.gson.Gson;
-import okhttp3.OkHttpClient;
 
 public class Constants {
 
@@ -24,7 +23,6 @@ public class Constants {
     private final static String CONTEXT_PATH = "/chatApp";
     private final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
     public final static String UBOAT_REQUEST_PATH = BASE_URL + "/uBoat";
-    public final static OkHttpClient HTTP_CLIENT = new OkHttpClient();
     public final static String LOGIN_PAGE = FULL_SERVER_PATH + "/loginShortResponse";
     public final static String USERS_LIST = FULL_SERVER_PATH + "/userslist";
     public final static String LOGOUT = FULL_SERVER_PATH + "/chat/logout";
