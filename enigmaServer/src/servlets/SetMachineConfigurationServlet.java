@@ -38,9 +38,8 @@ public class SetMachineConfigurationServlet extends HttpServlet {
 
         }catch (NoFileLoadedException e){
             servletUtils.createResponse(resp,HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
-            //resp.sendRedirect(); -> want to send redirect to login servlet/page.
         }
-        catch (Exception e){
+        catch (Exception | Error e){
             servletUtils.createResponse(resp,HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE,e.getMessage());
         }
     }

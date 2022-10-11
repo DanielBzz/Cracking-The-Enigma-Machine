@@ -37,7 +37,9 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
         EngineLogic.checkMachineIsValid(enigmaMachineCTE.getCTEMachine());
         engineInit(enigmaMachineCTE.getCTEMachine());
         DecipherLogic.checkDecipherIsValid(enigmaMachineCTE.getCTEDecipher());
+        DecipherLogic.checkBattleFieldIsValid(enigmaMachineCTE.getCTEBattlefield());
     }
+
 
     private void engineInit(CTEMachine enigmaMachineCTE){
 
@@ -170,6 +172,7 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
             lastEncryptedDetails.setMessage(lastEncryptedDetails.getMessage().concat(message));
             lastEncryptedDetails.setEncrypted(lastEncryptedDetails.getEncrypted().concat(encryptedString.toString()));
         }
+
         return encryptedString.toString();
     }
 

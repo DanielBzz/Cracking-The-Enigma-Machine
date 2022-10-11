@@ -1,6 +1,8 @@
 package logic;
 
+import exceptions.BattleFieldException;
 import manager.DecryptionManager;
+import scheme.generated.CTEBattlefield;
 import scheme.generated.CTEDecipher;
 
 import java.util.Arrays;
@@ -57,5 +59,21 @@ public class DecipherLogic {
         }
 
         return tempWord.toString();
+    }
+
+    public static void checkBattleFieldIsValid(CTEBattlefield cteBattlefield) {
+
+        if(cteBattlefield.getBattleName() == null || cteBattlefield.getBattleName().isEmpty()){
+            throw new BattleFieldException().illegalName();
+        }
+        else if(cteBattlefield.getAllies() <= 0) {
+            throw new BattleFieldException().illegalAlliesNumber();
+        }
+        try{
+            DifficultyLevel.valueOf(cteBattlefield.getLevel().toUpperCase());
+        }
+        catch (IllegalArgumentException e){
+            throw new BattleFieldException().illegalLevel();
+        }
     }
 }

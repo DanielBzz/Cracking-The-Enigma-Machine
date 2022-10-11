@@ -22,7 +22,7 @@ public class UBoatLogic {
                         .build();
 
         Request request = new Request.Builder()
-                .url(Constants.READ_FILE_PAGE)
+                .url(Constants.REQUEST_PATH_READ_FILE)
                 .post(body)
                 .build();
 
@@ -38,7 +38,7 @@ public class UBoatLogic {
         Gson gson = new Gson();
 
         Request request = new Request.Builder()
-                .url(Constants.INIT_USER_MACHINE)
+                .url(Constants.REQUEST_PATH_INIT_USER_MACHINE)
                 .post(RequestBody.create(gson.toJson(initialArgs).getBytes()))
                 .build();
 

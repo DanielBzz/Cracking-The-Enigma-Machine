@@ -32,14 +32,14 @@ public class ReadFileServlet extends HttpServlet {
                 servletUtils.createResponse(resp,HttpServletResponse.SC_OK, OutputMessages.getSuccessfulLoadMsg());
             }
             else{
-                servletUtils.createResponse(resp,HttpServletResponse.SC_CONFLICT,"for the user: " + userName + " there is already file loaded.");
+                servletUtils.createResponse(resp,HttpServletResponse.SC_CONFLICT,null);
             }
         }catch (Exception e){
             servletUtils.createResponse(resp,HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE,e.getMessage());
         }
     }
 
-    private ContestDetails createContestDetailsForUser(String xmlFileContent,HttpServletResponse resp){
+    private UserContest createContestDetailsForUser(String xmlFileContent, HttpServletResponse resp){
 
         EnigmaEngine engineForUser = new EnigmaEngine();
         DecryptionManager dmForUser;
@@ -54,7 +54,7 @@ public class ReadFileServlet extends HttpServlet {
             return null;
         }
 
-        return new ContestDetails(engineForUser,dmForUser,field);
+        return new UserContest(engineForUser,dmForUser,field);
     }
 
 }
