@@ -85,6 +85,7 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
     private void loadUBoatRoomPage() {
         URL loginPageUrl = getClass().getResource(/*CHAT_ROOM_FXML_RESOURCE_LOCATION*/UBOAT_ROOM_FXML_RESOURCE_LOCATION);
         try {
+            System.out.println("--------------in load uboat room page---------");
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(loginPageUrl);
             uBoatRoomComponent = fxmlLoader.load();
@@ -103,6 +104,7 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
 
     public void switchToSecondRoom() {
         //setMainPanelTo(chatRoomComponent);
+        System.out.println("--------------in switch to second room---------");
         setMainPanelTo(uBoatRoomComponent);
         //uBoatRoomComponentController.setActive();
     }
