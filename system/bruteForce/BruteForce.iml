@@ -10,6 +10,5 @@
     <orderEntry type="module" module-name="enigmaMachine" />
     <orderEntry type="module" module-name="engine" />
     <orderEntry type="module" module-name="DTOS" />
-    <orderEntry type="library" name="gson-2.8.8" level="project" />
   </component>
 </module>
