@@ -1,6 +1,6 @@
 package logic;
 
-import componets.UBoatAppMainController;
+import components.UBoatAppMainController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import logic.events.CodeSetEventListener;

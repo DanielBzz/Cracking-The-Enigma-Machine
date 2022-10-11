@@ -12,10 +12,10 @@ public class Constants {
     // fxml locations
     //public final static String MAIN_PAGE_FXML_RESOURCE_LOCATION = "/chat/client/component/main/chat-app-main.fxml";
 
-    public final static String MAIN_PAGE_FXML_RESOURCE_LOCATION = "/componets/uBoat-app-main.fxml";
-    public final static String LOGIN_PAGE_FXML_RESOURCE_LOCATION = "/componets/login/login.fxml";
-    public final static String CHAT_ROOM_FXML_RESOURCE_LOCATION = "/chat/component/chatroom/chat-room-main.fxml";
-    public final static String UBOAT_ROOM_FXML_RESOURCE_LOCATION = "/componets/subControllers/uBoat-room-main.fxml";
+    public final static String MAIN_PAGE_FXML_RESOURCE_LOCATION = "/components/uBoat-app-main.fxml";
+    public final static String LOGIN_PAGE_FXML_RESOURCE_LOCATION = "/components/login/login.fxml";
+    //public final static String CHAT_ROOM_FXML_RESOURCE_LOCATION = "/chat/component/chatroom/chat-room-main.fxml";
+    public final static String UBOAT_ROOM_FXML_RESOURCE_LOCATION = "/components/subControllers/uBoat-room-main.fxml";
 
     // GSON instance
     public final static Gson GSON_INSTANCE = new Gson();

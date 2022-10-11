@@ -5,7 +5,7 @@ import exceptions.NoFileLoadedException;
 import logic.ContestsManager;
 import machineDtos.EnigmaMachineDTO;
 import servlets.utils.SessionUtils;
-import servlets.utils.servletUtils;
+import servlets.utils.ServletUtils;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,27 +21,27 @@ public class SetMachineConfigurationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String userName = SessionUtils.getUsername(req);
-        ContestsManager manager = servletUtils.getContestManager(req.getServletContext());
+        ContestsManager manager = ServletUtils.getContestManager(req.getServletContext());
 
         if(userName == null || !manager.isUserExists(userName)) {
-            servletUtils.createResponse(resp,HttpServletResponse.SC_UNAUTHORIZED,null);
+            ServletUtils.createResponse(resp,HttpServletResponse.SC_UNAUTHORIZED,null);
             //resp.sendRedirect(); -> want to send redirect to login servlet/page.
             return;
         }
 
         try {
             Gson json = new Gson();
-            EnigmaMachineDTO args = json.fromJson(servletUtils.getBody(req), EnigmaMachineDTO.class);
+            EnigmaMachineDTO args = json.fromJson(ServletUtils.getBody(req), EnigmaMachineDTO.class);
 
             manager.initialMachineForUser(userName,args);
-            servletUtils.createResponse(resp,HttpServletResponse.SC_OK,null);
+            ServletUtils.createResponse(resp,HttpServletResponse.SC_OK,null);
 
         }catch (NoFileLoadedException e){
-            servletUtils.createResponse(resp,HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
+            ServletUtils.createResponse(resp,HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
             //resp.sendRedirect(); -> want to send redirect to login servlet/page.
         }
         catch (Exception e){
-            servletUtils.createResponse(resp,HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE,e.getMessage());
+            ServletUtils.createResponse(resp,HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE,e.getMessage());
         }
     }
 }
