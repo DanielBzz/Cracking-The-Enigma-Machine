@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/system/bruteForce/BruteForce.iml" filepath="$PROJECT_DIR$/system/bruteForce/BruteForce.iml" />
       <module fileurl="file://$PROJECT_DIR$/CarckingTheEnigma.iml" filepath="$PROJECT_DIR$/CarckingTheEnigma.iml" />
       <module fileurl="file://$PROJECT_DIR$/system/DTOS/DTOS.iml" filepath="$PROJECT_DIR$/system/DTOS/DTOS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client/UBoat/UBoat.iml" filepath="$PROJECT_DIR$/client/UBoat/UBoat.iml" />
       <module fileurl="file://$PROJECT_DIR$/consoleUI/consoleUI.iml" filepath="$PROJECT_DIR$/consoleUI/consoleUI.iml" />
       <module fileurl="file://$PROJECT_DIR$/system/engine/engine.iml" filepath="$PROJECT_DIR$/system/engine/engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/enigmaMachine/enigmaMachine.iml" filepath="$PROJECT_DIR$/enigmaMachine/enigmaMachine.iml" />
