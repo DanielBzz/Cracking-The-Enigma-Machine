@@ -1,10 +1,8 @@
 package logic;
 
-import chat.component.main.UBoatAppMainController;
-import components.main.EnigmaAppController;
+import componets.UBoatAppMainController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import logic.UBoatLogic;
 import logic.events.CodeSetEventListener;
 import logic.events.handler.MachineEventHandler;
 import machineDtos.MachineInfoDTO;
