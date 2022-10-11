@@ -10,7 +10,7 @@ import jakarta.servlet.http.Part;
 import java.io.IOException;
 import java.util.Collection;
 
-public class ServletUtils {
+public class servletUtils {
 
     private static final String CONTEST_MANAGER_ATTRIBUTE_NAME = "contestManager";
     private static final Object contestManagerLock = new Object();
