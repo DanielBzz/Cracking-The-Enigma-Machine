@@ -50,13 +50,18 @@ public class LoginController {
         }
 
         //noinspection ConstantConditions
+        System.out.println("--------------after login button was clicked---------");
+
+        //need to change the path LOGIN_PAGE or to add /uboat to the curr path
+
         String finalUrl = HttpUrl
-                        .parse(Constants.LOGIN_PAGE_GENERAL)
+                        .parse("http://localhost:8080/enigmaServer_Web_exploded/login")
                         .newBuilder()
                         .addQueryParameter("username", userName)
                         .build()
                         .toString();
 
+        System.out.println(finalUrl);
         //updateHttpStatusLine("New request is launched for: " + finalUrl);
         HttpClientUtil.runAsync(finalUrl, new Callback() {
 

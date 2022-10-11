@@ -1,5 +1,6 @@
 package logic;
 
+import exceptions.NoFileLoadedException;
 import machineDtos.EnigmaMachineDTO;
 
 import java.util.Collections;
@@ -7,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ContestsManager {
-    private final Map<String, ContestDetails> userToContestMap = new HashMap<>();
+    private final Map<String, UserContest> userToContestMap = new HashMap<>();
 
     public synchronized boolean addUser(String username) {
 
@@ -35,9 +36,11 @@ public class ContestsManager {
         return userToContestMap.containsKey(username);
     }
 
-    public synchronized boolean addContestForUser(String userName, ContestDetails detailsForUser){
+    public synchronized boolean addContestForUser(String userName, UserContest detailsForUser){
 
-        boolean contestIsAdded = isUserExists(userName) && userToContestMap.get(userName) == null;
+        boolean battleNotLoaded = userToContestMap.values().stream().noneMatch(
+                contest -> detailsForUser.getContestBattleName().equals(contest.getContestBattleName()));
+        boolean contestIsAdded = isUserExists(userName) && userToContestMap.get(userName) == null && battleNotLoaded;
 
         if (contestIsAdded){
             userToContestMap.put(userName,detailsForUser);
@@ -50,6 +53,21 @@ public class ContestsManager {
 
         if(isUserExists(userName) && userToContestMap.get(userName)!=null){
             userToContestMap.get(userName).initialCodeConfiguration(args);
+        }else {
+            throw new NoFileLoadedException();
         }
+    }
+
+    public String encrypt(String userName, String message){
+
+        String decryptMessage = null;
+
+        if(isUserExists(userName) && userToContestMap.get(userName)!=null) {
+            decryptMessage = userToContestMap.get(userName).encryptMessage(message);
+        }else {
+            throw new NoFileLoadedException();
+        }
+
+        return decryptMessage;
     }
 }

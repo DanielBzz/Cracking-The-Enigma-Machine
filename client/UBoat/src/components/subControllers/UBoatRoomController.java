@@ -13,6 +13,8 @@ import javafx.scene.layout.GridPane;
 import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 
+import java.io.IOException;
+
 public class UBoatRoomController implements FileLoadable, encryptParentController {
 
     private UBoatAppMainController parentController;
@@ -90,7 +92,7 @@ public class UBoatRoomController implements FileLoadable, encryptParentControlle
             isGoodFileSelected.set(false);
             clearComponent();
             //use the load file servlet
-            //machineUI.loadNewXmlFile(newValue);
+            parentController.loadNewXmlFile(newValue);
         });
 
         isGoodFileSelected.addListener((observable, oldValue, newValue) -> {
@@ -111,11 +113,17 @@ public class UBoatRoomController implements FileLoadable, encryptParentControlle
     private void initialControllerEventsToLogic(){
         /*          take care after fixing UI       */
 
-//        getMachineInfoProperty().addListener(
-//                (observable, oldValue, newValue) -> machineUI.manualInitialCodeConfiguration(newValue));
-//
-//        uBoatRoomMachineController.codeCalibrationRandomCodeOnAction().set(observable -> machineUI.automaticInitialCodeConfiguration());
-//        uBoatRoomContestController.encryptResetButtonActionProperty().set(observable -> machineUI.resetCurrentCode());
+        getMachineInfoProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    try {
+                        parentController.manualInitialCodeConfiguration(newValue);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+        //uBoatRoomMachineController.codeCalibrationRandomCodeOnAction().set(observable -> machineUI.automaticInitialCodeConfiguration());
+        //uBoatRoomContestController.encryptResetButtonActionProperty().set(observable -> machineUI.resetCurrentCode());
     }
 
 

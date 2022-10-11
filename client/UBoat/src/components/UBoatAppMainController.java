@@ -19,6 +19,7 @@ import logic.events.EncryptMessageEventListener;
 import logic.events.StatisticsUpdateEventListener;
 import logic.events.handler.MachineEventHandler;
 import machineDtos.EngineDTO;
+import machineDtos.MachineInfoDTO;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -96,7 +97,6 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
         }
     }
 
-    /*        take care after deciding if need the status or not         */
     @Override
     public void updateHttpLine(String line) {
         //httpStatusComponentController.addHttpStatusLine(line);
@@ -176,4 +176,16 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
     public void showPopUpMessage(String message){
         uBoatRoomComponentController.showPopUpMessage(message);
     }
+
+    public void manualInitialCodeConfiguration(MachineInfoDTO newValue) throws IOException {
+        uBoatLogicUI.manualInitialCodeConfiguration(newValue);
+    }
+
+    public void loadNewXmlFile(String newValue){
+        uBoatLogicUI.loadNewXmlFile(newValue);
+    }
+
+//    public void automaticInitialCodeConfiguration(){
+//        uBoatLogicUI.automaticInitialCodeConfiguration();
+//    }
 }

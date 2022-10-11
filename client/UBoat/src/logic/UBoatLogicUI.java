@@ -52,10 +52,4 @@ public class UBoatLogicUI {
 
 
 
-
-//    public void uploadFile(String filePath, String fileName) throws IOException {
-//        uBoatLogic.uploadFileToServer(filePath, fileName);
-//    }
-
-
 }

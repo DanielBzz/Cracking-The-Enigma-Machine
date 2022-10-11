@@ -14,6 +14,7 @@ public class ServletUtils {
 
     private static final String CONTEST_MANAGER_ATTRIBUTE_NAME = "contestManager";
     private static final Object contestManagerLock = new Object();
+    public static final String MESSAGE_TO_ENCRYPT_PARAMATER = "message";
 
     // getters for all the details we should respond for the clients.
     public static ContestsManager getContestManager(ServletContext servletContext){
