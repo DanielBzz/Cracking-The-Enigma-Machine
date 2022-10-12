@@ -27,9 +27,6 @@ public class LoginController {
     @FXML
     public Label errorMessageLabel;
 
-    //private ChatAppMainController chatAppMainController;
-
-    //only for temporary time
     private UBoatAppMainController uBoatAppMainController;
 
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
@@ -48,23 +45,29 @@ public class LoginController {
         String userName = userNameTextField.getText();
         if (userName.isEmpty()) {
             errorMessageProperty.set("User name is empty. You can't login with empty user name");
+            System.out.println("User name is empty. You can't login with empty user name");
             return;
         }
 
         //noinspection ConstantConditions
+        System.out.println("--------------after login button was clicked---------");
+
+        //need to change the path LOGIN_PAGE or to add /uboat to the curr path
+
         String finalUrl = HttpUrl
-                        .parse(Constants.LOGIN_PAGE)
+                        .parse("http://localhost:8080/enigmaServer_Web_exploded/login")
                         .newBuilder()
                         .addQueryParameter("username", userName)
                         .build()
                         .toString();
 
+        System.out.println(finalUrl);
         //updateHttpStatusLine("New request is launched for: " + finalUrl);
-
         HttpClientUtil.runAsync(finalUrl, new Callback() {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("-------on failure-------Something went wrong: " + e.getMessage());
                 Platform.runLater(() ->
                         errorMessageProperty.set("Something went wrong: " + e.getMessage())
                 );
@@ -74,12 +77,16 @@ public class LoginController {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() != 200) {
                     String responseBody = response.body().string();
+                    System.out.println("-------on response-------Something went wrong: " + responseBody);
                     Platform.runLater(() ->
                             errorMessageProperty.set("Something went wrong: " + responseBody)
                     );
                 } else {
+                    System.out.println("success");
                     Platform.runLater(() -> {
+                        System.out.println("--------------user name is: " + userName + "---------");
                         uBoatAppMainController.updateUserName(userName);
+                        System.out.println("--------------after update user name---------");
                         uBoatAppMainController.switchToSecondRoom();
                     });
                 }

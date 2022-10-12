@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.ContestsManager;
-import servlets.utils.servletUtils;
+import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class LightweightLoginServlet extends HttpServlet {
         response.setContentType("text/plain;charset=UTF-8");
 
         String usernameFromSession = SessionUtils.getUsername(request);
-        ContestsManager userManager = servletUtils.getContestManager(getServletContext());
+        ContestsManager userManager = ServletUtils.getContestManager(getServletContext());
 
         if (usernameFromSession == null) { //user is not logged in yet
 
