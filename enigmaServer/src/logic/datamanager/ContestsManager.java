@@ -1,6 +1,7 @@
 package logic.datamanager;
 
 import exceptions.NoFileLoadedException;
+import logic.serverdata.Team;
 import logic.serverdata.UserContest;
 import machineDtos.EnigmaMachineDTO;
 
@@ -41,10 +42,14 @@ public class ContestsManager extends DataManager<UserContest> {
         return decryptMessage;
     }
 
-    public void addCompetitorToContest(String userName, String competitorName){
+    public boolean addCompetitorToContest(String userName, Team competitor){
 
-        if(isUserExists(userName) && userNameToData.get(userName)!=null) {
-          // userNameToData.get(userName).addCompetitor();
+        boolean isAdded = isUserExists(userName) && userNameToData.get(userName)!=null;
+
+        if(isAdded) {
+          userNameToData.get(userName).addCompetitor(competitor);
         }
+
+        return isAdded;
     }
 }

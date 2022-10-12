@@ -6,8 +6,7 @@ import logic.EnigmaSystemEngine;
 import machineDtos.EnigmaMachineDTO;
 import manager.DecryptionManager;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserContest {
@@ -15,7 +14,7 @@ public class UserContest {
     private final EnigmaSystemEngine machineEngine;
     private final DecryptionManager decryptionManager;
     private final BattleField field;
-    private final List<Team> competitors = new ArrayList<>();
+    private final Set<Team> competitors = new HashSet<>();
 
     public UserContest(EnigmaSystemEngine machineEngine, DecryptionManager decryptionManager, BattleField field) {
         this.machineEngine = machineEngine;

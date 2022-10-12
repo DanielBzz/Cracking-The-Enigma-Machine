@@ -3,6 +3,7 @@ package logic.datamanager;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class DataManager<T> {
 
@@ -24,9 +25,9 @@ public abstract class DataManager<T> {
         userNameToData.remove(username);
     }
 
-    public synchronized Map<String,T> getUsers() {
+    public synchronized Set<String> getUsers() {
 
-        return Collections.unmodifiableMap(userNameToData);
+        return Collections.unmodifiableSet(userNameToData.keySet());
     }
 
     public boolean isUserExists(String username) {

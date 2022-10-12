@@ -27,6 +27,14 @@ public class JoinToContestServlet extends HttpServlet {
         ContestsManager manager = ServletUtils.getContestManager(request.getServletContext());
         String contestName = request.getParameter(ServletUtils.CONTEST_NAME_PARAMETER);
 
+        if(manager.addCompetitorToContest(contestName,teamsManager.getTeam(userName))){
+            ServletUtils.createResponse(response, HttpServletResponse.SC_OK, null);
+        }
+        else {
+            ServletUtils.createResponse(response, HttpServletResponse.SC_CONFLICT, null);
+            // need to explain why in response, maybe you already in the contest/for the uBoat still not load contest ....
+            // need to check also that the allie client not in other contest.
+        }
     }
 
 }
