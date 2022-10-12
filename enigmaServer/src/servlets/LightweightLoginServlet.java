@@ -9,7 +9,7 @@ import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
 
 import java.io.IOException;
-@WebServlet(name = "ReadFileServlet", urlPatterns = "/login")
+@WebServlet(name = "LoginServlet", urlPatterns = "/uBoat/login")
 public class LightweightLoginServlet extends HttpServlet {
     public static final String USERNAME = "username";
 

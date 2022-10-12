@@ -4,6 +4,8 @@ import exceptions.NotInDictionaryException;
 import machineDtos.EnigmaMachineDTO;
 import manager.DecryptionManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class UserContest {
@@ -11,6 +13,7 @@ public class UserContest {
     private final EnigmaSystemEngine machineEngine;
     private final DecryptionManager decryptionManager;
     private final BattleField field;
+    private final List<Team> competitors = new ArrayList<>();
 
     public UserContest(EnigmaSystemEngine machineEngine, DecryptionManager decryptionManager, BattleField field) {
         this.machineEngine = machineEngine;

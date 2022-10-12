@@ -55,7 +55,7 @@ public class LoginController {
         //need to change the path LOGIN_PAGE or to add /uboat to the curr path
 
         String finalUrl = HttpUrl
-                        .parse("http://localhost:8080/enigmaServer_Web_exploded/login")
+                        .parse(Constants.REQUEST_PATH_UBOAT_LOGIN)
                         .newBuilder()
                         .addQueryParameter("username", userName)
                         .build()
