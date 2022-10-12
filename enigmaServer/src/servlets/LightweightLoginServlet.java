@@ -4,73 +4,57 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logic.ContestsManager;
+import logic.datamanager.DataManager;
 import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
 
 import java.io.IOException;
+
+import static servlets.utils.ServletUtils.ACCESS_ATTRIBUTE;
+import static servlets.utils.SessionUtils.USERNAME_ATTRIBUTE;
+
 @WebServlet(name = "LoginServlet", urlPatterns = "/uBoat/login")
 public class LightweightLoginServlet extends HttpServlet {
-    public static final String USERNAME = "username";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain;charset=UTF-8");
 
         String usernameFromSession = SessionUtils.getUsername(request);
-        ContestsManager userManager = ServletUtils.getContestManager(getServletContext());
+        try {
+            DataManager userManager = ServletUtils.getDataManager(getServletContext(),request.getParameter(ACCESS_ATTRIBUTE) );
 
-        if (usernameFromSession == null) { //user is not logged in yet
+            if (usernameFromSession == null) { //user is not logged in yet
 
-            String usernameFromParameter = request.getParameter(USERNAME);
-            if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
-                //no username in session and no username in parameter - not standard situation. it's a conflict
+                String usernameFromParameter = request.getParameter(USERNAME_ATTRIBUTE);
+                if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
+                    //no username in session and no username in parameter - not standard situation. it's a conflict
+                    // stands for conflict in server state
+                    response.setStatus(HttpServletResponse.SC_CONFLICT);
+                } else {
+                    usernameFromParameter = usernameFromParameter.trim();
 
-                // stands for conflict in server state
-                response.setStatus(HttpServletResponse.SC_CONFLICT);
-            } else {
-                //normalize the username value
-                usernameFromParameter = usernameFromParameter.trim();
-
-                /*
-                One can ask why not enclose all the synchronizations inside the userManager object ?
-                Well, the atomic action we need to perform here includes both the question (isUserExists) and (potentially) the insertion
-                of a new user (addUser). These two actions needs to be considered atomic, and synchronizing only each one of them, solely, is not enough.
-                (of course there are other more sophisticated and performable means for that (atomic objects etc) but these are not in our scope)
-
-                The synchronized is on this instance (the servlet).
-                As the servlet is singleton - it is promised that all threads will be synchronized on the very same instance (crucial here)
-
-                A better code would be to perform only as little and as necessary things we need here inside the synchronized block and avoid
-                do here other not related actions (such as response setup. this is shown here in that manner just to stress this issue
-                 */
-                synchronized (this) {
-                    if (userManager.isUserExists(usernameFromParameter)) {
-                        String errorMessage = "Username " + usernameFromParameter + " already exists. Please enter a different username.";
-                        System.out.println(errorMessage);
-                        // stands for unauthorized as there is already such user with this name
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        response.getOutputStream().print(errorMessage);
-                    }
-                    else {
-                        //add the new user to the users list
-                        userManager.addUser(usernameFromParameter);
-                        //set the username in a session so it will be available on each request
-                        //the true parameter means that if a session object does not exists yet
-                        //create a new one
-                        request.getSession(true).setAttribute(USERNAME, usernameFromParameter);
-
-                        //redirect the request to the chat room - in order to actually change the URL
+                    if (userManager.addUser(usernameFromParameter)) {
+                        request.getSession(true).setAttribute(USERNAME_ATTRIBUTE, usernameFromParameter);
                         System.out.println("On login, request URI is: " + request.getRequestURI());
                         response.setStatus(HttpServletResponse.SC_OK);
+                    } else {
+                        String errorMessage = "Username " + usernameFromParameter + " already exists. Please enter a different username.";
+                        System.out.println(errorMessage);
+                        ServletUtils.createResponse(response,HttpServletResponse.SC_UNAUTHORIZED,errorMessage);
                     }
+
                 }
+            } else {
+                //user is already logged in
+                System.out.println("User is already exist");
+                response.setStatus(HttpServletResponse.SC_OK);
             }
-        } else {
-            //user is already logged in
-            System.out.println("User is already exist");
-            response.setStatus(HttpServletResponse.SC_OK);
         }
+        catch (Exception e){
+            ServletUtils.createResponse(response,HttpServletResponse.SC_BAD_REQUEST,e.getMessage());
+        }
+
     }
 
 }

@@ -2,7 +2,7 @@ package servlets;
 
 import com.google.gson.Gson;
 import exceptions.NoFileLoadedException;
-import logic.ContestsManager;
+import logic.datamanager.ContestsManager;
 import machineDtos.EnigmaMachineDTO;
 import servlets.utils.SessionUtils;
 import servlets.utils.ServletUtils;

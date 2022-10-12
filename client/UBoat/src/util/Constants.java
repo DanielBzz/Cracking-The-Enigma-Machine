@@ -6,24 +6,15 @@ import okhttp3.OkHttpClient;
 public class Constants {
 
     // global constants
-    public final static String LINE_SEPARATOR = System.getProperty("line.separator");
     public final static int REFRESH_RATE = 2000;
 
     // fxml locations
-    //public final static String MAIN_PAGE_FXML_RESOURCE_LOCATION = "/chat/client/component/main/chat-app-main.fxml";
-
     public final static String MAIN_PAGE_FXML_RESOURCE_LOCATION = "/components/uBoat-app-main.fxml";
     public final static String LOGIN_PAGE_FXML_RESOURCE_LOCATION = "/components/login/login.fxml";
-    //public final static String CHAT_ROOM_FXML_RESOURCE_LOCATION = "/chat/component/chatroom/chat-room-main.fxml";
     public final static String UBOAT_ROOM_FXML_RESOURCE_LOCATION = "/components/subControllers/uBoat-room-main.fxml";
 
     // GSON instance
     public final static Gson GSON_INSTANCE = new Gson();
-
-
-
-
-
 
     public final static OkHttpClient HTTP_CLIENT = new OkHttpClient();
     public final static String BASE_DOMAIN = "localhost";
@@ -37,7 +28,6 @@ public class Constants {
     public final static String LOGIN_PAGE_GENERAL = "/login";
 
     //- - - - - - - - - - - uBoat requests path - - - - - - - - - - - - - - - //
-
     public final static String REQUEST_PATH_UBOAT_LOGIN = UBOAT_REQUEST_PATH + "/login";
     public final static String REQUEST_PATH_READ_FILE = UBOAT_REQUEST_PATH + "/loadFile";
     public final static String REQUEST_PATH_INIT_USER_MACHINE = UBOAT_REQUEST_PATH + "/initMachine";

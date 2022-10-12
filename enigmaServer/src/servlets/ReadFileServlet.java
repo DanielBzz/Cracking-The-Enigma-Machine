@@ -2,6 +2,9 @@ package servlets;
 
 import consoleComponents.OutputMessages;
 import logic.*;
+import logic.datamanager.ContestsManager;
+import logic.serverdata.BattleField;
+import logic.serverdata.UserContest;
 import manager.DecryptionManager;
 import servlets.utils.SessionUtils;
 import servlets.utils.ServletUtils;

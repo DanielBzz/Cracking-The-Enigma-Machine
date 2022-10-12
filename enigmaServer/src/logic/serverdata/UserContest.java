@@ -1,6 +1,8 @@
-package logic;
+package logic.serverdata;
 
 import exceptions.NotInDictionaryException;
+import logic.DecipherLogic;
+import logic.EnigmaSystemEngine;
 import machineDtos.EnigmaMachineDTO;
 import manager.DecryptionManager;
 
@@ -48,5 +50,10 @@ public class UserContest {
         }
 
         return machineEngine.encryptString(newMessage);
+    }
+
+    public void addCompetitor(Team newCompetitor){
+
+        competitors.add(newCompetitor);
     }
 }
