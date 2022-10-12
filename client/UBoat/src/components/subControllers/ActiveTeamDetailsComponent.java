@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 
-public class ActiveTeamDetailsController extends Node {
+public class ActiveTeamDetailsComponent extends Node {
     @FXML
     private Label teamName;
 
@@ -19,7 +19,7 @@ public class ActiveTeamDetailsController extends Node {
     @FXML
     private Label taskSize;
 
-    public ActiveTeamDetailsController(String teamName, int amountOfAgents, int taskSize){
+    public ActiveTeamDetailsComponent(String teamName, int amountOfAgents, int taskSize){
         this.teamName.setText(teamName);
         this.numberOfAgents.setText(String.valueOf(amountOfAgents));
         this.taskSize.setText(String.valueOf(taskSize));

@@ -27,6 +27,7 @@ public class Constants {
 
     public final static String LOGIN_PAGE_GENERAL = "/login";
 
+
     //- - - - - - - - - - - uBoat requests path - - - - - - - - - - - - - - - //
     public final static String REQUEST_PATH_UBOAT_LOGIN = UBOAT_REQUEST_PATH + "/login";
     public final static String REQUEST_PATH_READ_FILE = UBOAT_REQUEST_PATH + "/loadFile";

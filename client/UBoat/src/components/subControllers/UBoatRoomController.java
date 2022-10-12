@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import logic.events.EncryptMessageEventListener;
 import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 
@@ -22,10 +23,10 @@ public class UBoatRoomController implements FileLoadable, encryptParentControlle
     private UBoatRoomMachineController uBoatRoomMachineController;
     @FXML
     private GridPane uBoatRoomMachineComponent;
-//    @FXML
-//    private UBoatRoomContestController uBoatRoomContestController;
-//    @FXML
-//    private GridPane uBoatRoomContestComponent;
+    @FXML
+    private UBoatRoomContestController uBoatRoomContestController;
+    @FXML
+    private GridPane uBoatRoomContestComponent;
     @FXML private HeaderController headerComponentController;
     @FXML private ScrollPane headerComponent;
     @FXML
@@ -43,9 +44,22 @@ public class UBoatRoomController implements FileLoadable, encryptParentControlle
 
         return this.selectedFileProperty;
     }
+
+
+    /*------------------------------------------only for problem checking methods-----------------------------*/
+    public HeaderController getHeaderComponentController(){
+        return headerComponentController;
+    }
+
+    public UBoatRoomMachineController getUBoatRoomMachineController() {
+        return uBoatRoomMachineController;
+    }
+
+    /*-------------------------------------------------------------------------------------------------------*/
+
     @Override
     public void setSelectedFile(String selectedFilePath) {
-
+        parentController.loadNewXmlFile(selectedFilePath);
         selectedFileProperty.set(selectedFilePath);
     }
     public void setIsGoodFileSelected(Boolean isGood) {
@@ -68,15 +82,16 @@ public class UBoatRoomController implements FileLoadable, encryptParentControlle
     }
 
     public void initial() {
-        if (headerComponentController != null && uBoatRoomMachineController != null /*&& uBoatRoomContestController != null*/) {
+        System.out.println("headerController:" + headerComponentController);
+        System.out.println("uBoatRoomMachineController:" + uBoatRoomMachineController);
+
+        if (headerComponentController != null && uBoatRoomMachineController != null && uBoatRoomContestController != null) {
             headerComponentController.setMainController(this);
             headerComponentController.initial();
             uBoatRoomMachineController.setUBoatRoomController(this);
             uBoatRoomMachineController.initial();
-
-            /*            take care of it when fixing the contest screen          */
-            //uBoatRoomContestController.setUBoatRoomController(this);
-            //uBoatRoomContestController.initial();
+            uBoatRoomContestController.setUBoatRoomController(this);
+            uBoatRoomContestController.initial();
 
             initialFileSelectedEvents();
             initialControllerEventsToLogic();
@@ -87,7 +102,7 @@ public class UBoatRoomController implements FileLoadable, encryptParentControlle
     private void initialFileSelectedEvents(){
 
         uBoatRoomMachineComponent.disableProperty().bind(isGoodFileSelected.not());
-        //uBoatRoomContestComponent.disableProperty().bind(isGoodFileSelected.not());
+        uBoatRoomContestComponent.disableProperty().bind(isGoodFileSelected.not());
         selectedFileProperty.addListener((observable, oldValue, newValue) -> {
             isGoodFileSelected.set(false);
             clearComponent();
@@ -105,7 +120,7 @@ public class UBoatRoomController implements FileLoadable, encryptParentControlle
 
                 /*          take care of the contest initial things after fixing the screen       */
                 //bodyComponentController.setDecryptionManager(machineUI.getMachineEngine());
-                //bodyComponentController.setIsCodeConfigurationSet(false);
+                setIsCodeConfigurationSet(false);
             }
         });
     }
@@ -155,25 +170,23 @@ public class UBoatRoomController implements FileLoadable, encryptParentControlle
         uBoatRoomMachineController.initialEngineDetails();
     }
 
+    public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){
+
+        return uBoatRoomContestController.getEncryptComponentController().getResetButtonActionProperty();
+    }
+
     //------take care after handling with contest screen------
-
-//    public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){
-//
-//        return encryptComponentController.getResetButtonActionProperty();
-//    }
-
-
 //    public void setDecryptionManager(EnigmaSystemEngine engine){
 //        bruteForceComponentController.setDecryptionManager(new DecryptionManager(engine));
 //    }
 
-//    public void setIsCodeConfigurationSet(Boolean codeSet){
-//        machineConfigurationComponentController.getIsCodeConfigurationSetProperty().set(codeSet);
-//    }
+    public void setIsCodeConfigurationSet(Boolean codeSet){
+        uBoatRoomContestController.getMachineConfigurationController().getIsCodeConfigurationSetProperty().set(codeSet);
+    }
 
-//    public SimpleBooleanProperty getIsCodeConfigurationSetProperty(){
-//        return machineConfigurationComponentController.getIsCodeConfigurationSetProperty();
-//    }
+    public SimpleBooleanProperty getIsCodeConfigurationSetProperty(){
+        return uBoatRoomContestController.getMachineConfigurationController().getIsCodeConfigurationSetProperty();
+    }
 
 
     public StringProperty getMachineEncryptedMessageProperty(){
@@ -188,18 +201,28 @@ public class UBoatRoomController implements FileLoadable, encryptParentControlle
 
                     //------take care after handling with contest screen------
 
-//                    if(contestTab.isSelected()) {
-//                        encryptComponentController.setEncryptedMessageLabel(newValue);
-//                    } else {
-//                        bruteForceComponentController.setEncryptedMessageLabel(newValue);
-//                    }
+                    if(contestTab.isSelected()) {
+                        uBoatRoomContestController.getEncryptComponentController().setEncryptedMessageLabel(newValue);
+                    } else {
+                        //bruteForceComponentController.setEncryptedMessageLabel(newValue);
+                    }
                 });
         //mainController.CodeSetEventHandler().addListener(bruteForceComponentController);
 
         parentController.CodeSetEventHandler().addListener(uBoatRoomMachineController.getCodeCalibrationComponentController());
 
         //------take care after handling with contest screen------
-        //mainController.CodeSetEventHandler().addListener(machineConfigurationComponentController);
+        parentController.CodeSetEventHandler().addListener(uBoatRoomContestController.getMachineConfigurationController());
 
+    }
+
+    public void close(){
+        uBoatRoomContestController.clearDetails();
+        uBoatRoomMachineController.clearDetails();
+        //need to take care for the header
+    }
+
+    public EncryptMessageEventListener getEncryptMessageEventListener(){
+        return parentController.getEncryptMessageEventListener();
     }
 }
