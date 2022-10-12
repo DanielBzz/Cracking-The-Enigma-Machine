@@ -28,7 +28,6 @@ public class EnigmaAppController implements FileLoadable{
     private final SimpleBooleanProperty isGoodFileSelected = new SimpleBooleanProperty(false);
 
     public void initial() {
-
         if (headerComponentController != null && bodyComponentController != null) {
             headerComponentController.setMainController(this);
             headerComponentController.initial();

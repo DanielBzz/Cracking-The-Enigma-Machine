@@ -48,4 +48,19 @@ public class UBoatLogic {
         Response response = call.execute();
     }
 
+    public String encryptInput(String message) throws IOException{
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(Constants.REQUEST_PATH_ENCRYPT_MESSAGE).newBuilder();
+        urlBuilder.addQueryParameter("message", message);
+        String finalUrl = urlBuilder.build().toString();
+        //System.out.println("About to invoke URL: [" + finalUrl + "]");
+
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .build();
+
+        Call call = Constants.HTTP_CLIENT.newCall(request);
+
+        return call.execute().message();
+    }
 }

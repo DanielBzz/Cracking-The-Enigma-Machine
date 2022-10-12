@@ -50,6 +50,13 @@ public class UBoatLogicUI {
         uBoatLogic.updateMachineConfiguration(initialArgs);
     }
 
+    public String encryptInput(String message){
+        try{
+            return uBoatLogic.encryptInput(message);
+        }catch (IOException e){
+            return null;
+        }
+    }
 
 
 }

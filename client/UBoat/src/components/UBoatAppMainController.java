@@ -41,6 +41,7 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
 
     public UBoatAppMainController() {
         currentUserName = new SimpleStringProperty();
+        uBoatLogicUI = new UBoatLogicUI(this);
     }
 
     @FXML
@@ -66,7 +67,7 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
 
     @Override
     public void close() throws IOException {
-        //chatRoomComponentController.close();
+        uBoatRoomComponentController.close();
     }
 
     private void loadLoginPage() {
@@ -91,7 +92,11 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
             fxmlLoader.setLocation(loginPageUrl);
             uBoatRoomComponent = fxmlLoader.load();
             uBoatRoomComponentController = fxmlLoader.getController();
+            System.out.println("HeaderComponentController:" + uBoatRoomComponentController.getHeaderComponentController());
+            System.out.println("UBoatRoomMachineController:" + uBoatRoomComponentController.getUBoatRoomMachineController());
+            //System.out.println(uBoatRoomComponentController);
             uBoatRoomComponentController.setUBoatAppMainController(this);
+            //initial();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -117,10 +122,8 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
         });
     }
 
-
-
     public void initial() {
-
+        System.out.println("uBoatRoomComponentController:" + uBoatRoomComponentController);
         if(uBoatRoomComponentController != null){
             uBoatRoomComponentController.initial();
         }
@@ -155,7 +158,7 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
         return new EncryptMessageEventListener() {
             @Override
             public void invoke(String arg) {
-                //uBoatLogicUI.encryptInput(arg);
+                uBoatLogicUI.encryptInput(arg);
             }
         };
     }
@@ -177,13 +180,14 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
         uBoatRoomComponentController.showPopUpMessage(message);
     }
 
+    public void loadNewXmlFile(String newValue){
+        uBoatLogicUI.loadNewXmlFile(newValue);
+    }
+
     public void manualInitialCodeConfiguration(MachineInfoDTO newValue) throws IOException {
         uBoatLogicUI.manualInitialCodeConfiguration(newValue);
     }
 
-    public void loadNewXmlFile(String newValue){
-        uBoatLogicUI.loadNewXmlFile(newValue);
-    }
 
 //    public void automaticInitialCodeConfiguration(){
 //        uBoatLogicUI.automaticInitialCodeConfiguration();
