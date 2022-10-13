@@ -5,6 +5,7 @@ import components.body.main.EncryptController;
 import components.body.main.EngineDtoReturnableParentController;
 import components.body.main.encryptParentController;
 import contestDtos.ActiveTeamDTO;
+import decryptionDtos.AgentAnswerDTO;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -16,6 +17,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import machineDtos.EngineDTO;
+
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 public class UBoatRoomContestController implements encryptParentController, EngineDtoReturnableParentController {
 
@@ -49,7 +54,12 @@ public class UBoatRoomContestController implements encryptParentController, Engi
     @FXML
     void readyButtonListener(ActionEvent event) {
 
+        //add new listener to AnswerToDM
+        //fire contest
+
     }
+
+
 
     public void initial(){
         if(machineConfigurationController != null){
@@ -64,6 +74,7 @@ public class UBoatRoomContestController implements encryptParentController, Engi
             encryptComponentController.activateEncryptEventHandler.addListener(parentController.getEncryptMessageEventListener());
             machineConfigurationController.getIsCodeConfigurationSetProperty().addListener(observable -> encryptComponentController.createKeyboards(parentController.getEngineDetails().getEngineComponentsInfo().getABC()));
         }
+        candidatesArea.setEditable(false);
 //        if(bruteForceComponentController!= null){
 //            bruteForceComponentController.setParentController(this);
 //            bruteForceComponentController.initial();
@@ -117,5 +128,9 @@ public class UBoatRoomContestController implements encryptParentController, Engi
     @Override
     public StringProperty getMachineEncryptedMessageProperty() {
         return null;
+    }
+
+    public void updateCandidates(String newCandidates){
+        candidatesArea.setText(candidatesArea.getText() + newCandidates);
     }
 }

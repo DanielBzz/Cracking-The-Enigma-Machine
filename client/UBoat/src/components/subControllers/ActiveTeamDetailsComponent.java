@@ -8,8 +8,9 @@ import com.sun.javafx.sg.prism.NGNode;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 
-public class ActiveTeamDetailsComponent extends Node {
+public class ActiveTeamDetailsComponent extends Pane {
     @FXML
     private Label teamName;
 
@@ -25,23 +26,4 @@ public class ActiveTeamDetailsComponent extends Node {
         this.taskSize.setText(String.valueOf(taskSize));
     }
 
-    @Override
-    protected NGNode impl_createPeer() {
-        return null;
-    }
-
-    @Override
-    public BaseBounds impl_computeGeomBounds(BaseBounds bounds, BaseTransform tx) {
-        return null;
-    }
-
-    @Override
-    protected boolean impl_computeContains(double localX, double localY) {
-        return false;
-    }
-
-    @Override
-    public Object impl_processMXNode(MXNodeAlgorithm alg, MXNodeAlgorithmContext ctx) {
-        return null;
-    }
 }

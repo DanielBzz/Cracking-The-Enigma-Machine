@@ -39,8 +39,6 @@ public class UBoatClient extends Application {
     @Override
     public void stop() throws Exception {
         HttpClientUtil.shutdown();
-        //chatAppMainController.close();
-        //only for temp time
         uBoatAppMainController.close();
     }
 
