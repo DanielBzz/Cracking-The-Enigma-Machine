@@ -1,17 +1,19 @@
-import components.UBoatAppMainController;
+import mainapp.ClientMainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import util.http.HttpClientUtil;
+import http.HttpClientUtil;
+import util.Constants;
 
 import java.io.IOException;
 import java.net.URL;
 
 public class UBoatClient extends Application {
 
-    private UBoatAppMainController uBoatAppMainController;
+    private ClientMainController uBoatAppMainController;
+
     @Override
     public void start(Stage primaryStage) {
 
@@ -19,20 +21,20 @@ public class UBoatClient extends Application {
         primaryStage.setMinWidth(600);
         primaryStage.setTitle("UBoat App");
 
-        URL loginPage = getClass().getResource("components/uBoat-app-main.fxml");
+        URL loginPage = ClientMainController.class.getResource("generalMainComponent.fxml");
         try {
             System.out.println(loginPage.toString());
 
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(loginPage);
             Parent root = fxmlLoader.load();
-            System.out.println("work till here");
-
             uBoatAppMainController = fxmlLoader.getController();
+            uBoatAppMainController.loadMainAppForm(Constants.UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION);
 
             Scene scene = new Scene(root, 700, 600);
             primaryStage.setScene(scene);
             primaryStage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

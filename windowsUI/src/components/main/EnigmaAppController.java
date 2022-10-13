@@ -3,7 +3,6 @@ package components.main;
 import components.body.main.BodyController;
 import components.header.HeaderController;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -17,14 +16,13 @@ import logic.events.StatisticsUpdateEventListener;
 import logic.events.handler.MachineEventHandler;
 import machineDtos.EngineDTO;
 
-public class EnigmaAppController implements FileLoadable{
+public class EnigmaAppController extends FileLoadable{
 
     private MachineLogicUI machineUI;
     @FXML private ScrollPane headerComponent;
     @FXML private HeaderController headerComponentController;
     @FXML private TabPane bodyComponent;
     @FXML private BodyController bodyComponentController;
-    private final SimpleStringProperty selectedFileProperty = new SimpleStringProperty("-");
     private final SimpleBooleanProperty isGoodFileSelected = new SimpleBooleanProperty(false);
 
     public void initial() {
@@ -42,16 +40,6 @@ public class EnigmaAppController implements FileLoadable{
     public void setMachineUI(MachineLogicUI machine){
 
         machineUI = machine;
-    }
-    @Override
-    public SimpleStringProperty selectedFileProperty() {
-
-        return this.selectedFileProperty;
-    }
-    @Override
-    public void setSelectedFile(String selectedFilePath) {
-
-        selectedFileProperty.set(selectedFilePath);
     }
 
     public void showPopUpMessage(String messageToShow){
@@ -96,7 +84,7 @@ public class EnigmaAppController implements FileLoadable{
     private void initialFileSelectedEvents(){
 
         bodyComponent.disableProperty().bind(isGoodFileSelected.not());
-        selectedFileProperty.addListener((observable, oldValue, newValue) -> {
+        selectedFileProperty().addListener((observable, oldValue, newValue) -> {
             isGoodFileSelected.set(false);
             clearStage();
             machineUI.loadNewXmlFile(newValue);

@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/system/engine/engine.iml" filepath="$PROJECT_DIR$/system/engine/engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/enigmaMachine/enigmaMachine.iml" filepath="$PROJECT_DIR$/enigmaMachine/enigmaMachine.iml" />
       <module fileurl="file://$PROJECT_DIR$/enigmaServer/enigmaServer.iml" filepath="$PROJECT_DIR$/enigmaServer/enigmaServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client/generalClient/generalClient.iml" filepath="$PROJECT_DIR$/client/generalClient/generalClient.iml" />
       <module fileurl="file://$PROJECT_DIR$/windowsUI/windowsUI.iml" filepath="$PROJECT_DIR$/windowsUI/windowsUI.iml" />
     </modules>
   </component>

@@ -6,7 +6,6 @@ import machineDtos.EngineDTO;
 public interface encryptParentController {
 
     public EngineDTO getEngineDetails();
-
     public StringProperty getMachineEncryptedMessageProperty();
 
 }

@@ -4,6 +4,7 @@ import components.body.details.MachineConfigurationController;
 import components.body.main.EncryptController;
 import components.body.main.EngineDtoReturnableParentController;
 import components.body.main.encryptParentController;
+import components.main.UBoatMainAppController;
 import contestDtos.ActiveTeamDTO;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
@@ -19,7 +20,7 @@ import machineDtos.EngineDTO;
 
 public class UBoatRoomContestController implements encryptParentController, EngineDtoReturnableParentController {
 
-    private UBoatRoomController parentController;
+    private UBoatMainAppController parentController;
 
     @FXML
     private MachineConfigurationController machineConfigurationController;
@@ -61,7 +62,7 @@ public class UBoatRoomContestController implements encryptParentController, Engi
         }
         if(encryptComponentController != null) {
             encryptComponentController.setParentController(this);
-            encryptComponentController.activateEncryptEventHandler.addListener(parentController.getEncryptMessageEventListener());
+            //encryptComponentController.activateEncryptEventHandler.addListener(parentController.getEncryptMessageEventListener());
             machineConfigurationController.getIsCodeConfigurationSetProperty().addListener(observable -> encryptComponentController.createKeyboards(parentController.getEngineDetails().getEngineComponentsInfo().getABC()));
         }
 //        if(bruteForceComponentController!= null){
@@ -76,7 +77,7 @@ public class UBoatRoomContestController implements encryptParentController, Engi
         return encryptComponentController.getResetButtonActionProperty();
     }
 
-    public void setUBoatRoomController(UBoatRoomController uBoatRoomController) {
+    public void setUBoatRoomController(UBoatMainAppController uBoatRoomController) {
         this.parentController = uBoatRoomController;
     }
 
