@@ -1,22 +1,43 @@
 package servlets.utils;
 
-import logic.ContestsManager;
+import logic.datamanager.ContestsManager;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import logic.datamanager.DataManager;
+import logic.datamanager.TeamsManager;
+
 import java.io.IOException;
 import java.util.Collection;
 
 public class ServletUtils {
 
-    private static final String CONTEST_MANAGER_ATTRIBUTE_NAME = "contestManager";
+    public static final String MESSAGE_TO_ENCRYPT_PARAMETER = "message";
+    public static final String CONTEST_NAME_PARAMETER = "contestName";
+    public static final String ACCESS_ATTRIBUTE = "access";
+    public static final String CONTEST_MANAGER_ATTRIBUTE_NAME = "contestManager";
+    public static final String TEAM_MANAGER_ATTRIBUTE_NAME = "teamManager";
+
     private static final Object contestManagerLock = new Object();
-    public static final String MESSAGE_TO_ENCRYPT_PARAMATER = "message";
+    private static final Object teamManagerLock = new Object();
 
     // getters for all the details we should respond for the clients.
+
+    public static DataManager getDataManager(ServletContext servletContext, String attributeName) throws Exception {
+
+        if(attributeName.equals(CONTEST_MANAGER_ATTRIBUTE_NAME)){
+            return getContestManager(servletContext);
+        }
+        else if(attributeName.equals(TEAM_MANAGER_ATTRIBUTE_NAME)) {
+            return getTeamsManager(servletContext);
+        }else{
+            throw new Exception("You should declare your " + ACCESS_ATTRIBUTE + ":" + CONTEST_MANAGER_ATTRIBUTE_NAME + "/" + TEAM_MANAGER_ATTRIBUTE_NAME);
+        }
+    }
+
     public static ContestsManager getContestManager(ServletContext servletContext){
 
         synchronized (contestManagerLock){
@@ -28,16 +49,30 @@ public class ServletUtils {
         return (ContestsManager)servletContext.getAttribute(CONTEST_MANAGER_ATTRIBUTE_NAME);
     }
 
+    public static TeamsManager getTeamsManager(ServletContext servletContext){
+
+        synchronized (teamManagerLock){
+            if(servletContext.getAttribute(TEAM_MANAGER_ATTRIBUTE_NAME) == null){
+                servletContext.setAttribute(TEAM_MANAGER_ATTRIBUTE_NAME,new TeamsManager());
+            }
+        }
+
+        return (TeamsManager)servletContext.getAttribute(TEAM_MANAGER_ATTRIBUTE_NAME);
+    }
+
+
     public static void createResponse(HttpServletResponse resp, int status, String msg){
 
         resp.setContentType("text/plain;charset=UTF-8");
         resp.setStatus(status);
-        try {
-            resp.getOutputStream().print(msg);
-            resp.setContentLength(msg.length());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+        if(msg != null) {
+            try {
+                resp.getOutputStream().print(msg);
+                resp.setContentLength(msg.length());
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 

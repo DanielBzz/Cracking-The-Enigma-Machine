@@ -1,8 +1,8 @@
 package components;
 
-import components.api.HttpStatusUpdate;
-import components.subControllers.UBoatRoomController;
+import components.login.Loggable;
 import components.login.LoginController;
+import components.subControllers.UBoatRoomController;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
@@ -25,14 +25,13 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.URL;
 
-import static util.Constants.*;
+import static util.Constants.LOGIN_PAGE_FXML_RESOURCE_LOCATION;
+import static util.Constants.UBOAT_ROOM_FXML_RESOURCE_LOCATION;
 
-public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
+public class UBoatAppMainController implements Closeable, Loggable {
     private UBoatLogicUI uBoatLogicUI;
-    @FXML
-    private Label userGreetingLabel;
-    @FXML
-    private AnchorPane mainPanel;
+    @FXML private Label userGreetingLabel;
+    @FXML private AnchorPane mainPanel;
     private GridPane loginComponent;
     private LoginController logicController;
     private Parent uBoatRoomComponent;
@@ -40,19 +39,20 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
     private final StringProperty currentUserName;
 
     public UBoatAppMainController() {
-        currentUserName = new SimpleStringProperty();
+        currentUserName = new SimpleStringProperty("");
         uBoatLogicUI = new UBoatLogicUI(this);
     }
 
     @FXML
     public void initialize() {
         userGreetingLabel.textProperty().bind(Bindings.concat("Hello ", currentUserName));
-        // prepare components
-        loadLoginPage();
-        loadUBoatRoomPage();
+       loadLoginPage();
+       loadUBoatRoomPage();
     }
 
+    @Override
     public void updateUserName(String userName) {
+
         currentUserName.set(userName);
     }
 
@@ -85,7 +85,7 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
     }
 
     private void loadUBoatRoomPage() {
-        URL loginPageUrl = getClass().getResource(/*CHAT_ROOM_FXML_RESOURCE_LOCATION*/UBOAT_ROOM_FXML_RESOURCE_LOCATION);
+        URL loginPageUrl = getClass().getResource(UBOAT_ROOM_FXML_RESOURCE_LOCATION);
         try {
             System.out.println("--------------in load uboat room page---------");
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -103,21 +103,17 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
     }
 
     @Override
-    public void updateHttpLine(String line) {
-        //httpStatusComponentController.addHttpStatusLine(line);
-    }
-
-    public void switchToSecondRoom() {
-        //setMainPanelTo(chatRoomComponent);
+    public void switchToMainApp() {
         System.out.println("--------------in switch to second room---------");
         setMainPanelTo(uBoatRoomComponent);
         //uBoatRoomComponentController.setActive();
     }
-    public void switchToLogin() {
+
+    public void switchToLogin() {       // should activate when press on logout \ the server send redirect to log in
         Platform.runLater(() -> {
             currentUserName.set("");
-            //chatRoomComponentController.setInActive();
             //uBoatRoomComponentController.setInActive();
+            uBoatRoomComponentController.clearComponent();
             setMainPanelTo(loginComponent);
         });
     }
@@ -128,6 +124,12 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
             uBoatRoomComponentController.initial();
         }
     }
+
+
+
+    // from here all the function should be in internal classes and not here
+    // this class should be only manage of the component and controller that now control the app, login/uBoatRoom
+
 
     public void setMachineUI(UBoatLogicUI machine){
 
@@ -149,6 +151,7 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
         return null; //uBoatLogicUI.statisticsUpdateEventHandler;
     }
 
+
     public StringProperty getMachineEncryptedMessageProperty(){
 
         return uBoatLogicUI.getEncryptedMessageProperty();
@@ -162,6 +165,8 @@ public class UBoatAppMainController implements Closeable, HttpStatusUpdate {
             }
         };
     }
+
+
 
     private void clearStage(){
 

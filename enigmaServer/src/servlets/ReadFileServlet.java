@@ -2,6 +2,9 @@ package servlets;
 
 import consoleComponents.OutputMessages;
 import logic.*;
+import logic.datamanager.ContestsManager;
+import logic.serverdata.BattleField;
+import logic.serverdata.UserContest;
 import manager.DecryptionManager;
 import servlets.utils.SessionUtils;
 import servlets.utils.ServletUtils;
@@ -12,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 
-@WebServlet(name = "ReadFileServlet", urlPatterns = "/uBoat/loadFile")
+@WebServlet(name = "ReadFileServlet", urlPatterns = "/contestManager/loadFile")
 public class ReadFileServlet extends HttpServlet {
 
     @Override

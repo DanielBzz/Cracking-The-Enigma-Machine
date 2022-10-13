@@ -1,5 +1,6 @@
-package logic;
+package logic.serverdata;
 
+import logic.DifficultyLevel;
 import scheme.generated.CTEBattlefield;
 
 public class BattleField {

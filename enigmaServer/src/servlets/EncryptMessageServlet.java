@@ -8,19 +8,19 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logic.ContestsManager;
+import logic.datamanager.ContestsManager;
 import servlets.utils.SessionUtils;
 import servlets.utils.ServletUtils;
 
 import java.io.IOException;
 
-@WebServlet(name = "encryptServlet" , urlPatterns = "/uBoat/encrypt")
+@WebServlet(name = "encryptServlet" , urlPatterns = "/contestManager/encrypt")
 public class EncryptMessageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userName = SessionUtils.getUsername(req);
         ContestsManager manager = ServletUtils.getContestManager(req.getServletContext());
-        String messageToEncrypt = req.getParameter(ServletUtils.MESSAGE_TO_ENCRYPT_PARAMATER);
+        String messageToEncrypt = req.getParameter(ServletUtils.MESSAGE_TO_ENCRYPT_PARAMETER);
 
         // should save some where the encrypt message to send it to allies / for allies to pull it
 

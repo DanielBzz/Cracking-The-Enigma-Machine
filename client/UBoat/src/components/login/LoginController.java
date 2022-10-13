@@ -1,8 +1,5 @@
 package components.login;
 
-import components.UBoatAppMainController;
-import util.Constants;
-import util.http.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -16,27 +13,27 @@ import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
+import util.Constants;
+import util.http.HttpClientUtil;
 
 import java.io.IOException;
 
 public class LoginController {
 
-    @FXML
-    public TextField userNameTextField;
-
-    @FXML
-    public Label errorMessageLabel;
-
-    private UBoatAppMainController uBoatAppMainController;
-
+    @FXML private TextField userNameTextField;
+    @FXML private Label errorMessageLabel;
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
+    private Loggable parentController;
+
+
+    public void setUBoatAppMainController(Loggable parentController) {
+
+        this.parentController = parentController;
+    }
 
     @FXML
     public void initialize() {
         errorMessageLabel.textProperty().bind(errorMessageProperty);
-        HttpClientUtil.setCookieManagerLoggingFacility(line ->
-                Platform.runLater(() ->
-                        updateHttpStatusLine(line)));
     }
 
     @FXML
@@ -52,17 +49,14 @@ public class LoginController {
         //noinspection ConstantConditions
         System.out.println("--------------after login button was clicked---------");
 
-        //need to change the path LOGIN_PAGE or to add /uboat to the curr path
-
         String finalUrl = HttpUrl
-                        .parse(Constants.REQUEST_PATH_UBOAT_LOGIN)
+                        .parse(Constants.REQUEST_PATH_LOGIN)
                         .newBuilder()
                         .addQueryParameter("username", userName)
                         .build()
                         .toString();
 
         System.out.println(finalUrl);
-        //updateHttpStatusLine("New request is launched for: " + finalUrl);
         HttpClientUtil.runAsync(finalUrl, new Callback() {
 
             @Override
@@ -85,30 +79,23 @@ public class LoginController {
                     System.out.println("success");
                     Platform.runLater(() -> {
                         System.out.println("--------------user name is: " + userName + "---------");
-                        uBoatAppMainController.updateUserName(userName);
+                        parentController.updateUserName(userName);
                         System.out.println("--------------after update user name---------");
-                        uBoatAppMainController.switchToSecondRoom();
+                        parentController.switchToMainApp();
                     });
                 }
             }
         });
     }
 
-    @FXML
-    private void userNameKeyTyped(KeyEvent event) {
+    @FXML private void userNameKeyTyped(KeyEvent event) {
+
         errorMessageProperty.set("");
     }
 
-    @FXML
-    private void quitButtonClicked(ActionEvent e) {
+    @FXML private void quitButtonClicked(ActionEvent e) {
+
         Platform.exit();
     }
 
-    private void updateHttpStatusLine(String data) {
-        uBoatAppMainController.updateHttpLine(data);
-    }
-
-    public void setUBoatAppMainController(UBoatAppMainController chatAppMainController) {
-        this.uBoatAppMainController = chatAppMainController;
-    }
 }

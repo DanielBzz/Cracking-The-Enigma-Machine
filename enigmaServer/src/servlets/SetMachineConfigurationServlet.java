@@ -2,7 +2,7 @@ package servlets;
 
 import com.google.gson.Gson;
 import exceptions.NoFileLoadedException;
-import logic.ContestsManager;
+import logic.datamanager.ContestsManager;
 import machineDtos.EnigmaMachineDTO;
 import servlets.utils.SessionUtils;
 import servlets.utils.ServletUtils;
@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "MachineConfigurationServlet", urlPatterns = "/uBoat/initMachine")
+@WebServlet(name = "MachineConfigurationServlet", urlPatterns = "/contestManager/initMachine")
 public class SetMachineConfigurationServlet extends HttpServlet {
 
     @Override

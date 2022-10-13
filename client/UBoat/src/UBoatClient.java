@@ -1,10 +1,10 @@
 import components.UBoatAppMainController;
-import util.http.HttpClientUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import util.http.HttpClientUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,10 +21,13 @@ public class UBoatClient extends Application {
 
         URL loginPage = getClass().getResource("components/uBoat-app-main.fxml");
         try {
+            System.out.println(loginPage.toString());
+
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(loginPage);
             Parent root = fxmlLoader.load();
-            //chatAppMainController = fxmlLoader.getController();
+            System.out.println("work till here");
+
             uBoatAppMainController = fxmlLoader.getController();
 
             Scene scene = new Scene(root, 700, 600);
@@ -45,4 +48,5 @@ public class UBoatClient extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }
