@@ -13,7 +13,7 @@ import java.io.IOException;
 import static servlets.utils.ServletUtils.ACCESS_ATTRIBUTE;
 import static servlets.utils.SessionUtils.USERNAME_ATTRIBUTE;
 
-@WebServlet(name = "LoginServlet", urlPatterns = "/uBoat/login")
+@WebServlet(name = "LoginServlet", urlPatterns = "/login")
 public class LightweightLoginServlet extends HttpServlet {
 
     @Override

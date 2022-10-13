@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 
-@WebServlet(name = "ReadFileServlet", urlPatterns = "/uBoat/loadFile")
+@WebServlet(name = "ReadFileServlet", urlPatterns = "/contestManager/loadFile")
 public class ReadFileServlet extends HttpServlet {
 
     @Override

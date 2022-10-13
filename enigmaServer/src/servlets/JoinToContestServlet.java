@@ -10,7 +10,7 @@ import servlets.utils.SessionUtils;
 
 import java.io.IOException;
 
-@WebServlet(name = "JoinToContestServlet", urlPatterns = "/teamManager/joinToContestServlet")
+@WebServlet(name = "JoinToContestServlet", urlPatterns = "/teamManager/joinToContest")
 public class JoinToContestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

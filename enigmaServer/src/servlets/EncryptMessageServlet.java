@@ -14,7 +14,7 @@ import servlets.utils.ServletUtils;
 
 import java.io.IOException;
 
-@WebServlet(name = "encryptServlet" , urlPatterns = "/uBoat/encrypt")
+@WebServlet(name = "encryptServlet" , urlPatterns = "/contestManager/encrypt")
 public class EncryptMessageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
