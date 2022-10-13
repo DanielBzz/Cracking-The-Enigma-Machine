@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class ClientMainController implements Closeable, Loggable {
-    @FXML private Label userGreetingLabel;
+        @FXML private Label userGreetingLabel;
     @FXML private AnchorPane mainPanel;
     private GridPane loginComponent;
     private LoginController loginComponentController;
@@ -28,6 +28,7 @@ public class ClientMainController implements Closeable, Loggable {
     private final StringProperty currentUserName;
 
     public ClientMainController() {
+
         currentUserName = new SimpleStringProperty("");
     }
 
