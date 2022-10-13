@@ -52,4 +52,5 @@ public class ContestsManager extends DataManager<UserContest> {
 
         return isAdded;
     }
+
 }
