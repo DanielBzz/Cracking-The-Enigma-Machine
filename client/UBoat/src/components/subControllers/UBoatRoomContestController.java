@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 
 public class UBoatRoomContestController implements encryptParentController, EngineDtoReturnableParentController, CandidatesUpdate {
 
-    private UBoatRoomController parentController;
+    private UBoatMainAppController parentController;
     private Timer timer;
     private TimerTask listRefresher;
     private BooleanProperty autoUpdate;
@@ -55,7 +55,12 @@ public class UBoatRoomContestController implements encryptParentController, Engi
     private TextArea candidatesArea;
     @FXML
     void logoutButtonListener(ActionEvent event) {
+        //delete from session
 
+        //delete contest from all allies dashboard
+
+        //return to login page
+        parentController.close();
     }
 
     @FXML

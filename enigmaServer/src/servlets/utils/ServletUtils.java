@@ -21,7 +21,7 @@ public class ServletUtils {
     public static final String ACCESS_ATTRIBUTE = "access";
     public static final String CONTEST_MANAGER_ATTRIBUTE_NAME = "contestManager";
     public static final String TEAM_MANAGER_ATTRIBUTE_NAME = "teamManager";
-
+    public static final String AGENT_ATTRIBUTE_NAME = "agent";
     public static final String CANDIDATES_MANAGER_ATTRIBUTE_NAME = "candidatesManager";
 
     private static final Object contestManagerLock = new Object();
