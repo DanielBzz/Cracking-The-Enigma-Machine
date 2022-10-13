@@ -3,13 +3,12 @@ package components.body.details;
 import components.body.machine.DynamicMachineComponentFactory;
 import components.body.machine.ReflectorController;
 import components.body.machine.RotorController;
-import components.body.main.BodyController;
 import components.body.main.EngineDtoReturnableParentController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import machineDtos.EngineDTO;
+import machineDtos.EngineComponentsCTEDTO;
 import scheme.generated.CTEReflector;
 import scheme.generated.CTERotor;
 
@@ -26,11 +25,11 @@ public class EngineDetailsController implements RotorParent, ReflectorParent{
         parentController = controller;
     }
 
-    public void initialComponent(EngineDTO engineDetails){
+    public void initialComponent(EngineComponentsCTEDTO engineDetails){
 
-        setReflectorPane(engineDetails.getEngineComponentsInfo().getOptionalReflectors());
-        setRotorsPane(engineDetails.getEngineComponentsInfo().getOptionalRotors());
-        setAbcPane(engineDetails.getEngineComponentsInfo().getABC());
+        setReflectorPane(engineDetails.getOptionalReflectors());
+        setRotorsPane(engineDetails.getOptionalRotors());
+        setAbcPane(engineDetails.getABC());
     }
 
     private void setRotorsPane(List<CTERotor> optionalRotors){

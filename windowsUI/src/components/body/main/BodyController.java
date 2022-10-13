@@ -107,7 +107,7 @@ public class BodyController implements encryptParentController, EngineDtoReturna
 
     public void initialEngineDetails(){
 
-        engineDetailsComponentController.initialComponent(engineDetails);
+        engineDetailsComponentController.initialComponent(engineDetails.getEngineComponentsInfo());
     }
 
     public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){

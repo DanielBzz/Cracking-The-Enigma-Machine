@@ -6,12 +6,10 @@ import components.body.main.EngineDtoReturnableParentController;
 import components.body.main.encryptParentController;
 import components.main.UBoatMainAppController;
 import contestDtos.ActiveTeamDTO;
-import decryptionDtos.AgentAnswerDTO;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -23,17 +21,13 @@ import javafx.scene.layout.GridPane;
 import machineDtos.EngineDTO;
 import util.CandidatesRefresher;
 import util.CandidatesUpdate;
-import util.Constants;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.function.Consumer;
 
 public class UBoatRoomContestController implements encryptParentController, EngineDtoReturnableParentController, CandidatesUpdate {
 
-    private UBoatRoomController parentController;
+    private UBoatMainAppController parentController;
     private Timer timer;
     private TimerTask listRefresher;
     private BooleanProperty autoUpdate;
@@ -80,7 +74,8 @@ public class UBoatRoomContestController implements encryptParentController, Engi
         timer.schedule(listRefresher, 2000, 2000);
     }
 
-    public void initial(){
+    @FXML
+    public void initialize(){
         if(machineConfigurationController != null){
             machineConfigurationController.setParentController(this);
             machineConfigurationComponent.disableProperty().bind(machineConfigurationController.getIsCodeConfigurationSetProperty().not());
@@ -94,11 +89,6 @@ public class UBoatRoomContestController implements encryptParentController, Engi
             machineConfigurationController.getIsCodeConfigurationSetProperty().addListener(observable -> encryptComponentController.createKeyboards(parentController.getEngineDetails().getEngineComponentsInfo().getABC()));
         }
         candidatesArea.setEditable(false);
-//        if(bruteForceComponentController!= null){
-//            bruteForceComponentController.setParentController(this);
-//            bruteForceComponentController.initial();
-//            bruteForceComponentController.encryptMessageEventHandler().addListener(mainController.getEncryptMessageEventListener());
-//        }
     }
 
     public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){

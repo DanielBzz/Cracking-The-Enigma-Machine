@@ -1,6 +1,7 @@
 package logic;
 
 import com.google.gson.Gson;
+import machineDtos.EngineDTO;
 import machineDtos.EnigmaMachineDTO;
 import okhttp3.*;
 import util.Constants;
@@ -13,7 +14,7 @@ public class UBoatLogic {
 
     // list of allies
 
-    public void uploadFileToServer(String filePath) throws IOException {
+    public static EngineDTO uploadFileToServer(String filePath) {
 
         File f = new File(filePath);
 
@@ -29,9 +30,11 @@ public class UBoatLogic {
 
         Call call = Constants.HTTP_CLIENT.newCall(request);
 
-        Response response = call.execute();
+        //Response response = call.execute();
 
-        System.out.println(response.body().string());
+        //System.out.println(response.body().string());
+
+        return null;
     }
 
     public void updateMachineConfiguration(EnigmaMachineDTO initialArgs) throws IOException{

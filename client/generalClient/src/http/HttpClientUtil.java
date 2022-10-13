@@ -19,6 +19,7 @@ public class HttpClientUtil {
 
         Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
 
+
         call.enqueue(callback);
     }
 

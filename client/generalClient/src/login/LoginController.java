@@ -26,7 +26,7 @@ public class LoginController {
     private Loggable parentController;
 
 
-    public void setUBoatAppMainController(Loggable parentController) {
+    public void setClientController(Loggable parentController) {
 
         this.parentController = parentController;
     }
