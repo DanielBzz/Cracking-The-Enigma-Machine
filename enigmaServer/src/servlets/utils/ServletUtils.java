@@ -1,5 +1,6 @@
 package servlets.utils;
 
+import logic.datamanager.CandidatesManager;
 import logic.datamanager.ContestsManager;
 
 import jakarta.servlet.ServletContext;
@@ -21,8 +22,11 @@ public class ServletUtils {
     public static final String CONTEST_MANAGER_ATTRIBUTE_NAME = "contestManager";
     public static final String TEAM_MANAGER_ATTRIBUTE_NAME = "teamManager";
 
+    public static final String CANDIDATES_MANAGER_ATTRIBUTE_NAME = "candidatesManager";
+
     private static final Object contestManagerLock = new Object();
     private static final Object teamManagerLock = new Object();
+    private static final Object candidatesManagerLock = new Object();
 
     // getters for all the details we should respond for the clients.
 
@@ -60,6 +64,16 @@ public class ServletUtils {
         return (TeamsManager)servletContext.getAttribute(TEAM_MANAGER_ATTRIBUTE_NAME);
     }
 
+    public static CandidatesManager getCandidatesManager(ServletContext servletContext){
+
+        synchronized (candidatesManagerLock){
+            if(servletContext.getAttribute(CANDIDATES_MANAGER_ATTRIBUTE_NAME) == null){
+                servletContext.setAttribute(CANDIDATES_MANAGER_ATTRIBUTE_NAME,new CandidatesManager());
+            }
+        }
+
+        return (CandidatesManager)servletContext.getAttribute(CANDIDATES_MANAGER_ATTRIBUTE_NAME);
+    }
 
     public static void createResponse(HttpServletResponse resp, int status, String msg){
 

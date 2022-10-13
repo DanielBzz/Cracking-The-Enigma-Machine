@@ -6,8 +6,11 @@ import components.body.main.EngineDtoReturnableParentController;
 import components.body.main.encryptParentController;
 import contestDtos.ActiveTeamDTO;
 import decryptionDtos.AgentAnswerDTO;
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -17,15 +20,23 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import machineDtos.EngineDTO;
+import util.CandidatesRefresher;
+import util.CandidatesUpdate;
+import util.Constants;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.Consumer;
 
-public class UBoatRoomContestController implements encryptParentController, EngineDtoReturnableParentController {
+
+public class UBoatRoomContestController implements encryptParentController, EngineDtoReturnableParentController, CandidatesUpdate {
 
     private UBoatRoomController parentController;
-
+    private Timer timer;
+    private TimerTask listRefresher;
+    private BooleanProperty autoUpdate;
     @FXML
     private MachineConfigurationController machineConfigurationController;
     @FXML
@@ -36,16 +47,12 @@ public class UBoatRoomContestController implements encryptParentController, Engi
     private GridPane encryptComponent;
     @FXML
     private FlowPane activeTeamsDetailsFlowPane;
-
     @FXML
     private Button readyButton;
-
     @FXML
     private Button logoutButton;
-
     @FXML
     private TextArea candidatesArea;
-
     @FXML
     void logoutButtonListener(ActionEvent event) {
 
@@ -54,12 +61,24 @@ public class UBoatRoomContestController implements encryptParentController, Engi
     @FXML
     void readyButtonListener(ActionEvent event) {
 
-        //add new listener to AnswerToDM
+        startListRefresher();
         //fire contest
 
     }
 
 
+
+    //need constants for 2000, "http://localhost:8080/enigmaServer/contestManager"
+    //need to use the method in uBoatRoomController
+
+    public void startListRefresher() {
+        listRefresher = new CandidatesRefresher(
+                "http://localhost:8080/enigmaServer/contestManager",
+                this::updateCandidates,
+                autoUpdate);
+        timer = new Timer();
+        timer.schedule(listRefresher, 2000, 2000);
+    }
 
     public void initial(){
         if(machineConfigurationController != null){
@@ -130,7 +149,14 @@ public class UBoatRoomContestController implements encryptParentController, Engi
         return null;
     }
 
-    public void updateCandidates(String newCandidates){
+    public void updateCandidatesOnScreen(String newCandidates){
         candidatesArea.setText(candidatesArea.getText() + newCandidates);
+    }
+
+    @Override
+    public void updateCandidates(String candidates) {
+        Platform.runLater(() -> {
+            candidatesArea.appendText(candidates);
+        });
     }
 }

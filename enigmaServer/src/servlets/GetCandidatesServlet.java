@@ -5,7 +5,7 @@ import decryptionDtos.AgentAnswerDTO;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logic.ContestsManager;
+import logic.datamanager.CandidatesManager;
 import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
 
@@ -13,54 +13,59 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import static servlets.utils.ServletUtils.*;
+
 public class GetCandidatesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        //if "consumer" == ContestManager....
+        //else if "consumer" == TeamManager...
+
+        if(request.getParameterMap().containsKey("usertype")){
+            String userType = request.getParameter("usertype");
+            switch (userType){
+                case CONTEST_MANAGER_ATTRIBUTE_NAME:
+                    updateCandidatesInUBoat(request, response);
+                    break;
+                case TEAM_MANAGER_ATTRIBUTE_NAME:
+                    //handle with getting candidates from Agent to Allies
+                    break;
+            }
+        }
+        else{
+            //error
+        }
+
+
+
+    }
+
+    public void updateCandidatesInUBoat(HttpServletRequest request, HttpServletResponse response){
         response.setContentType("application/json");
-        ContestsManager contestManager = ServletUtils.getContestManager(getServletContext());
+        CandidatesManager candidatesManager = ServletUtils.getCandidatesManager(getServletContext());
         String username = SessionUtils.getUsername(request);
         if (username == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
 
-        /*
-        verify chat version given from the user is a valid number. if not it is considered an error and nothing is returned back
-        Obviously the UI should be ready for such a case and handle it properly
-         */
-
-//        int chatVersion = ServletUtils.getIntParameter(request, Constants.CHAT_VERSION_PARAMETER);
-//        if (chatVersion == Constants.INT_PARAMETER_ERROR) {
-//            return;
-//        }
-
-        /*
-        Synchronizing as minimum as I can to fetch only the relevant information from the chat manager and then only processing and sending this information onward
-        Note that the synchronization here is on the ServletContext, and the one that also synchronized on it is the chat servlet when adding new chat lines.
-         */
-        int chatManagerVersion = 0;
         List<AgentAnswerDTO> answersEntries;
         synchronized (getServletContext()) {
-            //chatManagerVersion = chatManager.getVersion();
-            answersEntries = contestManager.getChatEntries(chatVersion);
+            answersEntries = candidatesManager.getCandidates();
         }
 
         // log and create the response json string
-        ChatAndVersion cav = new ChatAndVersion(chatEntries, chatManagerVersion);
+
         Gson gson = new Gson();
-        String jsonResponse = gson.toJson(cav);
-        logServerMessage("Server Chat version: " + chatManagerVersion + ", User '" + username + "' Chat version: " + chatVersion);
-        logServerMessage(jsonResponse);
+        String jsonResponse = gson.toJson(answersEntries);
 
         try (PrintWriter out = response.getWriter()) {
             out.print(jsonResponse);
             out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
     }
 
-    private void logServerMessage(String message){
-        System.out.println(message);
-    }
 
 //    private static class ChatAndVersion {
 //
