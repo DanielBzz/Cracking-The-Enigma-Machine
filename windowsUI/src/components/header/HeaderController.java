@@ -1,7 +1,6 @@
 
 package components.header;
 
-import components.main.EnigmaAppController;
 import components.main.FileLoadable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,6 +23,7 @@ public class HeaderController {
     }
 
     public void initial() {
+
         this.filePathLabel.textProperty().bind(this.mainController.selectedFileProperty());
     }
 

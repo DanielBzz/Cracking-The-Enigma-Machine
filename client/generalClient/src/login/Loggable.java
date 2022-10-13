@@ -1,4 +1,4 @@
-package components.login;
+package login;
 
 public interface Loggable {
 

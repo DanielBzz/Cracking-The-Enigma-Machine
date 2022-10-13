@@ -13,13 +13,13 @@ public class UBoatLogic {
 
     // list of allies
 
-    public void uploadFileToServer(String filePath, String fileName) throws IOException {
+    public void uploadFileToServer(String filePath) throws IOException {
 
         File f = new File(filePath);
 
         RequestBody body =
                 new MultipartBody.Builder()
-                        .addFormDataPart(fileName, f.getName(), RequestBody.create(f, MediaType.parse("text/plain")))
+                        .addFormDataPart("file",f.getName(), RequestBody.create(f, MediaType.parse("text/plain")))
                         .build();
 
         Request request = new Request.Builder()

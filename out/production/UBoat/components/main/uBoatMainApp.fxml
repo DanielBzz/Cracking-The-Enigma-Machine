@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="783.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.subControllers.UBoatRoomController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="783.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.main.UBoatMainAppController">
    <top>
       <StackPane BorderPane.alignment="CENTER">
          <children>
@@ -24,7 +24,7 @@
                      <children>
                         <ScrollPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <content>
-                              <fx:include fx:id="uBoatRoomMachineComponent" source="uBoat-room-machine.fxml" />
+                              <fx:include fx:id="uBoatRoomMachineComponent" source="../subControllers/uBoat-room-machine.fxml" />
                            </content>
                         </ScrollPane>
                      </children>
@@ -36,7 +36,7 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <ScrollPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <fx:include fx:id="uBoatRoomContestComponent" source="uBoat-room-contest.fxml" />
+                        <fx:include fx:id="uBoatRoomContestComponent" source="../subControllers/uBoat-room-contest.fxml" />
                      </children>
                   </AnchorPane>
             </content>

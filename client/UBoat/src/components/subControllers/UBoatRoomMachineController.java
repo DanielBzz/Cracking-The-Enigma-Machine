@@ -3,6 +3,7 @@ package components.subControllers;
 import components.body.details.CodeCalibrationController;
 import components.body.details.EngineDetailsController;
 import components.body.main.EngineDtoReturnableParentController;
+import components.main.UBoatMainAppController;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
@@ -14,7 +15,7 @@ import machineDtos.MachineInfoDTO;
 
 public class UBoatRoomMachineController implements EngineDtoReturnableParentController {
 
-    private UBoatRoomController parentController;
+    private UBoatMainAppController parentController;
 
     @FXML
     private EngineDetailsController engineDetailsComponentController;
@@ -35,7 +36,7 @@ public class UBoatRoomMachineController implements EngineDtoReturnableParentCont
         }
     }
 
-    public void setUBoatRoomController(UBoatRoomController uBoatRoomController) {
+    public void setUBoatRoomController(UBoatMainAppController uBoatRoomController) {
         this.parentController = uBoatRoomController;
     }
 
