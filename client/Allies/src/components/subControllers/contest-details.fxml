@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <Separator BorderPane.alignment="CENTER" />
+   </top>
+   <left>
+      <Separator orientation="VERTICAL" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Separator orientation="VERTICAL" BorderPane.alignment="CENTER" />
+   </right>
+   <bottom>
+      <Separator BorderPane.alignment="CENTER" />
+   </bottom>
+   <center>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <GridPane alignment="CENTER" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="NEVER" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Battle Field: " />
+                  <Label text="Contest Manager: " GridPane.rowIndex="1" />
+                  <Label text="Status: " GridPane.rowIndex="2" />
+                  <Label text="Level: " GridPane.rowIndex="3" />
+                  <Label text="Teams: " GridPane.rowIndex="4" />
+                  <Label fx:id="battleFieldLabel" GridPane.columnIndex="1" />
+                  <Label fx:id="contestManagerLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="statusLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="levelLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="teamsLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

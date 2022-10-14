@@ -5,7 +5,7 @@ import components.body.main.EncryptController;
 import components.body.main.EngineDtoReturnableParentController;
 import components.body.main.encryptParentController;
 import components.main.UBoatMainAppController;
-import contestDtos.ActiveTeamDTO;
+import contestDtos.ActivePlayerDTO;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -105,8 +105,8 @@ public class UBoatRoomContestController implements encryptParentController, Engi
         this.parentController = uBoatRoomController;
     }
 
-    public void addNewTeamDetails(ActiveTeamDTO newTeam){
-        activeTeamsDetailsFlowPane.getChildren().add(new ActiveTeamDetailsComponent(newTeam.getTeamName(), newTeam.getAmountOfAgents(), newTeam.getTaskSize()));
+    public void addNewTeamDetails(ActivePlayerDTO newTeam){
+        activeTeamsDetailsFlowPane.getChildren().add(new PlayerDetailsComponent(newTeam, "allies"));
     }
 
 //    public void setEngine(EngineDTO engine) {

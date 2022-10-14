@@ -1,0 +1,57 @@
+package components.subControllers;
+
+import contestDtos.ContestDetailsDTO;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+
+import static util.Constants.*;
+
+public class ContestDetailsController extends Pane {
+
+    @FXML
+    private Label battleFieldLabel;
+
+    @FXML
+    private Label contestManagerLabel;
+
+    @FXML
+    private Label statusLabel;
+
+    @FXML
+    private Label levelLabel;
+
+    @FXML
+    private Label teamsLabel;
+
+    private final int maxAmountOfTeams;
+    private int currentAmountOfTeams;
+
+    public ContestDetailsController(ContestDetailsDTO contestDetails){
+        battleFieldLabel.setText(contestDetails.getBattleFieldName());
+        contestManagerLabel.setText(contestDetails.getContestManagerName());
+        statusLabel.setText(contestDetails.isStatus() ? ACTIVE_CONTEST : WAITING_CONTEST);
+        levelLabel.setText(contestDetails.getLevel());
+        maxAmountOfTeams = contestDetails.getTeams().getValue();
+        currentAmountOfTeams = contestDetails.getTeams().getKey();
+        teamsLabel.setText(String.valueOf(contestDetails.getTeams().getKey()) + FROM_SEPARATOR + String.valueOf(contestDetails.getTeams().getValue()));
+    }
+
+    public void setStatusLabel(Label statusLabel) {
+        this.statusLabel = statusLabel;
+    }
+
+    public void addTeam(){
+        currentAmountOfTeams++;
+        teamsLabel.setText(currentAmountOfTeams + FROM_SEPARATOR + maxAmountOfTeams);
+    }
+
+    public void deleteTeam(){
+        currentAmountOfTeams--;
+        teamsLabel.setText(currentAmountOfTeams + FROM_SEPARATOR + maxAmountOfTeams);
+    }
+
+    public Label getStatusLabel() {
+        return statusLabel;
+    }
+}
