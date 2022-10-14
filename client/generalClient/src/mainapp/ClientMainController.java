@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class ClientMainController implements Closeable, Loggable {
-    @FXML private Label userGreetingLabel;
+        @FXML private Label userGreetingLabel;
     @FXML private AnchorPane mainPanel;
     private GridPane loginComponent;
     private LoginController loginComponentController;
@@ -28,6 +28,7 @@ public class ClientMainController implements Closeable, Loggable {
     private final StringProperty currentUserName;
 
     public ClientMainController() {
+
         currentUserName = new SimpleStringProperty("");
     }
 
@@ -64,33 +65,24 @@ public class ClientMainController implements Closeable, Loggable {
             fxmlLoader.setLocation(loginPageUrl);
             loginComponent = fxmlLoader.load();
             loginComponentController = fxmlLoader.getController();
-            loginComponentController.setUBoatAppMainController(this);
+            loginComponentController.setClientController(this);
             setMainPanelTo(loginComponent);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void loadMainAppForm(String resourceFromClient) {        // this function not working yet , need to find the path to load
+    public void loadMainAppForm(URL resourceFromClient) {        // this function not working yet , need to find the path to load
 
-//        //System.out.println(this.getClass().getResource("generalMainComponent.fxml").toString());
-//        Path path = Paths.get(resourceFromClient);
-//        Path currentDir = Paths.get("client",resourceFromClient);
-//        System.out.println(currentDir.toAbsolutePath());
-//
-//        try {
-//            URL loginUrl = currentDir.toAbsolutePath().toUri().toURL();
-//            FXMLLoader fxmlLoader = new FXMLLoader();
-//            fxmlLoader.setLocation(loginUrl);
-//            appComponent = fxmlLoader.load();
-//            appComponentController = fxmlLoader.getController();
-//            appComponentController.setClientMainController(this);
-////            //initial();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        System.out.println("yesss");
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(resourceFromClient);
+            appComponent = (Parent) fxmlLoader.load();
+            appComponentController = fxmlLoader.getController();
+            appComponentController.setClientMainController(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

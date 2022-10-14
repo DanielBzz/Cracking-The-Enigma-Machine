@@ -59,7 +59,6 @@ public class CodeCalibrationController implements RotorParent, PlugBoardParent, 
 
     public void initialComponent(EngineDTO engineDetails){
 
-
         setReflectorPane(engineDetails.getNumOfOptionalReflectors());
         setRotorsPane(engineDetails.getEngineComponentsInfo().getOptionalRotors(),engineDetails.getNumOfUsedRotors());
         setPlugsPane(engineDetails.getEngineComponentsInfo().getABC());

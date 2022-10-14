@@ -6,7 +6,6 @@ import components.subControllers.UBoatRoomContestController;
 import components.subControllers.UBoatRoomMachineController;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,11 +15,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.GridPane;
+import logic.UBoatLogic;
 import machineDtos.EngineDTO;
-import machineDtos.MachineInfoDTO;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
-import util.Constants;
 
 public class UBoatMainAppController extends FileLoadable implements AppMainController, encryptParentController {
 
@@ -43,10 +41,8 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
         if (headerComponentController != null && uBoatRoomMachineComponentController != null && uBoatRoomContestComponentController != null) {
             headerComponentController.setMainController(this);
             headerComponentController.initial();
-            uBoatRoomMachineComponentController.setUBoatRoomController(this);
-            uBoatRoomMachineComponentController.initial();
+            uBoatRoomMachineComponentController.setParentController(this);
             uBoatRoomContestComponentController.setUBoatRoomController(this);
-            uBoatRoomContestComponentController.initial();
 
             initialFileSelectedEvents();
         }
@@ -73,7 +69,7 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
 
     @Override
     public void loadClientMainPage() {
-        parentController.loadMainAppForm(Constants.UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION);
+        //parentController.loadMainAppForm(Constants.UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION);
     }
     //------------------------------------------- ----------------------------
 
@@ -104,25 +100,15 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
 
         isGoodFileSelected.addListener((observable, oldValue, newValue) -> {
             if(newValue){
-                //use the set machine specification servlet     // should initial the machine show outside
-                //machineUI.displayingMachineSpecification();
 
-                uBoatRoomMachineComponentController.initialCodeCalibration();
-                uBoatRoomMachineComponentController.initialEngineDetails();
+                EngineDTO engineDTO = UBoatLogic.uploadFileToServer(selectedFileProperty().get());
+                uBoatRoomMachineComponentController.setEngine(engineDTO);
+                //uBoatRoomMachineComponentController.initialEngineDetails();
 
-                /*          take care of the contest initial things after fixing the screen       */
-                //bodyComponentController.setDecryptionManager(machineUI.getMachineEngine());
-                setIsCodeConfigurationSet(false);
+                // need to enable the screen , but first disable it in the initialie.
             }
         });
     }
-
-
-
-
-
-
-
 
 
     public void setIsGoodFileSelected(Boolean isGood) {
@@ -135,34 +121,6 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
         new Alert(Alert.AlertType.ERROR, messageToShow, ButtonType.OK).show();
     }
 
-
-
-
-
-
-
-
-    public void setEngineDetails(EngineDTO details) {
-
-        engineDetails = details;
-    }
-
-    public ObjectProperty<EventHandler<ActionEvent>> codeCalibrationRandomCodeOnAction(){
-        return uBoatRoomMachineComponentController.codeCalibrationRandomCodeOnAction();
-    }
-
-    public SimpleObjectProperty<MachineInfoDTO> getMachineInfoProperty(){
-        return uBoatRoomMachineComponentController.getMachineInfoProperty();
-    }
-
-
-    public void initialCodeCalibration(){
-        uBoatRoomMachineComponentController.initialCodeCalibration();
-    }
-
-    public void initialEngineDetails(){
-        uBoatRoomMachineComponentController.initialEngineDetails();
-    }
 
     public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){
 

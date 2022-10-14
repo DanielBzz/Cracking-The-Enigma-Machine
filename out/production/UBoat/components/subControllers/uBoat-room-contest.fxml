@@ -54,7 +54,7 @@
                <children>
                   <AnchorPane layoutX="102.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <fx:include fx:id="machineConfigurationController" source="../../../../../windowsUI/src/components/body/details/machineConfigurationComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <fx:include fx:id="machineConfigurationComponent" source="../../../../../windowsUI/src/components/body/details/machineConfigurationComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </children>

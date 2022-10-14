@@ -6,7 +6,7 @@ import static constants.Constants.FULL_SERVER_PATH;
 
 public class Constants {
 
-    public final static String UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION = "/UBoat/components/main/uBoatMainApp.fxml";
+    public final static String UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION = "/components/main/uBoatMainApp.fxml";
 
     public final static OkHttpClient HTTP_CLIENT = new OkHttpClient();      // delete from here ... only one in generalClient/util
 

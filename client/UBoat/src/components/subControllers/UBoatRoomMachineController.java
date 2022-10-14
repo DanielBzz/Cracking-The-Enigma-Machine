@@ -4,30 +4,21 @@ import components.body.details.CodeCalibrationController;
 import components.body.details.EngineDetailsController;
 import components.body.main.EngineDtoReturnableParentController;
 import components.main.UBoatMainAppController;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import machineDtos.EngineDTO;
-import machineDtos.MachineInfoDTO;
 
 public class UBoatRoomMachineController implements EngineDtoReturnableParentController {
 
     private UBoatMainAppController parentController;
-
-    @FXML
-    private EngineDetailsController engineDetailsComponentController;
-    @FXML
-    private BorderPane engineDetailsComponent;
-    @FXML
-    private CodeCalibrationController codeCalibrationComponentController;
-    @FXML
-    private BorderPane codeCalibrationComponent;
+    @FXML private BorderPane engineDetailsComponent;
+    @FXML private EngineDetailsController engineDetailsComponentController;
+    @FXML private BorderPane codeCalibrationComponent;
+    @FXML private CodeCalibrationController codeCalibrationComponentController;
     private EngineDTO engine;
 
-    public void initial(){
+    @FXML
+    public void initialize(){
         if (codeCalibrationComponent != null){
             codeCalibrationComponentController.setParentController(this);
         }
@@ -36,37 +27,21 @@ public class UBoatRoomMachineController implements EngineDtoReturnableParentCont
         }
     }
 
-    public void setUBoatRoomController(UBoatMainAppController uBoatRoomController) {
-        this.parentController = uBoatRoomController;
+    public void setParentController(UBoatMainAppController parentController) {
+        this.parentController = parentController;
     }
 
     public void setEngine(EngineDTO engine) {
         this.engine = engine;
-    }
-
-    public CodeCalibrationController getCodeCalibrationComponentController(){
-        return codeCalibrationComponentController;
-    }
-    public void initialCodeCalibration(){
+        engineDetailsComponentController.initialComponent(engine.getEngineComponentsInfo());
         codeCalibrationComponentController.initialComponent(engine);
-    }
-    public void initialEngineDetails(){
-        engineDetailsComponentController.initialComponent(engine);
-    }
-
-    public SimpleObjectProperty<MachineInfoDTO> getMachineInfoProperty(){
-        return codeCalibrationComponentController.getMachineInfoProperty();
-    }
-
-    public ObjectProperty<EventHandler<ActionEvent>> codeCalibrationRandomCodeOnAction(){
-
-        return codeCalibrationComponentController.getRandomButtonOnActionListener();
     }
 
     public void clearDetails(){
         codeCalibrationComponentController.clearComponent();
         engineDetailsComponentController.clearComponent();
     }
+
     @Override
     public EngineDTO getEngineDetails() {
         return engine;

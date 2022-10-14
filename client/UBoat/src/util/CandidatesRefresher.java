@@ -1,20 +1,16 @@
 package util;
 
-import decryptionDtos.AgentAnswerDTO;
+import http.HttpClientUtil;
 import javafx.beans.property.BooleanProperty;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
-import util.http.HttpClientUtil;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-import static util.Constants.GSON_INSTANCE;
 
 public class CandidatesRefresher extends TimerTask {
 
