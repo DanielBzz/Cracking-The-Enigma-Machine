@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
@@ -11,24 +14,57 @@
       <ColumnConstraints hgrow="SOMETIMES" />
       <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints vgrow="SOMETIMES" />
       <RowConstraints minHeight="20.0" valignment="BOTTOM" vgrow="NEVER" />
-    <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
+    <RowConstraints vgrow="NEVER" />
   </rowConstraints>
    <children>
       <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="1" GridPane.rowSpan="2" />
       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-      <AnchorPane minHeight="0.0" minWidth="0.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+      <AnchorPane minHeight="0.0" minWidth="0.0" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="2147483647">
          <children>
             <fx:include fx:id="alliesDecryptionProgressAndCandidatesComponent" source="allies-decryption-progress-and-candidates.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <AnchorPane>
+      <AnchorPane fx:id="contestDataArea" />
+      <FlowPane fx:id="contestTeamsArea" alignment="TOP_RIGHT" columnHalignment="RIGHT" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" />
+      <FlowPane fx:id="activeAgentsFlowPane" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <GridPane minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="3" GridPane.rowIndex="3">
+        <columnConstraints>
+          <ColumnConstraints hgrow="NEVER" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="NEVER" />
+          <RowConstraints vgrow="NEVER" />
+            <RowConstraints vgrow="NEVER" />
+          <RowConstraints vgrow="NEVER" />
+        </rowConstraints>
          <children>
-            <fx:include fx:id="contestDataComponent" minHeight="-Infinity" minWidth="-Infinity" source="contest-details.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Label fx:id="finishedTasksLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="producedTasksLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Total Tasks: " GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="totalTasksLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Finished Tasks: " GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets bottom="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Produced Tasks: " GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" />
          </children>
-      </AnchorPane>
+      </GridPane>
    </children>
 </GridPane>

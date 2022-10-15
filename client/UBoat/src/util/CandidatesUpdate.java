@@ -1,5 +1,9 @@
 package util;
 
+import contestDtos.CandidateDataDTO;
+
+import java.util.List;
+
 public interface CandidatesUpdate {
-    void updateCandidates(String candidates);
+    void updateCandidates(CandidateDataDTO candidates);
 }

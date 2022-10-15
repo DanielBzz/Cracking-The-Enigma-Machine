@@ -1,11 +1,9 @@
 package components.subControllers;
 
+import components.PlayerDetailsComponent;
 import components.main.AlliesMainAppController;
-import components.main.UBoatMainAppController;
 import contestDtos.ActivePlayerDTO;
 import contestDtos.ContestDetailsDTO;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,8 +13,9 @@ import javafx.scene.layout.FlowPane;
 
 import java.util.Map;
 
+import static constants.Constants.AGENT_TYPE;
 import static util.Constants.ACTIVE_CONTEST;
-import static util.Constants.AGENT_TYPE;
+
 
 public class AlliesDashboardController {
 
@@ -28,9 +27,8 @@ public class AlliesDashboardController {
     private FlowPane contestsDataArea;
 
     private Map<String, PlayerDetailsComponent> agentsDetails;
-
     private Map<String, ContestDetailsController> contestsDetails;
-
+    private ContestDetailsController chosenContest;
     @FXML
     private Button readyButton;
 
@@ -38,6 +36,10 @@ public class AlliesDashboardController {
     void readyButtonListener(ActionEvent event) {
         //need to enter the contest
         //use join contest servlet?
+        //get all the teams servlet
+        //get contest details servlet
+        //update the server on a new ally in contest
+        parentController.changeContest(chosenContest);
     }
 
     public void setAlliesMainAppController(AlliesMainAppController alliesMainAppController) {
@@ -61,6 +63,7 @@ public class AlliesDashboardController {
             @Override
             public void handle(MouseEvent e) {
                 readyButton.setDisable(newContest.getStatusLabel().getText().equals(ACTIVE_CONTEST));
+                chosenContest = newContest;
             }
         };
         newContest.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
@@ -71,6 +74,10 @@ public class AlliesDashboardController {
     public void deleteContest(String uBoatName){
         contestsDataArea.getChildren().remove(contestsDetails.get(uBoatName));
         contestsDetails.remove(uBoatName);
+    }
+
+    public int getTaskSize(){
+        return chosenContest.getTaskSize();
     }
 
 }
