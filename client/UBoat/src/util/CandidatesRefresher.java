@@ -1,5 +1,8 @@
 package util;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import contestDtos.CandidateDataDTO;
 import http.HttpClientUtil;
 import javafx.beans.property.BooleanProperty;
 import okhttp3.Call;
@@ -15,10 +18,10 @@ import java.util.function.Consumer;
 public class CandidatesRefresher extends TimerTask {
 
     private final String answerConsumer;
-    private final Consumer<String> httpRequestLoggerConsumer;
+    private final Consumer<CandidateDataDTO> httpRequestLoggerConsumer;
     private final BooleanProperty shouldUpdate;
 
-    public CandidatesRefresher(String answerConsumer, Consumer<String> httpRequestLoggerConsumer, BooleanProperty shouldUpdate) {
+    public CandidatesRefresher(String answerConsumer, Consumer<CandidateDataDTO> httpRequestLoggerConsumer, BooleanProperty shouldUpdate) {
         this.answerConsumer = answerConsumer;
         this.httpRequestLoggerConsumer = httpRequestLoggerConsumer;
         this.shouldUpdate = shouldUpdate;
@@ -42,8 +45,12 @@ public class CandidatesRefresher extends TimerTask {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String jsonArrayOfUsersNames = response.body().string();
-                httpRequestLoggerConsumer.accept(jsonArrayOfUsersNames);
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(CandidateDataDTO.class, new CandidateDeserializer())
+                        .create();
+
+                CandidateDataDTO jsonArrayOfCandidates = gson.fromJson(response.body().string(), CandidateDataDTO.class);
+                httpRequestLoggerConsumer.accept(jsonArrayOfCandidates);
             }
         });
     }

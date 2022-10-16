@@ -52,19 +52,15 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
 
     @Override
     public void close(){
-        uBoatRoomContestComponentController.clearDetails();
-        uBoatRoomMachineComponentController.clearDetails();
-        //need to take care for the header
+        clearComponent();
+        parentController.switchToLogin();
     }
 
     @Override
     public void clearComponent(){
-
-        //bruteForceComponentController.clearComponent();
-        //need to find a solution for this ^^^
-        //uBoatRoomMachineController.clearDetails();
-        //uBoatRoomContestController.clearDetails();
-        //bodyComponentController.clearComponent();
+        uBoatRoomContestComponentController.clearDetails();
+        uBoatRoomMachineComponentController.clearDetails();
+        //need to take care for the header
     }
 
     @Override

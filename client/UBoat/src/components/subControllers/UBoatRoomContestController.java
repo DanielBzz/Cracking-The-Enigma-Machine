@@ -1,11 +1,14 @@
 package components.subControllers;
 
+import components.CandidatesTableController;
+import components.PlayerDetailsComponent;
 import components.body.details.MachineConfigurationController;
 import components.body.main.EncryptController;
 import components.body.main.EngineDtoReturnableParentController;
 import components.body.main.encryptParentController;
 import components.main.UBoatMainAppController;
-import contestDtos.ActiveTeamDTO;
+import contestDtos.ActivePlayerDTO;
+import contestDtos.CandidateDataDTO;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -15,6 +18,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -22,6 +26,7 @@ import machineDtos.EngineDTO;
 import util.CandidatesRefresher;
 import util.CandidatesUpdate;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -46,11 +51,18 @@ public class UBoatRoomContestController implements encryptParentController, Engi
     @FXML
     private Button logoutButton;
     @FXML
-    private TextArea candidatesArea;
+    private AnchorPane candidatesTableComponent;
+    @FXML
+    private CandidatesTableController candidatesTableController;
 
     @FXML
     void logoutButtonListener(ActionEvent event) {
+        //delete from session
 
+        //delete contest from all allies dashboard
+
+        //return to login page
+        parentController.close();
     }
 
     @FXML
@@ -77,19 +89,19 @@ public class UBoatRoomContestController implements encryptParentController, Engi
 
     @FXML
     public void initialize(){
-//        if(machineConfigurationController != null){
-//            machineConfigurationController.setParentController(this);
-//            machineConfigurationComponent.disableProperty().bind(machineConfigurationController.getIsCodeConfigurationSetProperty().not());
-//            //encryptScreenMachineConfigurationComponentController.bind(machineConfigurationComponentController);
-//            encryptComponent.disableProperty().bind(machineConfigurationController.getIsCodeConfigurationSetProperty().not());
-//            //encryptScreenMachineConfigurationComponent.disableProperty().bind(machineConfigurationComponent.disableProperty());
-//        }
-//        if(encryptComponentController != null) {
-//            encryptComponentController.setParentController(this);
-//            //encryptComponentController.activateEncryptEventHandler.addListener(parentController.getEncryptMessageEventListener());
-//            machineConfigurationController.getIsCodeConfigurationSetProperty().addListener(observable -> encryptComponentController.createKeyboards(parentController.getEngineDetails().getEngineComponentsInfo().getABC()));
-//        }
-//        candidatesArea.setEditable(false);
+
+        if(machineConfigurationController != null){
+            machineConfigurationController.setParentController(this);
+            machineConfigurationComponent.disableProperty().bind(machineConfigurationController.getIsCodeConfigurationSetProperty().not());
+            //encryptScreenMachineConfigurationComponentController.bind(machineConfigurationComponentController);
+            encryptComponent.disableProperty().bind(machineConfigurationController.getIsCodeConfigurationSetProperty().not());
+            //encryptScreenMachineConfigurationComponent.disableProperty().bind(machineConfigurationComponent.disableProperty());
+        }
+        if(encryptComponentController != null) {
+            encryptComponentController.setParentController(this);
+            //encryptComponentController.activateEncryptEventHandler.addListener(parentController.getEncryptMessageEventListener());
+            machineConfigurationController.getIsCodeConfigurationSetProperty().addListener(observable -> encryptComponentController.createKeyboards(parentController.getEngineDetails().getEngineComponentsInfo().getABC()));
+        }
     }
 
     public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){
@@ -101,8 +113,8 @@ public class UBoatRoomContestController implements encryptParentController, Engi
         this.parentController = uBoatRoomController;
     }
 
-    public void addNewTeamDetails(ActiveTeamDTO newTeam){
-        activeTeamsDetailsFlowPane.getChildren().add(new ActiveTeamDetailsComponent(newTeam.getTeamName(), newTeam.getAmountOfAgents(), newTeam.getTaskSize()));
+    public void addNewTeamDetails(ActivePlayerDTO newTeam){
+        activeTeamsDetailsFlowPane.getChildren().add(new PlayerDetailsComponent(newTeam, "allies"));
     }
 
 //    public void setEngine(EngineDTO engine) {
@@ -115,7 +127,7 @@ public class UBoatRoomContestController implements encryptParentController, Engi
 
     public void clearDetails(){
         activeTeamsDetailsFlowPane.getChildren().clear();
-        candidatesArea.clear();
+        candidatesTableController.clear();
         machineConfigurationController.clearComponent();
         encryptComponentController.clearButtonActionListener(new ActionEvent());
         encryptComponentController.removeOldAbcFromKeyboards();
@@ -140,14 +152,11 @@ public class UBoatRoomContestController implements encryptParentController, Engi
         return null;
     }
 
-    public void updateCandidatesOnScreen(String newCandidates){
-        candidatesArea.setText(candidatesArea.getText() + newCandidates);
-    }
-
     @Override
-    public void updateCandidates(String candidates) {
+    public void updateCandidates(CandidateDataDTO candidate) {
         Platform.runLater(() -> {
-            candidatesArea.appendText(candidates);
+            //candidates.forEach(candidate->candidatesTableController.addNewCandidate(candidate));
+            candidatesTableController.addNewCandidate(candidate);
         });
     }
 }
