@@ -18,11 +18,6 @@ public class Constants {
     public final static String REQUEST_PATH_ENCRYPT_MESSAGE = UBOAT_REQUEST_PATH + "/encrypt";
 
 
-    //- - - - - - - - - - - Allie requests path - - - - - - - - - - - - - - - //
-    public final static String ALLIE_CLIENT = "teamManager";
-    private final static String ALLIES_REQUEST_PATH = FULL_SERVER_PATH + "/" + ALLIE_CLIENT;
-    public final static String REQUEST_PATH_JOIN_CONTEST = ALLIES_REQUEST_PATH + "/joinToContest";
-
     //- - - - - - - - - - - Agent requests path - - - - - - - - - - - - - - - //
 
     private final static String AGENT_REQUEST_PATH = FULL_SERVER_PATH + "/agent";

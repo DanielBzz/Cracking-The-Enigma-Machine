@@ -1,9 +1,9 @@
 package logic.datamanager;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import logic.serverdata.Team;
+import logic.serverdata.UserContest;
+
+import java.util.*;
 
 public abstract class DataManager<T> {
 
@@ -25,13 +25,30 @@ public abstract class DataManager<T> {
         userNameToData.remove(username);
     }
 
-    public synchronized Set<String> getUsers() {
+    public synchronized Set<String> getUsersNames() {
 
         return Collections.unmodifiableSet(userNameToData.keySet());
+    }
+
+    public synchronized Set<Team> getUsersData(String contestManager){
+        UserContest userContest = (UserContest)userNameToData.get(contestManager);
+        return new HashSet<>(userContest.getCompetitors());
     }
 
     public boolean isUserExists(String username) {
 
         return userNameToData.containsKey(username);
+    }
+
+    public boolean setTeamDetails(String dataManager, Team team){
+        if(userNameToData.containsKey(dataManager)){
+            UserContest userContest = (UserContest) userNameToData.get(dataManager);
+            userContest.setTeamDetails(team);
+            return true;
+        }
+        else {
+            System.out.println("There is not such a user called: " + dataManager);
+            return false;
+        }
     }
 }

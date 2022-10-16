@@ -60,4 +60,13 @@ public class UserContest {
 
         competitors.add(newCompetitor);
     }
+
+    public Set<Team> getCompetitors() {
+        return competitors;
+    }
+
+    public void setTeamDetails(Team team){
+        competitors.removeIf(t->t.getTeamName().equals(team.getTeamName()));
+        competitors.add(team);
+    }
 }

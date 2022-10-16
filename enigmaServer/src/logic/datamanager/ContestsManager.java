@@ -6,6 +6,9 @@ import logic.serverdata.UserContest;
 import machineDtos.EngineDTO;
 import machineDtos.EnigmaMachineDTO;
 
+import java.util.Collections;
+import java.util.Set;
+
 public class ContestsManager extends DataManager<UserContest> {
 
     public synchronized boolean addContestForUser(String userName, UserContest detailsForUser){
@@ -49,7 +52,7 @@ public class ContestsManager extends DataManager<UserContest> {
         boolean isAdded = isUserExists(userName) && userNameToData.get(userName)!=null;
 
         if(isAdded) {
-          userNameToData.get(userName).addCompetitor(competitor);
+            userNameToData.get(userName).addCompetitor(competitor);
         }
 
         return isAdded;
@@ -58,5 +61,16 @@ public class ContestsManager extends DataManager<UserContest> {
     public EngineDTO getUserEngineDetails(String username){
 
         return userNameToData.get(username).getEngineInfo();
+    }
+
+    public Set<Team> getCompetitors(String contestManager){
+        return super.getUsersData(contestManager);
+    }
+
+    public boolean updateUserDetails(String userName, Team competitor){
+        if(isUserExists(userName) && userNameToData.get(userName)!=null && userNameToData.containsKey(competitor.getTeamName())){
+            return super.setTeamDetails(userName, competitor);
+        }
+        return false;
     }
 }
