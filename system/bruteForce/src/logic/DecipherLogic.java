@@ -64,15 +64,18 @@ public class DecipherLogic {
     public static void checkBattleFieldIsValid(CTEBattlefield cteBattlefield) {
 
         if(cteBattlefield.getBattleName() == null || cteBattlefield.getBattleName().isEmpty()){
+            System.out.println("a");
             throw new BattleFieldException().illegalName();
         }
         else if(cteBattlefield.getAllies() <= 0) {
+            System.out.println("b");
             throw new BattleFieldException().illegalAlliesNumber();
         }
         try{
             DifficultyLevel.valueOf(cteBattlefield.getLevel().toUpperCase());
         }
         catch (IllegalArgumentException e){
+            System.out.println("c");
             throw new BattleFieldException().illegalLevel();
         }
     }

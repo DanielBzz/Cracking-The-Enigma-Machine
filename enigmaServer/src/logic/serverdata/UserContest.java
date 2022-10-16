@@ -3,6 +3,7 @@ package logic.serverdata;
 import exceptions.NotInDictionaryException;
 import logic.DecipherLogic;
 import logic.EnigmaSystemEngine;
+import machineDtos.EngineDTO;
 import machineDtos.EnigmaMachineDTO;
 import manager.DecryptionManager;
 
@@ -20,6 +21,10 @@ public class UserContest {
         this.machineEngine = machineEngine;
         this.decryptionManager = decryptionManager;
         this.field = field;
+    }
+
+    public EngineDTO getEngineInfo(){
+        return machineEngine.displayingMachineSpecification();
     }
 
     public String getContestBattleName(){

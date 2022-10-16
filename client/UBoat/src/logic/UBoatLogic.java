@@ -1,8 +1,11 @@
 package logic;
 
-import com.google.gson.Gson;
+import components.main.UBoatMainAppController;
+import http.HttpClientUtil;
+import logic.events.CodeSetEventListener;
+import logic.events.handler.MachineEventHandler;
 import machineDtos.EngineDTO;
-import machineDtos.EnigmaMachineDTO;
+import machineDtos.MachineInfoDTO;
 import okhttp3.*;
 import util.Constants;
 
@@ -12,43 +15,64 @@ import java.io.IOException;
 
 public class UBoatLogic {
 
-    // list of allies
+    private final UBoatMainAppController appController;
+    public MachineEventHandler<CodeSetEventListener> codeSetEventHandler = new MachineEventHandler<>();
 
-    public static EngineDTO uploadFileToServer(String filePath) {
+
+    public UBoatLogic(UBoatMainAppController appController){
+
+        this.appController = appController;
+    }
+
+    public void uploadFileToServer(String filePath) {
 
         File f = new File(filePath);
+        if(!f.exists()){
+            return;
+        }
 
         RequestBody body =
                 new MultipartBody.Builder()
                         .addFormDataPart("file",f.getName(), RequestBody.create(f, MediaType.parse("text/plain")))
                         .build();
 
-        Request request = new Request.Builder()
-                .url(Constants.REQUEST_PATH_READ_FILE)
-                .post(body)
-                .build();
+        try(Response res = HttpClientUtil.runPost(Constants.REQUEST_PATH_READ_FILE, body)){
 
-        Call call = Constants.HTTP_CLIENT.newCall(request);
-
-        //Response response = call.execute();
-
-        //System.out.println(response.body().string());
-
-        return null;
+            if(res.code() == 200){
+                EngineDTO engine = constants.Constants.GSON_INSTANCE.fromJson(res.body().string(), EngineDTO.class);
+                appController.setEngineDetails(engine);
+                appController.setIsGoodFileSelected(true);
+            }
+            else{
+                appController.setSelectedFile("-");
+                appController.showPopUpMessage(res.code() + res.body().string() );
+            }
+        } catch (IOException e) {
+            appController.showPopUpMessage(e.getMessage());
+        }
     }
 
-    public void updateMachineConfiguration(EnigmaMachineDTO initialArgs) throws IOException{
+    public void updateMachineConfiguration(MachineInfoDTO initialArgs){
 
-        Gson gson = new Gson();
+        String json = constants.Constants.GSON_INSTANCE.toJson(initialArgs);
 
-        Request request = new Request.Builder()
-                .url(Constants.REQUEST_PATH_INIT_USER_MACHINE)
-                .post(RequestBody.create(gson.toJson(initialArgs).getBytes()))
-                .build();
+        RequestBody body =
+                new MultipartBody.Builder()
+                        .addFormDataPart("file", json)
+                        .build();
 
-        Call call = Constants.HTTP_CLIENT.newCall(request);
+        try(Response res = HttpClientUtil.runPost(Constants.REQUEST_PATH_INIT_USER_MACHINE ,body)) {
 
-        Response response = call.execute();
+            if(res.code() == 200){
+                codeSetEventHandler.fireEvent(constants.Constants.GSON_INSTANCE.fromJson(res.body().string(),EngineDTO.class));
+            }else {
+                appController.showPopUpMessage(res.code() + " " + res.body().string());
+            }
+        }catch (Exception e) {
+            appController.showPopUpMessage("error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 
     public String encryptInput(String message) throws IOException{

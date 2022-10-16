@@ -36,7 +36,7 @@ public class LightweightLoginServlet extends HttpServlet {
 
                     if (userManager.addUser(usernameFromParameter)) {
                         request.getSession(true).setAttribute(USERNAME_ATTRIBUTE, usernameFromParameter);
-                        System.out.println("On login, request URI is: " + request.getRequestURI());
+                        System.out.println("On login, request URI is: " + request.getRequestURI() + usernameFromParameter);
                         response.setStatus(HttpServletResponse.SC_OK);
                     } else {
                         String errorMessage = "Username " + usernameFromParameter + " already exists. Please enter a different username.";

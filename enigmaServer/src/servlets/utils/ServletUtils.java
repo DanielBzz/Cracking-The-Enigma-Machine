@@ -1,27 +1,30 @@
 package servlets.utils;
 
-import logic.datamanager.CandidatesManager;
-import logic.datamanager.ContestsManager;
-
+import com.google.gson.Gson;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import logic.datamanager.CandidatesManager;
+import logic.datamanager.ContestsManager;
 import logic.datamanager.DataManager;
 import logic.datamanager.TeamsManager;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
+import java.util.Scanner;
 
 public class ServletUtils {
 
+    public final static Gson GSON_INSTANCE = new Gson();
     public static final String MESSAGE_TO_ENCRYPT_PARAMETER = "message";
     public static final String CONTEST_NAME_PARAMETER = "contestName";
     public static final String ACCESS_ATTRIBUTE = "access";
     public static final String CONTEST_MANAGER_ATTRIBUTE_NAME = "contestManager";
     public static final String TEAM_MANAGER_ATTRIBUTE_NAME = "teamManager";
     public static final String AGENT_ATTRIBUTE_NAME = "agent";
+
     public static final String CANDIDATES_MANAGER_ATTRIBUTE_NAME = "candidatesManager";
 
     private static final Object contestManagerLock = new Object();
@@ -85,23 +88,26 @@ public class ServletUtils {
                 resp.setContentLength(msg.length());
             } catch (IOException e) {
                 System.out.println(e.getMessage());
-                e.printStackTrace();
             }
         }
     }
 
-    public static String getBody(HttpServletRequest req){
-
-        Collection<Part> fileParts = null;
-        try {
-            fileParts = req.getParts();
-        } catch (IOException | ServletException e) {
-            throw new RuntimeException(e);
-        }
+    public static String getBody(Collection<Part> fileParts) throws ServletException, IOException {
 
         StringBuilder fileContent = new StringBuilder();
-        fileParts.forEach(part -> fileContent.append(part.getContentType()));
+
+        fileParts.forEach(part -> {
+            try {
+                fileContent.append(readFromInputStream(part.getInputStream()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         return fileContent.toString();
+    }
+
+    private static String readFromInputStream(InputStream inputStream) {
+        return new Scanner(inputStream).useDelimiter("\\Z").next();
     }
 }

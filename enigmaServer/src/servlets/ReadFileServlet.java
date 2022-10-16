@@ -1,21 +1,23 @@
 package servlets;
 
-import consoleComponents.OutputMessages;
-import logic.*;
-import logic.datamanager.ContestsManager;
-import logic.serverdata.BattleField;
-import logic.serverdata.UserContest;
-import manager.DecryptionManager;
-import servlets.utils.SessionUtils;
-import servlets.utils.ServletUtils;
-
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import logic.DecipherLogic;
+import logic.EnigmaEngine;
+import logic.datamanager.ContestsManager;
+import logic.serverdata.BattleField;
+import logic.serverdata.UserContest;
+import manager.DecryptionManager;
+import servlets.utils.ServletUtils;
+import servlets.utils.SessionUtils;
+
 import java.io.ByteArrayInputStream;
 
 @WebServlet(name = "ReadFileServlet", urlPatterns = "/contestManager/loadFile")
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
 public class ReadFileServlet extends HttpServlet {
 
     @Override
@@ -23,6 +25,7 @@ public class ReadFileServlet extends HttpServlet {
         String userName = SessionUtils.getUsername(req);
         ContestsManager contestsManager = ServletUtils.getContestManager(req.getServletContext());
 
+        System.out.println(userName);
         if(userName == null || !contestsManager.isUserExists(userName)) {
             ServletUtils.createResponse(resp,HttpServletResponse.SC_UNAUTHORIZED,null);
             //resp.sendRedirect(); -> want to send redirect to login servlet/page.
@@ -30,15 +33,20 @@ public class ReadFileServlet extends HttpServlet {
         }
 
         try {
-            String fileContent = ServletUtils.getBody(req);
-            if(contestsManager.addContestForUser(userName,createContestDetailsForUser(fileContent,resp))) {
-                ServletUtils.createResponse(resp,HttpServletResponse.SC_OK, OutputMessages.getSuccessfulLoadMsg());
+            String fileContent = ServletUtils.getBody(req.getParts());
+            UserContest contest = createContestDetailsForUser(fileContent,resp);
+
+            if(contest != null && contestsManager.addContestForUser(userName,contest)) {
+                ServletUtils.createResponse(resp,HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(contest.getEngineInfo()));
             }
             else{
                 ServletUtils.createResponse(resp,HttpServletResponse.SC_CONFLICT,null);
             }
         }catch (Exception e){
             ServletUtils.createResponse(resp,HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE,e.getMessage());
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+
         }
     }
 
@@ -54,10 +62,11 @@ public class ReadFileServlet extends HttpServlet {
             field = BattleField.createBattleField(engineForUser.getCTEBattleField());
         } catch (Exception e) {
             ServletUtils.createResponse(resp,HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE,e.getMessage());
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             return null;
         }
 
         return new UserContest(engineForUser,dmForUser,field);
     }
-
 }

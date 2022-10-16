@@ -3,14 +3,16 @@ package logic.datamanager;
 import exceptions.NoFileLoadedException;
 import logic.serverdata.Team;
 import logic.serverdata.UserContest;
+import machineDtos.EngineDTO;
 import machineDtos.EnigmaMachineDTO;
 
 public class ContestsManager extends DataManager<UserContest> {
 
-    public boolean addContestForUser(String userName, UserContest detailsForUser){
+    public synchronized boolean addContestForUser(String userName, UserContest detailsForUser){
 
-        boolean battleNotLoaded = userNameToData.values().stream().noneMatch(
-                contest -> detailsForUser.getContestBattleName().equals(contest.getContestBattleName()));
+        boolean battleNotLoaded = (detailsForUser != null) &&
+                userNameToData.values().stream().noneMatch(
+                        contest -> contest != null && detailsForUser.getContestBattleName().equals(contest.getContestBattleName()));
         boolean contestIsAdded = isUserExists(userName) && userNameToData.get(userName) == null && battleNotLoaded;
 
         if (contestIsAdded){
@@ -53,4 +55,8 @@ public class ContestsManager extends DataManager<UserContest> {
         return isAdded;
     }
 
+    public EngineDTO getUserEngineDetails(String username){
+
+        return userNameToData.get(username).getEngineInfo();
+    }
 }

@@ -15,12 +15,12 @@ public class UBoatRoomMachineController implements EngineDtoReturnableParentCont
     @FXML private EngineDetailsController engineDetailsComponentController;
     @FXML private BorderPane codeCalibrationComponent;
     @FXML private CodeCalibrationController codeCalibrationComponentController;
-    private EngineDTO engine;
 
-    @FXML
-    public void initialize(){
+    public void initial(){
         if (codeCalibrationComponent != null){
             codeCalibrationComponentController.setParentController(this);
+            setListenerForInitialCode();
+            parentController.addListenerForCodeSet(codeCalibrationComponentController);
         }
         if(engineDetailsComponent != null){
             engineDetailsComponentController.setParentController(this);
@@ -31,8 +31,7 @@ public class UBoatRoomMachineController implements EngineDtoReturnableParentCont
         this.parentController = parentController;
     }
 
-    public void setEngine(EngineDTO engine) {
-        this.engine = engine;
+    public void setEngineDetailsInComponents(EngineDTO engine) {
         engineDetailsComponentController.initialComponent(engine.getEngineComponentsInfo());
         codeCalibrationComponentController.initialComponent(engine);
     }
@@ -44,6 +43,16 @@ public class UBoatRoomMachineController implements EngineDtoReturnableParentCont
 
     @Override
     public EngineDTO getEngineDetails() {
-        return engine;
+
+        return parentController.getEngineDetails();
+    }
+
+    public void setListenerForInitialCode(){
+
+        codeCalibrationComponentController.getRandomButtonOnActionListener().set(
+                observable -> parentController.initialMachineConfiguration(null));
+
+        codeCalibrationComponentController.getMachineInfoProperty().addListener(
+                (observable, oldValue, newValue) ->  parentController.initialMachineConfiguration(newValue));
     }
 }

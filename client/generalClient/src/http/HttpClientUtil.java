@@ -1,14 +1,14 @@
 package http;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import okhttp3.*;
+
+import java.io.IOException;
 
 public class HttpClientUtil {
 
     private final static OkHttpClient HTTP_CLIENT =
             new OkHttpClient.Builder()
+                    .cookieJar(new SimpleCookieManager())
                     .followRedirects(false)
                     .build();
 
@@ -23,9 +23,23 @@ public class HttpClientUtil {
         call.enqueue(callback);
     }
 
+    public static Response runPost(String url, RequestBody body) throws IOException {
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        return HTTP_CLIENT.newCall(request).execute();
+    }
+
     public static void shutdown() {
         System.out.println("Shutting down HTTP CLIENT");
         HTTP_CLIENT.dispatcher().executorService().shutdown();
         HTTP_CLIENT.connectionPool().evictAll();
+    }
+
+    public static void removeCookiesOf(String domain) {
+        ((SimpleCookieManager)HTTP_CLIENT.cookieJar()).removeCookiesOf(domain);
     }
 }

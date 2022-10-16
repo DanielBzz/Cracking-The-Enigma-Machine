@@ -54,6 +54,7 @@ public class UBoatRoomContestController implements encryptParentController, Engi
     private AnchorPane candidatesTableComponent;
     @FXML
     private CandidatesTableController candidatesTableController;
+
     @FXML
     void logoutButtonListener(ActionEvent event) {
         //delete from session
@@ -88,6 +89,7 @@ public class UBoatRoomContestController implements encryptParentController, Engi
 
     @FXML
     public void initialize(){
+
         if(machineConfigurationController != null){
             machineConfigurationController.setParentController(this);
             machineConfigurationComponent.disableProperty().bind(machineConfigurationController.getIsCodeConfigurationSetProperty().not());
@@ -100,7 +102,6 @@ public class UBoatRoomContestController implements encryptParentController, Engi
             //encryptComponentController.activateEncryptEventHandler.addListener(parentController.getEncryptMessageEventListener());
             machineConfigurationController.getIsCodeConfigurationSetProperty().addListener(observable -> encryptComponentController.createKeyboards(parentController.getEngineDetails().getEngineComponentsInfo().getABC()));
         }
-
     }
 
     public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){
