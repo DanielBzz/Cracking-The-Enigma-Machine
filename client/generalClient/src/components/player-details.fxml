@@ -31,10 +31,10 @@
                         <Insets />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="sizeHeader" text="Task Size:" GridPane.rowIndex="3" />
+                  <Label fx:id="intValHeader" text="Task Size:" GridPane.rowIndex="3" />
                   <Label fx:id="nameLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label fx:id="amountLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label fx:id="sizeLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="intValLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
             </GridPane>
          </children>

@@ -3,6 +3,8 @@ package components.subControllers;
 import components.CandidatesTableController;
 import components.body.main.BruteForceController;
 import components.main.AlliesMainAppController;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -43,6 +45,7 @@ public class AlliesDecryptionProgressAndCandidatesController {
     private Label encryptedMessageLabel;
 
     private AlliesContestController parentController;
+    private BooleanProperty inContest = new SimpleBooleanProperty(false);
 
     public void setAlliesContestController(AlliesContestController alliesContestController) {
         this.parentController = alliesContestController;
@@ -51,14 +54,26 @@ public class AlliesDecryptionProgressAndCandidatesController {
     @FXML
     void readyButtonOnAction(ActionEvent event) {
         //need to send all the relevant information to the server and to update the uBoat
-        readyButton.setDisable(true);
+
+        inContest.setValue(true);
     }
 
     public void initial(){
         agentsNumberSlider.setMin(2);
         agentNumberLabel.textProperty().bind(agentsNumberSlider.valueProperty().asString());
         initialTaskSpinner();
-        readyButton.setDisable(false);
+        disableBinding();
+    }
+
+    public void disableBinding(){
+        taskSizeSpinner.disableProperty().bind(inContest);
+        agentsNumberSlider.disableProperty().bind(inContest);
+        readyButton.disableProperty().bind(inContest);
+    }
+
+    public void inFinishedContest(){
+
+        inContest.setValue(false);
     }
 
     private void initialTaskSpinner(){
