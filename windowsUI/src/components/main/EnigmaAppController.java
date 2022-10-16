@@ -2,7 +2,6 @@ package components.main;
 
 import components.body.main.BodyController;
 import components.header.HeaderController;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -23,7 +22,6 @@ public class EnigmaAppController extends FileLoadable{
     @FXML private HeaderController headerComponentController;
     @FXML private TabPane bodyComponent;
     @FXML private BodyController bodyComponentController;
-    private final SimpleBooleanProperty isGoodFileSelected = new SimpleBooleanProperty(false);
 
     public void initial() {
         if (headerComponentController != null && bodyComponentController != null) {
@@ -67,11 +65,6 @@ public class EnigmaAppController extends FileLoadable{
         return machineUI.getEncryptedMessageProperty();
     }
 
-    public void setIsGoodFileSelected(Boolean isGood) {
-
-        isGoodFileSelected.set(isGood);
-    }
-
     public EncryptMessageEventListener getEncryptMessageEventListener(){
         return new EncryptMessageEventListener() {
             @Override
@@ -81,16 +74,16 @@ public class EnigmaAppController extends FileLoadable{
         };
     }
 
-    private void initialFileSelectedEvents(){
+    public void initialFileSelectedEvents(){
 
-        bodyComponent.disableProperty().bind(isGoodFileSelected.not());
+        bodyComponent.disableProperty().bind(isGoodFileSelectedProperty().not());
         selectedFileProperty().addListener((observable, oldValue, newValue) -> {
-            isGoodFileSelected.set(false);
+            setIsGoodFileSelected(false);
             clearStage();
             machineUI.loadNewXmlFile(newValue);
         });
 
-        isGoodFileSelected.addListener((observable, oldValue, newValue) -> {
+        isGoodFileSelectedProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue){
                 machineUI.displayingMachineSpecification();
                 bodyComponentController.initialCodeCalibration();

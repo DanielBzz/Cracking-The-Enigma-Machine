@@ -47,6 +47,7 @@ public class UBoatRoomContestController implements encryptParentController, Engi
     private Button logoutButton;
     @FXML
     private TextArea candidatesArea;
+
     @FXML
     void logoutButtonListener(ActionEvent event) {
 
@@ -76,19 +77,19 @@ public class UBoatRoomContestController implements encryptParentController, Engi
 
     @FXML
     public void initialize(){
-        if(machineConfigurationController != null){
-            machineConfigurationController.setParentController(this);
-            machineConfigurationComponent.disableProperty().bind(machineConfigurationController.getIsCodeConfigurationSetProperty().not());
-            //encryptScreenMachineConfigurationComponentController.bind(machineConfigurationComponentController);
-            encryptComponent.disableProperty().bind(machineConfigurationController.getIsCodeConfigurationSetProperty().not());
-            //encryptScreenMachineConfigurationComponent.disableProperty().bind(machineConfigurationComponent.disableProperty());
-        }
-        if(encryptComponentController != null) {
-            encryptComponentController.setParentController(this);
-            //encryptComponentController.activateEncryptEventHandler.addListener(parentController.getEncryptMessageEventListener());
-            machineConfigurationController.getIsCodeConfigurationSetProperty().addListener(observable -> encryptComponentController.createKeyboards(parentController.getEngineDetails().getEngineComponentsInfo().getABC()));
-        }
-        candidatesArea.setEditable(false);
+//        if(machineConfigurationController != null){
+//            machineConfigurationController.setParentController(this);
+//            machineConfigurationComponent.disableProperty().bind(machineConfigurationController.getIsCodeConfigurationSetProperty().not());
+//            //encryptScreenMachineConfigurationComponentController.bind(machineConfigurationComponentController);
+//            encryptComponent.disableProperty().bind(machineConfigurationController.getIsCodeConfigurationSetProperty().not());
+//            //encryptScreenMachineConfigurationComponent.disableProperty().bind(machineConfigurationComponent.disableProperty());
+//        }
+//        if(encryptComponentController != null) {
+//            encryptComponentController.setParentController(this);
+//            //encryptComponentController.activateEncryptEventHandler.addListener(parentController.getEncryptMessageEventListener());
+//            machineConfigurationController.getIsCodeConfigurationSetProperty().addListener(observable -> encryptComponentController.createKeyboards(parentController.getEngineDetails().getEngineComponentsInfo().getABC()));
+//        }
+//        candidatesArea.setEditable(false);
     }
 
     public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){

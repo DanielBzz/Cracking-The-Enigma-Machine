@@ -1,14 +1,8 @@
 package components.main;
 
-import components.body.main.encryptParentController;
 import components.header.HeaderController;
 import components.subControllers.UBoatRoomContestController;
 import components.subControllers.UBoatRoomMachineController;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.StringProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -16,11 +10,13 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.GridPane;
 import logic.UBoatLogic;
+import logic.events.CodeSetEventListener;
 import machineDtos.EngineDTO;
+import machineDtos.MachineInfoDTO;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
 
-public class UBoatMainAppController extends FileLoadable implements AppMainController, encryptParentController {
+public class UBoatMainAppController extends FileLoadable implements AppMainController {
 
     private ClientMainController parentController;
     @FXML private GridPane uBoatRoomMachineComponent;
@@ -30,18 +26,18 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
     @FXML private ScrollPane headerComponent;
     @FXML private HeaderController headerComponentController;
     @FXML private Tab contestTab;
-    private final SimpleBooleanProperty isGoodFileSelected = new SimpleBooleanProperty(false);
     private EngineDTO engineDetails;
+    private UBoatLogic uBoatLogic;
 
     @FXML
     public void initialize() {
-        System.out.println("headerController:" + headerComponentController);
-        System.out.println("uBoatRoomMachineController:" + uBoatRoomMachineComponentController);
 
+        uBoatLogic = new UBoatLogic(this);
         if (headerComponentController != null && uBoatRoomMachineComponentController != null && uBoatRoomContestComponentController != null) {
             headerComponentController.setMainController(this);
             headerComponentController.initial();
             uBoatRoomMachineComponentController.setParentController(this);
+            uBoatRoomMachineComponentController.initial();
             uBoatRoomContestComponentController.setUBoatRoomController(this);
 
             initialFileSelectedEvents();
@@ -73,51 +69,40 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
 
     @Override
     public void loadClientMainPage() {
-        //parentController.loadMainAppForm(Constants.UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION);
+        //parentController.loadMainAppForm(getClass().getResource(Constants.UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION));
     }
+
     //------------------------------------------- ----------------------------
 
-    //---------------------from encryptParent ----------------------------
-
-    @Override
     public EngineDTO getEngineDetails() {
         return engineDetails;
     }
 
-    @Override
-    public StringProperty getMachineEncryptedMessageProperty() {        // should return the encrypted message
-        return null;
+    public void setEngineDetails(EngineDTO engine){
+        this.engineDetails = engine;
     }
 
-    //------------------------------------------- ----------------------------
+    public void initialFileSelectedEvents(){
 
-    private void initialFileSelectedEvents(){
-
-        uBoatRoomMachineComponent.disableProperty().bind(isGoodFileSelected.not());
-        uBoatRoomContestComponent.disableProperty().bind(isGoodFileSelected.not());
+        uBoatRoomMachineComponent.disableProperty().bind(isGoodFileSelectedProperty().not());
+        uBoatRoomContestComponent.disableProperty().bind(isGoodFileSelectedProperty().not());
         selectedFileProperty().addListener((observable, oldValue, newValue) -> {
-            isGoodFileSelected.set(false);
+            setIsGoodFileSelected(false);
             clearComponent();
-            //use the load file servlet             --> should be here call function to server to load file
-            // parentController.loadNewXmlFile(newValue);
+            uBoatLogic.uploadFileToServer(selectedFileProperty().get());
         });
 
-        isGoodFileSelected.addListener((observable, oldValue, newValue) -> {
+        isGoodFileSelectedProperty().addListener((observable, oldValue, newValue) -> {
+
             if(newValue){
 
-                EngineDTO engineDTO = UBoatLogic.uploadFileToServer(selectedFileProperty().get());
-                uBoatRoomMachineComponentController.setEngine(engineDTO);
-                //uBoatRoomMachineComponentController.initialEngineDetails();
-
-                // need to enable the screen , but first disable it in the initialie.
+                uBoatRoomMachineComponentController.setEngineDetailsInComponents(engineDetails);
             }
         });
     }
 
-
-    public void setIsGoodFileSelected(Boolean isGood) {
-
-        isGoodFileSelected.set(isGood);
+    public void initialMachineConfiguration(MachineInfoDTO machineInfo){
+        uBoatLogic.updateMachineConfiguration(machineInfo);
     }
 
     public void showPopUpMessage(String messageToShow){
@@ -125,19 +110,28 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
         new Alert(Alert.AlertType.ERROR, messageToShow, ButtonType.OK).show();
     }
 
+    public void addListenerForCodeSet(CodeSetEventListener listener){
 
-    public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){
-
-        return uBoatRoomContestComponentController.getEncryptComponentController().getResetButtonActionProperty();
+        uBoatLogic.codeSetEventHandler.addListener(listener);
     }
 
-    public void setIsCodeConfigurationSet(Boolean codeSet){
-        uBoatRoomContestComponentController.getMachineConfigurationController().getIsCodeConfigurationSetProperty().set(codeSet);
-    }
 
-    public SimpleBooleanProperty getIsCodeConfigurationSetProperty(){
-        return uBoatRoomContestComponentController.getMachineConfigurationController().getIsCodeConfigurationSetProperty();
-    }
 
+
+
+
+
+//    public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){
+//
+//        return uBoatRoomContestComponentController.getEncryptComponentController().getResetButtonActionProperty();
+//    }
+//
+//    public void setIsCodeConfigurationSet(Boolean codeSet){
+//        uBoatRoomContestComponentController.getMachineConfigurationController().getIsCodeConfigurationSetProperty().set(codeSet);
+//    }
+//
+//    public SimpleBooleanProperty getIsCodeConfigurationSetProperty(){
+//        return uBoatRoomContestComponentController.getMachineConfigurationController().getIsCodeConfigurationSetProperty();
+//    }
 
 }

@@ -46,13 +46,13 @@ public class LoginController {
             return;
         }
 
-        //noinspection ConstantConditions
         System.out.println("--------------after login button was clicked---------");
 
         String finalUrl = HttpUrl
                         .parse(Constants.REQUEST_PATH_LOGIN)
                         .newBuilder()
                         .addQueryParameter("username", userName)
+                        .addQueryParameter("access",parentController.getAccessLevel())
                         .build()
                         .toString();
 
@@ -70,8 +70,9 @@ public class LoginController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() != 200) {
-                    String responseBody = response.body().string();
+                    String responseBody = response.message();
                     System.out.println("-------on response-------Something went wrong: " + responseBody);
+                    System.out.println(response.code());
                     Platform.runLater(() ->
                             errorMessageProperty.set("Something went wrong: " + responseBody)
                     );

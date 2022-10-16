@@ -38,6 +38,7 @@ public class EnigmaEngine implements EnigmaSystemEngine, Serializable {
         engineInit(enigmaMachineCTE.getCTEMachine());
         DecipherLogic.checkDecipherIsValid(enigmaMachineCTE.getCTEDecipher());
         DecipherLogic.checkBattleFieldIsValid(enigmaMachineCTE.getCTEBattlefield());
+        xmlFile.close();
     }
 
 

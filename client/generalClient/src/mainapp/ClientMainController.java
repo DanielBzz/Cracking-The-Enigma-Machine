@@ -19,13 +19,14 @@ import java.io.IOException;
 import java.net.URL;
 
 public class ClientMainController implements Closeable, Loggable {
-        @FXML private Label userGreetingLabel;
+    @FXML private Label userGreetingLabel;
     @FXML private AnchorPane mainPanel;
     private GridPane loginComponent;
     private LoginController loginComponentController;
     private Parent appComponent;
     private AppMainController appComponentController;
     private final StringProperty currentUserName;
+    private String access;
 
     public ClientMainController() {
 
@@ -36,6 +37,7 @@ public class ClientMainController implements Closeable, Loggable {
     public void initialize() {
         userGreetingLabel.textProperty().bind(Bindings.concat("Hello ", currentUserName));
         loadLoginPage();
+        //appComponentController.loadClientMainPage();
     }
 
     @Override
@@ -72,7 +74,7 @@ public class ClientMainController implements Closeable, Loggable {
         }
     }
 
-    public void loadMainAppForm(URL resourceFromClient) {        // this function not working yet , need to find the path to load
+    public void loadMainAppForm(URL resourceFromClient,String loginAccess) {        // this function not working yet , need to find the path to load
 
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -80,6 +82,7 @@ public class ClientMainController implements Closeable, Loggable {
             appComponent = (Parent) fxmlLoader.load();
             appComponentController = fxmlLoader.getController();
             appComponentController.setClientMainController(this);
+            access = loginAccess;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -90,6 +93,11 @@ public class ClientMainController implements Closeable, Loggable {
         System.out.println("--------------in switch to second room---------");
         setMainPanelTo(appComponent);
         //uBoatRoomComponentController.setActive();
+    }
+
+    @Override
+    public String getAccessLevel() {
+        return access;
     }
 
     public void switchToLogin() {       // should activate when press on logout \ the server send redirect to log in

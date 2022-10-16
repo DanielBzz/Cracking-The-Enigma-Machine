@@ -1,10 +1,10 @@
-import mainapp.ClientMainController;
+import http.HttpClientUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import http.HttpClientUtil;
+import mainapp.ClientMainController;
 import util.Constants;
 
 import java.io.IOException;
@@ -29,8 +29,7 @@ public class UBoatClient extends Application {
             fxmlLoader.setLocation(loginPage);
             Parent root = fxmlLoader.load();
             uBoatAppMainController = fxmlLoader.getController();
-
-            uBoatAppMainController.loadMainAppForm(getClass().getResource(Constants.UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION));
+            uBoatAppMainController.loadMainAppForm(getClass().getResource(Constants.UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION),Constants.UBOAT_CLIENT);
 
             Scene scene = new Scene(root, 700, 600);
             primaryStage.setScene(scene);
