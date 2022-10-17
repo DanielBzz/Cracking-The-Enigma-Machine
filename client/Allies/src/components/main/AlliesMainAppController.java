@@ -16,11 +16,11 @@ public class AlliesMainAppController implements AppMainController {
     @FXML
     private GridPane dashboardComponent;
     @FXML
-    private AlliesDashboardController dashboardController;
+    private AlliesDashboardController dashboardComponentController;
     @FXML
     private GridPane contestComponent;
     @FXML
-    private AlliesContestController contestController;
+    private AlliesContestController contestComponentController;
 
     @Override
     public void setClientMainController(ClientMainController clientMainController) {
@@ -44,7 +44,7 @@ public class AlliesMainAppController implements AppMainController {
     }
 
     public void changeContest(ContestDetailsController newContest){
-        contestController.changeContest(newContest);
+        contestComponentController.changeContest(newContest);
     }
     public void addAgent(Agent newAgent){
         agents.add(newAgent);
@@ -55,7 +55,7 @@ public class AlliesMainAppController implements AppMainController {
     }
 
     public int getTaskSize(){
-        return AlliesDashboardController.getTaskSize();
+        return dashboardComponentController.getTaskSize();
     }
 
     public void createCompetitorsFromResponse(Response response){

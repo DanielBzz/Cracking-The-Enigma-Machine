@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class EngineLogic  {
 
-    public static CTEEnigma createEnigmaFromFile(InputStream input) throws FileNotFoundException, JAXBException {
+    public static CTEEnigma createEnigmaFromFile(InputStream input) throws  JAXBException {
 
         CTEEnigma enigmaMachine = null;
 

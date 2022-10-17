@@ -37,7 +37,10 @@ public class ReadFileServlet extends HttpServlet {
             UserContest contest = createContestDetailsForUser(fileContent,resp);
 
             if(contest != null && contestsManager.addContestForUser(userName,contest)) {
-                ServletUtils.createResponse(resp,HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(contest.getEngineInfo()));
+                String[] jsonStrings = new String[2];
+                jsonStrings[0] = ServletUtils.GSON_INSTANCE.toJson(contest.getEngineInfo());
+                jsonStrings[1] = ServletUtils.GSON_INSTANCE.toJson(contest.getDictionaryInfo());
+                ServletUtils.createResponse(resp,HttpServletResponse.SC_OK,ServletUtils.GSON_INSTANCE.toJson(jsonStrings));
             }
             else{
                 ServletUtils.createResponse(resp,HttpServletResponse.SC_CONFLICT,null);
@@ -52,6 +55,7 @@ public class ReadFileServlet extends HttpServlet {
 
     private UserContest createContestDetailsForUser(String xmlFileContent, HttpServletResponse resp){
 
+        System.out.println(xmlFileContent);
         EnigmaEngine engineForUser = new EnigmaEngine();
         DecryptionManager dmForUser;
         BattleField field;

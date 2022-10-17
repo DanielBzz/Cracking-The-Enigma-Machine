@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.datamanager.ContestsManager;
+import machineDtos.EngineWithEncryptDTO;
 import servlets.utils.SessionUtils;
 import servlets.utils.ServletUtils;
 
@@ -31,11 +32,15 @@ public class EncryptMessageServlet extends HttpServlet {
         }
 
         try {
-            ServletUtils.createResponse(resp, HttpServletResponse.SC_OK, manager.encrypt(userName, messageToEncrypt));
+            String responseMsg = manager.encrypt(userName, messageToEncrypt);
+            EngineWithEncryptDTO responseBody = new EngineWithEncryptDTO(manager.getUserEngineDetails(userName),responseMsg);
+            ServletUtils.createResponse(resp, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(responseBody));
         } catch (MachineNotDefinedException | NoFileLoadedException e) {
             ServletUtils.createResponse(resp, HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
         } catch (NotInDictionaryException e) {
             ServletUtils.createResponse(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }catch (Exception | Error e){
+            ServletUtils.createResponse(resp,HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getMessage());
         }
     }
 }

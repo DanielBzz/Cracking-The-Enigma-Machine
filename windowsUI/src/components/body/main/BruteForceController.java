@@ -4,7 +4,6 @@ import components.body.details.DecryptionManagerController;
 import consoleComponents.OutputMessages;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,7 +14,7 @@ import logic.events.handler.MachineEventHandler;
 import machineDtos.EngineDTO;
 import manager.DecryptionManager;
 
-public class BruteForceController implements encryptParentController, CodeSetEventListener {
+public class BruteForceController implements CodeSetEventListener, EncryptableByDictionary {
 
     private BodyController parentController;
     @FXML private GridPane encryptComponent;
@@ -39,6 +38,7 @@ public class BruteForceController implements encryptParentController, CodeSetEve
         encryptComponentController.setAutoStateOnly();
         encryptComponentController.setParentController(this);
         encryptComponent.disableProperty().bind(parentController.getIsCodeConfigurationSetProperty().not());
+        initEncryptResetButtonActionListener();
     }
 
     public void setDecryptionManager(DecryptionManager decryptionManager) {
@@ -53,11 +53,6 @@ public class BruteForceController implements encryptParentController, CodeSetEve
     @Override
     public EngineDTO getEngineDetails() {
         return parentController.getEngineDetails();
-    }
-
-    @Override
-    public StringProperty getMachineEncryptedMessageProperty() {
-        return parentController.getMachineEncryptedMessageProperty();
     }
 
     public void setEncryptedMessageLabel(String newValue) {
@@ -75,6 +70,12 @@ public class BruteForceController implements encryptParentController, CodeSetEve
     public Boolean checkWordsInTheDictionary(String message){
 
         return decryptionManagerComponentController.isWordsInDictionary(message);
+    }
+
+    @Override
+    public void initEncryptResetButtonActionListener(){
+
+        encryptComponentController.getResetButtonActionProperty().addListener(observable -> parentController.resetCodeConfiguration());
     }
 
     @Override

@@ -16,7 +16,7 @@ import logic.events.handler.MachineEventHandler;
 
 public class EncryptController {
 
-    private encryptParentController parentController;
+    private EncryptParentController parentController;
     @FXML private Button processButton;
     @FXML private Button doneButton;
     @FXML private Button clearButton;
@@ -32,7 +32,7 @@ public class EncryptController {
     public MachineEventHandler<EncryptMessageEventListener> activateEncryptEventHandler = new MachineEventHandler<>();
     private HistoryUpdatable listener;
 
-    public void setParentController(encryptParentController parentController) {
+    public void setParentController(EncryptParentController parentController) {
 
         this.parentController = parentController;
     }
@@ -78,8 +78,8 @@ public class EncryptController {
         if(!encryptedMessageLabel.getText().equals("")){
             clearButtonActionListener(event);
         }
-        else if(parentController instanceof BruteForceController){
-            BruteForceController controller = (BruteForceController) parentController;
+        else if(parentController instanceof EncryptableByDictionary){
+            EncryptableByDictionary controller = (EncryptableByDictionary) parentController;
             String newMessage = controller.getStringWithoutSpecialChars(messageToEncryptTF.getText());
             if(controller.checkWordsInTheDictionary(newMessage)){
                 activateEncryptEventHandler.fireEvent(newMessage);

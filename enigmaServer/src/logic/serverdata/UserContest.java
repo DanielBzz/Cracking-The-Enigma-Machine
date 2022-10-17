@@ -1,5 +1,7 @@
 package logic.serverdata;
 
+
+import decryptionDtos.DictionaryDTO;
 import contestDtos.CandidateDataDTO;
 import exceptions.NotInDictionaryException;
 import logic.DecipherLogic;
@@ -36,6 +38,11 @@ public class UserContest {
     public EngineDTO getEngineInfo(){
         return machineEngine.displayingMachineSpecification();
     }
+
+    public DictionaryDTO getDictionaryInfo(){
+        return new DictionaryDTO(new HashSet<>(decryptionManager.getWordsDictionary()),decryptionManager.getExcludeChars());
+    }
+
     public String getContestBattleName(){
 
         return field.getBattleName();
