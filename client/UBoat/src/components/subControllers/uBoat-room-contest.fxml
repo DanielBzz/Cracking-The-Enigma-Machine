@@ -28,7 +28,6 @@
                <children>
                   <Label prefWidth="120.0" text="Candidates:" />
                   <AnchorPane />
-                  <fx:include fx:id="candidatesTableComponent" source="../../../../generalClient/src/components/candidates-table.fxml" />
                </children>
             </HBox>
          </children>

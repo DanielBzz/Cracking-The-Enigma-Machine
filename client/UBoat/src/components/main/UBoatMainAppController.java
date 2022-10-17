@@ -3,6 +3,8 @@ package components.main;
 import components.header.HeaderController;
 import components.subControllers.UBoatRoomContestController;
 import components.subControllers.UBoatRoomMachineController;
+import decryptionDtos.DictionaryDTO;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -16,7 +18,7 @@ import machineDtos.MachineInfoDTO;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
 
-public class UBoatMainAppController extends FileLoadable implements AppMainController {
+public class UBoatMainAppController extends FileLoadable implements AppMainController, CodeSetEventListener {
 
     private ClientMainController parentController;
     @FXML private GridPane uBoatRoomMachineComponent;
@@ -33,13 +35,15 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
     public void initialize() {
 
         uBoatLogic = new UBoatLogic(this);
+        addListenerForCodeSet(this);
         if (headerComponentController != null && uBoatRoomMachineComponentController != null && uBoatRoomContestComponentController != null) {
             headerComponentController.setMainController(this);
             headerComponentController.initial();
             uBoatRoomMachineComponentController.setParentController(this);
             uBoatRoomMachineComponentController.initial();
-            uBoatRoomContestComponentController.setUBoatRoomController(this);
-
+            uBoatRoomContestComponentController.setParentController(this);
+            uBoatRoomContestComponentController.initial();
+            contestTab.disableProperty().bind(uBoatRoomContestComponentController.getIsConfigurationSetProperty().not());
             initialFileSelectedEvents();
         }
     }
@@ -91,8 +95,8 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
         isGoodFileSelectedProperty().addListener((observable, oldValue, newValue) -> {
 
             if(newValue){
-
                 uBoatRoomMachineComponentController.setEngineDetailsInComponents(engineDetails);
+                uBoatRoomContestComponentController.setIsCodeConfigurationSet(false);
             }
         });
     }
@@ -111,23 +115,27 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
         uBoatLogic.codeSetEventHandler.addListener(listener);
     }
 
+    public void encryptMessage(String message){
+        uBoatLogic.encryptInput(message);
+    }
 
+    @Override
+    public void invoke(EngineDTO updatedValue) {
+        this.engineDetails = updatedValue;
+    }
 
+    public void setDictionaryDetails(DictionaryDTO dictionary) {
 
+        uBoatRoomContestComponentController.setDictionaryDetails(dictionary);
+    }
 
-
+    public StringProperty getEncryptedMessageProperty(){
+        return uBoatLogic.encryptedMessageProperty();
+    }
 
 //    public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){
 //
 //        return uBoatRoomContestComponentController.getEncryptComponentController().getResetButtonActionProperty();
-//    }
-//
-//    public void setIsCodeConfigurationSet(Boolean codeSet){
-//        uBoatRoomContestComponentController.getMachineConfigurationController().getIsCodeConfigurationSetProperty().set(codeSet);
-//    }
-//
-//    public SimpleBooleanProperty getIsCodeConfigurationSetProperty(){
-//        return uBoatRoomContestComponentController.getMachineConfigurationController().getIsCodeConfigurationSetProperty();
 //    }
 
 }

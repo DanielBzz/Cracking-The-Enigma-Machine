@@ -23,4 +23,5 @@ public class Team {
     public int getTaskSize() {
         return taskSize;
     }
+
 }

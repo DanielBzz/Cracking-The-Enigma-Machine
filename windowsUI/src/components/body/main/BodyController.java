@@ -8,7 +8,6 @@ import components.main.EnigmaAppController;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,7 +23,7 @@ import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 
 
-public class BodyController implements encryptParentController, EngineDtoReturnableParentController {
+public class BodyController implements EncryptParentController, EngineDtoReturnableParentController {
 
     private EnigmaAppController mainController;
     @FXML private BorderPane codeCalibrationComponent;
@@ -63,6 +62,7 @@ public class BodyController implements encryptParentController, EngineDtoReturna
             encryptComponentController.setParentController(this);
             encryptComponentController.activateEncryptEventHandler.addListener(mainController.getEncryptMessageEventListener());
             machineConfigurationComponentController.getIsCodeConfigurationSetProperty().addListener(observable -> encryptComponentController.createKeyboards(engineDetails.getEngineComponentsInfo().getABC()));
+            initEncryptResetButtonActionListener();
         }
         if(encryptScreenMachineConfigurationComponentController!= null){
             encryptScreenMachineConfigurationComponentController.setParentController(this);
@@ -110,9 +110,14 @@ public class BodyController implements encryptParentController, EngineDtoReturna
         engineDetailsComponentController.initialComponent(engineDetails.getEngineComponentsInfo());
     }
 
-    public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){
+    @Override
+    public void initEncryptResetButtonActionListener(){
 
-        return encryptComponentController.getResetButtonActionProperty();
+        encryptComponentController.getResetButtonActionProperty().addListener(observable -> resetCodeConfiguration());
+    }
+
+    public void resetCodeConfiguration(){
+        mainController.resetCodeConfiguration();
     }
 
     public void setDecryptionManager(EnigmaSystemEngine engine){
@@ -129,10 +134,6 @@ public class BodyController implements encryptParentController, EngineDtoReturna
 
     public void setListenerToHistoryUpdate(HistoryUpdatable listener){
         encryptComponentController.setHistoryUpdatable(listener);
-    }
-
-    public StringProperty getMachineEncryptedMessageProperty(){
-        return mainController.getMachineEncryptedMessageProperty();
     }
 
     public void clearComponent() {

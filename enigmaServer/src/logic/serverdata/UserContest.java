@@ -1,5 +1,6 @@
 package logic.serverdata;
 
+import decryptionDtos.DictionaryDTO;
 import exceptions.NotInDictionaryException;
 import logic.DecipherLogic;
 import logic.EnigmaSystemEngine;
@@ -25,6 +26,10 @@ public class UserContest {
 
     public EngineDTO getEngineInfo(){
         return machineEngine.displayingMachineSpecification();
+    }
+
+    public DictionaryDTO getDictionaryInfo(){
+        return new DictionaryDTO(new HashSet<>(decryptionManager.getWordsDictionary()),decryptionManager.getExcludeChars());
     }
 
     public String getContestBattleName(){

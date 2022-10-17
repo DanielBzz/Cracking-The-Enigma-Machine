@@ -33,6 +33,14 @@ public class HttpClientUtil {
         return HTTP_CLIENT.newCall(request).execute();
     }
 
+    public static Response runGet(String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        return HTTP_CLIENT.newCall(request).execute();
+    }
+
     public static void shutdown() {
         System.out.println("Shutting down HTTP CLIENT");
         HTTP_CLIENT.dispatcher().executorService().shutdown();

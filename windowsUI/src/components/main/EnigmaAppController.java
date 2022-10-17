@@ -101,7 +101,10 @@ public class EnigmaAppController extends FileLoadable{
 
         bodyComponentController.setListenerToHistoryUpdate(machineUI);
         bodyComponentController.codeCalibrationRandomCodeOnAction().set(observable -> machineUI.automaticInitialCodeConfiguration());
-        bodyComponentController.encryptResetButtonActionProperty().set(observable -> machineUI.resetCurrentCode());
+    }
+
+    public void resetCodeConfiguration(){
+        machineUI.resetCurrentCode();
     }
 
     private void clearStage(){
