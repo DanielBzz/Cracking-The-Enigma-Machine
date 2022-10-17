@@ -1,4 +1,7 @@
 package servlets;
 
-public class UsersInContestServlet {
+import jakarta.servlet.http.HttpServlet;
+
+public class UsersInContestServlet{
+
 }

@@ -16,12 +16,7 @@ public class Constants {
     public final static String REQUEST_PATH_READ_FILE = UBOAT_REQUEST_PATH + "/loadFile";
     public final static String REQUEST_PATH_INIT_USER_MACHINE = UBOAT_REQUEST_PATH + "/initMachine";
     public final static String REQUEST_PATH_ENCRYPT_MESSAGE = UBOAT_REQUEST_PATH + "/encrypt";
-
-
-    //- - - - - - - - - - - Allie requests path - - - - - - - - - - - - - - - //
-    public final static String ALLIE_CLIENT = "teamManager";
-    private final static String ALLIES_REQUEST_PATH = FULL_SERVER_PATH + "/" + ALLIE_CLIENT;
-    public final static String REQUEST_PATH_JOIN_CONTEST = ALLIES_REQUEST_PATH + "/joinToContest";
+    public final static String REQUEST_PATH_SET_READY = UBOAT_REQUEST_PATH + "/setReady";
 
     //- - - - - - - - - - - Agent requests path - - - - - - - - - - - - - - - //
 

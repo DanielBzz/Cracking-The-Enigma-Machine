@@ -27,7 +27,8 @@
             <HBox alignment="CENTER_LEFT" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label prefWidth="120.0" text="Candidates:" />
-                  <AnchorPane />
+                  <AnchorPane minHeight="-Infinity" minWidth="-Infinity" />
+                  <fx:include fx:id="candidatesTableComponent" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" source="../../../../generalClient/src/components/candidates-table.fxml" />
                </children>
             </HBox>
          </children>
@@ -43,24 +44,16 @@
             <Insets bottom="10.0" right="10.0" />
          </GridPane.margin>
       </Button>
-      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+      <SplitPane dividerPositions="0.5" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
                <children>
-                  <AnchorPane layoutX="102.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <fx:include fx:id="machineConfigurationComponent" source="../../../../../windowsUI/src/components/body/details/machineConfigurationComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
+                  <fx:include fx:id="machineConfigurationComponent" source="../../../../../windowsUI/src/components/body/details/machineConfigurationComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
                <children>
-                  <AnchorPane layoutX="97.0" layoutY="-10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <fx:include fx:id="encryptComponent" source="../../../../../windowsUI/src/components/body/main/encryptComponent.fxml" />
-                     </children>
-                  </AnchorPane>
+                  <fx:include fx:id="encryptComponent" source="../../../../../windowsUI/src/components/body/main/encryptComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
         </items>

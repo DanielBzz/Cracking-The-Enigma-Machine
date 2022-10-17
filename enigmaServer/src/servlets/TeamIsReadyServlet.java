@@ -11,10 +11,9 @@ import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
 
 import java.io.IOException;
-import java.util.Enumeration;
-//-----------------------------not ready yet!!!!!--------------------------
-@WebServlet(name = "StartContestServlet", urlPatterns = "/contestManager/startContest")
-public class StartContestServlet extends HttpServlet {
+
+@WebServlet(name = "TeamIsReadyServlet", urlPatterns = "/teamManager/SetTeamReady")
+public class TeamIsReadyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -31,26 +30,13 @@ public class StartContestServlet extends HttpServlet {
         String contestManagerName = request.getParameter(ServletUtils.CONTEST_MANAGER_ATTRIBUTE_NAME);
 
         if(manager.updateUserDetails(contestManagerName,teamsManager.getTeam(userName))){
+            manager.checkIfNeedToStartContest(contestManagerName);
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, null);
         }
         else {
             ServletUtils.createResponse(response, HttpServletResponse.SC_CONFLICT, null);
             // need to explain why in response, maybe you already in the contest/for the uBoat still not load contest ....
             // need to check also that the allie client not in other contest.
-        }
-
-    }
-    public void updateAllAlliesToStartTheContest(HttpServletRequest req){
-        Enumeration<String> attributes = req.getSession().getAttributeNames();
-        while (attributes.hasMoreElements()) {
-            String attribute = (String) attributes.nextElement();
-            //need to find the right url of this ally
-            try{
-                //doGet(req, resp);
-                //need to send a message to the curr ally to start working (like pressing the START button)
-            }catch (Exception e){
-
-            }
         }
     }
 }

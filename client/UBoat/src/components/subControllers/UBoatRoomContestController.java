@@ -8,6 +8,7 @@ import components.main.UBoatMainAppController;
 import contestDtos.ActivePlayerDTO;
 import contestDtos.CandidateDataDTO;
 import decryptionDtos.DictionaryDTO;
+import http.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -19,9 +20,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import logic.events.EncryptMessageEventListener;
 import machineDtos.EngineDTO;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.Response;
 import util.CandidatesRefresher;
 import util.CandidatesUpdate;
-
 import java.util.Arrays;
 import java.util.Set;
 import java.util.Timer;
@@ -81,18 +85,33 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Cand
     @FXML
     void readyButtonListener(ActionEvent event) {
 
-        startListRefresher();
-        //fire contest
+        candidatesTableController.startListRefresher();
 
-    }
+        String encryptedMessage = String.valueOf(encryptComponentController.getEncryptedMessage());
 
-    public void startListRefresher() {
-        listRefresher = new CandidatesRefresher(
-                "http://localhost:8080/enigmaServer/contestManager",
-                this::updateCandidates,
-                autoUpdate);
-        timer = new Timer();
-        timer.schedule(listRefresher, 2000, 2000);
+        String finalUrl = HttpUrl
+                .parse(REQUEST_PATH_SET_READY)
+                .newBuilder()
+                .addQueryParameter("encryptedMessage", encryptedMessage)
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("Could not response well");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    System.out.println("Could not response well, url:" + finalUrl);
+                }
+                //add the competitors
+                System.out.println("encrypted message was updated and now the server is waiting for the teams to set ready!");
+                encryptComponent.setDisable(true);//need to change after contest is finished (end of contest servlet)
+            }
+        });
     }
 
     @Override

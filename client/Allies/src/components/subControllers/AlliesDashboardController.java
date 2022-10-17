@@ -1,20 +1,34 @@
 package components.subControllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.sun.istack.internal.NotNull;
 import components.PlayerDetailsComponent;
 import components.main.AlliesMainAppController;
 import contestDtos.ActivePlayerDTO;
 import contestDtos.ContestDetailsDTO;
+import http.HttpClientUtil;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.Response;
+import util.ActivePlayerDTODeserializer;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 import static constants.Constants.AGENT_TYPE;
-import static util.Constants.ACTIVE_CONTEST;
+import static util.Constants.*;
 
 
 public class AlliesDashboardController {
@@ -34,11 +48,33 @@ public class AlliesDashboardController {
 
     @FXML
     void readyButtonListener(ActionEvent event) {
-        //need to enter the contest
-        //use join contest servlet?
-        //get all the teams servlet
-        //get contest details servlet
-        //update the server on a new ally in contest
+
+        String contestManagerName = chosenContest.getContestManagerName();
+
+        String finalUrl = HttpUrl
+                .parse(REQUEST_PATH_JOIN_TO_CONTEST)
+                .newBuilder()
+                .addQueryParameter("contestManager", contestManagerName)
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("Could not response well");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    System.out.println("Could not response well, url:" + finalUrl);
+                }
+                //add the competitors
+                System.out.println("Allies was added successfully!");
+                parentController.createCompetitorsFromResponse(response);
+            }
+        });
+
         parentController.changeContest(chosenContest);
     }
 

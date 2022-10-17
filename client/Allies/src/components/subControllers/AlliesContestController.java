@@ -1,5 +1,8 @@
 package components.subControllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import components.PlayerDetailsComponent;
 import components.main.AlliesMainAppController;
 import contestDtos.ActivePlayerDTO;
@@ -8,11 +11,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import okhttp3.Response;
+import util.ActivePlayerDTODeserializer;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static constants.Constants.AGENT_IN_CONTEST_TYPE;
+import static constants.Constants.ALLIES_TYPE;
 
 public class AlliesContestController {
     private AlliesMainAppController parentController;
@@ -90,5 +98,20 @@ public class AlliesContestController {
 
     public void addFinishedTasks(int moreTasks){
         finishedTasksLabel.setText(String.valueOf(Integer.parseInt(finishedTasksLabel.getText()) + moreTasks));
+    }
+
+    public void createCompetitorsFromResponse(Response response){
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(ActivePlayerDTO.class, new ActivePlayerDTODeserializer())
+                .create();
+        Type listType = new TypeToken<ArrayList<ActivePlayerDTO>>(){}.getType();
+
+        ArrayList<ActivePlayerDTO> competitors = gson.fromJson(response.body().toString(), listType);
+        competitors.forEach(competitor->contestTeamsArea.getChildren().add(new PlayerDetailsComponent(competitor, ALLIES_TYPE)));
+    }
+
+    public String getContestName(){
+        ContestDetailsController contestDetails = (ContestDetailsController) contestDataArea.getChildren();
+        return contestDetails.getContestManagerName();
     }
 }

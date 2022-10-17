@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import static servlets.utils.ServletUtils.*;
-
+//------------------------not ready yet!!!!-----------------------
 public class GetCandidatesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -26,6 +26,7 @@ public class GetCandidatesServlet extends HttpServlet {
             switch (userType){
                 case CONTEST_MANAGER_ATTRIBUTE_NAME:
                     updateCandidatesInUBoat(request, response);
+
                     break;
                 case TEAM_MANAGER_ATTRIBUTE_NAME:
                     //handle with getting candidates from Agent to Allies

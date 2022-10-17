@@ -1,8 +1,10 @@
 package components.subControllers;
 
+import com.sun.istack.internal.NotNull;
 import components.CandidatesTableController;
 import components.body.main.BruteForceController;
 import components.main.AlliesMainAppController;
+import http.HttpClientUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -10,6 +12,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.Response;
+
+import java.io.IOException;
+
+import static util.Constants.REQUEST_PATH_JOIN_TO_CONTEST;
+import static util.Constants.REQUEST_PATH_SET_READY;
 
 public class AlliesDecryptionProgressAndCandidatesController {
 
@@ -51,11 +62,37 @@ public class AlliesDecryptionProgressAndCandidatesController {
         this.parentController = alliesContestController;
     }
 
+    public String getContestManagerName(){
+        return parentController.getContestName();
+    }
+
     @FXML
     void readyButtonOnAction(ActionEvent event) {
         //need to send all the relevant information to the server and to update the uBoat
+        //not finished yet
 
-        inContest.setValue(true);
+        String finalUrl = HttpUrl
+                .parse(REQUEST_PATH_SET_READY)
+                .newBuilder()
+                .addQueryParameter("contestManager", getContestManagerName())
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("Could not response well");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    System.out.println("Could not response well, url:" + finalUrl);
+                }
+                //add the competitors
+                System.out.println("Allies was added successfully!");
+            }
+        });
     }
 
     public void initial(){

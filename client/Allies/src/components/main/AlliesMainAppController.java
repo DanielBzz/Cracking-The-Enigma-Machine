@@ -7,9 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
-import sun.management.Agent;
-
-import java.util.List;
+import okhttp3.Response;
 
 public class AlliesMainAppController implements AppMainController {
     private ClientMainController parentController;
@@ -58,5 +56,9 @@ public class AlliesMainAppController implements AppMainController {
 
     public int getTaskSize(){
         return dashboardComponentController.getTaskSize();
+    }
+
+    public void createCompetitorsFromResponse(Response response){
+        contestController.createCompetitorsFromResponse(response);
     }
 }

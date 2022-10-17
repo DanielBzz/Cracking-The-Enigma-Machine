@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
+import static constants.Constants.FROM_SEPARATOR;
 import static util.Constants.*;
 
 public class ContestDetailsController extends Pane {
@@ -52,6 +53,11 @@ public class ContestDetailsController extends Pane {
         currentAmountOfTeams--;
         teamsLabel.setText(currentAmountOfTeams + FROM_SEPARATOR + maxAmountOfTeams);
     }
+
+    public String getContestManagerName(){
+        return contestManagerLabel.getText();
+    }
+
     public int getTaskSize(){
         return taskSize;
     }
