@@ -13,4 +13,11 @@ public class CandidateDataDTO {
         this.configuration = configuration;
     }
 
+    public String getDecryptedMessage() {
+        return decryptedMessage;
+    }
+
+    public String getConfiguration() {
+        return configuration;
+    }
 }

@@ -36,6 +36,7 @@ public class JoinToContestServlet extends HttpServlet {
         String contestManagerName = request.getParameter(ServletUtils.CONTEST_MANAGER_ATTRIBUTE_NAME);
 
         if(manager.addCompetitorToContest(contestManagerName,teamsManager.getTeam(userName))){
+            teamsManager.getTeam(userName).setuBoatName(contestManagerName);
             response.getWriter().write(getCompetitorsAsString(manager, contestManagerName));
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, null);
         }

@@ -29,7 +29,7 @@ public class ContestsManager extends DataManager<UserContest> {
 
         if(isUserExists(userName) && userNameToData.get(userName)!=null){
             userNameToData.get(userName).initialCodeConfiguration(args);
-        }else {
+        } else {
             throw new NoFileLoadedException();
         }
     }
@@ -40,7 +40,7 @@ public class ContestsManager extends DataManager<UserContest> {
 
         if(isUserExists(userName) && userNameToData.get(userName)!=null) {
             decryptMessage = userNameToData.get(userName).encryptMessage(message);
-        }else {
+        } else {
             throw new NoFileLoadedException();
         }
 
@@ -69,8 +69,53 @@ public class ContestsManager extends DataManager<UserContest> {
 
     public boolean updateUserDetails(String userName, Team competitor){
         if(isUserExists(userName) && userNameToData.get(userName)!=null && userNameToData.containsKey(competitor.getTeamName())){
-            return super.setTeamDetails(userName, competitor);
+            UserContest userContest = (UserContest) userNameToData.get(userName);
+            userContest.setTeamDetails(competitor);
+            return true;
+        } else {
+            System.out.println("There is not such a user called: " + userName);
+            return false;
         }
-        return false;
+    }
+
+    public void changeReadyStatus(String uBoatName, boolean status){
+        if(userNameToData.containsKey(uBoatName)){
+            UserContest userContest = (UserContest) userNameToData.get(uBoatName);
+            if(userContest.isReady() != status){
+                userContest.changeReadyStatus(status);
+            } else {
+                System.out.println("during battle is: " + userContest.isReady() + ", and given status is: " + status);
+            }
+        } else {
+            System.out.println("There is not such a uBoat name: " + uBoatName);
+        }
+    }
+
+    public int getAmountOfMaxAlliesInBattle(String uBoatName){
+        return userNameToData.get(uBoatName).getAmountOfMaxAlliesInBattle();
+    }
+    public void checkIfNeedToStartContest(String uBoatName){
+        boolean canStartContest = true;
+        if(userNameToData.get(uBoatName).getCompetitors().size() == getAmountOfMaxAlliesInBattle(uBoatName)){
+            for (Team team:userNameToData.get(uBoatName).getCompetitors()) {
+                canStartContest = canStartContest && team.isReady();
+            }
+            if(canStartContest){
+                changeReadyStatus(uBoatName, true);
+            } else{
+                System.out.println("Not all the teams are ready");
+            }
+
+        } else{
+            System.out.println("Not all the teams were assign to the contest");
+        }
+    }
+
+    public void setEncryptedMessage(String uBoatName, String encryptedMessage){
+        if(userNameToData.containsKey(uBoatName) && !userNameToData.get(uBoatName).isReady()){
+            userNameToData.get(uBoatName).setEncryptedMessage(encryptedMessage);
+        } else {
+            System.out.println(uBoatName + " does not exists or in a middle of a contest!");
+        }
     }
 }

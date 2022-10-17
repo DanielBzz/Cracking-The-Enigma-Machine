@@ -40,15 +40,4 @@ public abstract class DataManager<T> {
         return userNameToData.containsKey(username);
     }
 
-    public boolean setTeamDetails(String dataManager, Team team){
-        if(userNameToData.containsKey(dataManager)){
-            UserContest userContest = (UserContest) userNameToData.get(dataManager);
-            userContest.setTeamDetails(team);
-            return true;
-        }
-        else {
-            System.out.println("There is not such a user called: " + dataManager);
-            return false;
-        }
-    }
 }

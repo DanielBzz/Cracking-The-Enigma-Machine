@@ -1,5 +1,6 @@
 package components.subControllers;
 
+import com.sun.istack.internal.NotNull;
 import components.CandidatesTableController;
 import components.PlayerDetailsComponent;
 import components.body.details.MachineConfigurationController;
@@ -9,6 +10,7 @@ import components.body.main.encryptParentController;
 import components.main.UBoatMainAppController;
 import contestDtos.ActivePlayerDTO;
 import contestDtos.CandidateDataDTO;
+import http.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -23,14 +25,22 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import machineDtos.EngineDTO;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.Response;
 import util.CandidatesRefresher;
 import util.CandidatesUpdate;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class UBoatRoomContestController implements encryptParentController, EngineDtoReturnableParentController, CandidatesUpdate {
+import static constants.Constants.REFRESH_RATE;
+import static util.Constants.REQUEST_PATH_SET_READY;
+
+public class UBoatRoomContestController implements encryptParentController, EngineDtoReturnableParentController {
 
     private UBoatMainAppController parentController;
     private Timer timer;
@@ -68,23 +78,34 @@ public class UBoatRoomContestController implements encryptParentController, Engi
     @FXML
     void readyButtonListener(ActionEvent event) {
 
-        startListRefresher();
-        //fire contest
+        candidatesTableController.startListRefresher();
 
-    }
+        String encryptedMessage = String.valueOf(encryptComponentController.getEncryptedMessage());
 
+        String finalUrl = HttpUrl
+                .parse(REQUEST_PATH_SET_READY)
+                .newBuilder()
+                .addQueryParameter("encryptedMessage", encryptedMessage)
+                .build()
+                .toString();
 
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("Could not response well");
+            }
 
-    //need constants for 2000, "http://localhost:8080/enigmaServer/contestManager"
-    //need to use the method in uBoatRoomController
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    System.out.println("Could not response well, url:" + finalUrl);
+                }
+                //add the competitors
+                System.out.println("encrypted message was updated and now the server is waiting for the teams to set ready!");
+                encryptComponent.setDisable(true);//need to change after contest is finished (end of contest servlet)
+            }
+        });
 
-    public void startListRefresher() {
-        listRefresher = new CandidatesRefresher(
-                "http://localhost:8080/enigmaServer/contestManager",
-                this::updateCandidates,
-                autoUpdate);
-        timer = new Timer();
-        timer.schedule(listRefresher, 2000, 2000);
     }
 
     @FXML
@@ -117,10 +138,6 @@ public class UBoatRoomContestController implements encryptParentController, Engi
         activeTeamsDetailsFlowPane.getChildren().add(new PlayerDetailsComponent(newTeam, "allies"));
     }
 
-//    public void setEngine(EngineDTO engine) {
-//        this.engine = engine;
-//    }
-
     public void setIsCodeConfigurationSet(Boolean codeSet){
         machineConfigurationController.getIsCodeConfigurationSetProperty().set(codeSet);
     }
@@ -152,11 +169,4 @@ public class UBoatRoomContestController implements encryptParentController, Engi
         return null;
     }
 
-    @Override
-    public void updateCandidates(CandidateDataDTO candidate) {
-        Platform.runLater(() -> {
-            //candidates.forEach(candidate->candidatesTableController.addNewCandidate(candidate));
-            candidatesTableController.addNewCandidate(candidate);
-        });
-    }
 }

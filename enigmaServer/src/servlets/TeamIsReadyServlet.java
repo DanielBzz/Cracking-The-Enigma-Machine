@@ -12,7 +12,7 @@ import servlets.utils.SessionUtils;
 
 import java.io.IOException;
 
-@WebServlet(name = "JoinToContestServlet", urlPatterns = "/teamManager/SetTeamReady")
+@WebServlet(name = "TeamIsReadyServlet", urlPatterns = "/teamManager/SetTeamReady")
 public class TeamIsReadyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,7 +29,8 @@ public class TeamIsReadyServlet extends HttpServlet {
         ContestsManager manager = ServletUtils.getContestManager(request.getServletContext());
         String contestManagerName = request.getParameter(ServletUtils.CONTEST_MANAGER_ATTRIBUTE_NAME);
 
-        if(manager.setTeamDetails(contestManagerName,teamsManager.getTeam(userName))){
+        if(manager.updateUserDetails(contestManagerName,teamsManager.getTeam(userName))){
+            manager.checkIfNeedToStartContest(contestManagerName);
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, null);
         }
         else {

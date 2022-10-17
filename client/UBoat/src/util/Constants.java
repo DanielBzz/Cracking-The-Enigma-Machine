@@ -16,7 +16,7 @@ public class Constants {
     public final static String REQUEST_PATH_READ_FILE = UBOAT_REQUEST_PATH + "/loadFile";
     public final static String REQUEST_PATH_INIT_USER_MACHINE = UBOAT_REQUEST_PATH + "/initMachine";
     public final static String REQUEST_PATH_ENCRYPT_MESSAGE = UBOAT_REQUEST_PATH + "/encrypt";
-
+    public final static String REQUEST_PATH_SET_READY = UBOAT_REQUEST_PATH + "/setReady";
 
     //- - - - - - - - - - - Agent requests path - - - - - - - - - - - - - - - //
 
