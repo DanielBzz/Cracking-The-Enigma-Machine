@@ -55,4 +55,5 @@ public class UBoatRoomMachineController implements EngineDtoReturnableParentCont
         codeCalibrationComponentController.getMachineInfoProperty().addListener(
                 (observable, oldValue, newValue) ->  parentController.initialMachineConfiguration(newValue));
     }
+
 }

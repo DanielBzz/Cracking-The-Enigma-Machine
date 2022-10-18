@@ -19,6 +19,7 @@ import logic.DecipherLogic;
 import logic.EnigmaEngine;
 import logic.EnigmaSystemEngine;
 import logic.HistoryUpdatable;
+import logic.events.EncryptMessageEventListener;
 import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 
@@ -60,8 +61,8 @@ public class BodyController implements EncryptParentController, EngineDtoReturna
         }
         if(encryptComponentController != null) {
             encryptComponentController.setParentController(this);
-            encryptComponentController.activateEncryptEventHandler.addListener(mainController.getEncryptMessageEventListener());
             machineConfigurationComponentController.getIsCodeConfigurationSetProperty().addListener(observable -> encryptComponentController.createKeyboards(engineDetails.getEngineComponentsInfo().getABC()));
+            initEncryptListener();
             initEncryptResetButtonActionListener();
         }
         if(encryptScreenMachineConfigurationComponentController!= null){
@@ -70,7 +71,6 @@ public class BodyController implements EncryptParentController, EngineDtoReturna
         if(bruteForceComponentController!= null){
             bruteForceComponentController.setParentController(this);
             bruteForceComponentController.initial();
-            bruteForceComponentController.encryptMessageEventHandler().addListener(mainController.getEncryptMessageEventListener());
         }
 
         setLogicEventsToController();
@@ -114,6 +114,15 @@ public class BodyController implements EncryptParentController, EngineDtoReturna
     public void initEncryptResetButtonActionListener(){
 
         encryptComponentController.getResetButtonActionProperty().addListener(observable -> resetCodeConfiguration());
+    }
+
+    @Override
+    public void initEncryptListener() {
+        encryptComponentController.activateEncryptEventHandler.addListener(getEncryptMessageEventListener());
+    }
+
+    public EncryptMessageEventListener getEncryptMessageEventListener(){
+        return mainController.getEncryptMessageEventListener();
     }
 
     public void resetCodeConfiguration(){

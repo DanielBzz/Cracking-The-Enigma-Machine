@@ -97,6 +97,7 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
             if(newValue){
                 uBoatRoomMachineComponentController.setEngineDetailsInComponents(engineDetails);
                 uBoatRoomContestComponentController.setIsCodeConfigurationSet(false);
+                uBoatRoomContestComponentController.setActive();
             }
         });
     }
