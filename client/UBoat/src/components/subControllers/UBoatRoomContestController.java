@@ -1,5 +1,6 @@
 package components.subControllers;
 
+import components.CandidatesTableController;
 import components.PlayerDetailsComponent;
 import components.body.details.MachineConfigurationController;
 import components.body.main.EncryptController;
@@ -15,40 +16,44 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import logic.events.EncryptMessageEventListener;
 import machineDtos.EngineDTO;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
-import util.CandidatesRefresher;
+import org.jetbrains.annotations.NotNull;
 import util.CandidatesUpdate;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 
+import static util.Constants.REQUEST_PATH_SET_READY;
+
 public class UBoatRoomContestController implements EncryptableByDictionary, CandidatesUpdate {
 
     private UBoatMainAppController parentController;
-    private Timer timer;
-    private TimerTask listRefresher;
-    private BooleanProperty autoUpdate;
     @FXML private BorderPane machineConfigurationComponent;
     @FXML private MachineConfigurationController machineConfigurationComponentController;
     @FXML private GridPane encryptComponent;
     @FXML private EncryptController encryptComponentController;
-    @FXML private FlowPane activeTeamsDetailsFlowPane;
+    @FXML private VBox activeTeamsDetailsPane;
     @FXML private Button readyButton;
     @FXML private Button logoutButton;
-   // @FXML private AnchorPane candidatesTableComponent;
-   // @FXML private CandidatesTableController candidatesTableComponentController;
+    @FXML private AnchorPane candidatesTableComponent;
+    @FXML private CandidatesTableController candidatesTableComponentController;
     private DictionaryDTO dictionaryDetails;
-
+    private Timer timer;
+    private TimerTask listRefresher;
+    private BooleanProperty autoUpdate;
 
     public void initial(){
 
@@ -58,8 +63,6 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Cand
         }
         if(encryptComponentController != null) {
             encryptComponentController.setParentController(this);
-//            machineConfigurationComponentController.getIsCodeConfigurationSetProperty().addListener(
-//                    observable -> encryptComponentController.createKeyboards(parentController.getEngineDetails().getEngineComponentsInfo().getABC()));
             encryptComponentController.setAutoStateOnly();
             initEncryptResetButtonActionListener();
             initEncryptListener();
@@ -85,7 +88,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Cand
     @FXML
     void readyButtonListener(ActionEvent event) {
 
-        candidatesTableController.startListRefresher();
+        candidatesTableComponentController.startListRefresher();
 
         String encryptedMessage = String.valueOf(encryptComponentController.getEncryptedMessage());
 
@@ -132,7 +135,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Cand
     }
 
     public void addNewTeamDetails(ActivePlayerDTO newTeam){
-        activeTeamsDetailsFlowPane.getChildren().add(new PlayerDetailsComponent(newTeam, "allies"));
+        activeTeamsDetailsPane.getChildren().add(new PlayerDetailsComponent(newTeam, "allies"));
     }
 
     public void setIsCodeConfigurationSet(Boolean codeSet){
@@ -144,7 +147,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Cand
     }
 
     public void clearDetails(){
-        activeTeamsDetailsFlowPane.getChildren().clear();
+        activeTeamsDetailsPane.getChildren().clear();
         //candidatesTableComponentController.clear();
         machineConfigurationComponentController.clearComponent();
         encryptComponentController.clearButtonActionListener(new ActionEvent());

@@ -20,7 +20,6 @@ public class ServletUtils {
     public final static Gson GSON_INSTANCE = new Gson();
     public static final String MESSAGE_TO_ENCRYPT_PARAMETER = "message";
     public static final String CONTEST_NAME_PARAMETER = "contestName";
-    public static final String ACCESS_ATTRIBUTE = "access";
     public static final String CONTEST_MANAGER_ATTRIBUTE_NAME = "contestManager";
     public static final String TEAM_MANAGER_ATTRIBUTE_NAME = "teamManager";
     public static final String AGENT_ATTRIBUTE_NAME = "agent";
@@ -41,7 +40,7 @@ public class ServletUtils {
         else if(attributeName.equals(TEAM_MANAGER_ATTRIBUTE_NAME)) {
             return getTeamsManager(servletContext);
         }else{
-            throw new Exception("You should declare your " + ACCESS_ATTRIBUTE + ":" + CONTEST_MANAGER_ATTRIBUTE_NAME + "/" + TEAM_MANAGER_ATTRIBUTE_NAME);
+            throw new Exception("You should declare your " + SessionUtils.ACCESS_ATTRIBUTE + ":" + CONTEST_MANAGER_ATTRIBUTE_NAME + "/" + TEAM_MANAGER_ATTRIBUTE_NAME);
         }
     }
 

@@ -1,12 +1,13 @@
 package logic.datamanager;
 
+import contestDtos.ActivePlayerDTO;
 import exceptions.NoFileLoadedException;
 import logic.serverdata.Team;
 import logic.serverdata.UserContest;
 import machineDtos.EngineDTO;
 import machineDtos.EnigmaMachineDTO;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 public class ContestsManager extends DataManager<UserContest> {
@@ -27,7 +28,7 @@ public class ContestsManager extends DataManager<UserContest> {
 
     public void initialMachineForUser(String userName, EnigmaMachineDTO args){
 
-        if(isUserExists(userName) && userNameToData.get(userName)!=null){
+        if(isContestExist(userName)){
             userNameToData.get(userName).initialCodeConfiguration(args);
         } else {
             throw new NoFileLoadedException();
@@ -38,7 +39,7 @@ public class ContestsManager extends DataManager<UserContest> {
 
         String decryptMessage = null;
 
-        if(isUserExists(userName) && userNameToData.get(userName)!=null) {
+        if(isContestExist(userName)) {
             decryptMessage = userNameToData.get(userName).encryptMessage(message);
         } else {
             throw new NoFileLoadedException();
@@ -49,7 +50,7 @@ public class ContestsManager extends DataManager<UserContest> {
 
     public boolean addCompetitorToContest(String userName, Team competitor){
 
-        boolean isAdded = isUserExists(userName) && userNameToData.get(userName)!=null;
+        boolean isAdded = isContestExist(userName);
 
         if(isAdded) {
             userNameToData.get(userName).addCompetitor(competitor);
@@ -63,8 +64,20 @@ public class ContestsManager extends DataManager<UserContest> {
         return userNameToData.get(username).getEngineInfo();
     }
 
-    public Set<Team> getCompetitors(String contestManager){
-        return super.getUsersData(contestManager);
+    @Override
+    public Set<ActivePlayerDTO> getConnectedUsersDetails(String userName) {
+
+        Set<ActivePlayerDTO> teamDetails = new HashSet<>();
+
+        if(isContestExist(userName)) {
+
+            for (Team team : userNameToData.get(userName).getCompetitors()) {
+
+                teamDetails.add(new ActivePlayerDTO(team.getTeamName(), team.getNumOfAgents(), team.getTaskSize()));
+            }
+        }
+
+        return teamDetails;
     }
 
     public boolean updateUserDetails(String userName, Team competitor){
@@ -117,5 +130,9 @@ public class ContestsManager extends DataManager<UserContest> {
         } else {
             System.out.println(uBoatName + " does not exists or in a middle of a contest!");
         }
+    }
+
+    private Boolean isContestExist(String username){
+        return isUserExists(username) && userNameToData.get(username) != null;
     }
 }

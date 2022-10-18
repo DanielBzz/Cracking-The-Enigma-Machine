@@ -3,26 +3,25 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.subControllers.UBoatRoomContestController">
   <columnConstraints>
-    <ColumnConstraints hgrow="ALWAYS" />
-      <ColumnConstraints hgrow="NEVER" />
-    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+    <ColumnConstraints hgrow="ALWAYS" maxWidth="755.0" minWidth="727.0" prefWidth="729.0" />
+    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="198.0" minWidth="165.0" prefWidth="196.0" />
   </columnConstraints>
   <rowConstraints>
+      <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
     <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
     <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <AnchorPane GridPane.rowIndex="1">
+      <AnchorPane GridPane.rowIndex="2">
          <children>
             <HBox alignment="CENTER_LEFT" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -33,30 +32,25 @@
             </HBox>
          </children>
       </AnchorPane>
-      <AnchorPane GridPane.columnIndex="2">
+      <HBox alignment="BOTTOM_LEFT" spacing="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <FlowPane fx:id="activeTeamsDetailsFlowPane" layoutX="-61.0" layoutY="40.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Button fx:id="readyButton" minWidth="60.0" mnemonicParsing="false" onAction="#readyButtonListener" text="Ready!" />
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonListener" text="Loguot" />
+         </children>
+         <GridPane.margin>
+            <Insets bottom="15.0" left="10.0" />
+         </GridPane.margin>
+      </HBox>
+    <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
+         <children>
+            <fx:include fx:id="machineConfigurationComponent" source="../../../../../windowsUI/src/components/body/details/machineConfigurationComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <Button fx:id="readyButton" minWidth="60.0" mnemonicParsing="false" onAction="#readyButtonListener" text="Ready!" GridPane.columnIndex="1" />
-      <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonListener" text="Loguot" GridPane.columnIndex="2" GridPane.rowIndex="1">
-         <GridPane.margin>
-            <Insets bottom="10.0" right="10.0" />
-         </GridPane.margin>
-      </Button>
-      <SplitPane dividerPositions="0.5" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL">
-        <items>
-          <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
-               <children>
-                  <fx:include fx:id="machineConfigurationComponent" source="../../../../../windowsUI/src/components/body/details/machineConfigurationComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               </children>
-            </AnchorPane>
-          <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
-               <children>
-                  <fx:include fx:id="encryptComponent" source="../../../../../windowsUI/src/components/body/main/encryptComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" GridPane.rowIndex="1">
+         <children>
+            <fx:include fx:id="encryptComponent" source="../../../../../windowsUI/src/components/body/main/encryptComponent.fxml" />
+         </children>
+      </AnchorPane>
+      <VBox fx:id="activeTeamsDetailsPane" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowSpan="2" />
    </children>
 </GridPane>

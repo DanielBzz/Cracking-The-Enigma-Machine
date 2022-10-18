@@ -1,20 +1,19 @@
 package servlets;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import contestDtos.CandidateDataDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logic.datamanager.ContestsManager;
 import logic.datamanager.TeamsManager;
 import servlets.utils.ServletUtils;
-import servlets.utils.SessionUtils;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import static servlets.utils.ServletUtils.GSON_INSTANCE;
 
 @WebServlet(name = "UpdateCandidatesServlet", urlPatterns = "/agent/addCandidates")
 public class UpdateCandidatesServlet extends HttpServlet {
@@ -33,16 +32,11 @@ public class UpdateCandidatesServlet extends HttpServlet {
         }
 
         try{
-            //need a general module for deserialize things
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(CandidateDataDTO.class, new CandidateDeserializer)
-                    .create();
-            //need to read list and not a single candidate
-            List<CandidateDataDTO> newCandidates = gson.fromJson(request.getReader(), CandidateDataDTO.class);
+
+            CandidateDataDTO newCandidates[] = GSON_INSTANCE.fromJson(request.getReader(), CandidateDataDTO[].class);
 
             if(teamsManager.isUserExists(teamManagerName)){
-                //ContestsManager contestsManager = ServletUtils.getContestManager(teamsManager.getUBoatName(teamManagerName));
-                teamsManager.getTeam(teamManagerName).addCandidates(newCandidates);
+                teamsManager.getTeam(teamManagerName).addCandidates(Arrays.stream(newCandidates).collect(Collectors.toList()));
                 ServletUtils.createResponse(response, HttpServletResponse.SC_OK, null);
             }
             else {

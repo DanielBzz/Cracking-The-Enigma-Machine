@@ -1,9 +1,9 @@
 package logic.datamanager;
 
-import contestDtos.CandidateDataDTO;
+import contestDtos.ActivePlayerDTO;
 import logic.serverdata.Team;
 
-import java.util.List;
+import java.util.Set;
 
 public class TeamsManager extends DataManager<Team>{
 
@@ -15,4 +15,8 @@ public class TeamsManager extends DataManager<Team>{
         return userNameToData.get(userName).getuBoatName();
     }
 
+    @Override
+    public Set<ActivePlayerDTO> getConnectedUsersDetails(String userName) {
+        return null;
+    }
 }

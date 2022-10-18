@@ -10,7 +10,7 @@ import servlets.utils.SessionUtils;
 
 import java.io.IOException;
 
-import static servlets.utils.ServletUtils.ACCESS_ATTRIBUTE;
+import static servlets.utils.SessionUtils.ACCESS_ATTRIBUTE;
 import static servlets.utils.SessionUtils.USERNAME_ATTRIBUTE;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/login")
@@ -18,7 +18,6 @@ public class LightweightLoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/plain;charset=UTF-8");
 
         String usernameFromSession = SessionUtils.getUsername(request);
         try {
@@ -28,14 +27,13 @@ public class LightweightLoginServlet extends HttpServlet {
 
                 String usernameFromParameter = request.getParameter(USERNAME_ATTRIBUTE);
                 if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
-                    //no username in session and no username in parameter - not standard situation. it's a conflict
-                    // stands for conflict in server state
                     response.setStatus(HttpServletResponse.SC_CONFLICT);
                 } else {
                     usernameFromParameter = usernameFromParameter.trim();
 
                     if (userManager.addUser(usernameFromParameter)) {
                         request.getSession(true).setAttribute(USERNAME_ATTRIBUTE, usernameFromParameter);
+                        request.getSession(true).setAttribute(ACCESS_ATTRIBUTE,request.getParameter(ACCESS_ATTRIBUTE));
                         System.out.println("On login, request URI is: " + request.getRequestURI() + usernameFromParameter);
                         response.setStatus(HttpServletResponse.SC_OK);
                     } else {
@@ -43,10 +41,8 @@ public class LightweightLoginServlet extends HttpServlet {
                         System.out.println(errorMessage);
                         ServletUtils.createResponse(response,HttpServletResponse.SC_UNAUTHORIZED,errorMessage);
                     }
-
                 }
             } else {
-                //user is already logged in
                 System.out.println("User is already exist");
                 response.setStatus(HttpServletResponse.SC_OK);
             }
