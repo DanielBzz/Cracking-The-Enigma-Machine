@@ -106,4 +106,7 @@ public class UBoatLogic {
     public StringProperty encryptedMessageProperty() {
         return encryptedMessage;
     }
+
+    public void logOut() {
+    }
 }

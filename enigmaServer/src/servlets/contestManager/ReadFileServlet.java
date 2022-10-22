@@ -1,4 +1,4 @@
-package servlets;
+package servlets.contestManager;
 
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;

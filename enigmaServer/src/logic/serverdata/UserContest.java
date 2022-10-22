@@ -1,16 +1,16 @@
 package logic.serverdata;
 
 
-import decryptionDtos.DictionaryDTO;
 import contestDtos.CandidateDataDTO;
+import decryptionDtos.DictionaryDTO;
 import exceptions.NotInDictionaryException;
 import logic.DecipherLogic;
 import logic.EnigmaSystemEngine;
+import logic.datamanager.CandidatesManager;
 import machineDtos.EngineDTO;
 import machineDtos.EnigmaMachineDTO;
 import manager.DecryptionManager;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,17 +22,17 @@ public class UserContest {
     private final BattleField field;
     private String encryptedMessage;
     private boolean ready;
-    private boolean done;
-    private List<CandidateDataDTO> candidates;
+    private boolean inContest;
     private final Set<Team> competitors = new HashSet<>();
+    private CandidatesManager candidates;
 
     public UserContest(EnigmaSystemEngine machineEngine, DecryptionManager decryptionManager, BattleField field) {
         this.machineEngine = machineEngine;
         this.decryptionManager = decryptionManager;
         this.field = field;
         this.ready = false;
-        this.done = false;
-        this.candidates = new ArrayList<>();
+        this.inContest = false;
+        this.candidates = new CandidatesManager();
     }
 
     public EngineDTO getEngineInfo(){
@@ -41,6 +41,22 @@ public class UserContest {
 
     public DictionaryDTO getDictionaryInfo(){
         return new DictionaryDTO(new HashSet<>(decryptionManager.getWordsDictionary()),decryptionManager.getExcludeChars());
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public boolean isInContest(){
+        return inContest;
+    }
+
+    public void setReady(boolean ready){
+        this.ready = ready;
+    }
+
+    public boolean isDone() {
+        return inContest;
     }
 
     public String getContestBattleName(){
@@ -71,28 +87,13 @@ public class UserContest {
     }
     public void addCompetitor(Team newCompetitor){
 
+        competitors.removeIf(t->t.getTeamName().equals(newCompetitor.getTeamName()));
         competitors.add(newCompetitor);
     }
+
     public Set<Team> getCompetitors() {
+
         return competitors;
-    }
-    public void setTeamDetails(Team team){
-        competitors.removeIf(t->t.getTeamName().equals(team.getTeamName()));
-        competitors.add(team);
-    }
-    public void changeReadyStatus(boolean status){
-        if(ready != status){
-            ready = status;
-        }
-        else {
-            System.out.println("during battle is: " + ready + ", and given status is: " + status);
-        }
-    }
-    public boolean isReady() {
-        return ready;
-    }
-    public int getAmountOfMaxAlliesInBattle(){
-        return field.getNumberOfAllies();
     }
 
     public void setEncryptedMessage(String encryptedMessage){
@@ -102,23 +103,22 @@ public class UserContest {
             System.out.println("already in a middle of a contest!");
         }
     }
-    public boolean isDone() {
-        return done;
-    }
-    public void setDone(boolean done) {
-        if(this.done != done){
-            this.done = done;
-        } else {
-            System.out.println("you are trying to change: " + this.done + " to: " + done);
-        }
-    }
+
     public void addCandidatesAndCheckForFinishContest(List<CandidateDataDTO> newCandidates){
-        candidates.addAll(newCandidates);
+        candidates.addNewCandidates(newCandidates);
         newCandidates.forEach(candidate->{
-            if(candidate.getDecryptedMessage().equals(encryptedMessage)){
-                done = true;
+            if(candidate.getDecryptedMessage().equals(encryptedMessage)){       // it's not mean finish, should be also same configuration
+                inContest = true;
             }
         });
     }
 
+    public List<CandidateDataDTO> getNewCandidates(int lastVersion){
+
+        return candidates.getNewCandidates(lastVersion);
+    }
+
+    public boolean contestIsFull() {
+        return field.getNumberOfAllies() == competitors.size();
+    }
 }

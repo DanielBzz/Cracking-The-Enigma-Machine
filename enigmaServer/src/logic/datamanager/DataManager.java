@@ -24,7 +24,9 @@ public abstract class DataManager<T> {
 
     public synchronized void removeUser(String username) {
 
-        userNameToData.remove(username);
+        if(isUserExists(username)) {
+            userNameToData.remove(username);
+        }
     }
 
     public synchronized Set<String> getUsersNames() {

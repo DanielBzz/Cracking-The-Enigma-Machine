@@ -1,6 +1,9 @@
 package logic.datamanager;
 
 import contestDtos.ActivePlayerDTO;
+import contestDtos.CandidateDataDTO;
+import exceptions.ContestNotExistException;
+import exceptions.ContestNotReadyException;
 import exceptions.NoFileLoadedException;
 import logic.serverdata.Team;
 import logic.serverdata.UserContest;
@@ -8,6 +11,7 @@ import machineDtos.EngineDTO;
 import machineDtos.EnigmaMachineDTO;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ContestsManager extends DataManager<UserContest> {
@@ -48,17 +52,6 @@ public class ContestsManager extends DataManager<UserContest> {
         return decryptMessage;
     }
 
-    public boolean addCompetitorToContest(String userName, Team competitor){
-
-        boolean isAdded = isContestExist(userName);
-
-        if(isAdded) {
-            userNameToData.get(userName).addCompetitor(competitor);
-        }
-
-        return isAdded;
-    }
-
     public EngineDTO getUserEngineDetails(String username){
 
         return userNameToData.get(username).getEngineInfo();
@@ -70,20 +63,32 @@ public class ContestsManager extends DataManager<UserContest> {
         Set<ActivePlayerDTO> teamDetails = new HashSet<>();
 
         if(isContestExist(userName)) {
-
-            for (Team team : userNameToData.get(userName).getCompetitors()) {
-
-                teamDetails.add(new ActivePlayerDTO(team.getTeamName(), team.getNumOfAgents(), team.getTaskSize()));
-            }
+            throw new ContestNotExistException(userName);
         }
+
+        for (Team team : userNameToData.get(userName).getCompetitors()) {
+                teamDetails.add(new ActivePlayerDTO(team.getTeamName(), team.getNumOfAgents(), team.getTaskSize()));
+        }
+
 
         return teamDetails;
     }
 
+    public boolean addCompetitorToContest(String userName, Team competitor){
+
+        boolean isAdded = isContestExist(userName);
+
+        if(isAdded) {
+            userNameToData.get(userName).addCompetitor(competitor);
+        }
+
+        return isAdded;
+    }
+                // should combine both of them to 1 method that add first, and also in use when allie change details.
     public boolean updateUserDetails(String userName, Team competitor){
-        if(isUserExists(userName) && userNameToData.get(userName)!=null && userNameToData.containsKey(competitor.getTeamName())){
+        if(isContestExist(userName) && userNameToData.containsKey(competitor.getTeamName())){
             UserContest userContest = (UserContest) userNameToData.get(userName);
-            userContest.setTeamDetails(competitor);
+            userContest.addCompetitor(competitor);
             return true;
         } else {
             System.out.println("There is not such a user called: " + userName);
@@ -91,48 +96,56 @@ public class ContestsManager extends DataManager<UserContest> {
         }
     }
 
-    public void changeReadyStatus(String uBoatName, boolean status){
-        if(userNameToData.containsKey(uBoatName)){
-            UserContest userContest = (UserContest) userNameToData.get(uBoatName);
-            if(userContest.isReady() != status){
-                userContest.changeReadyStatus(status);
-            } else {
-                System.out.println("during battle is: " + userContest.isReady() + ", and given status is: " + status);
-            }
-        } else {
-            System.out.println("There is not such a uBoat name: " + uBoatName);
+    public void setContestUserReady(String username, String encryptedMessage) throws ContestNotExistException {
+
+        if(!isContestExist(username)){
+            throw new ContestNotExistException(username);
+        }
+
+        if(!userNameToData.get(username).isReady()) {
+            UserContest contest = userNameToData.get(username);
+            contest.setReady(true);
+            contest.setEncryptedMessage(encryptedMessage);
         }
     }
 
-    public int getAmountOfMaxAlliesInBattle(String uBoatName){
-        return userNameToData.get(uBoatName).getAmountOfMaxAlliesInBattle();
-    }
-    public void checkIfNeedToStartContest(String uBoatName){
-        boolean canStartContest = true;
-        if(userNameToData.get(uBoatName).getCompetitors().size() == getAmountOfMaxAlliesInBattle(uBoatName)){
-            for (Team team:userNameToData.get(uBoatName).getCompetitors()) {
-                canStartContest = canStartContest && team.isReady();
-            }
-            if(canStartContest){
-                changeReadyStatus(uBoatName, true);
-            } else{
-                System.out.println("Not all the teams are ready");
-            }
+    public void checkIfNeedToStartContest(String username){
 
-        } else{
+        boolean canStartContest = isContestExist(username) &&
+                userNameToData.get(username).contestIsFull() &&
+                userNameToData.get(username).getCompetitors().stream().allMatch(Team::isReady) &&
+                userNameToData.get(username).isReady();
+
+        if(canStartContest){
+            // should be here some statement that start the battle for all the participants or return boolean an do it in servlet
+        }else {
             System.out.println("Not all the teams were assign to the contest");
-        }
-    }
-
-    public void setEncryptedMessage(String uBoatName, String encryptedMessage){
-        if(userNameToData.containsKey(uBoatName) && !userNameToData.get(uBoatName).isReady()){
-            userNameToData.get(uBoatName).setEncryptedMessage(encryptedMessage);
-        } else {
-            System.out.println(uBoatName + " does not exists or in a middle of a contest!");
+            System.out.println("Not all the teams are ready");
         }
     }
 
     private Boolean isContestExist(String username){
         return isUserExists(username) && userNameToData.get(username) != null;
+    }
+
+    public List<CandidateDataDTO> getCandidates(String contest, int lastVersion) throws ContestNotExistException {
+
+        if(!isContestExist(contest)){
+            throw new ContestNotExistException(contest);
+        } else if (!userNameToData.get(contest).isInContest()) {
+            throw new ContestNotReadyException();
+        }
+
+        return userNameToData.get(contest).getNewCandidates(lastVersion);
+    }
+
+    @Override
+    public synchronized void removeUser(String username){
+
+        if(isContestExist(username)){
+            userNameToData.get(username).getCompetitors().forEach(competitor-> competitor.setuBoatName(""));
+        }
+
+        super.removeUser(username);
     }
 }

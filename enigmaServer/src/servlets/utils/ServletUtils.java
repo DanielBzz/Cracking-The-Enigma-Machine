@@ -30,8 +30,6 @@ public class ServletUtils {
     private static final Object teamManagerLock = new Object();
     private static final Object candidatesManagerLock = new Object();
 
-    // getters for all the details we should respond for the clients.
-
     public static DataManager getDataManager(ServletContext servletContext, String attributeName) throws Exception {
 
         if(attributeName.equals(CONTEST_MANAGER_ATTRIBUTE_NAME)){
@@ -85,6 +83,7 @@ public class ServletUtils {
             try {
                 resp.getOutputStream().print(msg);
                 resp.setContentLength(msg.length());
+                resp.getOutputStream().close();
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }

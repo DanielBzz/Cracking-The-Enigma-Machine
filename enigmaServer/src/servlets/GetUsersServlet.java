@@ -34,7 +34,7 @@ public class GetUsersServlet extends HttpServlet {
             Set<ActivePlayerDTO> users = manager.getConnectedUsersDetails(userRequest);
             ServletUtils.createResponse(resp, HttpServletResponse.SC_OK,ServletUtils.GSON_INSTANCE.toJson(users));
 
-        }catch (Exception e){
+        }catch (Exception | Error e){
             ServletUtils.createResponse(resp, HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
         }
     }

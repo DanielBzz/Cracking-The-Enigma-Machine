@@ -41,6 +41,7 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
             headerComponentController.initial();
             uBoatRoomMachineComponentController.setParentController(this);
             uBoatRoomMachineComponentController.initial();
+            uBoatRoomMachineComponent.disableProperty().bind(uBoatRoomContestComponentController.isPrepareForContestProperty());
             uBoatRoomContestComponentController.setParentController(this);
             uBoatRoomContestComponentController.initial();
             contestTab.disableProperty().bind(uBoatRoomContestComponentController.getIsConfigurationSetProperty().not());
@@ -56,15 +57,16 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
 
     @Override
     public void close(){
+        uBoatLogic.logOut();
         clearComponent();
         parentController.switchToLogin();
     }
 
     @Override
     public void clearComponent(){
-        uBoatRoomContestComponentController.clearDetails();
+        initialFileLoadable();
         uBoatRoomMachineComponentController.clearDetails();
-        //need to take care for the header
+        uBoatRoomContestComponentController.clearDetails();
     }
 
     @Override
@@ -130,13 +132,9 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
         uBoatRoomContestComponentController.setDictionaryDetails(dictionary);
     }
 
-    public StringProperty getEncryptedMessageProperty(){
+    public StringProperty getEncryptedMessageProperty() {
+
         return uBoatLogic.encryptedMessageProperty();
     }
-
-//    public ObjectProperty<EventHandler<ActionEvent>> encryptResetButtonActionProperty(){
-//
-//        return uBoatRoomContestComponentController.getEncryptComponentController().getResetButtonActionProperty();
-//    }
 
 }

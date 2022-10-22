@@ -1,81 +1,46 @@
 package servlets;
 
-import com.google.gson.Gson;
-import decryptionDtos.AgentAnswerDTO;
+import contestDtos.CandidateDataDTO;
+import exceptions.ContestNotExistException;
+import exceptions.ContestNotReadyException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logic.datamanager.CandidatesManager;
+import logic.datamanager.ContestsManager;
 import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
-import static servlets.utils.ServletUtils.*;
-//------------------------not ready yet!!!!-----------------------
+@WebServlet(name = "getCandidatesServlet", urlPatterns = "/getCandidates")
 public class GetCandidatesServlet extends HttpServlet {
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 
-        //if "consumer" == ContestManager....
-        //else if "consumer" == TeamManager...
-
-        if(request.getParameterMap().containsKey("usertype")){
-            String userType = request.getParameter("usertype");
-            switch (userType){
-                case CONTEST_MANAGER_ATTRIBUTE_NAME:
-                    updateCandidatesInUBoat(request, response);
-
-                    break;
-                case TEAM_MANAGER_ATTRIBUTE_NAME:
-                    //handle with getting candidates from Agent to Allies
-                    break;
-            }
-        }
-        else{
-            //error
-        }
-
-
-
-    }
-
-    public void updateCandidatesInUBoat(HttpServletRequest request, HttpServletResponse response){
-        response.setContentType("application/json");
-        CandidatesManager candidatesManager = ServletUtils.getCandidatesManager(getServletContext());
         String username = SessionUtils.getUsername(request);
-        if (username == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        ContestsManager manager = ServletUtils.getContestManager(request.getServletContext());
+
+        if (username == null || !manager.isUserExists(username)) {
+            ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED, null);
+            //resp.sendRedirect(); -> want to send redirect to login servlet/page.
+            return;
         }
 
-        List<AgentAnswerDTO> answersEntries;
-        synchronized (getServletContext()) {
-            answersEntries = candidatesManager.getCandidates();
-        }
+        try{
+            int userVersion = Integer.parseInt(request.getParameter("version"));
+            List<CandidateDataDTO> newCandidates= manager.getCandidates(username,userVersion);
+            int newVersion = userVersion + newCandidates.size();
+            String[] responseMessage = new String[2];
+            responseMessage[0] = String.valueOf(newVersion);
+            responseMessage[1] = ServletUtils.GSON_INSTANCE.toJson(newCandidates);
 
-        // log and create the response json string
+            ServletUtils.createResponse(response, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(responseMessage));
 
-        Gson gson = new Gson();
-        String jsonResponse = gson.toJson(answersEntries);
-
-        try (PrintWriter out = response.getWriter()) {
-            out.print(jsonResponse);
-            out.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        }catch (ContestNotExistException | ContestNotReadyException e){
+            ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
+            System.out.println(e.getMessage());
+        }catch (Exception e){
+            ServletUtils.createResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,null);
         }
     }
-
-
-//    private static class ChatAndVersion {
-//
-//        final private List<SingleChatEntry> entries;
-//        final private int version;
-//
-//        public ChatAndVersion(List<SingleChatEntry> entries, int version) {
-//            this.entries = entries;
-//            this.version = version;
-//        }
-//    }
 }

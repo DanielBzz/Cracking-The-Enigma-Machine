@@ -19,6 +19,7 @@ public class ConnectedUsersController {
     public void startListRefresher(){
 
         listRefresher = new ConnectedUserListRefresher(this::updateUserList);
+        timer = new Timer();
         timer.schedule(listRefresher, constants.Constants.REFRESH_RATE, constants.Constants.REFRESH_RATE);
     }
 
@@ -26,17 +27,21 @@ public class ConnectedUsersController {
         timer.cancel();
     }
 
-    private void updateUserList(List<ActivePlayerDTO> updatedUsers){
+    private void updateUserList(List<ActivePlayerDTO> updatedUsers){        // in case of allie should see if some uBoat is chosen and save choose
 
         clearComponent();
         updatedUsers.forEach(this::addNewTeamDetails);
     }
 
     public void addNewTeamDetails(ActivePlayerDTO newTeam){
+
         activeTeamsDetailsPane.getChildren().add(new PlayerDetailsComponent(newTeam, Constants.ALLIES_TYPE));
     }
 
-    public void clearComponent(){
+    public void clearComponent() {
+
         activeTeamsDetailsPane.getChildren().clear();
+        timer.cancel();
+
     }
 }
