@@ -1,4 +1,4 @@
-package servlets;
+package servlets.contestManager;
 
 import com.google.gson.Gson;
 import exceptions.NoFileLoadedException;

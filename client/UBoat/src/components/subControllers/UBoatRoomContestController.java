@@ -1,22 +1,20 @@
 package components.subControllers;
 
-import components.PlayerDetailsComponent;
+import components.CandidatesTableController;
+import components.ConnectedUsersController;
 import components.body.details.MachineConfigurationController;
 import components.body.main.EncryptController;
 import components.body.main.EncryptableByDictionary;
 import components.main.UBoatMainAppController;
-import contestDtos.ActivePlayerDTO;
-import contestDtos.CandidateDataDTO;
 import decryptionDtos.DictionaryDTO;
 import http.HttpClientUtil;
-import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import logic.events.EncryptMessageEventListener;
 import machineDtos.EngineDTO;
@@ -24,31 +22,30 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
-import util.CandidatesRefresher;
-import util.CandidatesUpdate;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.stream.Collectors;
 
-public class UBoatRoomContestController implements EncryptableByDictionary, CandidatesUpdate {
+import static util.Constants.REQUEST_PATH_SET_READY;
+
+public class UBoatRoomContestController implements EncryptableByDictionary {
 
     private UBoatMainAppController parentController;
-    private Timer timer;
-    private TimerTask listRefresher;
-    private BooleanProperty autoUpdate;
     @FXML private BorderPane machineConfigurationComponent;
     @FXML private MachineConfigurationController machineConfigurationComponentController;
     @FXML private GridPane encryptComponent;
     @FXML private EncryptController encryptComponentController;
-    @FXML private FlowPane activeTeamsDetailsFlowPane;
     @FXML private Button readyButton;
     @FXML private Button logoutButton;
-   // @FXML private AnchorPane candidatesTableComponent;
-   // @FXML private CandidatesTableController candidatesTableComponentController;
+    @FXML private AnchorPane candidatesTableComponent;
+    @FXML private CandidatesTableController candidatesTableComponentController;
+    @FXML private GridPane connectedTeamsComponent;
+    @FXML private ConnectedUsersController connectedTeamsComponentController;
     private DictionaryDTO dictionaryDetails;
-
+    private BooleanProperty isPrepareForContest = new SimpleBooleanProperty(false);
 
     public void initial(){
 
@@ -58,11 +55,10 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Cand
         }
         if(encryptComponentController != null) {
             encryptComponentController.setParentController(this);
-//            machineConfigurationComponentController.getIsCodeConfigurationSetProperty().addListener(
-//                    observable -> encryptComponentController.createKeyboards(parentController.getEngineDetails().getEngineComponentsInfo().getABC()));
             encryptComponentController.setAutoStateOnly();
             initEncryptResetButtonActionListener();
             initEncryptListener();
+            encryptComponent.disableProperty().bind(isPrepareForContest);
             parentController.getEncryptedMessageProperty().addListener(
                     (observable, oldValue, newValue) ->  encryptComponentController.setEncryptedMessageLabel(newValue));
         }
@@ -72,48 +68,56 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Cand
         this.parentController = uBoatRoomController;
     }
 
+    public void setDictionaryDetails(DictionaryDTO dictionaryDetails) {
+
+        this.dictionaryDetails = dictionaryDetails;
+    }
+
     @FXML
     void logoutButtonListener(ActionEvent event) {
-        //delete from session
-
-        //delete contest from all allies dashboard
-
-        //return to login page
         parentController.close();
     }
 
     @FXML
     void readyButtonListener(ActionEvent event) {
 
-        candidatesTableController.startListRefresher();
+        String encryptedMessage = encryptComponentController.getEncryptedMessage().get();
 
-        String encryptedMessage = String.valueOf(encryptComponentController.getEncryptedMessage());
+        if(encryptedMessage == null || encryptedMessage.isEmpty()){
+            parentController.showPopUpMessage("You still not encrypt message");
+        }
+        else {
+            isPrepareForContest.set(true);
+            String finalUrl = HttpUrl
+                    .parse(REQUEST_PATH_SET_READY)
+                    .newBuilder()
+                    .addQueryParameter("encryptedMessage", encryptedMessage)
+                    .build()
+                    .toString();
 
-        String finalUrl = HttpUrl
-                .parse(REQUEST_PATH_SET_READY)
-                .newBuilder()
-                .addQueryParameter("encryptedMessage", encryptedMessage)
-                .build()
-                .toString();
-
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                System.out.println("Could not response well");
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    System.out.println("Could not response well, url:" + finalUrl);
+            HttpClientUtil.runAsync(finalUrl, new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    System.out.println(" FAILURE ---- Could not response well" + e.getMessage());
                 }
-                //add the competitors
-                System.out.println("encrypted message was updated and now the server is waiting for the teams to set ready!");
-                encryptComponent.setDisable(true);//need to change after contest is finished (end of contest servlet)
-            }
-        });
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+
+                    if (response.code() == 200) {
+                        connectedTeamsComponentController.stopListRefresher();
+                        candidatesTableComponentController.startListRefresher();
+                        System.out.println("encrypted message was updated and now the server is waiting for the teams to set ready!");
+                    } else {
+                        isPrepareForContest.set(false);
+                        parentController.showPopUpMessage(response.code() + " " + response.body().string());
+                    }
+                }
+            });
+        }
     }
 
+    //----------------------- override from encryptParent ------------------------------------------------
     @Override
     public void initEncryptResetButtonActionListener(){
 
@@ -131,37 +135,9 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Cand
         });
     }
 
-    public void addNewTeamDetails(ActivePlayerDTO newTeam){
-        activeTeamsDetailsFlowPane.getChildren().add(new PlayerDetailsComponent(newTeam, "allies"));
-    }
-
-    public void setIsCodeConfigurationSet(Boolean codeSet){
-        machineConfigurationComponentController.getIsCodeConfigurationSetProperty().set(codeSet);
-    }
-
-    public SimpleBooleanProperty getIsConfigurationSetProperty(){
-        return machineConfigurationComponentController.getIsCodeConfigurationSetProperty();
-    }
-
-    public void clearDetails(){
-        activeTeamsDetailsFlowPane.getChildren().clear();
-        //candidatesTableComponentController.clear();
-        machineConfigurationComponentController.clearComponent();
-        encryptComponentController.clearButtonActionListener(new ActionEvent());
-        encryptComponentController.removeOldAbcFromKeyboards();
-    }
-
     @Override
     public EngineDTO getEngineDetails() {
         return parentController.getEngineDetails();
-    }
-
-    @Override
-    public void updateCandidates(CandidateDataDTO candidate) {
-        Platform.runLater(() -> {
-            //candidates.forEach(candidate->candidatesTableController.addNewCandidate(candidate));
-    //       candidatesTableComponentController.addNewCandidate(candidate);
-        });
     }
 
     @Override
@@ -188,7 +164,29 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Cand
         return tempWord.toString();
     }
 
-    public void setDictionaryDetails(DictionaryDTO dictionaryDetails) {
-        this.dictionaryDetails = dictionaryDetails;
+    //---------------------------------------------------------------------------------------------------------
+
+    public void setIsCodeConfigurationSet(Boolean codeSet){
+        machineConfigurationComponentController.getIsCodeConfigurationSetProperty().set(codeSet);
+    }
+
+    public SimpleBooleanProperty getIsConfigurationSetProperty(){
+        return machineConfigurationComponentController.getIsCodeConfigurationSetProperty();
+    }
+
+    public void clearDetails(){
+        candidatesTableComponentController.clear();
+        connectedTeamsComponentController.clearComponent();
+        machineConfigurationComponentController.clearComponent();
+        encryptComponentController.clearButtonActionListener(new ActionEvent());
+        dictionaryDetails = null;
+    }
+
+    public void setActive() {
+        connectedTeamsComponentController.startListRefresher();
+    }
+
+    public BooleanProperty isPrepareForContestProperty() {
+        return isPrepareForContest;
     }
 }

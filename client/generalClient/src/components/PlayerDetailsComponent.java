@@ -10,19 +10,14 @@ import static constants.Constants.*;
 public class PlayerDetailsComponent extends Pane {
     @FXML
     private Label nameHeader;
-
     @FXML
     private Label amountHeader;
-
     @FXML
     private Label intValHeader;
-
     @FXML
     private Label nameLabel;
-
     @FXML
     private Label amountLabel;
-
     @FXML
     private Label intValLabel;
 

@@ -1,24 +1,29 @@
 package logic.datamanager;
 
-import decryptionDtos.AgentAnswerDTO;
+import contestDtos.CandidateDataDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CandidatesManager {
-    private final List<AgentAnswerDTO> candidates;
+    private final List<CandidateDataDTO> candidates = new ArrayList<>();
+    private int lastVersion = 0;
 
-    public CandidatesManager(){
-        candidates = new ArrayList<>();
+    public synchronized void addNewCandidates(List<CandidateDataDTO> candidates){
+
+        candidates.forEach(candidate-> {
+            lastVersion++;
+            candidates.add(candidate);
+        });
     }
 
-    public synchronized void addNewCandidates(List<AgentAnswerDTO> candidates){
-        candidates.forEach(AgentAnswerDTO->candidates.add(AgentAnswerDTO));
-    }
+    public synchronized List<CandidateDataDTO> getNewCandidates(int version){
 
-    public synchronized List<AgentAnswerDTO> getCandidates(){
-        return candidates;
-    }
+        if(version < 0 || version > lastVersion){
+            version = 0;
+        }
 
+        return candidates.subList(version, candidates.size());
+    }
 
 }

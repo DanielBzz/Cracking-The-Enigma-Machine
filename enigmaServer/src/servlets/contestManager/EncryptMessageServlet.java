@@ -1,4 +1,4 @@
-package servlets;
+package servlets.contestManager;
 
 import exceptions.MachineNotDefinedException;
 import exceptions.NoFileLoadedException;

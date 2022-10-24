@@ -9,8 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import logic.events.CodeSetEventListener;
-import logic.events.EncryptMessageEventListener;
-import logic.events.handler.MachineEventHandler;
 import machineDtos.EngineDTO;
 import manager.DecryptionManager;
 
@@ -38,6 +36,7 @@ public class BruteForceController implements CodeSetEventListener, EncryptableBy
         encryptComponentController.setAutoStateOnly();
         encryptComponentController.setParentController(this);
         encryptComponent.disableProperty().bind(parentController.getIsCodeConfigurationSetProperty().not());
+        initEncryptListener();
         initEncryptResetButtonActionListener();
     }
 
@@ -59,10 +58,6 @@ public class BruteForceController implements CodeSetEventListener, EncryptableBy
         encryptComponentController.setEncryptedMessageLabel(newValue);
     }
 
-    public MachineEventHandler<EncryptMessageEventListener> encryptMessageEventHandler()  {
-
-        return encryptComponentController.activateEncryptEventHandler;
-    }
     public String getStringWithoutSpecialChars(String message){
 
         return decryptionManagerComponentController.getStringWithoutSpecialChars(message);
@@ -76,6 +71,12 @@ public class BruteForceController implements CodeSetEventListener, EncryptableBy
     public void initEncryptResetButtonActionListener(){
 
         encryptComponentController.getResetButtonActionProperty().addListener(observable -> parentController.resetCodeConfiguration());
+    }
+
+    @Override
+    public void initEncryptListener() {
+
+        encryptComponentController.activateEncryptEventHandler.addListener(parentController.getEncryptMessageEventListener());
     }
 
     @Override

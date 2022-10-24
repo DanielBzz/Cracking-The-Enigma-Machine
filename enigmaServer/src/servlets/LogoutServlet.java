@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.datamanager.ContestsManager;
 import logic.datamanager.DataManager;
-import logic.datamanager.TeamsManager;
 import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
 
@@ -22,7 +21,6 @@ public class LogoutServlet extends HttpServlet {
         switch (userType){
             case CONTEST_MANAGER_ATTRIBUTE_NAME:
                 ContestsManager contestManager = ServletUtils.getContestManager(getServletContext());
-                //need to update all the users
                 removeUser(usernameFromSession, contestManager, request);
                 break;
             case TEAM_MANAGER_ATTRIBUTE_NAME:

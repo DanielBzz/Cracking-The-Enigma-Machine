@@ -1,7 +1,5 @@
 package contestDtos;
 
-import decryptionDtos.AgentAnswerDTO;
-
 public class CandidateDataDTO {
     private final String decryptedMessage;
     private final String foundersName;

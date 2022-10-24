@@ -1,9 +1,11 @@
 package logic.datamanager;
 
-import logic.serverdata.Team;
-import logic.serverdata.UserContest;
+import contestDtos.ActivePlayerDTO;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class DataManager<T> {
 
@@ -22,7 +24,9 @@ public abstract class DataManager<T> {
 
     public synchronized void removeUser(String username) {
 
-        userNameToData.remove(username);
+        if(isUserExists(username)) {
+            userNameToData.remove(username);
+        }
     }
 
     public synchronized Set<String> getUsersNames() {
@@ -30,10 +34,7 @@ public abstract class DataManager<T> {
         return Collections.unmodifiableSet(userNameToData.keySet());
     }
 
-    public synchronized Set<Team> getUsersData(String contestManager){
-        UserContest userContest = (UserContest)userNameToData.get(contestManager);
-        return new HashSet<>(userContest.getCompetitors());
-    }
+    public abstract Set<ActivePlayerDTO> getConnectedUsersDetails(String userName);
 
     public boolean isUserExists(String username) {
 

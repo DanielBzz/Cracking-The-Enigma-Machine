@@ -1,22 +1,16 @@
 package servlets;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import contestDtos.ActivePlayerDTO;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import logic.datamanager.ContestsManager;
 import logic.datamanager.TeamsManager;
-import logic.serverdata.Team;
 import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
-import servlets.utils.TeamSerealizer;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @WebServlet(name = "JoinToContestServlet", urlPatterns = "/teamManager/joinToContest")
 public class JoinToContestServlet extends HttpServlet {
@@ -37,7 +31,6 @@ public class JoinToContestServlet extends HttpServlet {
 
         if(manager.addCompetitorToContest(contestManagerName,teamsManager.getTeam(userName))){
             teamsManager.getTeam(userName).setuBoatName(contestManagerName);
-            response.getWriter().write(getCompetitorsAsString(manager, contestManagerName));
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, null);
         }
         else {
@@ -46,17 +39,4 @@ public class JoinToContestServlet extends HttpServlet {
             // need to check also that the allie client not in other contest.
         }
     }
-    protected String getCompetitorsAsString(ContestsManager manager, String contestManagerName){
-        Set<Team> competitors = new HashSet<>(manager.getCompetitors(contestManagerName));
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Team.class, new TeamSerealizer())
-                .create();
-        String competitorsAsString = "";
-
-        for (Team t:competitors) {
-            competitorsAsString = competitorsAsString + gson.toJson(t);
-        }
-        return competitorsAsString;
-    }
-
 }

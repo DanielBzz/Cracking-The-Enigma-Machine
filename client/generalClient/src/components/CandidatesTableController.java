@@ -2,58 +2,52 @@ package components;
 
 import contestDtos.CandidateDataDTO;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import util.CandidatesRefresher;
-import util.CandidatesUpdate;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static constants.Constants.REFRESH_RATE;
 
-public class CandidatesTableController implements CandidatesUpdate {
+public class CandidatesTableController {
+    @FXML private TableView<CandidateDataDTO> candidatesTable;
+    @FXML private TableColumn<CandidateDataDTO, String> whoFoundTheAnswerLabel;
+    private TimerTask candidatesRefresher;
     private Timer timer;
-    private TimerTask listRefresher;
-    private BooleanProperty autoUpdate;
-    @FXML
-    private TableView<CandidateDataDTO> candidatesTable;
 
-    @FXML
-    private TableColumn<CandidateDataDTO, String> whoFoundTheAnswerLabel;
-    private CandidatesRefresher candidatesRefresher;
-
-    public void setWhoFoundTheAnswerLabel(String foundAnswersType){
-        whoFoundTheAnswerLabel.setText(foundAnswersType);
+    public void startListRefresher() {
+        candidatesRefresher = new CandidatesRefresher(this::updateCandidates,0);
+        timer = new Timer();
+        timer.schedule(candidatesRefresher, REFRESH_RATE/4, REFRESH_RATE/4);
     }
 
-    public void addNewCandidate(CandidateDataDTO newCandidate){
-        candidatesTable.getItems().add(newCandidate);
-    }
-    public void clear(){
-        candidatesTable.getItems().clear();
+    public void cancelRefresher(){
+        timer.cancel();
     }
 
-    @Override
-    public void updateCandidates(CandidateDataDTO candidate) {
+    public void updateCandidates(List<CandidateDataDTO> newCandidates) {
+
         Platform.runLater(() -> {
-            //candidates.forEach(candidate->candidatesTableController.addNewCandidate(candidate));
-            addNewCandidate(candidate);
+            newCandidates.forEach(this::addNewCandidate);
         });
     }
 
+    public void addNewCandidate(CandidateDataDTO newCandidate){
 
+        candidatesTable.getItems().add(newCandidate);
+    }
 
-    //need constants for "http://localhost:8080/enigmaServer/contestManager"
+    public void clear(){
 
-    public void startListRefresher() {
-        candidatesRefresher = new CandidatesRefresher(
-                "http://localhost:8080/enigmaServer/contestManager",
-                this::updateCandidates,
-                autoUpdate);
-        timer = new Timer();
-        timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
+        candidatesTable.getItems().clear();
+        timer.cancel();
+    }
+
+    public void setWhoFoundTheAnswerLabel(String foundAnswersType){
+        whoFoundTheAnswerLabel.setText(foundAnswersType);
     }
 }
