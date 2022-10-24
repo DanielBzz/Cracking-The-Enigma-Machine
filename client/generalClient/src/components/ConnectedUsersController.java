@@ -2,11 +2,12 @@ package components;
 
 import constants.Constants;
 import contestDtos.ActivePlayerDTO;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import util.ConnectedUserListRefresher;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,10 +28,14 @@ public class ConnectedUsersController {
         timer.cancel();
     }
 
-    private void updateUserList(List<ActivePlayerDTO> updatedUsers){        // in case of allie should see if some uBoat is chosen and save choose
+    private void updateUserList(String jsonUserList){        // in case of allie should see if some uBoat is chosen and save choose
 
-        clearComponent();
-        updatedUsers.forEach(this::addNewTeamDetails);
+        ActivePlayerDTO[] updatedUsers = Constants.GSON_INSTANCE.fromJson(jsonUserList, ActivePlayerDTO[].class);
+
+        Platform.runLater(()->{
+            clearComponent();
+            Arrays.asList(updatedUsers).forEach(this::addNewTeamDetails);
+        });
     }
 
     public void addNewTeamDetails(ActivePlayerDTO newTeam){
@@ -42,6 +47,5 @@ public class ConnectedUsersController {
 
         activeTeamsDetailsPane.getChildren().clear();
         timer.cancel();
-
     }
 }

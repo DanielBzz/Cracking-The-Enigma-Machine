@@ -10,25 +10,21 @@ import util.Constants;
 import java.io.IOException;
 import java.net.URL;
 
-public class UBoatClient extends Application {
+public class AlliesClientMain extends Application {
 
-    private ClientMainController uBoatAppMainController;
+    ClientMainController mainAppController;
 
     @Override
-    public void start(Stage primaryStage) {
-
-        primaryStage.setMinHeight(600);
-        primaryStage.setMinWidth(600);
-        primaryStage.setTitle("UBoat App");
-
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setTitle("Allies App");
         URL clientMainApp = ClientMainController.class.getResource("generalMainComponent.fxml");
-        try {
 
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(clientMainApp);
             Parent root = fxmlLoader.load();
-            uBoatAppMainController = fxmlLoader.getController();
-            uBoatAppMainController.loadMainAppForm(getClass().getResource(Constants.UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION),Constants.UBOAT_CLIENT);
+            mainAppController = fxmlLoader.getController();
+            mainAppController.loadMainAppForm(getClass().getResource(Constants.ALLIES_MAIN_APP_FXML_RESOURCE_LOCATION),Constants.ALLIES_CLIENT);
 
             Scene scene = new Scene(root, 700, 600);
             primaryStage.setScene(scene);
@@ -37,13 +33,12 @@ public class UBoatClient extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void stop() throws Exception {
         HttpClientUtil.shutdown();
-        uBoatAppMainController.close();
+        mainAppController.close();
     }
 
     public static void main(String[] args) {

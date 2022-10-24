@@ -28,7 +28,7 @@ public class GetCandidatesServlet extends HttpServlet {
 
         try{
             int userVersion = Integer.parseInt(request.getParameter("version"));
-            List<CandidateDataDTO> newCandidates= manager.getCandidates(username,userVersion);
+            List<CandidateDataDTO> newCandidates = manager.getCandidates(username,userVersion);
             int newVersion = userVersion + newCandidates.size();
             String[] responseMessage = new String[2];
             responseMessage[0] = String.valueOf(newVersion);
