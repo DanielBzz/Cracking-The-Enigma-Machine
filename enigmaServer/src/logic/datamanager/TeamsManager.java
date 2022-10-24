@@ -16,7 +16,7 @@ public class TeamsManager extends DataManager<Team>{
     }
 
     @Override
-    public Set<ActivePlayerDTO> getConnectedUsersDetails(String userName) {
+    public Set<ActivePlayerDTO> getConnectedUsersDetails(String userName) { // should return the agent that connected to this allie
         return null;
     }
 }

@@ -1,41 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.StackPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.main.UBoatMainAppController">
-   <top>
-      <StackPane BorderPane.alignment="CENTER">
-         <children>
-            <fx:include fx:id="headerComponent" source="../../../../../windowsUI/src/components/header/header.fxml" />
-         </children>
-      </StackPane>
-   </top>
+<BorderPane minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.main.UBoatMainAppController">
    <center>
-      <TabPane fx:id="bodyComponent" minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="bodyComponent" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Machine">
-            <content>
-              <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
-                     <children>
+               <content>
+                  <ScrollPane fitToHeight="true" fitToWidth="true">
+                     <content>
                         <fx:include fx:id="uBoatRoomMachineComponent" source="../subControllers/uBoat-room-machine.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-            </content>
+                     </content>
+                  </ScrollPane>
+               </content>
           </Tab>
           <Tab fx:id="contestTab" text="Contest">
-            <content>
-              <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
-                     <children>
+               <content>
+                  <ScrollPane fitToHeight="true" fitToWidth="true">
+                     <content>
                         <fx:include fx:id="uBoatRoomContestComponent" minHeight="-Infinity" minWidth="-Infinity" source="../subControllers/uBoat-room-contest.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-            </content>
+                     </content>
+                  </ScrollPane>
+               </content>
           </Tab>
         </tabs>
       </TabPane>
    </center>
+   <top>
+      <fx:include fx:id="headerComponent" source="../../../../../windowsUI/src/components/header/header.fxml" />
+   </top>
 </BorderPane>

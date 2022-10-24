@@ -1,8 +1,5 @@
 package components.subControllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.sun.istack.internal.NotNull;
 import components.PlayerDetailsComponent;
 import components.main.AlliesMainAppController;
@@ -19,32 +16,24 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
-import util.ActivePlayerDTODeserializer;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 
 import static constants.Constants.AGENT_TYPE;
-import static util.Constants.*;
+import static util.Constants.ACTIVE_CONTEST;
+import static util.Constants.REQUEST_PATH_JOIN_TO_CONTEST;
 
 
 public class AlliesDashboardController {
 
     private AlliesMainAppController parentController;
-    @FXML
-    private FlowPane teamsAgentsDataArea;
-
-    @FXML
-    private FlowPane contestsDataArea;
-
+    @FXML private FlowPane teamsAgentsDataArea;
+    @FXML private FlowPane contestsDataArea;
     private Map<String, PlayerDetailsComponent> agentsDetails;
     private Map<String, ContestDetailsController> contestsDetails;
     private ContestDetailsController chosenContest;
-    @FXML
-    private Button readyButton;
+    @FXML private Button readyButton;
 
     @FXML
     void readyButtonListener(ActionEvent event) {

@@ -13,6 +13,12 @@ import servlets.utils.SessionUtils;
 import java.io.IOException;
 import java.util.Set;
 
+/**
+ * This servlet return the users that connected to the main user
+ * when contest it returns the teams that participate
+ * when team it returns the players(agents) that he have
+ */
+
 @WebServlet(name = "getUsersServlet" , urlPatterns = "/getUsers")
 public class GetUsersServlet extends HttpServlet {
 

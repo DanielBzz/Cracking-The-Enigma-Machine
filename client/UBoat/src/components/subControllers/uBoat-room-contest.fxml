@@ -9,10 +9,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.subControllers.UBoatRoomContestController">
+<GridPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.subControllers.UBoatRoomContestController">
   <columnConstraints>
-    <ColumnConstraints hgrow="ALWAYS" maxWidth="755.0" minWidth="727.0" prefWidth="729.0" />
-    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="198.0" minWidth="165.0" prefWidth="196.0" />
+    <ColumnConstraints hgrow="ALWAYS" />
+    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
@@ -24,9 +24,9 @@
          <children>
             <HBox alignment="CENTER_LEFT" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label prefWidth="120.0" text="Candidates:" />
+                  <Label text="Candidates:" />
                   <AnchorPane minHeight="-Infinity" minWidth="-Infinity" />
-                  <fx:include fx:id="candidatesTableComponent" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" source="../../../../generalClient/src/components/candidates-table.fxml" />
+                  <fx:include fx:id="candidatesTableComponent" prefHeight="200.0" source="../../../../generalClient/src/components/candidates-table.fxml" />
                </children>
             </HBox>
          </children>
@@ -40,17 +40,19 @@
             <Insets bottom="15.0" left="10.0" />
          </GridPane.margin>
       </HBox>
-    <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
+    <AnchorPane>
          <children>
             <fx:include fx:id="machineConfigurationComponent" source="../../../../../windowsUI/src/components/body/details/machineConfigurationComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" GridPane.rowIndex="1">
+      <AnchorPane GridPane.rowIndex="1">
          <children>
-            <fx:include fx:id="encryptComponent" source="../../../../../windowsUI/src/components/body/main/encryptComponent.fxml" />
+            <fx:include fx:id="encryptComponent" source="../../../../../windowsUI/src/components/body/main/encryptComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowSpan="2" />
-      <fx:include fx:id="connectedTeamsComponent" source="../../../../generalClient/src/components/ConnectedUsersComponent.fxml" />
+      <AnchorPane GridPane.columnIndex="1" GridPane.rowSpan="2">
+         <children>
+            <fx:include fx:id="connectedTeamsComponent" source="../../../../generalClient/src/components/ConnectedUsersComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children></AnchorPane>
    </children>
 </GridPane>
