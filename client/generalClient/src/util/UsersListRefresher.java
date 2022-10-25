@@ -1,6 +1,5 @@
 package util;
 
-import constants.Constants;
 import http.HttpClientUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -11,18 +10,20 @@ import java.io.IOException;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-public class ConnectedUserListRefresher extends TimerTask {
+public class UsersListRefresher extends TimerTask {
 
+    private final String url;
     private final Consumer<String> userListConsumer;
 
-    public ConnectedUserListRefresher(Consumer<String> userListConsumer) {
+    public UsersListRefresher(Consumer<String> userListConsumer, String url) {
         this.userListConsumer = userListConsumer;
+        this.url = url;
     }
 
     @Override
     public void run() {
 
-        HttpClientUtil.runAsync(Constants.REQUEST_PATH_USERS_UPDATE, new Callback() {
+        HttpClientUtil.runAsync(url, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println("update user list failed");

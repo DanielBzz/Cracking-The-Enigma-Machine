@@ -10,20 +10,11 @@ import static util.Constants.*;
 
 public class ContestDetailsController extends Pane {
 
-    @FXML
-    private Label battleFieldLabel;
-
-    @FXML
-    private Label contestManagerLabel;
-
-    @FXML
-    private Label statusLabel;
-
-    @FXML
-    private Label levelLabel;
-
-    @FXML
-    private Label teamsLabel;
+    @FXML private Label battleFieldLabel;
+    @FXML private Label contestManagerLabel;
+    @FXML private Label statusLabel;
+    @FXML private Label levelLabel;
+    @FXML private Label teamsLabel;
 
     private int maxAmountOfTeams;
     private int currentAmountOfTeams;

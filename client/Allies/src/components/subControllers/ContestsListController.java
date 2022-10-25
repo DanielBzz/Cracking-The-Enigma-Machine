@@ -1,25 +1,22 @@
-package components;
+package components.subControllers;
 
 import constants.Constants;
-import contestDtos.ActivePlayerDTO;
+import contestDtos.ContestDetailsDTO;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
-import javafx.scene.layout.VBox;
 import util.UsersListRefresher;
 
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ConnectedUsersController {
+public class ContestsListController {
 
-    @FXML private VBox activeTeamsDetailsPane;
     private Timer timer;
     private TimerTask listRefresher;
 
     public void startListRefresher(){
 
-        listRefresher = new UsersListRefresher(this::updateUserList,Constants.REQUEST_PATH_USERS_UPDATE);
+        listRefresher = new UsersListRefresher(this::updateUserList, Constants.REQUEST_PATH_GET_CONTESTS);
         timer = new Timer();
         timer.schedule(listRefresher, constants.Constants.REFRESH_RATE, constants.Constants.REFRESH_RATE);
     }
@@ -30,22 +27,25 @@ public class ConnectedUsersController {
 
     private void updateUserList(String jsonUserList){        // in case of allie should see if some uBoat is chosen and save choose
 
-        ActivePlayerDTO[] updatedUsers = Constants.GSON_INSTANCE.fromJson(jsonUserList, ActivePlayerDTO[].class);
+        ContestDetailsDTO[] updatedUsers = Constants.GSON_INSTANCE.fromJson(jsonUserList, ContestDetailsDTO[].class);
 
         Platform.runLater(()->{
+
+            // should check if there is chosen contest before refresher
+
             clearComponent();
-            Arrays.asList(updatedUsers).forEach(this::addNewTeamDetails);
+            Arrays.asList(updatedUsers).forEach(this::addContest);
         });
     }
 
-    public void addNewTeamDetails(ActivePlayerDTO newTeam){
+    public void addContest(ContestDetailsDTO newTeam){
 
-        activeTeamsDetailsPane.getChildren().add(new PlayerDetailsComponent(newTeam, Constants.ALLIES_TYPE));
+        //
     }
 
     public void clearComponent() {
 
-        activeTeamsDetailsPane.getChildren().clear();
+        // clear the page here
         timer.cancel();
     }
 }
