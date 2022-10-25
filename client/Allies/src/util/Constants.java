@@ -12,6 +12,7 @@ public class Constants {
 
     private final static String ALLIES_REQUEST_PATH = FULL_SERVER_PATH + "/" + ALLIES_CLIENT;
     public final static String REQUEST_PATH_JOIN_TO_CONTEST = ALLIES_REQUEST_PATH + "/joinToContest";
+    public final static String REQUEST_PATH_GET_CONTESTS = ALLIES_REQUEST_PATH + "/getContests";
     public final static String REQUEST_PATH_SET_READY = ALLIES_REQUEST_PATH + "/SetTeamReady";
 
 }

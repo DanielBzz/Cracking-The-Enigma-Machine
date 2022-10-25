@@ -45,7 +45,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary {
     @FXML private GridPane connectedTeamsComponent;
     @FXML private ConnectedUsersController connectedTeamsComponentController;
     private DictionaryDTO dictionaryDetails;
-    private BooleanProperty isPrepareForContest = new SimpleBooleanProperty(false);
+    private final BooleanProperty isPrepareForContest = new SimpleBooleanProperty(false);
 
     public void initial(){
 
@@ -183,7 +183,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary {
     }
 
     public void setActive() {
-        connectedTeamsComponentController.startListRefresher();
+        connectedTeamsComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
     }
 
     public BooleanProperty isPrepareForContestProperty() {

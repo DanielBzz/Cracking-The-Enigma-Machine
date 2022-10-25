@@ -2,6 +2,7 @@ package logic.datamanager;
 
 import contestDtos.ActivePlayerDTO;
 import contestDtos.CandidateDataDTO;
+import contestDtos.ContestDetailsDTO;
 import exceptions.ContestNotExistException;
 import exceptions.ContestNotReadyException;
 import exceptions.NoFileLoadedException;
@@ -147,5 +148,19 @@ public class ContestsManager extends DataManager<UserContest> {
         }
 
         super.removeUser(username);
+    }
+
+    public synchronized Set<ContestDetailsDTO> getContestsDetails() {
+
+        Set<ContestDetailsDTO> contestsDetails = new HashSet<>();
+
+        for (String user: userNameToData.keySet()) {
+            UserContest contest = userNameToData.get(user);
+            if(contest != null){
+                contestsDetails.add(contest.getContestDetails());
+            }
+        }
+
+        return contestsDetails;
     }
 }

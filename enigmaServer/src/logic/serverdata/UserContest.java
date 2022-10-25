@@ -2,8 +2,10 @@ package logic.serverdata;
 
 
 import contestDtos.CandidateDataDTO;
+import contestDtos.ContestDetailsDTO;
 import decryptionDtos.DictionaryDTO;
 import exceptions.NotInDictionaryException;
+import javafx.util.Pair;
 import logic.DecipherLogic;
 import logic.EnigmaSystemEngine;
 import logic.datamanager.CandidatesManager;
@@ -120,5 +122,17 @@ public class UserContest {
 
     public boolean contestIsFull() {
         return field.getNumberOfAllies() == competitors.size();
+    }
+
+    public ContestDetailsDTO getContestDetails(){
+
+        ContestDetailsDTO dto = new ContestDetailsDTO(
+                field.getBattleName(),
+                null,
+                inContest,field.getLevel().name(),
+                new Pair<>(field.getNumberOfAllies(),competitors.size()),
+                decryptionManager.getTaskAmount());
+
+        return dto;
     }
 }

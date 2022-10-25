@@ -8,9 +8,9 @@ public class ContestDetailsDTO {
     private final boolean status;
     private final String level;
     private final Pair<Integer, Integer> teams;
-    private final int taskSize;
+    private final double taskSize;
 
-    public ContestDetailsDTO(String battleFieldName, String contestManagerName, boolean status, String level, Pair<Integer, Integer> teams, int taskSize) {
+    public ContestDetailsDTO(String battleFieldName, String contestManagerName, boolean status, String level, Pair<Integer, Integer> teams, double taskSize) {
         this.battleFieldName = battleFieldName;
         this.contestManagerName = contestManagerName;
         this.status = status;
@@ -39,7 +39,7 @@ public class ContestDetailsDTO {
         return teams;
     }
 
-    public int getTaskSize() {
+    public double getTaskSize() {
         return taskSize;
     }
 }
