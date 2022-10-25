@@ -114,4 +114,5 @@ public class AlliesContestController {
         ContestDetailsController contestDetails = (ContestDetailsController) contestDataArea.getChildren();
         return contestDetails.getContestManagerName();
     }
+
 }
