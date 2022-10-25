@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="generalClient" />
+    <orderEntry type="module" module-name="DTOS" />
   </component>
 </module>
