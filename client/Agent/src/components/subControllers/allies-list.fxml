@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+
+
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.subControllers.AlliesListController">
+   <content>
+      <TableView fx:id="alliesTable" minHeight="-Infinity" minWidth="-Infinity">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Allies Name" />
+          <TableColumn prefWidth="120.0" text="Amount of Agents" />
+            <TableColumn prefWidth="75.0" text="Task Size" />
+        </columns>
+      </TableView>
+   </content>
+</ScrollPane>

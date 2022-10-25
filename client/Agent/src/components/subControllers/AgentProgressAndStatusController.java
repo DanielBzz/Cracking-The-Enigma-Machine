@@ -1,6 +1,7 @@
 package components.subControllers;
 
 import components.main.AgentMainAppController;
+import contestDtos.AgentProgressDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -25,8 +26,11 @@ public class AgentProgressAndStatusController {
         this.parentController = agentMainAppController;
     }
 
-    public void updateData(){
-
+    public void updateData(AgentProgressDTO agentProgressDTO){
+        this.tasksInQueueLabel.setText(String.valueOf(agentProgressDTO.getTasksInQueue()));
+        this.totalTakenTasksLabel.setText(String.valueOf(agentProgressDTO.getTotalTakenTasks()));
+        this.totalFinishedTasksLabel.setText(String.valueOf(agentProgressDTO.getTotalFinishedTasks()));
+        this.totalCandidatesLabel.setText(String.valueOf(agentProgressDTO.getTotalAmountOfCandidates()));
     }
 
 }

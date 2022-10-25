@@ -13,7 +13,7 @@
           <TableColumn prefWidth="125.0" text="Contest Manager" />
             <TableColumn prefWidth="75.0" text="Status" />
             <TableColumn prefWidth="75.0" text="Level" />
-            <TableColumn prefWidth="-1.0" text="Teams" />
+            <TableColumn prefWidth="75.0" text="Teams" />
         </columns>
       </TableView>
    </content>
