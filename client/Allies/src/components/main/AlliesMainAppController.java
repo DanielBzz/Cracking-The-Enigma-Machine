@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
+import okhttp3.Response;
 
 public class AlliesMainAppController implements AppMainController {
     private ClientMainController parentController;
