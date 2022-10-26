@@ -19,7 +19,7 @@ public class ContestDetailsTableController extends RefresherController {
     @Override
     public void updateList(String jsonUserList){
         List<ContestDetailsDTO> contests = Arrays.asList(Constants.GSON_INSTANCE.fromJson(jsonUserList,ContestDetailsDTO[].class));
-        String nameOfChosen = getSelectedContest() != null ? getSelectedContest().getContestManagerName() : null;
+        String nameOfChosen = getChosenContestUserName();
         Optional<ContestDetailsDTO> chosenContest = nameOfChosen != null ?
                 contests.stream().filter(contest -> contest.getContestManagerName().equals(nameOfChosen)).findFirst()
                 : Optional.empty();
@@ -45,8 +45,10 @@ public class ContestDetailsTableController extends RefresherController {
         detailsTable.getItems().clear();
     }
 
-    public ContestDetailsDTO getSelectedContest(){
+    public String getChosenContestUserName(){
 
-        return detailsTable.getSelectionModel().getSelectedItem();
+        return detailsTable.getSelectionModel().getSelectedItem() != null ?
+                detailsTable.getSelectionModel().getSelectedItem().getContestManagerName() :
+                null;
     }
 }

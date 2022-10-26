@@ -18,7 +18,7 @@ public class ContestDetailsController extends Pane {
 
     private int maxAmountOfTeams;
     private int currentAmountOfTeams;
-    private int taskSize;
+    private double taskSize;
 
     public ContestDetailsController(ContestDetailsDTO contestDetails){
         battleFieldLabel.setText(contestDetails.getBattleFieldName());
@@ -49,7 +49,7 @@ public class ContestDetailsController extends Pane {
         return contestManagerLabel.getText();
     }
 
-    public int getTaskSize(){
+    public double getTaskSize(){
         return taskSize;
     }
 

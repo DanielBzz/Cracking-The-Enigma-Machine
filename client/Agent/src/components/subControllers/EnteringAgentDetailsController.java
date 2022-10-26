@@ -55,6 +55,6 @@ public class EnteringAgentDetailsController {
             }
         });
 
-        parentController.changeContest(contestTableComponentController.getSelectedContest());
+     //   parentController.changeContest(contestTableComponentController.getSelectedContest());
     }
 }

@@ -75,15 +75,13 @@ public class ContestsManager extends DataManager<UserContest> {
         return teamDetails;
     }
 
-    public boolean addCompetitorToContest(String userName, Team competitor){
+    public void addCompetitorToContest(String userName, Team competitor){
 
-        boolean isAdded = isContestExist(userName);
-
-        if(isAdded) {
-            userNameToData.get(userName).addCompetitor(competitor);
+        if(!isContestExist(userName)) {
+            throw new ContestNotExistException(userName);
         }
 
-        return isAdded;
+        userNameToData.get(userName).addCompetitor(competitor);
     }
                 // should combine both of them to 1 method that add first, and also in use when allie change details.
     public boolean updateUserDetails(String userName, Team competitor){
@@ -162,5 +160,16 @@ public class ContestsManager extends DataManager<UserContest> {
         }
 
         return contestsDetails;
+    }
+
+    public synchronized ContestDetailsDTO getContestDetails(String username){
+
+        ContestDetailsDTO value = null;
+
+        if(isContestExist(username)){
+            value = userNameToData.get(username).getContestDetails();
+        }
+
+        return value;
     }
 }

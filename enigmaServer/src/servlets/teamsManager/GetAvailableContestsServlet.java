@@ -1,4 +1,4 @@
-package servlets;
+package servlets.teamsManager;
 
 import contestDtos.ContestDetailsDTO;
 import jakarta.servlet.annotation.WebServlet;
