@@ -1,32 +1,29 @@
 package components.subControllers;
 
 import com.sun.istack.internal.NotNull;
+import components.AlliesListController;
 import http.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
-import java.net.URL;
 
 import mainapp.ClientMainController;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
+import util.Presenter;
 import util.Constants;
 
 import static util.Constants.REQUEST_PATH_ADD_AGENT_TO_TEAM;
 
 
-public class EnteringAgentDetailsController {
+public class EnteringAgentDetailsController implements Presenter {
     ClientMainController mainAppController;
 
     @FXML

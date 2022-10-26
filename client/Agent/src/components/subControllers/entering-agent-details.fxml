@@ -29,7 +29,7 @@
    <children>
       <AnchorPane minHeight="0.0" minWidth="0.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647">
          <children>
-            <fx:include fx:id="alliesListComponent" minHeight="-Infinity" minWidth="-Infinity" source="allies-list.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <fx:include fx:id="alliesListComponent" minHeight="-Infinity" minWidth="-Infinity" source="../../../../generalClient/src/components/allies-list.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
       <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">

@@ -1,14 +1,15 @@
-package components.subControllers;
+package components;
 
 import constants.Constants;
 import contestDtos.ActivePlayerDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
+import util.Presenter;
 import util.RefresherController;
 
 public class AlliesListController extends RefresherController {
 
-    private EnteringAgentDetailsController parentController;
+    private Presenter parentController;
     @FXML
     private TableView<ActivePlayerDTO> alliesTable;
 
@@ -20,8 +21,8 @@ public class AlliesListController extends RefresherController {
         alliesTable.getItems().clear();
     }
 
-    public void setAlliesDashboardController(EnteringAgentDetailsController enteringAgentDetailsController) {
-        this.parentController = enteringAgentDetailsController;
+    public void setAlliesDashboardController(Presenter alliesPresenter) {
+        this.parentController = alliesPresenter;
     }
 
     public String getSelectedAlliesName(){
