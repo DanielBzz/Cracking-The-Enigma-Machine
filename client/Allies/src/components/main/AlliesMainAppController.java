@@ -2,6 +2,8 @@ package components.main;
 
 import components.subControllers.AlliesContestController;
 import components.subControllers.AlliesDashboardController;
+import components.subControllers.ContestDetailsController;
+import contestDtos.TeamDetailsContestDTO;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import mainapp.AppMainController;
@@ -18,12 +20,18 @@ public class AlliesMainAppController implements AppMainController {
     @FXML
     public void initialize(){
 
-        if(dashboardComponentController!= null){
+        if(dashboardComponentController!= null) {
             dashboardComponentController.setAlliesMainAppController(this);
+            parentController.getUserNameProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.equals("")) {
+                    dashboardComponentController.setActive();
+                }
+            });
         }
         if(contestComponentController!= null){
             contestComponentController.setAlliesMainAppController(this);
         }
+
     }
 
     //------------------------- AppMainController interface -----------------------------
@@ -40,7 +48,7 @@ public class AlliesMainAppController implements AppMainController {
 
     @Override
     public void clearComponent() {
-
+        // should clear all the components in the app
     }
 
     @Override
@@ -49,22 +57,17 @@ public class AlliesMainAppController implements AppMainController {
     }
     //-------------------------------------------------------------------------------------
 
-//    public void changeContest(ContestDetailsController newContest){
-//        contestComponentController.changeContest(newContest);
-//    }
-//    public void addAgent(Agent newAgent){
-//        agents.add(newAgent);
-//    }
-//
-//    public int getAmountOfAgents(){
-//        return agents.size();
-//    }
 
-    public int getTaskSize(){
-        return dashboardComponentController.getTaskSize();
+    public void changeContest(ContestDetailsController newContest){
+        contestComponentController.changeContest(newContest);
     }
 
     public void createCompetitorsFromResponse(Response response){
         contestComponentController.createCompetitorsFromResponse(response);
+    }
+
+    public void updateNewContest(TeamDetailsContestDTO responseDetails) {       // get all the details and should update contest component
+        createCompetitorsFromResponse(response);
+        changeContest(contestTableComponentController.getSelectedContest());
     }
 }

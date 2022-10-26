@@ -80,5 +80,7 @@ public class EnteringAgentDetailsController {
             }
         });
 
+     //   parentController.changeContest(contestTableComponentController.getSelectedContest());
+
     }
 }

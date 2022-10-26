@@ -110,4 +110,8 @@ public class ClientMainController implements Closeable, Loggable {
     }
 
 
+    public StringProperty getUserNameProperty() {
+
+        return currentUserName;
+    }
 }

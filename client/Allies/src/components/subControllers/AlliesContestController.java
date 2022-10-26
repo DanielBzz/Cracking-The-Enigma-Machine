@@ -24,22 +24,14 @@ import static constants.Constants.ALLIES_TYPE;
 
 public class AlliesContestController {
     private AlliesMainAppController parentController;
-    @FXML
-    private GridPane alliesDecryptionProgressAndCandidatesComponent;
-    @FXML
-    private AlliesDecryptionProgressAndCandidatesController alliesDecryptionProgressAndCandidatesController;
-    @FXML
-    private AnchorPane contestDataArea;
-    @FXML
-    private FlowPane contestTeamsArea;
-    @FXML
-    private FlowPane activeAgentsFlowPane;
-    @FXML
-    private Label totalTasksLabel;
-    @FXML
-    private Label producedTasksLabel;
-    @FXML
-    private Label finishedTasksLabel;
+    @FXML private GridPane alliesDecryptionProgressAndCandidatesComponent;
+    @FXML private AlliesDecryptionProgressAndCandidatesController alliesDecryptionProgressAndCandidatesController;
+    @FXML private AnchorPane contestDataArea;
+    @FXML private FlowPane contestTeamsArea;
+    @FXML private FlowPane activeAgentsFlowPane;
+    @FXML private Label totalTasksLabel;
+    @FXML private Label producedTasksLabel;
+    @FXML private Label finishedTasksLabel;
     private Map<String, AgentInContestController> agents;
 
     public void setAlliesMainAppController(AlliesMainAppController alliesMainAppController) {
@@ -78,7 +70,7 @@ public class AlliesContestController {
         alliesDecryptionProgressAndCandidatesController.updateAmountOfAgents(parentController.getAmountOfAgents());
     }
 
-    public int getTaskSize(){
+    public double getTaskSize(){
         return parentController.getTaskSize();
     }
 
