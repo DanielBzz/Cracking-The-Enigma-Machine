@@ -1,11 +1,14 @@
 package components.subControllers;
 
 import components.main.AgentMainAppController;
+import constants.Constants;
+import contestDtos.ActivePlayerDTO;
 import contestDtos.AgentProgressDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import util.RefresherController;
 
-public class AgentProgressAndStatusController {
+public class AgentProgressAndStatusController extends RefresherController {
 
 
     private AgentMainAppController parentController;
@@ -40,4 +43,9 @@ public class AgentProgressAndStatusController {
         this.totalCandidatesLabel.setText("");
     }
 
+    @Override
+    public void updateList(String jsonUserList) {
+        AgentProgressDTO newDetails = Constants.GSON_INSTANCE.fromJson(jsonUserList, AgentProgressDTO.class);
+        updateData(newDetails);
+    }
 }

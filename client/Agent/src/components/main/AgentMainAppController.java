@@ -10,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import logic.AgentLogic;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
+import util.Constants;
 
 public class AgentMainAppController implements AppMainController {
     private ClientMainController parentController;
@@ -53,5 +54,12 @@ public class AgentMainAppController implements AppMainController {
     @Override
     public void loadClientMainPage() {
 
+    }
+
+
+    public void setActive(){
+        agentProgressAndStatusComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
+        contestAndTeamDataComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
+        //agentsCandidatesComponentController.startListRefresher(constants.Constants.REQUEST_PATH_UPDATE_CANDIDATES);
     }
 }

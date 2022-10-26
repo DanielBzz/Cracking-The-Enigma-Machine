@@ -8,7 +8,7 @@ import java.util.List;
 public class Team {
 
     private final String teamName;
-    private final int numOfAgents;
+    private int numOfAgents;
     private int taskSize;
     private String uBoatName;
     private boolean ready;
@@ -38,6 +38,10 @@ public class Team {
 
     public boolean isReady() {
         return ready;
+    }
+
+    public void increaseNumOfAgents(){
+        numOfAgents++;
     }
 
     public void setReady(boolean ready) {

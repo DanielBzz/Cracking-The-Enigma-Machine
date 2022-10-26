@@ -2,6 +2,7 @@ package components.subControllers;
 
 import com.sun.istack.internal.NotNull;
 import http.HttpClientUtil;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -70,40 +71,14 @@ public class EnteringAgentDetailsController {
 
                 System.out.println("Agent was added successfully!");
 
-                primaryStage.setTitle("Agent App");
-                URL clientMainApp = ClientMainController.class.getResource("generalMainComponent.fxml");
+                //need to check if it works
+                Platform.runLater(() -> {
+                    mainAppController.loadMainAppForm(getClass().getResource(Constants.AGENT_MAIN_APP_FXML_RESOURCE_LOCATION),Constants.AGENT_CLIENT);
+                    mainAppController.switchToMainApp();
+                });
 
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader();
-                    fxmlLoader.setLocation(clientMainApp);
-                    Parent root = fxmlLoader.load();
-                    mainAppController = fxmlLoader.getController();
-                    mainAppController.loadMainAppForm(getClass().getResource(Constants.AGENT_ENTER_DETAILS_FXML_RESOURCE_LOCATION),Constants.AGENT_CLIENT);
-
-                    Scene scene = new Scene(root, 700, 600);
-                    primaryStage.setScene(scene);
-                    primaryStage.show();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-
-
-
-
-
-
-
-                mainAppController.loadMainAppForm(getClass().getResource(Constants.AGENT_MAIN_APP_FXML_RESOURCE_LOCATION),Constants.AGENT_CLIENT);
-
-                Scene scene = new Scene(root, 700, 600);
-                primaryStage.setScene(scene);
-                primaryStage.show();
             }
         });
 
-        //parentController.changeContest(contestTableComponentController.getSelectedContest());
     }
 }
