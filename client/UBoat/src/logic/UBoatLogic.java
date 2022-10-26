@@ -108,5 +108,6 @@ public class UBoatLogic {
     }
 
     public void logOut() {
+
     }
 }

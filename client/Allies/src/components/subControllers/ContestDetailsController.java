@@ -28,7 +28,7 @@ public class ContestDetailsController extends Pane {
         maxAmountOfTeams = contestDetails.getTeams().getValue();
         currentAmountOfTeams = contestDetails.getTeams().getKey();
         teamsLabel.setText(String.valueOf(contestDetails.getTeams().getKey()) + FROM_SEPARATOR + String.valueOf(contestDetails.getTeams().getValue()));
-        taskSize = contestDetails.getTaskSize();
+        taskSize = (int)contestDetails.getTaskSize();
     }
 
     public void setStatusLabel(Label statusLabel) {

@@ -5,10 +5,7 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import logic.datamanager.CandidatesManager;
-import logic.datamanager.ContestsManager;
-import logic.datamanager.DataManager;
-import logic.datamanager.TeamsManager;
+import logic.datamanager.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,12 +19,12 @@ public class ServletUtils {
     public static final String CONTEST_NAME_PARAMETER = "contestName";
     public static final String CONTEST_MANAGER_ATTRIBUTE_NAME = "contestManager";
     public static final String TEAM_MANAGER_ATTRIBUTE_NAME = "teamManager";
-    public static final String AGENT_ATTRIBUTE_NAME = "agent";
-
+    public static final String AGENT_ATTRIBUTE_NAME = "agentManager";
     public static final String CANDIDATES_MANAGER_ATTRIBUTE_NAME = "candidatesManager";
 
     private static final Object contestManagerLock = new Object();
     private static final Object teamManagerLock = new Object();
+    private static final Object agentManagerLock = new Object();
     private static final Object candidatesManagerLock = new Object();
 
     public static DataManager getDataManager(ServletContext servletContext, String attributeName) throws Exception {
@@ -62,6 +59,17 @@ public class ServletUtils {
         }
 
         return (TeamsManager)servletContext.getAttribute(TEAM_MANAGER_ATTRIBUTE_NAME);
+    }
+
+    public static AgentManager getAgentManager(ServletContext servletContext){
+
+        synchronized (agentManagerLock){
+            if(servletContext.getAttribute(AGENT_ATTRIBUTE_NAME) == null){
+                servletContext.setAttribute(AGENT_ATTRIBUTE_NAME,new AgentManager());
+            }
+        }
+
+        return (AgentManager) servletContext.getAttribute(AGENT_ATTRIBUTE_NAME);
     }
 
     public static CandidatesManager getCandidatesManager(ServletContext servletContext){
