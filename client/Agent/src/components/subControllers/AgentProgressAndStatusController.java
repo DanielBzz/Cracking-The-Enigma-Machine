@@ -33,4 +33,11 @@ public class AgentProgressAndStatusController {
         this.totalCandidatesLabel.setText(String.valueOf(agentProgressDTO.getTotalAmountOfCandidates()));
     }
 
+    public void clearDetails(){
+        this.tasksInQueueLabel.setText("");
+        this.totalTakenTasksLabel.setText("");
+        this.totalFinishedTasksLabel.setText("");
+        this.totalCandidatesLabel.setText("");
+    }
+
 }

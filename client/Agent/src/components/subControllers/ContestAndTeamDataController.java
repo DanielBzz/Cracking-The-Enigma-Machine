@@ -23,4 +23,8 @@ public class ContestAndTeamDataController implements ContestPresenter {
     public void setTeamNameLabel(String teamName) {
         this.teamNameLabel.setText(teamName);
     }
+
+    public void clearTable(){
+        contestDetailsComponentController.cleanTable();
+    }
 }

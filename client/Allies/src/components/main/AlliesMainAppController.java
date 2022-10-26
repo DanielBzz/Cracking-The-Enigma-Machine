@@ -10,8 +10,6 @@ import okhttp3.Response;
 
 public class AlliesMainAppController implements AppMainController {
     private ClientMainController parentController;
-    //maybe change the list<agents> to int only to know how many agents do i have
-    //private List<Agent> agents;
     @FXML private GridPane dashboardComponent;
     @FXML private AlliesDashboardController dashboardComponentController;
     @FXML private GridPane contestComponent;
