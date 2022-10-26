@@ -14,6 +14,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
+import util.Constants;
 
 import java.io.IOException;
 
@@ -23,19 +24,10 @@ import static util.Constants.REQUEST_PATH_JOIN_TO_CONTEST;
 public class AlliesDashboardController {
 
     private AlliesMainAppController parentController;
-//    @FXML private FlowPane teamsAgentsDataArea;
-//    @FXML private FlowPane contestsDataArea;
-    //private Map<String, PlayerDetailsComponent> agentsDetails;
-    //private Map<String, ContestDetailsController> contestsDetails;
-    //private ContestDetailsController chosenContest;
-    @FXML
-    private ScrollPane agentsTableComponent;
-    @FXML
-    private AgentsTableController agentsTableComponentController;
-    @FXML
-    private ScrollPane contestTableComponent;
-    @FXML
-    private ContestDetailsTableController contestTableComponentController;
+    @FXML private ScrollPane agentsTableComponent;
+    @FXML private AgentsTableController agentsTableComponentController;
+    @FXML private ScrollPane contestTableComponent;
+    @FXML private ContestDetailsTableController contestTableComponentController;
     @FXML private Button joinButton;
 
     @FXML
@@ -74,13 +66,11 @@ public class AlliesDashboardController {
         this.parentController = alliesMainAppController;
     }
 
-    public void addNewAgent(ActivePlayerDTO newAgent){
-        agentsTableComponentController.addAgent(newAgent);
+    public void setActive(){
+        contestTableComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
+        agentsTableComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
     }
 
-    public void addNewContest(ContestDetailsDTO newContest){
-        contestTableComponentController.addContest(newContest);
-    }
 
 //    public void deleteAgent(String agentName){
 //        teamsAgentsDataArea.getChildren().remove(agentsDetails.get(agentName));

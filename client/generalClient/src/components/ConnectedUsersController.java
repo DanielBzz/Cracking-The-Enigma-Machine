@@ -5,30 +5,16 @@ import contestDtos.ActivePlayerDTO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
-import util.UsersListRefresher;
+import util.RefresherController;
 
 import java.util.Arrays;
-import java.util.Timer;
-import java.util.TimerTask;
 
-public class ConnectedUsersController {
+public class ConnectedUsersController extends RefresherController {
 
     @FXML private VBox activeTeamsDetailsPane;
-    private Timer timer;
-    private TimerTask listRefresher;
 
-    public void startListRefresher(){
-
-        listRefresher = new UsersListRefresher(this::updateUserList,Constants.REQUEST_PATH_USERS_UPDATE);
-        timer = new Timer();
-        timer.schedule(listRefresher, constants.Constants.REFRESH_RATE, constants.Constants.REFRESH_RATE);
-    }
-
-    public void stopListRefresher(){        // should activate when contest starts
-        timer.cancel();
-    }
-
-    private void updateUserList(String jsonUserList){        // in case of allie should see if some uBoat is chosen and save choose
+    @Override
+    public void updateList(String jsonUserList){        // in case of allie should see if some uBoat is chosen and save choose
 
         ActivePlayerDTO[] updatedUsers = Constants.GSON_INSTANCE.fromJson(jsonUserList, ActivePlayerDTO[].class);
 
@@ -46,6 +32,6 @@ public class ConnectedUsersController {
     public void clearComponent() {
 
         activeTeamsDetailsPane.getChildren().clear();
-        timer.cancel();
+        stopListRefresher();
     }
 }

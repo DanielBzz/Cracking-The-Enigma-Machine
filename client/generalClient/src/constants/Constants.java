@@ -19,7 +19,6 @@ public class Constants {
     public final static String REQUEST_PATH_LOGIN = FULL_SERVER_PATH + "/login";
     public final static String REQUEST_PATH_USERS_UPDATE = FULL_SERVER_PATH + "/getUsers";
     public final static String REQUEST_PATH_GET_CANDIDATES = FULL_SERVER_PATH + "/getCandidates";
-    public final static String REQUEST_PATH_GET_CONTESTS = FULL_SERVER_PATH + "/getContests";
 
     public final static String ALLIES_TYPE = "allies";
     public final static String AGENT_TYPE = "agent";
