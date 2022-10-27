@@ -81,7 +81,9 @@ public class ContestsManager extends DataManager<UserContest> {
             throw new ContestNotExistException(userName);
         }
 
+
         userNameToData.get(userName).addCompetitor(competitor);
+        competitor.setContestName(userName);
     }
                 // should combine both of them to 1 method that add first, and also in use when allie change details.
     public boolean updateUserDetails(String userName, Team competitor){
@@ -142,7 +144,7 @@ public class ContestsManager extends DataManager<UserContest> {
     public synchronized void removeUser(String username){
 
         if(isContestExist(username)){
-            userNameToData.get(username).getCompetitors().forEach(competitor-> competitor.setuBoatName(""));
+            userNameToData.get(username).getCompetitors().forEach(competitor-> competitor.setContestName(""));
         }
 
         super.removeUser(username);

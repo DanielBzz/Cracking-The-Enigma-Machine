@@ -1,4 +1,4 @@
-package components.subControllers;
+package components.subComponents;
 
 import contestDtos.ContestDetailsDTO;
 import javafx.fxml.FXML;

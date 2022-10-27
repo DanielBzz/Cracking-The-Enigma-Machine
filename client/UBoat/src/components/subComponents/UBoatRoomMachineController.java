@@ -1,4 +1,4 @@
-package components.subControllers;
+package components.subComponents;
 
 import components.body.details.CodeCalibrationController;
 import components.body.details.EngineDetailsController;

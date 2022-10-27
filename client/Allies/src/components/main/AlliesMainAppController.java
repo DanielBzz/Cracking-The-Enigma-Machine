@@ -1,14 +1,12 @@
 package components.main;
 
-import components.subControllers.AlliesContestController;
-import components.subControllers.AlliesDashboardController;
-import components.subControllers.ContestDetailsController;
+import components.subComponents.AlliesContestController;
+import components.subComponents.AlliesDashboardController;
 import contestDtos.TeamDetailsContestDTO;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
-import okhttp3.Response;
 
 public class AlliesMainAppController implements AppMainController {
     private ClientMainController parentController;
@@ -48,7 +46,8 @@ public class AlliesMainAppController implements AppMainController {
 
     @Override
     public void clearComponent() {
-        // should clear all the components in the app
+        dashboardComponentController.clearComponent();
+        contestComponentController.clearComponent();
     }
 
     @Override
@@ -57,17 +56,10 @@ public class AlliesMainAppController implements AppMainController {
     }
     //-------------------------------------------------------------------------------------
 
-
-    public void changeContest(ContestDetailsController newContest){
-        contestComponentController.changeContest(newContest);
-    }
-
-    public void createCompetitorsFromResponse(Response response){
-        contestComponentController.createCompetitorsFromResponse(response);
-    }
-
     public void updateNewContest(TeamDetailsContestDTO responseDetails) {       // get all the details and should update contest component
-        createCompetitorsFromResponse(response);
-        changeContest(contestTableComponentController.getSelectedContest());
+
+        // need to enable contest tab and maybe disable first tab
+        contestComponentController.activateContestScreen(responseDetails);
+
     }
 }

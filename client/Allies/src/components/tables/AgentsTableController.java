@@ -1,4 +1,4 @@
-package components.subControllers;
+package components.tables;
 
 import constants.Constants;
 import contestDtos.ActivePlayerDTO;

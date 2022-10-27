@@ -1,8 +1,9 @@
-package components.subControllers;
+package components.subComponents;
 
 import com.sun.istack.internal.NotNull;
 import components.ContestDetailsTableController;
 import components.main.AlliesMainAppController;
+import components.tables.AgentsTableController;
 import contestDtos.TeamDetailsContestDTO;
 import http.HttpClientUtil;
 import javafx.event.ActionEvent;
@@ -36,6 +37,11 @@ public class AlliesDashboardController {
     public void setActive(){
         contestTableComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
         agentsTableComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
+    }
+
+    public void clearComponent(){
+        agentsTableComponentController.cleanTable();
+        contestTableComponentController.cleanTable();
     }
 
     @FXML

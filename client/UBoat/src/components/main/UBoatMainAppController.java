@@ -1,8 +1,8 @@
 package components.main;
 
 import components.header.HeaderController;
-import components.subControllers.UBoatRoomContestController;
-import components.subControllers.UBoatRoomMachineController;
+import components.subComponents.UBoatRoomContestController;
+import components.subComponents.UBoatRoomMachineController;
 import decryptionDtos.DictionaryDTO;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;

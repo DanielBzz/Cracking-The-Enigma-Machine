@@ -1,8 +1,7 @@
-package components.subControllers;
+package components.subComponents;
 
 import components.main.AgentMainAppController;
 import constants.Constants;
-import contestDtos.ActivePlayerDTO;
 import contestDtos.AgentProgressDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

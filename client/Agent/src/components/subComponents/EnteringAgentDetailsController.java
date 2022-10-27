@@ -1,4 +1,4 @@
-package components.subControllers;
+package components.subComponents;
 
 import com.sun.istack.internal.NotNull;
 import components.AlliesListController;
@@ -9,16 +9,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-
-import java.io.IOException;
-
 import mainapp.ClientMainController;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
-import util.Presenter;
 import util.Constants;
+import util.Presenter;
+
+import java.io.IOException;
 
 import static util.Constants.REQUEST_PATH_ADD_AGENT_TO_TEAM;
 
