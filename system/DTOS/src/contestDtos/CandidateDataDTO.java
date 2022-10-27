@@ -1,5 +1,10 @@
 package contestDtos;
 
+import decryptionDtos.AgentAnswerDTO;
+import javafx.util.Pair;
+
+import java.util.List;
+
 public class CandidateDataDTO {
     private final String decryptedMessage;
     private final String foundersName;

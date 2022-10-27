@@ -8,4 +8,6 @@ public class Constants {
     public final static String AGENT_ENTER_DETAILS_FXML_RESOURCE_LOCATION = "/components/subComponents/entering-agent-details.fxml";
     private final static String AGENT_REQUEST_PATH = FULL_SERVER_PATH + "/" + AGENT_CLIENT;
     public final static String REQUEST_PATH_ADD_AGENT_TO_TEAM = AGENT_REQUEST_PATH + "/addAgentToTeam";
+    public final static String REQUEST_PATH_PULL_TASKS = AGENT_REQUEST_PATH + "/getTasks";
+    public final static String REQUEST_PATH_PUSH_CANDIDATES = AGENT_REQUEST_PATH + "/addCandidates";
 }

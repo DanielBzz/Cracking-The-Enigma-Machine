@@ -56,7 +56,7 @@ public class AgentMainAppController implements AppMainController {
 
     }
 
-
+    //need to take care of activate all the listeners
     public void setActive(){
         agentProgressAndStatusComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
         contestAndTeamDataComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);

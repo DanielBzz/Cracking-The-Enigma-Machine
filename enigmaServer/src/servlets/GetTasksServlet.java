@@ -34,7 +34,7 @@ public class GetTasksServlet extends HttpServlet {
             String teamManagerName = request.getParameter("teamManagerName");
             int amountOfTasks = manager.getAgent(username).getAmountOfTasksInASingleTake();
 
-            //getTasks -> need to go to the specific allies(teamManager) and get amountOfTasks agentTask
+            //getTasks -> need to go to the specific allies(teamManager) and get amountOfTasks agentTasks
 
             List<AgentTask> newTasks = allies.getTasks(teamManagerName,amountOfTasks);
 
