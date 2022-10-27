@@ -47,6 +47,7 @@ public class AgentLogic {
             super.run();
             if(tasksLeftBeforeNewTake.decrementAndGet() == 0){
                 Platform.runLater(pullTasks());
+                tasksLeftBeforeNewTake.set(amountOfTasksInSingleTake);
             }
             Platform.runLater(pushAnswers());
         }
@@ -95,14 +96,12 @@ public class AgentLogic {
                 if (response.code() == 200) {
                     if(response.body() != null){
                         AgentTask[] newTasks = Constants.GSON_INSTANCE.fromJson(response.body().toString(), AgentTask[].class);
-                        WebAgentTask[] improvedTasks = new WebAgentTask[newTasks.length];
-                        int i = 0;
+                        List<WebAgentTask> improvedTasks = new ArrayList<>();
                         for (AgentTask task:newTasks) {
-                            improvedTasks[i++] = task;
+                            improvedTasks.add(new WebAgentTask(task.getEnigmaMachine(), task.getDetails()));
                         }
 
-
-                        for (AgentTask newTask: newTasks) {
+                        for (WebAgentTask newTask: improvedTasks) {
                             try {
                                 agentTasks.put(newTask);
                             } catch (InterruptedException e) {

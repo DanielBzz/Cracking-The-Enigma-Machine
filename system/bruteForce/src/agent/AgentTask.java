@@ -21,6 +21,14 @@ public class AgentTask implements Runnable {
         enigmaMachine = machine;
     }
 
+    public AgentTaskDTO getDetails() {
+        return details;
+    }
+
+    public Machine getEnigmaMachine() {
+        return enigmaMachine;
+    }
+
     @Override
     public void run() {
 
