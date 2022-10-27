@@ -1,9 +1,8 @@
-package components.subControllers;
+package components.subComponents;
 
 import components.ContestDetailsTableController;
 import components.main.AgentMainAppController;
 import javafx.fxml.FXML;
-import util.Constants;
 import util.ContestPresenter;
 
 import java.awt.*;

@@ -17,6 +17,8 @@ import java.util.Set;
  * This servlet return the users that connected to the main user
  * when contest it returns the teams that participate
  * when team it returns the players(agents) that he have
+ *
+ * need to fix and make the method of getConnected.. in teamsManager it should reply the agent details dto
  */
 
 @WebServlet(name = "getUsersServlet" , urlPatterns = "/getUsers")

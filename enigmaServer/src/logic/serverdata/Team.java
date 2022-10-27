@@ -10,7 +10,7 @@ public class Team {
     private final String teamName;
     private int numOfAgents;
     private int taskSize;
-    private String uBoatName;
+    private String contestName;
     private boolean ready;
     private List<CandidateDataDTO> candidates;
     private int currentLocation;
@@ -61,11 +61,11 @@ public class Team {
         return newCandidates;
     }
 
-    public void setuBoatName(String uBoatName) {
-        this.uBoatName = uBoatName;
+    public void setContestName(String contestName) {
+        this.contestName = contestName;
     }
 
-    public String getuBoatName() {
-        return uBoatName;
+    public String getContestName() {
+        return contestName;
     }
 }

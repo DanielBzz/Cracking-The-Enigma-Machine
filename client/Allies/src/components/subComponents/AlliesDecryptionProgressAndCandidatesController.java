@@ -1,9 +1,7 @@
-package components.subControllers;
+package components.subComponents;
 
 import com.sun.istack.internal.NotNull;
 import components.CandidatesTableController;
-import components.body.main.BruteForceController;
-import components.main.AlliesMainAppController;
 import http.HttpClientUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -19,7 +17,6 @@ import okhttp3.Response;
 
 import java.io.IOException;
 
-import static util.Constants.REQUEST_PATH_JOIN_TO_CONTEST;
 import static util.Constants.REQUEST_PATH_SET_READY;
 
 public class AlliesDecryptionProgressAndCandidatesController {

@@ -1,19 +1,18 @@
-package components.subControllers;
+package components.subComponents;
 
+import components.AgentsListController;
 import components.AlliesListController;
 import components.main.AlliesMainAppController;
-import contestDtos.ActivePlayerDTO;
+import contestDtos.ContestDetailsDTO;
+import contestDtos.TeamDetailsContestDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import util.Constants;
 import util.Presenter;
 
-import java.util.Map;
-
-import static constants.Constants.AGENT_IN_CONTEST_TYPE;
 
 public class AlliesContestController implements Presenter {
     private AlliesMainAppController parentController;
@@ -23,38 +22,17 @@ public class AlliesContestController implements Presenter {
     @FXML private ScrollPane alliesTableComponent;
     @FXML private AlliesListController alliesTableComponentController;
     @FXML private ScrollPane agentsTableComponent;
-    @FXML private AlliesListController agentsTableComponentController;
-
+    @FXML private AgentsListController agentsTableComponentController;
     @FXML private Label totalTasksLabel;
     @FXML private Label producedTasksLabel;
     @FXML private Label finishedTasksLabel;
 
 
-    //need to start the allies listener until the contest will start
-
-    //need to set as parent controller
-
-    //need to start the agents listener (also during the contest)
-
     public void setAlliesMainAppController(AlliesMainAppController alliesMainAppController) {
         this.parentController = alliesMainAppController;
     }
 
-    public void changeContest(ContestDetailsController newController){
-        contestDataArea.getChildren().clear();
-        contestDataArea.getChildren().add(newController);
-    }
-
-//    public void addNewTeam(PlayerDetailsComponent newTeam){
-//        contestTeamsArea.getChildren().add(newTeam);
-//    }
-//
-//    public void changeTeams(List<PlayerDetailsComponent> teams){
-//        contestTeamsArea.getChildren().clear();
-//        teams.forEach(team->contestTeamsArea.getChildren().add(team));
-//    }
-
-    public void clear(){
+    public void clearComponent(){
         alliesTableComponentController.cleanTable();
         agentsTableComponentController.cleanTable();
         alliesDecryptionProgressAndCandidatesController.clearController();
@@ -74,14 +52,8 @@ public class AlliesContestController implements Presenter {
     }
 
     public double getTaskSize(){
-        return parentController.getTaskSize();
+        return 1;
     }
-
-//    public void addNewAgentToScreen(ActivePlayerDTO newAgent){
-//        AgentInContestController newAgentController = new AgentInContestController(newAgent, AGENT_IN_CONTEST_TYPE);
-//        activeAgentsFlowPane.getChildren().add(newAgentController);
-//        agents.put(newAgent.getName(), newAgentController);
-//    }
 
     public void setTotalTasksLabel(int totalTasks){
         totalTasksLabel.setText(String.valueOf(totalTasks));
@@ -95,20 +67,22 @@ public class AlliesContestController implements Presenter {
         finishedTasksLabel.setText(String.valueOf(Integer.parseInt(finishedTasksLabel.getText()) + moreTasks));
     }
 
-//    public void createCompetitorsFromResponse(Response response){
-//        Gson gson = new GsonBuilder()
-//                .registerTypeAdapter(ActivePlayerDTO.class, new ActivePlayerDTODeserializer())
-//                .create();
-//        Type listType = new TypeToken<ArrayList<ActivePlayerDTO>>(){}.getType();
-//
-//        ArrayList<ActivePlayerDTO> competitors = gson.fromJson(response.body().toString(), listType);
-//        competitors.forEach(competitor->contestTeamsArea.getChildren().add(new PlayerDetailsComponent(competitor, ALLIES_TYPE)));
-//    }
-
-
     public String getContestName(){
         ContestDetailsController contestDetails = (ContestDetailsController) contestDataArea.getChildren();
         return contestDetails.getContestManagerName();
     }
 
+    public void activateContestScreen(TeamDetailsContestDTO responseDetails) {
+
+        alliesTableComponentController.startListRefresher(Constants.REQUEST_PATH_GET_TEAMS_IN_CONTEST);
+        agentsTableComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
+        changeContest(responseDetails.getContestDetails());
+        // not finish
+    }
+
+    private void changeContest(ContestDetailsDTO contestDetails) {
+
+        contestDataArea.getChildren().clear();
+        contestDataArea.getChildren().add(new ContestDetailsController(contestDetails));
+    }
 }

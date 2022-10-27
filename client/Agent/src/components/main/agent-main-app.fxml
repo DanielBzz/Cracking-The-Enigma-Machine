@@ -26,12 +26,12 @@
          <children>
             <AnchorPane GridPane.columnSpan="2147483647">
                <children>
-                  <fx:include fx:id="contestAndTeamDataComponent" source="../subControllers/contest-and-team-data.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <fx:include fx:id="contestAndTeamDataComponent" source="../subComponents/contest-and-team-data.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
             <AnchorPane GridPane.rowIndex="2">
                <children>
-                  <fx:include fx:id="agentProgressAndStatusComponent" source="../subControllers/agent-progress-and-status.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <fx:include fx:id="agentProgressAndStatusComponent" source="../subComponents/agent-progress-and-status.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
             <AnchorPane GridPane.columnIndex="2" GridPane.rowIndex="2">

@@ -1,8 +1,8 @@
 package components.main;
 
 import components.CandidatesTableController;
-import components.subControllers.AgentProgressAndStatusController;
-import components.subControllers.ContestAndTeamDataController;
+import components.subComponents.AgentProgressAndStatusController;
+import components.subComponents.ContestAndTeamDataController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;

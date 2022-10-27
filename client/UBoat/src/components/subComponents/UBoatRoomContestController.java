@@ -1,4 +1,4 @@
-package components.subControllers;
+package components.subComponents;
 
 import components.CandidatesTableController;
 import components.ConnectedUsersController;
