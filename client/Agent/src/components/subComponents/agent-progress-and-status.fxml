@@ -2,49 +2,55 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="components.subComponents.AgentProgressAndStatusController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-      <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="30.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-  </rowConstraints>
-   <children>
-      <Label text="Tasks in Queue: ">
-         <GridPane.margin>
-            <Insets left="5.0" right="5.0" />
-         </GridPane.margin>
-      </Label>
-      <Label text="Total Taken Tasks: " GridPane.rowIndex="2">
-         <GridPane.margin>
-            <Insets left="5.0" right="5.0" />
-         </GridPane.margin>
-      </Label>
-      <Label text="Total Finished Tasks: " GridPane.rowIndex="4">
-         <GridPane.margin>
-            <Insets left="5.0" right="5.0" />
-         </GridPane.margin>
-      </Label>
-      <Label text="Total Amount of Candidates: " GridPane.rowIndex="6">
-         <GridPane.margin>
-            <Insets left="5.0" right="5.0" />
-         </GridPane.margin>
-      </Label>
-      <Label fx:id="tasksInQueueLabel" GridPane.columnIndex="2" />
-      <Label fx:id="totalTakenTasksLabel" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-      <Label fx:id="totalFinishedTasksLabel" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-      <Label fx:id="totalCandidatesLabel" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-   </children>
-</GridPane>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="50.0" minWidth="50.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="30.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="5.0" prefHeight="30.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="5.0" prefHeight="30.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="5.0" prefHeight="30.0" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Tasks in Queue: ">
+               <GridPane.margin>
+                  <Insets left="5.0" right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Total Taken Tasks: " GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="5.0" right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Total Finished Tasks: " GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets left="5.0" right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Total Amount of Candidates: " GridPane.rowIndex="6">
+               <GridPane.margin>
+                  <Insets left="5.0" right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="tasksInQueueLabel" GridPane.columnIndex="2" />
+            <Label fx:id="totalTakenTasksLabel" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label fx:id="totalFinishedTasksLabel" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Label fx:id="totalCandidatesLabel" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+         </children>
+      </GridPane>
+   </content>
+</ScrollPane>

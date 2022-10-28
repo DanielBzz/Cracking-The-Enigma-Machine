@@ -3,6 +3,8 @@ package components.main;
 import components.CandidatesTableController;
 import components.subComponents.AgentProgressAndStatusController;
 import components.subComponents.ContestAndTeamDataController;
+import contestDtos.AgentProgressDTO;
+import javafx.beans.property.IntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
@@ -22,15 +24,33 @@ public class AgentMainAppController implements AppMainController {
     private ContestAndTeamDataController contestAndTeamDataComponentController;
 
     @FXML
-    private GridPane agentProgressAndStatusComponent;
+    private ScrollPane agentProgressAndStatusComponent;
     @FXML
     private AgentProgressAndStatusController agentProgressAndStatusComponentController;
 
     @FXML
-    private AnchorPane agentsCandidatesComponent;
+    private ScrollPane agentsCandidatesComponent;
     @FXML
     private CandidatesTableController agentsCandidatesComponentController;
 
+    @FXML
+    public void initialize(){
+        agentLogic = new AgentLogic(this, , );
+        if(contestAndTeamDataComponentController!= null) {
+            contestAndTeamDataComponentController.setAgentMainAppController(this);
+            contestAndTeamDataComponentController.setTeamNameLabel();
+        }
+        if(agentProgressAndStatusComponentController!= null){
+            agentProgressAndStatusComponentController.setAgentMainAppController(this);
+        }
+        if(agentsCandidatesComponentController!= null){
+            agentsCandidatesComponentController.setWhoFoundTheAnswerLabel("agent");
+        }
+    }
+
+    public void updateTasksData(AgentProgressDTO data){
+        agentProgressAndStatusComponentController.updateData(data);
+    }
 
     @Override
     public void setClientMainController(ClientMainController clientMainController) {
@@ -56,10 +76,14 @@ public class AgentMainAppController implements AppMainController {
 
     }
 
-    //need to take care of activate all the listeners
     public void setActive(){
-        agentProgressAndStatusComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
-        contestAndTeamDataComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
-        //agentsCandidatesComponentController.startListRefresher(constants.Constants.REQUEST_PATH_UPDATE_CANDIDATES);
+        //agentProgressAndStatusComponentController.startListRefresher(Constants.REQUEST_PATH_GET_TASKS_DATA);
+        //contestAndTeamDataComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
+        agentsCandidatesComponentController.startListRefresher();
+    }
+
+    public void setPassive(){
+        //agentProgressAndStatusComponentController.stopListRefresher();
+        agentsCandidatesComponentController.cancelRefresher();
     }
 }
