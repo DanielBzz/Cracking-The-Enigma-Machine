@@ -22,6 +22,7 @@ import static util.Constants.REQUEST_PATH_SET_READY;
 
 public class AlliesDecryptionProgressAndCandidatesController {
 
+    private AlliesContestController parentController;
     @FXML private Label levelLabel;
     @FXML private Spinner<Integer> taskSizeSpinner;
     @FXML private Label tasksAmountLabel;
@@ -31,13 +32,13 @@ public class AlliesDecryptionProgressAndCandidatesController {
     @FXML private ProgressBar decryptionProgressBar;
     @FXML private Label decryptionProgressLabel;
     @FXML private Label encryptedMessageLabel;
-    private AlliesContestController parentController;
-    private BooleanProperty inContest = new SimpleBooleanProperty(false);
+    private final BooleanProperty inContest = new SimpleBooleanProperty(false);
 
     public void initial(ContestDetailsDTO contestDetails){
         initialTaskSpinner(contestDetails.getTaskSize());
         disableBinding();
-        encryptedMessageLabel.setText(contestDetails.getLevel());
+        encryptedMessageLabel.setText(contestDetails.getEncryptedMessage());
+        levelLabel.setText(contestDetails.getLevel());
     }
 
     public void setAlliesContestController(AlliesContestController alliesContestController) {
@@ -46,13 +47,11 @@ public class AlliesDecryptionProgressAndCandidatesController {
 
     @FXML
     void readyButtonOnAction(ActionEvent event) {
-        //need to send all the relevant information to the server and to update the uBoat
-        //not finished yet
 
         String finalUrl = HttpUrl
                 .parse(REQUEST_PATH_SET_READY)
                 .newBuilder()
-                .addQueryParameter("contestManager", parentController.getContestName())
+                .addQueryParameter("taskSize", String.valueOf(taskSizeSpinner.getValue()))
                 .build()
                 .toString();
 
@@ -66,10 +65,11 @@ public class AlliesDecryptionProgressAndCandidatesController {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() == 200) {
                     candidatesTableController.startListRefresher();
-                    System.out.println("Allies was added successfully!");
+                    inContest.set(true);
                 }
-                //add the competitors
-                System.out.println("Could not response well, url:" + finalUrl);
+                else {
+                    System.out.println("Could not response well, url:" + finalUrl);
+                }
             }
         });
     }
@@ -81,6 +81,7 @@ public class AlliesDecryptionProgressAndCandidatesController {
 
     public void inFinishedContest(){
 
+        candidatesTableController.cancelRefresher();
         inContest.setValue(false);
     }
 

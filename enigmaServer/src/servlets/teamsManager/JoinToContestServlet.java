@@ -3,7 +3,6 @@ package servlets.teamsManager;
 import contestDtos.ActivePlayerDTO;
 import contestDtos.ContestDetailsDTO;
 import contestDtos.TeamDetailsContestDTO;
-import exceptions.ContestNotExistException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -34,14 +33,14 @@ public class JoinToContestServlet extends HttpServlet {
         ContestsManager manager = ServletUtils.getContestManager(request.getServletContext());
         String contestManagerName = request.getParameter(ServletUtils.CONTEST_MANAGER_ATTRIBUTE_NAME);
         try {
-            manager.addCompetitorToContest(contestManagerName,teamsManager.getTeam(userName));
+            manager.addNewCompetitorToContest(contestManagerName,teamsManager.getTeam(userName));
             ContestDetailsDTO contestDetails = manager.getContestDetails(contestManagerName);
             Set<ActivePlayerDTO> competitorsTeams = manager.getConnectedUsersDetails(contestManagerName);
             Set<ActivePlayerDTO> teamAgents = teamsManager.getConnectedUsersDetails(userName);
 
             TeamDetailsContestDTO responseDetails = new TeamDetailsContestDTO(contestDetails,competitorsTeams,teamAgents);
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(responseDetails));
-        }catch (ContestNotExistException e){
+        } catch (Error e){
             ServletUtils.createResponse(response, HttpServletResponse.SC_CONFLICT, e.getMessage());
         }
     }

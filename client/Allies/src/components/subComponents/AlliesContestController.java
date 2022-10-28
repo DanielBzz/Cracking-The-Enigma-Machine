@@ -56,11 +56,6 @@ public class AlliesContestController implements Presenter {
         finishedTasksLabel.setText(String.valueOf(Integer.parseInt(finishedTasksLabel.getText()) + moreTasks));
     }
 
-    public String getContestName(){
-        ContestDetailsController contestDetails = (ContestDetailsController) contestDataArea.getChildren();
-        return contestDetails.getContestManagerName();
-    }
-
     private void changeContest(ContestDetailsDTO contestDetails) {
 
         contestDataArea.getChildren().clear();
