@@ -1,9 +1,12 @@
 package logic.serverdata;
 
+import contestDtos.ActivePlayerDTO;
 import contestDtos.CandidateDataDTO;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Team {
 
@@ -12,6 +15,7 @@ public class Team {
     private int taskSize;
     private String contestName;
     private boolean ready;
+    private List<Agent> teamAgents;
     private List<CandidateDataDTO> candidates;
     private int currentLocation;
 
@@ -21,6 +25,7 @@ public class Team {
         taskSize = size;
         this.ready = ready;
         candidates = new ArrayList<>();
+        teamAgents = new ArrayList<>();
         currentLocation = 0;
     }
 
@@ -66,6 +71,15 @@ public class Team {
     }
 
     public String getContestName() {
+
         return contestName;
+    }
+
+    public Set<ActivePlayerDTO> agentsDetails(){
+
+        Set<ActivePlayerDTO> agentsDetails = new HashSet<>();
+        teamAgents.forEach(agent -> agentsDetails.add(agent.agentDetails()));
+
+        return agentsDetails;
     }
 }

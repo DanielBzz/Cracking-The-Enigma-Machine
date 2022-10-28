@@ -2,6 +2,7 @@ package components.subComponents;
 
 import com.sun.istack.internal.NotNull;
 import components.CandidatesTableController;
+import contestDtos.ContestDetailsDTO;
 import http.HttpClientUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -21,46 +22,26 @@ import static util.Constants.REQUEST_PATH_SET_READY;
 
 public class AlliesDecryptionProgressAndCandidatesController {
 
-    @FXML
-    private Label levelLabel;
-
-    @FXML
-    private Spinner<Integer> taskSizeSpinner;
-
-    @FXML
-    private Label tasksAmountLabel;
-
-    @FXML
-    private Button readyButton;
-
-    @FXML
-    private Slider agentsNumberSlider;
-
-    @FXML
-    private Label agentNumberLabel;
-
-    @FXML
-    private AnchorPane candidatesTableComponent;
-    @FXML
-    private CandidatesTableController candidatesTableController;
-
-    @FXML
-    private ProgressBar decryptionProgressBar;
-
-    @FXML
-    private Label decryptionProgressLabel;
-    @FXML
-    private Label encryptedMessageLabel;
-
+    @FXML private Label levelLabel;
+    @FXML private Spinner<Integer> taskSizeSpinner;
+    @FXML private Label tasksAmountLabel;
+    @FXML private Button readyButton;
+    @FXML private AnchorPane candidatesTableComponent;
+    @FXML private CandidatesTableController candidatesTableController;
+    @FXML private ProgressBar decryptionProgressBar;
+    @FXML private Label decryptionProgressLabel;
+    @FXML private Label encryptedMessageLabel;
     private AlliesContestController parentController;
     private BooleanProperty inContest = new SimpleBooleanProperty(false);
 
-    public void setAlliesContestController(AlliesContestController alliesContestController) {
-        this.parentController = alliesContestController;
+    public void initial(ContestDetailsDTO contestDetails){
+        initialTaskSpinner(contestDetails.getTaskSize());
+        disableBinding();
+        encryptedMessageLabel.setText(contestDetails.getLevel());
     }
 
-    public String getContestManagerName(){
-        return parentController.getContestName();
+    public void setAlliesContestController(AlliesContestController alliesContestController) {
+        this.parentController = alliesContestController;
     }
 
     @FXML
@@ -71,7 +52,7 @@ public class AlliesDecryptionProgressAndCandidatesController {
         String finalUrl = HttpUrl
                 .parse(REQUEST_PATH_SET_READY)
                 .newBuilder()
-                .addQueryParameter("contestManager", getContestManagerName())
+                .addQueryParameter("contestManager", parentController.getContestName())
                 .build()
                 .toString();
 
@@ -83,25 +64,18 @@ public class AlliesDecryptionProgressAndCandidatesController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    System.out.println("Could not response well, url:" + finalUrl);
+                if (response.code() == 200) {
+                    candidatesTableController.startListRefresher();
+                    System.out.println("Allies was added successfully!");
                 }
                 //add the competitors
-                System.out.println("Allies was added successfully!");
+                System.out.println("Could not response well, url:" + finalUrl);
             }
         });
     }
 
-    public void initial(){
-        agentsNumberSlider.setMin(2);
-        agentNumberLabel.textProperty().bind(agentsNumberSlider.valueProperty().asString());
-        initialTaskSpinner();
-        disableBinding();
-    }
-
     public void disableBinding(){
         taskSizeSpinner.disableProperty().bind(inContest);
-        agentsNumberSlider.disableProperty().bind(inContest);
         readyButton.disableProperty().bind(inContest);
     }
 
@@ -110,36 +84,9 @@ public class AlliesDecryptionProgressAndCandidatesController {
         inContest.setValue(false);
     }
 
-    private void initialTaskSpinner(){
-
-        taskSizeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE));
-        taskSizeSpinner.valueProperty().addListener((
-                observable, oldValue, newValue) -> tasksAmountLabel.setText(String.valueOf((int)Math.ceil(parentController.getTaskSize() / (double)newValue))));
-        taskSizeSpinner.getValueFactory().setConverter(new StringConverter<Integer>() {
-            @Override
-            public String toString(Integer object) {return object.toString();}
-            @Override
-            public Integer fromString(String string) {
-                try {
-                    return Integer.parseInt(string);
-                }catch (NumberFormatException e){
-                    return 2;
-                }
-            }
-        });
-        taskSizeSpinner.getValueFactory().setValue(2);
-    }
-
     public void updateEncryptedMessage(String encryptedString){
+
         encryptedMessageLabel.setText(encryptedString);
-    }
-
-    public void updateLevel(String level){
-        levelLabel.setText(level);
-    }
-
-    public void updateAmountOfAgents(int amountOfAgents){
-        agentsNumberSlider.setMax(amountOfAgents);
     }
 
     public void onTaskFinished(){
@@ -153,5 +100,25 @@ public class AlliesDecryptionProgressAndCandidatesController {
         //decryptionProgressLabel.setText("0%");
         decryptionProgressBar.setProgress(0);
 
+    }
+
+    private void initialTaskSpinner(double taskSize){
+
+        taskSizeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE));
+        taskSizeSpinner.valueProperty().addListener((
+                observable, oldValue, newValue) -> tasksAmountLabel.setText(String.valueOf((int)Math.ceil(taskSize / (double)newValue))));
+        taskSizeSpinner.getValueFactory().setConverter(new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer object) {return object.toString();}
+            @Override
+            public Integer fromString(String string) {
+                try {
+                    return Integer.parseInt(string);
+                }catch (NumberFormatException e){
+                    return 2;
+                }
+            }
+        });
+        taskSizeSpinner.getValueFactory().setValue(2);
     }
 }

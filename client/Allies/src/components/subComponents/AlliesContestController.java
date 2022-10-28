@@ -27,6 +27,15 @@ public class AlliesContestController implements Presenter {
     @FXML private Label producedTasksLabel;
     @FXML private Label finishedTasksLabel;
 
+    public void initial(TeamDetailsContestDTO responseDetails) {
+
+        alliesTableComponentController.startListRefresher(Constants.REQUEST_PATH_GET_TEAMS_IN_CONTEST);
+        agentsTableComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
+        changeContest(responseDetails.getContestDetails());
+        alliesDecryptionProgressAndCandidatesController.initial(responseDetails.getContestDetails());
+        totalTasksLabel.setText(String.valueOf(responseDetails.getContestDetails().getTaskSize()));
+        // not finish
+    }
 
     public void setAlliesMainAppController(AlliesMainAppController alliesMainAppController) {
         this.parentController = alliesMainAppController;
@@ -37,26 +46,6 @@ public class AlliesContestController implements Presenter {
         agentsTableComponentController.cleanTable();
         alliesDecryptionProgressAndCandidatesController.clearController();
         //need to clear also the rest of the component
-    }
-
-    public void initial(){
-        //use the get contest info (
-    }
-
-    public void updateLevel(String level){
-        alliesDecryptionProgressAndCandidatesController.updateLevel(level);
-    }
-
-    public void updateAmountOfAgents(){
-        alliesDecryptionProgressAndCandidatesController.updateAmountOfAgents(parentController.getAmountOfAgents());
-    }
-
-    public double getTaskSize(){
-        return 1;
-    }
-
-    public void setTotalTasksLabel(int totalTasks){
-        totalTasksLabel.setText(String.valueOf(totalTasks));
     }
 
     public void addProducedTasks(int moreTasks){
@@ -70,14 +59,6 @@ public class AlliesContestController implements Presenter {
     public String getContestName(){
         ContestDetailsController contestDetails = (ContestDetailsController) contestDataArea.getChildren();
         return contestDetails.getContestManagerName();
-    }
-
-    public void activateContestScreen(TeamDetailsContestDTO responseDetails) {
-
-        alliesTableComponentController.startListRefresher(Constants.REQUEST_PATH_GET_TEAMS_IN_CONTEST);
-        agentsTableComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
-        changeContest(responseDetails.getContestDetails());
-        // not finish
     }
 
     private void changeContest(ContestDetailsDTO contestDetails) {

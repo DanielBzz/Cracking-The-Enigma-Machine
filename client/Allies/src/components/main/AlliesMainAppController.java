@@ -59,7 +59,7 @@ public class AlliesMainAppController implements AppMainController {
     public void updateNewContest(TeamDetailsContestDTO responseDetails) {       // get all the details and should update contest component
 
         // need to enable contest tab and maybe disable first tab
-        contestComponentController.activateContestScreen(responseDetails);
+        contestComponentController.initial(responseDetails);
 
     }
 }

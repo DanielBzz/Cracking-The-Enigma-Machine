@@ -1,6 +1,6 @@
 package logic.serverdata;
 
-import contestDtos.ActivePlayerDTO;
+import contestDtos.ActiveAgentDTO;
 import contestDtos.CandidateDataDTO;
 
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ public class Agent {
     private final String agentName;
     private int amountOfThreads;
     private int amountOfTasksInASingleTake;
+    private int tasksMade;
     private String alliesName;
     private List<CandidateDataDTO> candidates;
     private int version;
@@ -19,6 +20,7 @@ public class Agent {
         this.agentName = agentName;
         candidates = new ArrayList<>();
         version = 0;
+        tasksMade = 0;
     }
 
     public void setBasicData(int amountOfThreads, int amountOfTasksInASingleTake, String alliesName){
@@ -51,6 +53,12 @@ public class Agent {
     }
 
     public String getAlliesName() {
+
         return alliesName;
     }
+
+    public ActiveAgentDTO agentDetails(){
+        return new ActiveAgentDTO(agentName,amountOfThreads,amountOfTasksInASingleTake, candidates.size(),tasksMade);
+    }
+
 }
