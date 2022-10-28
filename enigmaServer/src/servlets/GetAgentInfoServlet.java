@@ -8,8 +8,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.datamanager.AgentManager;
+import logic.serverdata.Agent;
 import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
+
 
 @WebServlet(name = "GetAgentInfoServlet", urlPatterns = "getAgentInfo")
 public class GetAgentInfoServlet extends HttpServlet {
@@ -25,8 +27,8 @@ public class GetAgentInfoServlet extends HttpServlet {
         }
 
         try{
-
-            AgentInfoDTO responseMessage = new AgentInfoDTO(manager.getAgent(username));
+            Agent agent = manager.getAgent(username);
+            AgentInfoDTO responseMessage = new AgentInfoDTO(agent.getAgentName(),agent.getAlliesName(), agent.getAmountOfTasksInASingleTake(), agent.getAmountOfThreads());
 
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(responseMessage));
 
