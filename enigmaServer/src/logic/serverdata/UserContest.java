@@ -4,6 +4,7 @@ package logic.serverdata;
 import contestDtos.CandidateDataDTO;
 import contestDtos.ContestDetailsDTO;
 import decryptionDtos.DictionaryDTO;
+import exceptions.ReadyForContestException;
 import exceptions.NotInDictionaryException;
 import javafx.util.Pair;
 import logic.DecipherLogic;
@@ -57,10 +58,6 @@ public class UserContest {
         this.ready = ready;
     }
 
-    public boolean isDone() {
-        return inContest;
-    }
-
     public String getContestBattleName(){
 
         return field.getBattleName();
@@ -76,6 +73,10 @@ public class UserContest {
     }
     public String encryptMessage(String message){
 
+        if(ready){
+            throw new ReadyForContestException();
+        }
+
         String newMessage = DecipherLogic.excludeSpecialCharactersFromWord(message,decryptionManager.getExcludeChars());
         Set<String> wordsToEncrypt =  DecipherLogic.stringToWords(newMessage);
 
@@ -85,12 +86,19 @@ public class UserContest {
             }
         }
 
+        encryptedMessage = newMessage;
+
         return machineEngine.encryptString(newMessage);
     }
     public void addCompetitor(Team newCompetitor){
 
         competitors.removeIf(t->t.getTeamName().equals(newCompetitor.getTeamName()));
-        competitors.add(newCompetitor);
+
+        if(!contestIsFull()){
+            competitors.add(newCompetitor);
+        }else {
+            throw new Error("Contest is full you can't join to full contest");
+        }
     }
 
     public Set<Team> getCompetitors() {
@@ -99,20 +107,12 @@ public class UserContest {
     }
 
     public void setEncryptedMessage(String encryptedMessage){
-        if (!ready){
-            this.encryptedMessage = encryptedMessage;
-        } else {
+        if (ready){
             System.out.println("already in a middle of a contest!");
+            throw new ReadyForContestException();
         }
-    }
 
-    public void addCandidatesAndCheckForFinishContest(List<CandidateDataDTO> newCandidates){
-        candidates.addNewCandidates(newCandidates);
-        newCandidates.forEach(candidate->{
-            if(candidate.getDecryptedMessage().equals(encryptedMessage)){       // it's not mean finish, should be also same configuration
-                inContest = true;
-            }
-        });
+        this.encryptedMessage = encryptedMessage;
     }
 
     public List<CandidateDataDTO> getNewCandidates(int lastVersion){
@@ -131,8 +131,15 @@ public class UserContest {
                 null,
                 inContest,field.getLevel().name(),
                 new Pair<>(field.getNumberOfAllies(),competitors.size()),
-                decryptionManager.getTaskAmount());
+                decryptionManager.getTaskAmount(), encryptedMessage);
 
         return dto;
+    }
+
+    public void startContest() {
+
+        inContest = true;
+
+        //should update teams and make them start create tasks;
     }
 }

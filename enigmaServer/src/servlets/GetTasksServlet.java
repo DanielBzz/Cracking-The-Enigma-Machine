@@ -1,7 +1,6 @@
 package servlets;
 
 import agent.AgentTask;
-import contestDtos.CandidateDataDTO;
 import exceptions.ContestNotExistException;
 import exceptions.ContestNotReadyException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,7 +8,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.datamanager.AgentManager;
-import logic.datamanager.ContestsManager;
 import logic.datamanager.TeamsManager;
 import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;

@@ -9,14 +9,16 @@ public class ContestDetailsDTO {
     private final String level;
     private final Pair<Integer, Integer> teams;
     private final double taskSize;
+    private final String encryptedMessage;
 
-    public ContestDetailsDTO(String battleFieldName, String contestManagerName, boolean status, String level, Pair<Integer, Integer> teams, double taskSize) {
+    public ContestDetailsDTO(String battleFieldName, String contestManagerName, boolean status, String level, Pair<Integer, Integer> teams, double taskSize, String encryptedMessage) {
         this.battleFieldName = battleFieldName;
         this.contestManagerName = contestManagerName;
         this.status = status;
         this.level = level;
         this.teams = teams;
         this.taskSize = taskSize;
+        this.encryptedMessage = encryptedMessage;
     }
 
     public String getBattleFieldName() {
@@ -41,5 +43,9 @@ public class ContestDetailsDTO {
 
     public double getTaskSize() {
         return taskSize;
+    }
+
+    public String getEncryptedMessage() {
+        return encryptedMessage;
     }
 }

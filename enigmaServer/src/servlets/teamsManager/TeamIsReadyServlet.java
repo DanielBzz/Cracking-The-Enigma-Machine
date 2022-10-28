@@ -1,4 +1,4 @@
-package servlets;
+package servlets.teamsManager;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,6 +14,9 @@ import java.io.IOException;
 
 @WebServlet(name = "TeamIsReadyServlet", urlPatterns = "/teamManager/SetTeamReady")
 public class TeamIsReadyServlet extends HttpServlet {
+
+    private static final String TASK_SIZE_ATTRIBUTE = "taskSize";
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -27,16 +30,14 @@ public class TeamIsReadyServlet extends HttpServlet {
         }
 
         ContestsManager manager = ServletUtils.getContestManager(request.getServletContext());
-        String contestManagerName = request.getParameter(ServletUtils.CONTEST_MANAGER_ATTRIBUTE_NAME);
 
-        if(manager.updateUserDetails(contestManagerName,teamsManager.getTeam(userName))){
-            manager.checkIfNeedToStartContest(contestManagerName);
+        try {
+            int teamTaskSize = Integer.parseInt(request.getParameter(TASK_SIZE_ATTRIBUTE));
+            teamsManager.setUserReady(userName,teamTaskSize);
+            manager.checkIfNeedToStartContest(teamsManager.getContestName(userName));
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, null);
-        }
-        else {
-            ServletUtils.createResponse(response, HttpServletResponse.SC_CONFLICT, null);
-            // need to explain why in response, maybe you already in the contest/for the uBoat still not load contest ....
-            // need to check also that the allie client not in other contest.
+        } catch (Exception e) {
+            ServletUtils.createResponse(response, HttpServletResponse.SC_CONFLICT, e.getMessage());
         }
     }
 }
