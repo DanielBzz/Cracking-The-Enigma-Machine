@@ -7,7 +7,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import util.RefresherController;
 
-public class AgentProgressAndStatusController extends RefresherController {
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class AgentProgressAndStatusController {
 
 
     private AgentMainAppController parentController;
@@ -28,11 +30,12 @@ public class AgentProgressAndStatusController extends RefresherController {
         this.parentController = agentMainAppController;
     }
 
-    public void updateData(AgentProgressDTO agentProgressDTO){
+    public synchronized void updateData(AgentProgressDTO agentProgressDTO){
         this.tasksInQueueLabel.setText(String.valueOf(agentProgressDTO.getTasksInQueue()));
         this.totalTakenTasksLabel.setText(String.valueOf(agentProgressDTO.getTotalTakenTasks()));
         this.totalFinishedTasksLabel.setText(String.valueOf(agentProgressDTO.getTotalFinishedTasks()));
         this.totalCandidatesLabel.setText(String.valueOf(agentProgressDTO.getTotalAmountOfCandidates()));
+
     }
 
     public void clearDetails(){
@@ -42,9 +45,11 @@ public class AgentProgressAndStatusController extends RefresherController {
         this.totalCandidatesLabel.setText("");
     }
 
-    @Override
-    public void updateList(String jsonUserList) {
-        AgentProgressDTO newDetails = Constants.GSON_INSTANCE.fromJson(jsonUserList, AgentProgressDTO.class);
-        updateData(newDetails);
-    }
+//    @Override
+//    public void updateList(String jsonUserList) {
+//
+//
+//        AgentProgressDTO newDetails = Constants.GSON_INSTANCE.fromJson(jsonUserList, AgentProgressDTO.class);
+//        updateData(newDetails);
+//    }
 }

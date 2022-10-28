@@ -4,6 +4,7 @@ import components.ContestDetailsTableController;
 import components.main.AgentMainAppController;
 import javafx.fxml.FXML;
 import util.ContestPresenter;
+import util.RefresherController;
 
 import java.awt.*;
 
@@ -31,4 +32,5 @@ public class ContestAndTeamDataController implements ContestPresenter {
     public void setActive(){
         contestDetailsComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
     }
+
 }

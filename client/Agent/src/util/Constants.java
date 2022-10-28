@@ -10,4 +10,6 @@ public class Constants {
     public final static String REQUEST_PATH_ADD_AGENT_TO_TEAM = AGENT_REQUEST_PATH + "/addAgentToTeam";
     public final static String REQUEST_PATH_PULL_TASKS = AGENT_REQUEST_PATH + "/getTasks";
     public final static String REQUEST_PATH_PUSH_CANDIDATES = AGENT_REQUEST_PATH + "/addCandidates";
+    public final static String REQUEST_PATH_GET_AGENT_INFO = AGENT_REQUEST_PATH + "/getAgentInfo";
+
 }

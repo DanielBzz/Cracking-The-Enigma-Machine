@@ -2,7 +2,9 @@ package logic;
 
 import agent.AgentTask;
 import com.sun.istack.internal.NotNull;
+import components.main.AgentMainAppController;
 import constants.Constants;
+import contestDtos.AgentProgressDTO;
 import contestDtos.CandidateDataDTO;
 import decryptionDtos.AgentAnswerDTO;
 import decryptionDtos.AgentTaskDTO;
@@ -10,6 +12,7 @@ import http.HttpClientUtil;
 import javafx.application.Platform;
 import machine.Machine;
 import okhttp3.*;
+import util.RefresherController;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static constants.Constants.REQUEST_PATH_IS_CONTEST_ON;
 import static util.Constants.REQUEST_PATH_PULL_TASKS;
 import static util.Constants.REQUEST_PATH_PUSH_CANDIDATES;
 
@@ -28,8 +32,9 @@ import static util.Constants.REQUEST_PATH_PUSH_CANDIDATES;
 *
 *
 * */
-public class AgentLogic {
+public class AgentLogic extends RefresherController {//need to change name of the refresher
 
+    private final AgentMainAppController appController;
     private ThreadPoolExecutor threadPool;
     private BlockingQueue<Runnable> agentTasks;
     private BlockingQueue<AgentAnswerDTO> answersQueue = new LinkedBlockingQueue<>();
@@ -37,6 +42,24 @@ public class AgentLogic {
     private final int amountOfTasksInSingleTake;
     private final int amountOfThreads;
     private AtomicInteger tasksLeftBeforeNewTake;
+    private Boolean inContest;
+
+    private AtomicInteger totalTakenTasks;
+    private AtomicInteger totalFinishedTasks;
+    private AtomicInteger totalAmountOfCandidates;
+
+    @Override
+    public void updateList(String jsonUserList) {
+        try{
+            //very sensitive
+            inContest = Constants.GSON_INSTANCE.fromJson(jsonUserList, Boolean.class);
+            if(inContest && agentTasks.size() == 0){
+                startContest();
+            }
+        }catch (Exception e){
+            System.out.println("There was a problem with the body of the response and couldnt convert string to boolean");
+        }
+    }
 
     public class WebAgentTask extends AgentTask {
         public WebAgentTask(Machine machine, AgentTaskDTO details) {
@@ -44,15 +67,21 @@ public class AgentLogic {
         }
         @Override
         public void run() {
-            super.run();
-            if(tasksLeftBeforeNewTake.decrementAndGet() == 0){
-                Platform.runLater(pullTasks());
-                tasksLeftBeforeNewTake.set(amountOfTasksInSingleTake);
+            if(!inContest){
+                finishContest();
             }
-            Platform.runLater(pushAnswers());
+            else{
+                super.run();
+                if(tasksLeftBeforeNewTake.decrementAndGet() == 0){
+                    Platform.runLater(pullTasks());
+                    tasksLeftBeforeNewTake.set(amountOfTasksInSingleTake);
+                }
+                Platform.runLater(pushAnswers());
+            }
         }
     }
-    public AgentLogic(String name, int amountOfTasksInSingleTake, int amountOfThreads) {
+    public AgentLogic(AgentMainAppController appController, String name, int amountOfTasksInSingleTake, int amountOfThreads) {
+        this.appController = appController;
         this.name = name;
         this.amountOfTasksInSingleTake = amountOfTasksInSingleTake;
         this.amountOfThreads = amountOfThreads;
@@ -61,17 +90,19 @@ public class AgentLogic {
         agentTasks = new LinkedBlockingQueue<>(amountOfThreads);
         //need to check for the keep alive parameter
         threadPool = new ThreadPoolExecutor(amountOfThreads, amountOfThreads + 5,5, TimeUnit.SECONDS,agentTasks,createThreadFactory());
+
+        startListRefresher(REQUEST_PATH_IS_CONTEST_ON);
     }
 
     private ThreadFactory createThreadFactory(){
 
         return new ThreadFactory() {
             final String name = "Thread";
-            int agentNumber = 1;
+            int threadNumber = 1;
 
             @Override
             public Thread newThread(Runnable r) {
-                return new Thread(r,name + agentNumber++);
+                return new Thread(r,name + threadNumber++);
             }
         };
     }
@@ -99,6 +130,7 @@ public class AgentLogic {
                         List<WebAgentTask> improvedTasks = new ArrayList<>();
                         for (AgentTask task:newTasks) {
                             improvedTasks.add(new WebAgentTask(task.getEnigmaMachine(), task.getDetails()));
+                            totalTakenTasks.incrementAndGet();
                         }
 
                         for (WebAgentTask newTask: improvedTasks) {
@@ -123,10 +155,15 @@ public class AgentLogic {
     public Runnable pushAnswers(){
         List<AgentAnswerDTO> newAnswers = new ArrayList<>();
         answersQueue.drainTo(newAnswers);
+
         List<CandidateDataDTO> newCandidates = new ArrayList<>();
         for (AgentAnswerDTO answer: newAnswers) {
-            //need to check who is the configuration and who is the message
-            answer.getDecryptedMessagesCandidates().forEach((configuration, message)->newCandidates.add(new CandidateDataDTO(message.toString(), name, configuration)));
+            //need to make sure who is the configuration and who is the message
+            answer.getDecryptedMessagesCandidates().forEach((configuration, message)->{
+                newCandidates.add(new CandidateDataDTO(message.toString(), name, configuration));
+                totalAmountOfCandidates.incrementAndGet();
+            });
+            totalFinishedTasks.incrementAndGet();
         }
         //need to check the creation of the body
         RequestBody body = RequestBody.create(MediaType.get("application/json; charset=utf-8"), Constants.GSON_INSTANCE.toJson(newCandidates));
@@ -134,6 +171,7 @@ public class AgentLogic {
         try (Response res = HttpClientUtil.runPost(REQUEST_PATH_PUSH_CANDIDATES, body)) {
 
             if (res.code() == 200) {
+                appController.updateTasksData(new AgentProgressDTO(agentTasks.size(), totalTakenTasks.get(), totalFinishedTasks.get(), totalAmountOfCandidates.get()));
                 System.out.println("server was updated with the new candidates");
             } else {
                 System.out.println("there was a problem to update the server with the new candidates");
@@ -143,6 +181,16 @@ public class AgentLogic {
         }
 
         return null;
+    }
+
+    public void finishContest(){
+        appController.setPassive();
+        agentTasks.clear();
+        //threadPool.shutdown();
+    }
+
+    public void startContest(){
+        pullTasks();
     }
 
     public void logOut() {

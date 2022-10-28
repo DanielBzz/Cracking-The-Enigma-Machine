@@ -20,4 +20,6 @@ public class AgentManager extends DataManager<Agent> {
     public Set<ActivePlayerDTO> getConnectedUsersDetails(String userName) { // should return the agent that connected to this allie
         return null;
     }
+
+
 }

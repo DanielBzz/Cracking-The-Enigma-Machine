@@ -15,6 +15,7 @@ public class Agent {
     private String alliesName;
     private List<CandidateDataDTO> candidates;
     private int version;
+    private boolean inContest;
 
     public Agent(String agentName) {
         this.agentName = agentName;
@@ -50,6 +51,14 @@ public class Agent {
     }
     public String getAgentName() {
         return agentName;
+    }
+
+    public void setInContest(boolean inContest) {
+        this.inContest = inContest;
+    }
+
+    public boolean isInContest() {
+        return inContest;
     }
 
     public String getAlliesName() {

@@ -15,6 +15,7 @@ public class Team {
     private int taskSize;
     private String contestName;
     private boolean ready;
+    private boolean inContest;
     private List<Agent> teamAgents;
     private List<CandidateDataDTO> candidates;
     private int currentLocation;
@@ -55,6 +56,14 @@ public class Team {
 
     public void setTaskSize(int taskSize) {
         this.taskSize = taskSize;
+    }
+
+    public void setInContest(boolean inContest) {
+        this.inContest = inContest;
+    }
+
+    public boolean isInContest() {
+        return inContest;
     }
 
     public void addCandidates(List<CandidateDataDTO> newCandidates){
