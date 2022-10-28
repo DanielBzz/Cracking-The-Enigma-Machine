@@ -1,5 +1,6 @@
 package servlets.contestManager;
 
+import exceptions.ReadyForContestException;
 import exceptions.MachineNotDefinedException;
 import exceptions.NoFileLoadedException;
 import exceptions.NotInDictionaryException;
@@ -39,6 +40,8 @@ public class EncryptMessageServlet extends HttpServlet {
             ServletUtils.createResponse(resp, HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
         } catch (NotInDictionaryException e) {
             ServletUtils.createResponse(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }catch (ReadyForContestException e){
+            ServletUtils.createResponse(resp, HttpServletResponse.SC_CONFLICT, e.getMessage());
         }catch (Exception | Error e){
             ServletUtils.createResponse(resp,HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getMessage());
         }

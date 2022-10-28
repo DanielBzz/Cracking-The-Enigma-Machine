@@ -15,10 +15,8 @@ public class ContestDetailsController extends Pane {
     @FXML private Label statusLabel;
     @FXML private Label levelLabel;
     @FXML private Label teamsLabel;
-
     private int maxAmountOfTeams;
     private int currentAmountOfTeams;
-    private double taskSize;
 
     public ContestDetailsController(ContestDetailsDTO contestDetails){
         battleFieldLabel.setText(contestDetails.getBattleFieldName());
@@ -28,7 +26,6 @@ public class ContestDetailsController extends Pane {
         maxAmountOfTeams = contestDetails.getTeams().getValue();
         currentAmountOfTeams = contestDetails.getTeams().getKey();
         teamsLabel.setText(String.valueOf(contestDetails.getTeams().getKey()) + FROM_SEPARATOR + String.valueOf(contestDetails.getTeams().getValue()));
-        taskSize = (int)contestDetails.getTaskSize();
     }
 
     public void setStatusLabel(Label statusLabel) {
@@ -47,10 +44,6 @@ public class ContestDetailsController extends Pane {
 
     public String getContestManagerName(){
         return contestManagerLabel.getText();
-    }
-
-    public double getTaskSize(){
-        return taskSize;
     }
 
     public Label getStatusLabel() {

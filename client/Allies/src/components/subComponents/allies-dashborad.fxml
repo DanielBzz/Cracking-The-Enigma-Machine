@@ -8,27 +8,27 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.subComponents.AlliesDashboardController">
+<GridPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.subComponents.AlliesDashboardController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" />
       <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="50.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.0" minWidth="50.0" />
       <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
-    <ColumnConstraints hgrow="SOMETIMES" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="2" />
-      <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <Separator orientation="VERTICAL" GridPane.columnIndex="2" />
+      <Separator orientation="VERTICAL" GridPane.columnIndex="2" GridPane.rowIndex="2" />
       <Button fx:id="joinButton" mnemonicParsing="false" onAction="#joinButtonListener" text="Join" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets />
          </GridPane.margin></Button>
-      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="4" GridPane.rowSpan="2147483647">
+      <AnchorPane GridPane.columnIndex="4" GridPane.rowSpan="2147483647">
          <children>
             <fx:include fx:id="contestTableComponent" source="../../../../generalClient/src/components/contest-details-table.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>

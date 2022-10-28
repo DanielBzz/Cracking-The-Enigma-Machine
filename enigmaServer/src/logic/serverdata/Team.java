@@ -2,6 +2,7 @@ package logic.serverdata;
 
 import contestDtos.ActivePlayerDTO;
 import contestDtos.CandidateDataDTO;
+import logic.datamanager.CandidatesManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,47 +12,47 @@ import java.util.Set;
 public class Team {
 
     private final String teamName;
-    private int numOfAgents;
     private int taskSize;
     private String contestName;
     private boolean ready;
     private boolean inContest;
     private List<Agent> teamAgents;
-    private List<CandidateDataDTO> candidates;
-    private int currentLocation;
+    private CandidatesManager candidates;
 
-    public Team(String teamName, int numOfAgents, int size, boolean ready) {
+    public Team(String teamName) {
         this.teamName = teamName;
-        this.numOfAgents = numOfAgents;
-        taskSize = size;
-        this.ready = ready;
-        candidates = new ArrayList<>();
+        taskSize = 0;
+        this.ready = false;
         teamAgents = new ArrayList<>();
-        currentLocation = 0;
+        candidates = new CandidatesManager();
     }
 
     public String getTeamName() {
         return teamName;
     }
 
-    public int getNumOfAgents() {
-        return numOfAgents;
+    public void setContestName(String contestName) {
+        this.contestName = contestName;
     }
 
-    public int getTaskSize() {
-        return taskSize;
+    public String getContestName() {
+
+        return contestName;
     }
 
     public boolean isReady() {
         return ready;
     }
 
-    public void increaseNumOfAgents(){
-        numOfAgents++;
-    }
+    public void setReady(boolean ready) throws Exception {
 
-    public void setReady(boolean ready) {
-        this.ready = ready;
+        if(ready && taskSize!=0 && teamAgents.size()!=0 && contestName!= null){
+            this.ready = true;
+        } else if (ready) {
+            throw new Exception("can't initial team is ready, set correct arguments");
+        }else {
+            this.ready = false;
+        }
     }
 
     public void setTaskSize(int taskSize) {
@@ -67,21 +68,11 @@ public class Team {
     }
 
     public void addCandidates(List<CandidateDataDTO> newCandidates){
-        candidates.addAll(newCandidates);
-    }
-    public List<CandidateDataDTO> getNewCandidates(){
-        List<CandidateDataDTO> newCandidates = candidates.subList(currentLocation, candidates.size());
-        currentLocation = candidates.size();
-        return newCandidates;
+        candidates.addNewCandidates(newCandidates);
     }
 
-    public void setContestName(String contestName) {
-        this.contestName = contestName;
-    }
-
-    public String getContestName() {
-
-        return contestName;
+    public List<CandidateDataDTO> getNewCandidates(int lastVersion){
+        return candidates.getNewCandidates(lastVersion);
     }
 
     public Set<ActivePlayerDTO> agentsDetails(){
@@ -90,5 +81,10 @@ public class Team {
         teamAgents.forEach(agent -> agentsDetails.add(agent.agentDetails()));
 
         return agentsDetails;
+    }
+
+    public ActivePlayerDTO teamDetails(){
+
+        return new ActivePlayerDTO(teamName, agentsDetails().size(), taskSize);
     }
 }

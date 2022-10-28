@@ -26,11 +26,8 @@ public class UBoatReadyServlet extends HttpServlet {
         }
 
         try{
-            String encryptedMessage = request.getParameter("encryptedMessage");
-            manager.setContestUserReady(userName, encryptedMessage);
-            manager.checkIfNeedToStartContest(userName);
+            manager.setContestUserReady(userName);
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, null);
-
         } catch (Exception e){
             ServletUtils.createResponse(response, HttpServletResponse.SC_CONFLICT, e.getMessage());
             System.out.println(e.getMessage());
