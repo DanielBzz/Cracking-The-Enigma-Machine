@@ -44,12 +44,16 @@ public class CandidatesRefresher extends TimerTask {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
 
                 if(response.code() == 200){
-                    String[] res = Constants.GSON_INSTANCE.fromJson(response.body().string(), String[].class);
-                    if(version != Integer.parseInt(res[0])){
-                        version = Integer.parseInt(res[0]);
-                        CandidateDataDTO[] newCandidates = Constants.GSON_INSTANCE.fromJson(res[1], CandidateDataDTO[].class);
-                        updateCandidatesConsumer.accept(Arrays.asList(newCandidates));
+                    if(response.body() != null){
+                        String[] res = Constants.GSON_INSTANCE.fromJson(response.body().string(), String[].class);
+                        if(version != Integer.parseInt(res[0])){
+                            version = Integer.parseInt(res[0]);
+                            CandidateDataDTO[] newCandidates = Constants.GSON_INSTANCE.fromJson(res[1], CandidateDataDTO[].class);
+                            updateCandidatesConsumer.accept(Arrays.asList(newCandidates));
+                        }
+                        response.body().close();
                     }
+
                 }else {
                     System.out.println(response.code() + "update candidates failed");
                 }

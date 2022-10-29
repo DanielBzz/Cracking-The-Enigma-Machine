@@ -105,6 +105,7 @@ public class AgentMainAppController implements AppMainController {
                             contestAndTeamDataComponentController.setAgentMainAppController(thisController);
                             contestAndTeamDataComponentController.setTeamNameLabel(basicAgentInfo.getTeamName());
                         }
+                        response.body().close();
                     }
 
                     System.out.println("Allies was added successfully!");

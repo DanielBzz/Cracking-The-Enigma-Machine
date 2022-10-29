@@ -1,13 +1,16 @@
 package components.subComponents;
 
 import com.sun.istack.internal.NotNull;
+import components.AgentsListController;
 import components.CandidatesTableController;
+import components.ContestDetailsTableController;
 import contestDtos.ContestDetailsDTO;
 import http.HttpClientUtil;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
@@ -27,8 +30,8 @@ public class AlliesDecryptionProgressAndCandidatesController {
     @FXML private Spinner<Integer> taskSizeSpinner;
     @FXML private Label tasksAmountLabel;
     @FXML private Button readyButton;
-    @FXML private AnchorPane candidatesTableComponent;
-    @FXML private CandidatesTableController candidatesTableController;
+    @FXML private AnchorPane candidatesPlace;
+    private CandidatesTableController candidatesTableController;
     @FXML private ProgressBar decryptionProgressBar;
     @FXML private Label decryptionProgressLabel;
     @FXML private Label encryptedMessageLabel;
@@ -39,6 +42,16 @@ public class AlliesDecryptionProgressAndCandidatesController {
         disableBinding();
         encryptedMessageLabel.setText(contestDetails.getEncryptedMessage());
         levelLabel.setText(contestDetails.getLevel());
+        try {
+            FXMLLoader load = new FXMLLoader();
+            load.setLocation(CandidatesTableController.class.getResource("candidates-table.fxml"));
+            candidatesPlace.getChildren().add(load.load());
+            candidatesTableController = load.getController();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
     }
 
     public void setAlliesContestController(AlliesContestController alliesContestController) {

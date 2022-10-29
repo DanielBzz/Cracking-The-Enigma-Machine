@@ -76,6 +76,7 @@ public class LoginController {
                     Platform.runLater(() ->
                             errorMessageProperty.set("Something went wrong: " + responseBody)
                     );
+                    response.body().close();
                 } else {
                     System.out.println("success");
                     Platform.runLater(() -> {

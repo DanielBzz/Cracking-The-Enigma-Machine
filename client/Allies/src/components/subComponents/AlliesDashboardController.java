@@ -1,6 +1,9 @@
 package components.subComponents;
 
 import com.sun.istack.internal.NotNull;
+import components.AgentsListController;
+import components.CandidatesTableController;
+import components.ConnectedUsersController;
 import components.ContestDetailsTableController;
 import components.main.AlliesMainAppController;
 import components.tables.AgentsTableController;
@@ -8,8 +11,10 @@ import contestDtos.TeamDetailsContestDTO;
 import http.HttpClientUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -24,12 +29,31 @@ import static util.Constants.REQUEST_PATH_JOIN_TO_CONTEST;
 public class AlliesDashboardController {
 
     private AlliesMainAppController parentController;
-    @FXML private ScrollPane agentsTableComponent;
-    @FXML private AgentsTableController agentsTableComponentController;
-    @FXML private ScrollPane contestTableComponent;
-    @FXML private ContestDetailsTableController contestTableComponentController;
+//    @FXML private ScrollPane agentsTableComponent;
+    private AgentsListController agentsTableComponentController;
+    @FXML private AnchorPane agentsPlace;
+    @FXML private AnchorPane contestDetailsPlace;
+    private ContestDetailsTableController contestTableComponentController;
     @FXML private Button joinButton;
 
+    public void initial(){
+        try {
+            FXMLLoader load = new FXMLLoader();
+            load.setLocation(AgentsListController.class.getResource("agents-list.fxml"));
+            agentsPlace.getChildren().add(load.load());
+            agentsTableComponentController = load.getController();
+
+
+            load = new FXMLLoader();
+            load.setLocation(ContestDetailsTableController.class.getResource("contest-details-table.fxml"));
+            contestDetailsPlace.getChildren().add(load.load());
+            contestTableComponentController = load.getController();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+    }
     public void setAlliesMainAppController(AlliesMainAppController alliesMainAppController) {
         this.parentController = alliesMainAppController;
     }
@@ -72,8 +96,11 @@ public class AlliesDashboardController {
                 if (response.code() == 200) {
                     agentsTableComponentController.stopListRefresher();
                     contestTableComponentController.stopListRefresher();
-                    TeamDetailsContestDTO responseDetails = constants.Constants.GSON_INSTANCE.fromJson(response.body().string(),TeamDetailsContestDTO.class);
-                    parentController.updateNewContest(responseDetails);
+                    if(response.body() != null){
+                        TeamDetailsContestDTO responseDetails = constants.Constants.GSON_INSTANCE.fromJson(response.body().string(),TeamDetailsContestDTO.class);
+                        parentController.updateNewContest(responseDetails);
+                        response.body().close();
+                    }
                     System.out.println("Allies was added successfully!");
                 }
                 else {

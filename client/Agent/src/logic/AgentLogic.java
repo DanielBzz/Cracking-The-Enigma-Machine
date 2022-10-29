@@ -141,6 +141,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
                                 throw new RuntimeException(e);
                             }
                         }
+                        response.body().close();
                     }
 
                     System.out.println("Allies was added successfully!");
@@ -167,10 +168,13 @@ public class AgentLogic extends RefresherController {//need to change name of th
             totalFinishedTasks.incrementAndGet();
         }
         //need to check the creation of the body
-        RequestBody body = new MultipartBody.Builder()
-                .addFormDataPart("candidates","candidates" ,
-                        RequestBody.create(Constants.GSON_INSTANCE.toJson(newCandidates),MediaType.get("application/json; charset=utf-8")))
-                .build();
+
+        String json = constants.Constants.GSON_INSTANCE.toJson(newCandidates);
+
+        RequestBody body =
+                new MultipartBody.Builder()
+                        .addFormDataPart("candidates", json)
+                        .build();
 
         try (Response res = HttpClientUtil.runPost(REQUEST_PATH_PUSH_CANDIDATES, body)) {
 
