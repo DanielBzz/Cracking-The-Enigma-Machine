@@ -12,10 +12,12 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import logic.events.EncryptMessageEventListener;
 import machineDtos.EngineDTO;
 import okhttp3.Call;
@@ -40,10 +42,12 @@ public class UBoatRoomContestController implements EncryptableByDictionary {
     @FXML private EncryptController encryptComponentController;
     @FXML private Button readyButton;
     @FXML private Button logoutButton;
-    @FXML private ScrollPane candidatesTableComponent;
-    @FXML private CandidatesTableController candidatesTableComponentController;
-    @FXML private GridPane connectedTeamsComponent;
-    @FXML private ConnectedUsersController connectedTeamsComponentController;
+    //@FXML private ScrollPane candidatesTableComponent;
+    @FXML private AnchorPane connectedTeamsPlace;
+    @FXML private HBox candidatesTablePlace;
+    private CandidatesTableController candidatesTableComponentController;
+    //@FXML private GridPane connectedTeamsComponent;
+    private ConnectedUsersController connectedTeamsComponentController;
     private DictionaryDTO dictionaryDetails;
     private final BooleanProperty isPrepareForContest = new SimpleBooleanProperty(false);
 
@@ -61,6 +65,23 @@ public class UBoatRoomContestController implements EncryptableByDictionary {
             encryptComponent.disableProperty().bind(isPrepareForContest);
             parentController.getEncryptedMessageProperty().addListener(
                     (observable, oldValue, newValue) ->  encryptComponentController.setEncryptedMessageLabel(newValue));
+        }
+
+        try {
+            FXMLLoader load = new FXMLLoader();
+            load.setLocation(ConnectedUsersController.class.getResource("ConnectedUsersComponent.fxml"));
+            connectedTeamsPlace.getChildren().add(load.load());
+            connectedTeamsComponentController = load.getController();
+
+
+            load = new FXMLLoader();
+            load.setLocation(CandidatesTableController.class.getResource("candidates-table.fxml"));
+            candidatesTablePlace.getChildren().add(load.load());
+            candidatesTableComponentController = load.getController();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
