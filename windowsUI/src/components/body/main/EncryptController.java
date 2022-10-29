@@ -187,4 +187,7 @@ public class EncryptController {
     }
 
 
+    public String getMessageToEncrypt() {
+        return messageToEncryptTF.getText();
+    }
 }

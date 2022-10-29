@@ -3,6 +3,7 @@ package components.main;
 import components.header.HeaderController;
 import components.subComponents.UBoatRoomContestController;
 import components.subComponents.UBoatRoomMachineController;
+import contestDtos.CandidateDataDTO;
 import decryptionDtos.DictionaryDTO;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
@@ -66,7 +67,7 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
     public void clearComponent(){
         initialFileLoadable();
         uBoatRoomMachineComponentController.clearDetails();
-        uBoatRoomContestComponentController.clearDetails();
+        uBoatRoomContestComponentController.clearComponent();
     }
 
     @Override
@@ -137,4 +138,7 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
         return uBoatLogic.encryptedMessageProperty();
     }
 
+    public void announceTheWinner(CandidateDataDTO winnerCandidate) {
+        uBoatLogic.finishContest(winnerCandidate);
+    }
 }

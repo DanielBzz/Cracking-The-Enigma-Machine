@@ -116,7 +116,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
                 .build()
                 .toString();
 
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
+        HttpClientUtil.runAsyncGet(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println("Could not response well");
@@ -172,17 +172,24 @@ public class AgentLogic extends RefresherController {//need to change name of th
                         RequestBody.create(Constants.GSON_INSTANCE.toJson(newCandidates),MediaType.get("application/json; charset=utf-8")))
                 .build();
 
-        try (Response res = HttpClientUtil.runPost(REQUEST_PATH_PUSH_CANDIDATES, body)) {
-
-            if (res.code() == 200) {
-                appController.updateTasksData(new AgentProgressDTO(agentTasks.size(), totalTakenTasks.get(), totalFinishedTasks.get(), totalAmountOfCandidates.get()));
-                System.out.println("server was updated with the new candidates");
-            } else {
-                System.out.println("there was a problem to update the server with the new candidates");
+        HttpClientUtil.runAsyncPost(REQUEST_PATH_PUSH_CANDIDATES, body, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("exception was thrown after trying to update the server with the new candidates");
             }
-        } catch (IOException e) {
-            System.out.println("exception was thrown after trying to update the server with the new candidates");
-        }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try(ResponseBody responseBody = response.body()){
+                    if (response.code() == 200) {
+                        appController.updateTasksData(new AgentProgressDTO(agentTasks.size(), totalTakenTasks.get(), totalFinishedTasks.get(), totalAmountOfCandidates.get()));
+                        System.out.println("server was updated with the new candidates");
+                    } else {
+                        System.out.println("there was a problem to update the server with the new candidates");
+                    }
+                }
+            }
+        });
 
         return null;
     }

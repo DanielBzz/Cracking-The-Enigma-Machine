@@ -1,4 +1,4 @@
-package servlets;
+package servlets.general;
 
 import contestDtos.ActivePlayerDTO;
 import jakarta.servlet.ServletException;

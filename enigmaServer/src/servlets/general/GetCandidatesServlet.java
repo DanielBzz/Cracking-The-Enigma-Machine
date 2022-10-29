@@ -1,6 +1,7 @@
-package servlets;
+package servlets.general;
 
 import contestDtos.CandidateDataDTO;
+import exceptions.ContestIsFinishedException;
 import exceptions.ContestNotExistException;
 import exceptions.ContestNotReadyException;
 import jakarta.servlet.annotation.WebServlet;
@@ -39,6 +40,8 @@ public class GetCandidatesServlet extends HttpServlet {
         }catch (ContestNotExistException | ContestNotReadyException e){
             ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
             System.out.println(e.getMessage());
+        }catch (ContestIsFinishedException e ){
+            ServletUtils.createResponse(response, HttpServletResponse.SC_ACCEPTED,e.getMessage());
         }catch (Exception e){
             ServletUtils.createResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,null);
         }

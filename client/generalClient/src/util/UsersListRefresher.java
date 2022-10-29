@@ -23,7 +23,7 @@ public class UsersListRefresher extends TimerTask {
     @Override
     public void run() {
 
-        HttpClientUtil.runAsync(url, new Callback() {
+        HttpClientUtil.runAsyncGet(url, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println("update user list failed");

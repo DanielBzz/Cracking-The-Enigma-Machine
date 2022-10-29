@@ -47,7 +47,7 @@ public class EnteringAgentDetailsController implements Presenter {
                 .build()
                 .toString();
 
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
+        HttpClientUtil.runAsyncGet(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println("Could not response well");

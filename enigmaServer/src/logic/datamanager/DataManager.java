@@ -2,6 +2,7 @@ package logic.datamanager;
 
 import contestDtos.ActivePlayerDTO;
 import contestDtos.CandidateDataDTO;
+import exceptions.ContestIsFinishedException;
 import exceptions.UserNotExistException;
 
 import java.util.*;
@@ -35,7 +36,7 @@ public abstract class DataManager<T> {
 
     public abstract Set<ActivePlayerDTO> getConnectedUsersDetails(String userName);
 
-    public abstract List<CandidateDataDTO> getCandidates(String userName, int version) throws UserNotExistException;
+    public abstract List<CandidateDataDTO> getCandidates(String userName, int version) throws UserNotExistException, ContestIsFinishedException;
 
 
 

@@ -4,6 +4,7 @@ package logic.serverdata;
 import contestDtos.CandidateDataDTO;
 import contestDtos.ContestDetailsDTO;
 import decryptionDtos.DictionaryDTO;
+import exceptions.ContestNotReadyException;
 import exceptions.NotInDictionaryException;
 import exceptions.ReadyForContestException;
 import javafx.util.Pair;
@@ -138,13 +139,28 @@ public class UserContest {
     }
 
     public void startContest() {
-
+        ready = false;
         inContest = true;
+        candidates.clear();
         competitors.forEach(team -> team.startCompeting(machineEngine,decryptionManager,encryptedMessage,field.getLevel(),updateCandidatesConsumer()));
-        //should update teams and make them start create tasks;
+    }
+
+    public synchronized void endContest(CandidateDataDTO winner){
+
+        if(!inContest){
+            throw new ContestNotReadyException();
+        }
+
+        inContest = false;
+        competitors.forEach(competitor -> competitor.endCompeting(winner));
+        competitors.clear();
     }
 
     public Consumer<List<CandidateDataDTO>> updateCandidatesConsumer(){
-        return newCandidates -> candidates.addNewCandidates(newCandidates);
+        return newCandidates -> {
+            if(inContest) {
+                candidates.addNewCandidates(newCandidates);
+            }
+        };
     }
 }

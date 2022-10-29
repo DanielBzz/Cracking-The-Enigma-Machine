@@ -17,6 +17,7 @@ import okhttp3.HttpUrl;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 import static util.Constants.REQUEST_PATH_SET_READY;
 
@@ -55,7 +56,7 @@ public class AlliesDecryptionProgressAndCandidatesController {
                 .build()
                 .toString();
 
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
+        HttpClientUtil.runAsyncGet(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println("Could not response well");
@@ -64,7 +65,7 @@ public class AlliesDecryptionProgressAndCandidatesController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() == 200) {
-                    candidatesTableController.startListRefresher();
+                    candidatesTableController.startListRefresher(thereIsWinner());
                     inContest.set(true);
                 }
                 else {
@@ -121,5 +122,17 @@ public class AlliesDecryptionProgressAndCandidatesController {
             }
         });
         taskSizeSpinner.getValueFactory().setValue(2);
+    }
+
+    Consumer<String> thereIsWinner(){
+        return msg -> {
+            finishContest();
+            parentController.popUpMessage(msg);
+        };
+    }
+
+    private void finishContest() {
+
+        // should perform all the ui end contest
     }
 }

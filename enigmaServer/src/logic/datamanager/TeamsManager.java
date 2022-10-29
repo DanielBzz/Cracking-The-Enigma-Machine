@@ -3,6 +3,7 @@ package logic.datamanager;
 import agent.AgentTask;
 import contestDtos.ActivePlayerDTO;
 import contestDtos.CandidateDataDTO;
+import exceptions.ContestIsFinishedException;
 import exceptions.ContestNotReadyException;
 import exceptions.UserNotExistException;
 import logic.serverdata.Team;
@@ -38,7 +39,7 @@ public class TeamsManager extends DataManager<Team>{
     }
 
     @Override
-    public List<CandidateDataDTO> getCandidates(String userName, int version) throws UserNotExistException {
+    public List<CandidateDataDTO> getCandidates(String userName, int version) throws UserNotExistException, ContestIsFinishedException {
         Team team;
         synchronized (userNameToData){
             if(!isUserExists(userName)){

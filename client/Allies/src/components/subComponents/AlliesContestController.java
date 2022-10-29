@@ -6,6 +6,8 @@ import components.main.AlliesMainAppController;
 import contestDtos.ContestDetailsDTO;
 import contestDtos.TeamDetailsContestDTO;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
@@ -60,5 +62,10 @@ public class AlliesContestController implements Presenter {
 
         contestDataArea.getChildren().clear();
         contestDataArea.getChildren().add(new ContestDetailsController(contestDetails));
+    }
+
+    public void popUpMessage(String msg) {
+
+        new Alert(Alert.AlertType.INFORMATION,msg, ButtonType.OK);
     }
 }

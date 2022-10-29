@@ -49,4 +49,10 @@ public class Agent {
     public AgentInfoDTO getAgentInfo(){
         return new AgentInfoDTO(agentName,alliesName,amountOfTasksInASingleTake,amountOfThreads);
     }
+
+    public void endTasks() {
+
+        inContest = false;
+        tasksMade = 0;
+    }
 }

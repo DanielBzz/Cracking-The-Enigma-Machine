@@ -1,6 +1,7 @@
 package logic;
 
 import components.main.UBoatMainAppController;
+import contestDtos.CandidateDataDTO;
 import decryptionDtos.DictionaryDTO;
 import http.HttpClientUtil;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,6 +12,7 @@ import machineDtos.EngineDTO;
 import machineDtos.EngineWithEncryptDTO;
 import machineDtos.MachineInfoDTO;
 import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
 import util.Constants;
 
 import java.io.File;
@@ -41,22 +43,29 @@ public class UBoatLogic {
                         .addFormDataPart("file", f.getName(), RequestBody.create(f, MediaType.parse("text/plain")))
                         .build();
 
-        try (Response res = HttpClientUtil.runPost(Constants.REQUEST_PATH_READ_FILE, body)) {
-
-            if (res.code() == 200) {
-                String[] responseStrings = constants.Constants.GSON_INSTANCE.fromJson(res.body().string(),String[].class);
-                EngineDTO engine = constants.Constants.GSON_INSTANCE.fromJson(responseStrings[0], EngineDTO.class);
-                appController.setEngineDetails(engine);
-                DictionaryDTO dictionary = constants.Constants.GSON_INSTANCE.fromJson(responseStrings[1], DictionaryDTO.class);
-                appController.setDictionaryDetails(dictionary);
-                appController.setIsGoodFileSelected(true);
-            } else {
-                appController.setSelectedFile("-");
-                appController.showPopUpMessage(res.code() + res.body().string());
+        HttpClientUtil.runAsyncPost(Constants.REQUEST_PATH_READ_FILE, body, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                appController.showPopUpMessage(e.getMessage());
             }
-        } catch (IOException e) {
-            appController.showPopUpMessage(e.getMessage());
-        }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try(ResponseBody responseBody = response.body()){
+                    if (response.code() == 200) {
+                        String[] responseStrings = constants.Constants.GSON_INSTANCE.fromJson(responseBody.string(),String[].class);
+                        EngineDTO engine = constants.Constants.GSON_INSTANCE.fromJson(responseStrings[0], EngineDTO.class);
+                        appController.setEngineDetails(engine);
+                        DictionaryDTO dictionary = constants.Constants.GSON_INSTANCE.fromJson(responseStrings[1], DictionaryDTO.class);
+                        appController.setDictionaryDetails(dictionary);
+                        appController.setIsGoodFileSelected(true);
+                    } else {
+                        appController.setSelectedFile("-");
+                        appController.showPopUpMessage(response.code() + responseBody.string());
+                    }
+                }
+            }
+        });
     }
 
     public void updateMachineConfiguration(MachineInfoDTO initialArgs) {
@@ -68,18 +77,24 @@ public class UBoatLogic {
                         .addFormDataPart("file", json)
                         .build();
 
-        try (Response res = HttpClientUtil.runPost(Constants.REQUEST_PATH_INIT_USER_MACHINE, body)) {
-
-            if (res.code() == 200) {
-                codeSetEventHandler.fireEvent(constants.Constants.GSON_INSTANCE.fromJson(res.body().string(), EngineDTO.class));
-            } else {
-                appController.showPopUpMessage(res.code() + " " + res.body().string());
+        HttpClientUtil.runAsyncPost(Constants.REQUEST_PATH_INIT_USER_MACHINE, body, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                appController.showPopUpMessage("error: " + e.getMessage());
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            appController.showPopUpMessage("error: " + e.getMessage());
-            e.printStackTrace();
-        }
 
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try(ResponseBody responseBody = response.body()) {
+                    if (response.code() == 200) {
+                        codeSetEventHandler.fireEvent(constants.Constants.GSON_INSTANCE.fromJson(responseBody.string(), EngineDTO.class));
+                    } else {
+                        appController.showPopUpMessage(response.code() + " " + responseBody.string());
+                    }
+                }
+            }
+        });
     }
 
     public void encryptInput(String message) {
@@ -87,20 +102,27 @@ public class UBoatLogic {
         String finalUrl = HttpUrl.parse(Constants.REQUEST_PATH_ENCRYPT_MESSAGE).newBuilder()
                 .addQueryParameter("message", message).build().toString();
 
-        try (Response res = HttpClientUtil.runGet(finalUrl)) {
-
-            if (res.code() == 200) {
-                EngineWithEncryptDTO resMsg = constants.Constants.GSON_INSTANCE.fromJson(res.body().string(), EngineWithEncryptDTO.class);
-                codeSetEventHandler.fireEvent(resMsg.getEngineDTO());
-                encryptedMessage.set(resMsg.getEncryptedMsg());
-            } else {
-                appController.showPopUpMessage(res.code() + " " + res.body().string());
+        HttpClientUtil.runAsyncGet(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                appController.showPopUpMessage("error: " + e.getMessage());
+                e.printStackTrace();
             }
 
-        } catch (IOException e) {
-            appController.showPopUpMessage("error: " + e.getMessage());
-            e.printStackTrace();
-        }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try(ResponseBody responseBody = response.body()){
+                    if (response.code() == 200) {
+                        EngineWithEncryptDTO resMsg = constants.Constants.GSON_INSTANCE.fromJson(responseBody.string(), EngineWithEncryptDTO.class);
+                        codeSetEventHandler.fireEvent(resMsg.getEngineDTO());
+                        encryptedMessage.set(resMsg.getEncryptedMsg());
+                    } else {
+                        appController.showPopUpMessage(response.code() + " " + responseBody.string());
+                    }
+                }
+
+            }
+        });
     }
 
     public StringProperty encryptedMessageProperty() {
@@ -109,5 +131,32 @@ public class UBoatLogic {
 
     public void logOut() {
 
+    }
+
+    public void finishContest(CandidateDataDTO winnerCandidate) {
+
+        String finalUrl = HttpUrl.parse(Constants.REQUEST_PATH_FINISH_CONTEST).newBuilder()
+                .addQueryParameter("message", winnerCandidate.getDecryptedMessage())
+                .addQueryParameter("winnerTeam", winnerCandidate.getFoundersName())
+                .addQueryParameter("configuration", winnerCandidate.getConfiguration())
+                .build().toString();
+
+        HttpClientUtil.runAsyncGet(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("FAILURE --- the server continue to competing");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if(response.code()!=200){
+                    System.out.println("the server continue to competing");
+                } else {
+                    System.out.println("contest is over!!!!");
+                }
+
+                response.close();
+            }
+        });
     }
 }

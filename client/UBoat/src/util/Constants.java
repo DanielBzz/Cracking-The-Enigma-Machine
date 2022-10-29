@@ -13,8 +13,6 @@ public class Constants {
     public final static String REQUEST_PATH_INIT_USER_MACHINE = UBOAT_REQUEST_PATH + "/initMachine";
     public final static String REQUEST_PATH_ENCRYPT_MESSAGE = UBOAT_REQUEST_PATH + "/encrypt";
     public final static String REQUEST_PATH_SET_READY = UBOAT_REQUEST_PATH + "/setReady";
-    //- - - - - - - - - - - Agent requests path - - - - - - - - - - - - - - - //
-
-    private final static String AGENT_REQUEST_PATH = FULL_SERVER_PATH + "/agent";
+    public final static String REQUEST_PATH_FINISH_CONTEST = UBOAT_REQUEST_PATH + "/endContest";
 
 }

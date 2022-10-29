@@ -81,7 +81,7 @@ public class AgentMainAppController implements AppMainController {
     public void setActive(){
         //agentProgressAndStatusComponentController.startListRefresher(Constants.REQUEST_PATH_GET_TASKS_DATA);
         //contestAndTeamDataComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
-        agentsCandidatesComponentController.startListRefresher();
+        //agentsCandidatesComponentController.startListRefresher();
     }
 
     public void setPassive(){
@@ -89,7 +89,7 @@ public class AgentMainAppController implements AppMainController {
         agentsCandidatesComponentController.cancelRefresher();
     }
     public void getBasicInfo(AgentMainAppController thisController){
-        HttpClientUtil.runAsync(REQUEST_PATH_GET_AGENT_INFO, new Callback() {
+        HttpClientUtil.runAsyncGet(REQUEST_PATH_GET_AGENT_INFO, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 System.out.println("Could not response well");

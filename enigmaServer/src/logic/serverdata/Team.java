@@ -3,6 +3,8 @@ package logic.serverdata;
 import contestDtos.ActivePlayerDTO;
 import contestDtos.CandidateDataDTO;
 import decryptionDtos.AgentTaskDTO;
+import exceptions.ContestIsFinishedException;
+import exceptions.ContestNotExistException;
 import logic.*;
 import logic.datamanager.CandidatesManager;
 import machineDtos.EngineDTO;
@@ -23,17 +25,17 @@ public class Team {
     private String contestName;
     private boolean ready;
     private boolean inContest;
-    private List<Agent> teamAgents;
-    private CandidatesManager candidates;
-    private BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<>(DecipherLogic.MAXIMUM_TASKS);
+    private final List<Agent> teamAgents = new ArrayList<>();
+    private final CandidatesManager candidates = new CandidatesManager();
+    private final BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<>(DecipherLogic.MAXIMUM_TASKS);
     private Consumer<List<CandidateDataDTO>> contestManagerConsumer;
+    private Thread taskProducerThread;
+    private CandidateDataDTO winnerCandidate;
 
     public Team(String teamName) {
         this.teamName = teamName;
         taskSize = 0;
         this.ready = false;
-        teamAgents = new ArrayList<>();
-        candidates = new CandidatesManager();
     }
 
     public String getTeamName() {
@@ -87,7 +89,12 @@ public class Team {
         contestManagerConsumer.accept(candidateForContestManager);
     }
 
-    public List<CandidateDataDTO> getNewCandidates(int lastVersion){
+    public List<CandidateDataDTO> getNewCandidates(int lastVersion) throws ContestIsFinishedException {
+
+        if(winnerCandidate !=null){
+            throw new ContestIsFinishedException(winnerCandidate);
+        }
+
         return candidates.getNewCandidates(lastVersion);
     }
 
@@ -107,6 +114,7 @@ public class Team {
     public void startCompeting(EnigmaSystemEngine machineEngine, DecryptionManager decryptionManager, String encryptedMessage, DifficultyLevel level, Consumer<List<CandidateDataDTO>> listConsumer){
 
         inContest = true;
+        ready = false;
         AgentTaskDTO details = new AgentTaskDTO();
         candidates.clear();
         contestManagerConsumer = listConsumer;
@@ -122,9 +130,28 @@ public class Team {
             details.setEngineComponentsDTO(((EnigmaEngine)machineEngine).getEngineComponentsDto());
         }
 
-        new Thread(new TasksProducer(details,taskSize,taskQueue,level)).start();
+        taskProducerThread = new Thread(new TasksProducer(details,taskSize,taskQueue,level));
+        taskProducerThread.start();
 
         teamAgents.forEach(agent -> agent.setInContest(true));
+    }
+
+    public void endCompeting(CandidateDataDTO winner) {
+
+        if(!inContest){
+            throw new ContestNotExistException(teamName);
+        }
+
+        winnerCandidate = winner;
+        taskProducerThread.interrupt();
+        inContest = false;
+        contestName = null;
+        taskSize = 0;
+        teamAgents.forEach(Agent::endTasks);
+        teamAgents.clear();
+        synchronized (taskQueue){
+            taskQueue.clear();
+        }
     }
 
     public Runnable getTask() throws InterruptedException {
