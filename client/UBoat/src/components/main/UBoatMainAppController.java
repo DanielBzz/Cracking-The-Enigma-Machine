@@ -90,7 +90,7 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
         uBoatRoomContestComponent.disableProperty().bind(isGoodFileSelectedProperty().not());
         selectedFileProperty().addListener((observable, oldValue, newValue) -> {
             setIsGoodFileSelected(false);
-            clearComponent();
+            //clearComponent();
             uBoatLogic.uploadFileToServer(selectedFileProperty().get());
         });
 

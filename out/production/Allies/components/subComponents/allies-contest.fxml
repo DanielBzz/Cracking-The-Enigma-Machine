@@ -5,19 +5,18 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="components.subControllers.AlliesContestController">
+<GridPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.subComponents.AlliesContestController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" />
-      <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="20.0" />
-      <ColumnConstraints hgrow="SOMETIMES" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="20.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="555.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="350.0" />
   </columnConstraints>
   <rowConstraints>
-      <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints minHeight="202.0" valignment="CENTER" vgrow="SOMETIMES" />
       <RowConstraints minHeight="20.0" valignment="BOTTOM" vgrow="NEVER" />
       <RowConstraints vgrow="SOMETIMES" />
     <RowConstraints vgrow="NEVER" />
@@ -25,18 +24,16 @@
    <children>
       <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="1" GridPane.rowSpan="2" />
       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-      <AnchorPane minHeight="0.0" minWidth="0.0" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="2147483647">
+      <AnchorPane GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="2147483647">
          <children>
             <fx:include fx:id="alliesDecryptionProgressAndCandidatesComponent" source="allies-decryption-progress-and-candidates.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="contestDataArea" />
-      <FlowPane fx:id="contestTeamsArea" alignment="TOP_RIGHT" columnHalignment="RIGHT" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" />
-      <FlowPane fx:id="activeAgentsFlowPane" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-      <GridPane minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="3" GridPane.rowIndex="3">
+      <GridPane GridPane.columnIndex="3" GridPane.rowIndex="3">
         <columnConstraints>
           <ColumnConstraints hgrow="NEVER" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints vgrow="NEVER" />
@@ -66,5 +63,15 @@
             <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" />
          </children>
       </GridPane>
+      <AnchorPane GridPane.columnIndex="2">
+         <children>
+            <fx:include fx:id="alliesTableComponent" source="../../../../generalClient/src/components/allies-list.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="2">
+         <children>
+            <fx:include fx:id="agentsTableComponent" source="../../../../generalClient/src/components/agents-list.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
    </children>
 </GridPane>

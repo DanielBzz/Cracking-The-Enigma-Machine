@@ -26,5 +26,6 @@
     <orderEntry type="module" module-name="engine" />
     <orderEntry type="module" module-name="consoleUI" />
     <orderEntry type="library" name="gson-2.8.8" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Tomcat 10.0.261" level="application_server_libraries" />
   </component>
 </module>
