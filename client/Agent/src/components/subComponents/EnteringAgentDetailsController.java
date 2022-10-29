@@ -24,6 +24,7 @@ import util.Presenter;
 
 import java.io.IOException;
 
+import static constants.Constants.REQUEST_PATH_USERS_UPDATE;
 import static util.Constants.REQUEST_PATH_ADD_AGENT_TO_TEAM;
 
 
@@ -44,7 +45,7 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
             load.setLocation(AlliesListController.class.getResource("allies-list.fxml"));
             alliesListPlace.getChildren().add(load.load());
             alliesListComponentController = load.getController();
-
+            alliesListComponentController.startListRefresher(REQUEST_PATH_USERS_UPDATE);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
@@ -79,7 +80,7 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
                 }
 
                 System.out.println("Agent was added successfully!");
-
+                alliesListComponentController.stopListRefresher();
                 //need to check if it works
                 Platform.runLater(() -> {
                     mainAppController.loadMainAppForm(getClass().getResource(Constants.AGENT_MAIN_APP_FXML_RESOURCE_LOCATION),Constants.AGENT_CLIENT);

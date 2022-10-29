@@ -43,12 +43,11 @@ public class AlliesDashboardController {
             agentsPlace.getChildren().add(load.load());
             agentsTableComponentController = load.getController();
 
-
             load = new FXMLLoader();
             load.setLocation(ContestDetailsTableController.class.getResource("contest-details-table.fxml"));
             contestDetailsPlace.getChildren().add(load.load());
             contestTableComponentController = load.getController();
-
+            setActive();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());

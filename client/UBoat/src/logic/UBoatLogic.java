@@ -61,7 +61,6 @@ public class UBoatLogic {
                         appController.setDictionaryDetails(dictionary);
                         Platform.runLater(()->appController.setIsGoodFileSelected(true));
                     } else {
-
                         String body = responseBody.string();
                         Platform.runLater(()->{
                             appController.setSelectedFile("-");
