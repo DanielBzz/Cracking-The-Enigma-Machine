@@ -1,18 +1,24 @@
 package components.main;
 
+import com.sun.istack.internal.NotNull;
 import components.CandidatesTableController;
 import components.subComponents.AgentProgressAndStatusController;
 import components.subComponents.ContestAndTeamDataController;
+import contestDtos.AgentInfoDTO;
 import contestDtos.AgentProgressDTO;
-import javafx.beans.property.IntegerProperty;
+import http.HttpClientUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import logic.AgentLogic;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
-import util.Constants;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
+import java.io.IOException;
+
+import static util.Constants.REQUEST_PATH_GET_AGENT_INFO;
 
 public class AgentMainAppController implements AppMainController {
     private ClientMainController parentController;
@@ -35,11 +41,7 @@ public class AgentMainAppController implements AppMainController {
 
     @FXML
     public void initialize(){
-        agentLogic = new AgentLogic(this, , );
-        if(contestAndTeamDataComponentController!= null) {
-            contestAndTeamDataComponentController.setAgentMainAppController(this);
-            contestAndTeamDataComponentController.setTeamNameLabel();
-        }
+        getBasicInfo(this);
         if(agentProgressAndStatusComponentController!= null){
             agentProgressAndStatusComponentController.setAgentMainAppController(this);
         }
@@ -85,5 +87,32 @@ public class AgentMainAppController implements AppMainController {
     public void setPassive(){
         //agentProgressAndStatusComponentController.stopListRefresher();
         agentsCandidatesComponentController.cancelRefresher();
+    }
+    public void getBasicInfo(AgentMainAppController thisController){
+        HttpClientUtil.runAsync(REQUEST_PATH_GET_AGENT_INFO, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("Could not response well");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() == 200) {
+                    if(response.body() != null){
+                        AgentInfoDTO basicAgentInfo = constants.Constants.GSON_INSTANCE.fromJson(response.body().toString(), AgentInfoDTO.class);
+                        agentLogic = new AgentLogic(thisController, basicAgentInfo.getAgentName(), basicAgentInfo.getAmountOfTasksInSingleTake(), basicAgentInfo.getAmountOfThreads());
+                        if(contestAndTeamDataComponentController!= null) {
+                            contestAndTeamDataComponentController.setAgentMainAppController(thisController);
+                            contestAndTeamDataComponentController.setTeamNameLabel(basicAgentInfo.getTeamName());
+                        }
+                    }
+
+                    System.out.println("Allies was added successfully!");
+                }
+                else {
+                    System.out.println("Could not response well, url:" + REQUEST_PATH_GET_AGENT_INFO);
+                }
+            }
+        });
     }
 }
