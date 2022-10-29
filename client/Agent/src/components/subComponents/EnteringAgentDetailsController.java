@@ -2,13 +2,18 @@ package components.subComponents;
 
 import com.sun.istack.internal.NotNull;
 import components.AlliesListController;
+import components.CandidatesTableController;
+import components.ConnectedUsersController;
 import http.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import mainapp.AppMainController;
 import mainapp.ClientMainController;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -22,15 +27,29 @@ import java.io.IOException;
 import static util.Constants.REQUEST_PATH_ADD_AGENT_TO_TEAM;
 
 
-public class EnteringAgentDetailsController implements Presenter {
+public class EnteringAgentDetailsController implements Presenter, AppMainController {
     ClientMainController mainAppController;
 
-    @FXML private ScrollPane alliesListComponent;
-    @FXML private AlliesListController alliesListComponentController;
+    @FXML private AnchorPane alliesListPlace;
+    private AlliesListController alliesListComponentController;
     @FXML private Slider amountOfAgentsSlider;
     @FXML private TextField amountOfTasksField;
 
     //need to make it relevant to agents
+
+    @FXML
+    public void initialize() {
+        try {
+            FXMLLoader load = new FXMLLoader();
+            load.setLocation(AlliesListController.class.getResource("allies-list.fxml"));
+            alliesListPlace.getChildren().add(load.load());
+            alliesListComponentController = load.getController();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+    }
     @FXML
     void readyButtonListener(ActionEvent event) {
 
@@ -69,5 +88,25 @@ public class EnteringAgentDetailsController implements Presenter {
 
             }
         });
+    }
+
+    @Override
+    public void setClientMainController(ClientMainController clientMainController) {
+        this.mainAppController = clientMainController;
+    }
+
+    @Override
+    public void close() {
+
+    }
+
+    @Override
+    public void clearComponent() {
+
+    }
+
+    @Override
+    public void loadClientMainPage() {
+
     }
 }

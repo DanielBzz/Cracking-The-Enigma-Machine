@@ -63,15 +63,7 @@
             <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" />
          </children>
       </GridPane>
-      <AnchorPane GridPane.columnIndex="2">
-         <children>
-            <fx:include fx:id="alliesTableComponent" source="../../../../generalClient/src/components/allies-list.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
-      </AnchorPane>
-      <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="2">
-         <children>
-            <fx:include fx:id="agentsTableComponent" source="../../../../generalClient/src/components/agents-list.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
-      </AnchorPane>
+      <AnchorPane fx:id="alliesTablePlace" GridPane.columnIndex="2" />
+      <AnchorPane fx:id="agentsTablePlace" GridPane.columnIndex="3" GridPane.rowIndex="2" />
    </children>
 </GridPane>

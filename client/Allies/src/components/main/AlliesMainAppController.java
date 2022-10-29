@@ -25,9 +25,11 @@ public class AlliesMainAppController implements AppMainController {
                     dashboardComponentController.setActive();
                 }
             });
+            dashboardComponentController.initial();
         }
         if(contestComponentController!= null){
             contestComponentController.setAlliesMainAppController(this);
+            contestComponentController.initial();
         }
 
     }
@@ -59,7 +61,7 @@ public class AlliesMainAppController implements AppMainController {
     public void updateNewContest(TeamDetailsContestDTO responseDetails) {       // get all the details and should update contest component
 
         // need to enable contest tab and maybe disable first tab
-        contestComponentController.initial(responseDetails);
+        contestComponentController.setBasicThingsForContest(responseDetails);
 
     }
 }

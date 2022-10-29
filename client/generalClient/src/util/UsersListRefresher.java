@@ -34,6 +34,7 @@ public class UsersListRefresher extends TimerTask {
 
                 if(response.code() == 200){
                     userListConsumer.accept(response.body().string());
+                    response.body().close();
                 }
                 else {
                     System.out.println(response.code() + " update user list failed, should be redirect here");

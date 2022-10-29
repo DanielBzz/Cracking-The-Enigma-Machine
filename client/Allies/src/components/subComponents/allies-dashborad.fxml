@@ -28,15 +28,7 @@
          <GridPane.margin>
             <Insets />
          </GridPane.margin></Button>
-      <AnchorPane GridPane.columnIndex="4" GridPane.rowSpan="2147483647">
-         <children>
-            <fx:include fx:id="contestTableComponent" source="../../../../generalClient/src/components/contest-details-table.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
-      </AnchorPane>
-      <AnchorPane GridPane.rowSpan="2147483647">
-         <children>
-            <fx:include fx:id="agentsTableComponent" source="../tables/agents-table.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
-      </AnchorPane>
+      <AnchorPane fx:id="contestDetailsPlace" GridPane.columnIndex="4" GridPane.rowSpan="2147483647" />
+      <AnchorPane fx:id="agentsPlace" GridPane.rowSpan="2147483647" />
    </children>
 </GridPane>
