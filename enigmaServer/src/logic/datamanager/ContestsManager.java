@@ -166,4 +166,19 @@ public class ContestsManager extends DataManager<UserContest> {
 
         return value;
     }
+
+    public void endUserContest(String username, CandidateDataDTO winner) {
+
+        UserContest user;
+
+        synchronized (userNameToData){
+            if(!isContestExist(username)){
+                throw new ContestNotExistException(username);
+            }
+
+            user = userNameToData.get(username);
+        }
+
+        user.endContest(winner);
+    }
 }

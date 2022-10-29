@@ -18,4 +18,8 @@ public class CandidateDataDTO {
     public String getConfiguration() {
         return configuration;
     }
+
+    public String getFoundersName() {
+        return foundersName;
+    }
 }

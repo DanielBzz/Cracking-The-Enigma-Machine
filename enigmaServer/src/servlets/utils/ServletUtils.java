@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class ServletUtils {
 
     public final static Gson GSON_INSTANCE = new Gson();
-    public static final String MESSAGE_TO_ENCRYPT_PARAMETER = "message";
+    public static final String MESSAGE_PARAMETER = "message";
     public static final String CONTEST_NAME_PARAMETER = "contestName";
     public static final String CONTEST_MANAGER_ATTRIBUTE_NAME = "contestManager";
     public static final String TEAM_MANAGER_ATTRIBUTE_NAME = "teamManager";
@@ -34,6 +34,8 @@ public class ServletUtils {
         }
         else if(attributeName.equals(TEAM_MANAGER_ATTRIBUTE_NAME)) {
             return getTeamsManager(servletContext);
+        }else if(attributeName.equals(AGENT_ATTRIBUTE_NAME)) {
+            return getAgentManager(servletContext);
         }else{
             throw new Exception("You should declare your " + SessionUtils.ACCESS_ATTRIBUTE + ":" + CONTEST_MANAGER_ATTRIBUTE_NAME + "/" + TEAM_MANAGER_ATTRIBUTE_NAME);
         }

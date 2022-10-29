@@ -6,6 +6,7 @@ import components.body.details.MachineConfigurationController;
 import components.body.main.EncryptController;
 import components.body.main.EncryptableByDictionary;
 import components.main.UBoatMainAppController;
+import contestDtos.CandidateDataDTO;
 import decryptionDtos.DictionaryDTO;
 import http.HttpClientUtil;
 import javafx.beans.property.BooleanProperty;
@@ -25,6 +26,7 @@ import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
+import util.WinnerChecker;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -33,7 +35,7 @@ import java.util.stream.Collectors;
 
 import static util.Constants.REQUEST_PATH_SET_READY;
 
-public class UBoatRoomContestController implements EncryptableByDictionary {
+public class UBoatRoomContestController implements EncryptableByDictionary, WinnerChecker<CandidateDataDTO> {
 
     private UBoatMainAppController parentController;
     @FXML private BorderPane machineConfigurationComponent;
@@ -78,6 +80,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary {
             load.setLocation(CandidatesTableController.class.getResource("candidates-table.fxml"));
             candidatesTablePlace.getChildren().add(load.load());
             candidatesTableComponentController = load.getController();
+            candidatesTableComponentController.setWinnerChecker(this);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -116,10 +119,11 @@ public class UBoatRoomContestController implements EncryptableByDictionary {
                     .build()
                     .toString();
 
-            HttpClientUtil.runAsync(finalUrl, new Callback() {
+            HttpClientUtil.runAsyncGet(finalUrl, new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     System.out.println(" FAILURE ---- Could not response well" + e.getMessage());
+                    isPrepareForContest.set(false);
                 }
 
                 @Override
@@ -127,7 +131,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary {
 
                     if (response.code() == 200) {
                         connectedTeamsComponentController.stopListRefresher();
-                        candidatesTableComponentController.startListRefresher();
+                        candidatesTableComponentController.startListRefresher(null);
                         System.out.println("encrypted message was updated and now the server is waiting for the teams to set ready!");
                     } else {
                         isPrepareForContest.set(false);
@@ -195,19 +199,41 @@ public class UBoatRoomContestController implements EncryptableByDictionary {
         return machineConfigurationComponentController.getIsCodeConfigurationSetProperty();
     }
 
-    public void clearDetails(){
-        candidatesTableComponentController.clear();
-        connectedTeamsComponentController.clearComponent();
+    public void clearComponent(){
+
+        clearAfterContest();
         machineConfigurationComponentController.clearComponent();
-        encryptComponentController.clearButtonActionListener(new ActionEvent());
         dictionaryDetails = null;
     }
 
     public void setActive() {
         connectedTeamsComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
+        candidatesTableComponentController.cancelRefresher();
+        isPrepareForContest.set(false);
     }
 
     public BooleanProperty isPrepareForContestProperty() {
         return isPrepareForContest;
+    }
+
+    @Override
+    public void checkIfWinner(CandidateDataDTO arg) {
+
+        if(encryptComponentController.getMessageToEncrypt().equals(arg.getDecryptedMessage())){
+            finishContest(arg);
+        }
+    }
+
+    private void finishContest(CandidateDataDTO winnerCandidate) {
+        setActive();
+        clearAfterContest();
+        parentController.showPopUpMessage("the winner is: " + winnerCandidate.getFoundersName());
+        parentController.announceTheWinner(winnerCandidate);
+    }
+
+    private void clearAfterContest(){
+        candidatesTableComponentController.clear();
+        connectedTeamsComponentController.clearComponent();
+        encryptComponentController.clearButtonActionListener(new ActionEvent());
     }
 }

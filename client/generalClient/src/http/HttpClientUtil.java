@@ -2,8 +2,6 @@ package http;
 
 import okhttp3.*;
 
-import java.io.IOException;
-
 public class HttpClientUtil {
 
     private final static OkHttpClient HTTP_CLIENT =
@@ -12,7 +10,7 @@ public class HttpClientUtil {
                     .followRedirects(false)
                     .build();
 
-    public static void runAsync(String finalUrl, Callback callback) {
+    public static void runAsyncGet(String finalUrl, Callback callback) {
         Request request = new Request.Builder()
                 .url(finalUrl)
                 .build();
@@ -23,22 +21,15 @@ public class HttpClientUtil {
         call.enqueue(callback);
     }
 
-    public static Response runPost(String url, RequestBody body) throws IOException {
+    public static void runAsyncPost(String url, RequestBody body, Callback callback){
 
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
                 .build();
 
-        return HTTP_CLIENT.newCall(request).execute();
-    }
-
-    public static Response runGet(String url) throws IOException {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        return HTTP_CLIENT.newCall(request).execute();
+        Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
+        call.enqueue(callback);
     }
 
     public static void shutdown() {

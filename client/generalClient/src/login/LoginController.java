@@ -57,7 +57,7 @@ public class LoginController {
                         .toString();
 
         System.out.println(finalUrl);
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
+        HttpClientUtil.runAsyncGet(finalUrl, new Callback() {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

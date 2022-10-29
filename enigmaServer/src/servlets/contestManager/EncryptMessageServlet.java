@@ -22,7 +22,7 @@ public class EncryptMessageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userName = SessionUtils.getUsername(req);
         ContestsManager manager = ServletUtils.getContestManager(req.getServletContext());
-        String messageToEncrypt = req.getParameter(ServletUtils.MESSAGE_TO_ENCRYPT_PARAMETER);
+        String messageToEncrypt = req.getParameter(ServletUtils.MESSAGE_PARAMETER);
 
         // should save some where the encrypt message to send it to allies / for allies to pull it
 
