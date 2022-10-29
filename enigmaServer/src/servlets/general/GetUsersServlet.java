@@ -34,7 +34,7 @@ public class GetUsersServlet extends HttpServlet {
             DataManager manager = ServletUtils.getDataManager(req.getServletContext(), userAccess);
 
             if (userRequest == null || !manager.isUserExists(userRequest)) {
-                ServletUtils.createResponse(resp, HttpServletResponse.SC_UNAUTHORIZED, null);
+                ServletUtils.createResponse(resp, HttpServletResponse.SC_UNAUTHORIZED, "user not exist");
                 //resp.sendRedirect(); -> want to send redirect to login servlet/page.
                 return;
             }

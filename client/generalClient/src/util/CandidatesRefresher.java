@@ -31,7 +31,7 @@ public class CandidatesRefresher extends TimerTask {
         String finalUrl = HttpUrl.parse(Constants.REQUEST_PATH_GET_CANDIDATES).newBuilder()
                 .addQueryParameter("version", String.valueOf(version)).build().toString();
 
-        HttpClientUtil.runAsyncGet(Constants.REQUEST_PATH_GET_CANDIDATES, new Callback() {
+        HttpClientUtil.runAsyncGet(finalUrl, new Callback() {
 
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

@@ -59,19 +59,13 @@ public class UBoatLogic {
                         appController.setEngineDetails(engine);
                         DictionaryDTO dictionary = constants.Constants.GSON_INSTANCE.fromJson(responseStrings[1], DictionaryDTO.class);
                         appController.setDictionaryDetails(dictionary);
-                        appController.setIsGoodFileSelected(true);
+                        Platform.runLater(()->appController.setIsGoodFileSelected(true));
                     } else {
-                        appController.setSelectedFile("-");
-                        System.out.println(response.code());
+                        String body = responseBody.string();
                         Platform.runLater(()->{
-                            try{
-                                appController.showPopUpMessage(response.code() + responseBody.string());
-                            }catch (Exception e){
-                                e.printStackTrace();
-                                e.getMessage();
-                            }
+                            appController.setSelectedFile("-");
+                            appController.showPopUpMessage(response.code() + body);
                         });
-
                     }
                 }
             }
@@ -90,18 +84,22 @@ public class UBoatLogic {
         HttpClientUtil.runAsyncPost(Constants.REQUEST_PATH_INIT_USER_MACHINE, body, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                appController.showPopUpMessage("error: " + e.getMessage());
+
+                Platform.runLater(()->appController.showPopUpMessage("error: " + e.getMessage()));
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try(ResponseBody responseBody = response.body()) {
-                    if (response.code() == 200) {
-                        codeSetEventHandler.fireEvent(constants.Constants.GSON_INSTANCE.fromJson(responseBody.string(), EngineDTO.class));
-                    } else {
-                        appController.showPopUpMessage(response.code() + " " + responseBody.string());
-                    }
+                    String body = responseBody.string();
+                    Platform.runLater(()->{
+                       if (response.code() == 200) {
+                           codeSetEventHandler.fireEvent(constants.Constants.GSON_INSTANCE.fromJson(body, EngineDTO.class));
+                       } else {
+                           appController.showPopUpMessage(response.code() + " " + body);
+                       }
+                    });
                 }
             }
         });
@@ -115,25 +113,29 @@ public class UBoatLogic {
         HttpClientUtil.runAsyncGet(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                appController.showPopUpMessage("error: " + e.getMessage());
+                Platform.runLater(() -> appController.showPopUpMessage("error: " + e.getMessage()));
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                try(ResponseBody responseBody = response.body()){
-                    if (response.code() == 200) {
-                        EngineWithEncryptDTO resMsg = constants.Constants.GSON_INSTANCE.fromJson(responseBody.string(), EngineWithEncryptDTO.class);
-                        codeSetEventHandler.fireEvent(resMsg.getEngineDTO());
-                        encryptedMessage.set(resMsg.getEncryptedMsg());
-                    } else {
-                        appController.showPopUpMessage(response.code() + " " + responseBody.string());
-                    }
+                try (ResponseBody responseBody = response.body()) {
+                    String body = responseBody.string();
+                    Platform.runLater(() -> {
+                        if (response.code() == 200) {
+                            EngineWithEncryptDTO resMsg = constants.Constants.GSON_INSTANCE.fromJson(body, EngineWithEncryptDTO.class);
+                            codeSetEventHandler.fireEvent(resMsg.getEngineDTO());
+                            encryptedMessage.set(resMsg.getEncryptedMsg());
+                        } else {
+                            appController.showPopUpMessage(response.code() + " " + body);
+                        }
+                    });
                 }
-
             }
         });
     }
+
+
 
     public StringProperty encryptedMessageProperty() {
         return encryptedMessage;

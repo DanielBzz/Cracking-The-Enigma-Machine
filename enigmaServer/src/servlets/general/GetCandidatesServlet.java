@@ -28,7 +28,7 @@ public class GetCandidatesServlet extends HttpServlet {
                 return;
             }
 
-            int userVersion = Integer.parseInt(request.getParameter("version"));
+            int userVersion = Integer.parseInt(request.getParameter("version").trim());
             List<CandidateDataDTO> newCandidates = manager.getCandidates(username,userVersion);
             int newVersion = userVersion + newCandidates.size();
             String[] responseMessage = new String[2];
@@ -37,12 +37,15 @@ public class GetCandidatesServlet extends HttpServlet {
 
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(responseMessage));
 
-        }catch (ContestNotExistException | ContestNotReadyException e){
+        }catch (ContestNotExistException e){
             ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
             System.out.println(e.getMessage());
+        }catch (ContestNotReadyException e){
+            ServletUtils.createResponse(response, HttpServletResponse.SC_NO_CONTENT,e.getMessage());
         }catch (ContestIsFinishedException e ){
             ServletUtils.createResponse(response, HttpServletResponse.SC_ACCEPTED,e.getMessage());
         }catch (Exception e){
+            e.printStackTrace();
             ServletUtils.createResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,null);
         }
     }

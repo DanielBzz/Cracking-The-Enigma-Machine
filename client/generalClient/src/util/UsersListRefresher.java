@@ -37,7 +37,7 @@ public class UsersListRefresher extends TimerTask {
                     response.body().close();
                 }
                 else {
-                    System.out.println(response.code() + " update user list failed, should be redirect here");
+                    System.out.println(response.code() + "  " +response.body().string());
                 }
             }
         });

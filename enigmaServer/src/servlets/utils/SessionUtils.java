@@ -17,7 +17,7 @@ public class SessionUtils {
 
     public static String getAccess (HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        Object sessionAttribute = session != null ? session.getAttribute(USERNAME_ATTRIBUTE) : null;
+        Object sessionAttribute = session != null ? session.getAttribute(ACCESS_ATTRIBUTE) : null;
         return sessionAttribute != null ? sessionAttribute.toString() : null;
     }
 
