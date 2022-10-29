@@ -30,10 +30,10 @@ public class LightweightLoginServlet extends HttpServlet {
                     response.setStatus(HttpServletResponse.SC_CONFLICT);
                 } else {
                     usernameFromParameter = usernameFromParameter.trim();
-
+                    String accessParameter = request.getParameter(ACCESS_ATTRIBUTE).trim();
                     if (userManager.addUser(usernameFromParameter)) {
                         request.getSession(true).setAttribute(USERNAME_ATTRIBUTE, usernameFromParameter);
-                        request.getSession(true).setAttribute(ACCESS_ATTRIBUTE,request.getParameter(ACCESS_ATTRIBUTE));
+                        request.getSession(true).setAttribute(ACCESS_ATTRIBUTE, accessParameter);
                         System.out.println("On login, request URI is: " + request.getRequestURI() + usernameFromParameter);
                         response.setStatus(HttpServletResponse.SC_OK);
                     } else {

@@ -130,7 +130,6 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
 
                     if (response.code() == 200) {
-                        connectedTeamsComponentController.stopListRefresher();
                         candidatesTableComponentController.startListRefresher(null);
                         System.out.println("encrypted message was updated and now the server is waiting for the teams to set ready!");
                     } else {
@@ -208,7 +207,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
 
     public void setActive() {
         connectedTeamsComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
-        candidatesTableComponentController.cancelRefresher();
+        candidatesTableComponentController.clear();
         isPrepareForContest.set(false);
     }
 

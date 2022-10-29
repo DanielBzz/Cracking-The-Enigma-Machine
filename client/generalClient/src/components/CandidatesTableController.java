@@ -49,9 +49,10 @@ public class CandidatesTableController {
     }
 
     public void clear(){
-
         candidatesTable.getItems().clear();
-        timer.cancel();
+        if(timer!=null){
+            timer.cancel();
+        }
     }
 
     public void setWhoFoundTheAnswerLabel(String foundAnswersType){
