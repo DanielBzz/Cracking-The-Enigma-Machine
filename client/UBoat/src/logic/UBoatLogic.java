@@ -4,6 +4,7 @@ import components.main.UBoatMainAppController;
 import contestDtos.CandidateDataDTO;
 import decryptionDtos.DictionaryDTO;
 import http.HttpClientUtil;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import logic.events.CodeSetEventListener;
@@ -61,7 +62,16 @@ public class UBoatLogic {
                         appController.setIsGoodFileSelected(true);
                     } else {
                         appController.setSelectedFile("-");
-                        appController.showPopUpMessage(response.code() + responseBody.string());
+                        System.out.println(response.code());
+                        Platform.runLater(()->{
+                            try{
+                                appController.showPopUpMessage(response.code() + responseBody.string());
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                e.getMessage();
+                            }
+                        });
+
                     }
                 }
             }
