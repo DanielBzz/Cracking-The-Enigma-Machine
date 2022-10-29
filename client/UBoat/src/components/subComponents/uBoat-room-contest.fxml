@@ -39,14 +39,10 @@
             <fx:include fx:id="encryptComponent" source="../../../../../windowsUI/src/components/body/main/encryptComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <AnchorPane GridPane.columnIndex="1" GridPane.rowSpan="2">
-         <children>
-            <fx:include fx:id="connectedTeamsComponent" source="../../../../generalClient/src/components/ConnectedUsersComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children></AnchorPane>
-      <HBox alignment="CENTER_LEFT" spacing="20.0" GridPane.rowIndex="2">
+      <AnchorPane fx:id="connectedTeamsPlace" GridPane.columnIndex="1" GridPane.rowSpan="2" />
+      <HBox fx:id="candidatesTablePlace" alignment="CENTER_LEFT" spacing="20.0" GridPane.rowIndex="2">
          <children>
             <Label text="Candidates:" />
-            <fx:include fx:id="candidatesTableComponent" source="../../../../generalClient/src/components/candidates-table.fxml" />
          </children>
       </HBox>
    </children>

@@ -1,9 +1,11 @@
 package logic.datamanager;
 
 import contestDtos.ActivePlayerDTO;
+import contestDtos.CandidateDataDTO;
 import exceptions.UserNotExistException;
 import logic.serverdata.Agent;
 
+import java.util.List;
 import java.util.Set;
 
 public class AgentManager extends DataManager<Agent> {
@@ -28,6 +30,11 @@ public class AgentManager extends DataManager<Agent> {
 
     @Override
     public Set<ActivePlayerDTO> getConnectedUsersDetails(String userName) { // should return the agent that connected to this allie
+        return null;
+    }
+
+    @Override
+    public List<CandidateDataDTO> getCandidates(String userName, int version) throws UserNotExistException {
         return null;
     }
 

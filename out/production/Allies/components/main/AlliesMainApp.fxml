@@ -5,44 +5,47 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.main.AlliesMainAppController">
-   <top>
-      <Label text="Allies" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="24.0" />
-         </font>
-         <BorderPane.margin>
-            <Insets bottom="5.0" top="5.0" />
-         </BorderPane.margin>
-      </Label>
-   </top>
-   <center>
-      <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-        <tabs>
-          <Tab text="Dashboard">
-               <content>
-                  <ScrollPane>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <BorderPane minHeight="150.0" minWidth="150.0">
+         <top>
+            <Label text="Allies" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+         <center>
+            <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+               <tabs>
+                  <Tab text="Dashboard">
                      <content>
-                        <fx:include fx:id="dashboardComponent" source="../subControllers/allies-dashborad.fxml" />
+                        <ScrollPane fitToHeight="true" fitToWidth="true">
+                           <content>
+                              <fx:include fx:id="dashboardComponent" source="../subComponents/allies-dashborad.fxml" />
+                           </content>
+                        </ScrollPane>
                      </content>
-                  </ScrollPane>
-               </content>
-          </Tab>
-          <Tab text="Contest">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <ScrollPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <fx:include fx:id="contestComponent" source="../subControllers/allies-contest.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
-   </center>
-</BorderPane>
+                  </Tab>
+                  <Tab text="Contest">
+                     <content>
+                        <ScrollPane fitToHeight="true" fitToWidth="true">
+                           <content>
+                              <fx:include fx:id="contestComponent" source="../subComponents/allies-contest.fxml" />
+                           </content>
+                        </ScrollPane>
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+         </center>
+      </BorderPane>
+   </content>
+</ScrollPane>
