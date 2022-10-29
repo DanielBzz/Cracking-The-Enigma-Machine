@@ -1,27 +1,15 @@
-package servlets;
+package servlets.agent;
 
-import contestDtos.CandidateDataDTO;
-import exceptions.ContestNotExistException;
-import exceptions.ContestNotReadyException;
-import jakarta.servlet.ServletException;
+import exceptions.UserNotExistException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.datamanager.AgentManager;
-import logic.datamanager.ContestsManager;
-import logic.datamanager.TeamsManager;
 import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static servlets.utils.ServletUtils.GSON_INSTANCE;
-
-@WebServlet(name = "isContestOnServlet", urlPatterns = "isContestOn")
+@WebServlet(name = "isContestOnServlet", urlPatterns = "/agentManager/isContestOn")
 public class isContestOnServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 
@@ -36,12 +24,10 @@ public class isContestOnServlet extends HttpServlet {
         }
 
         try{
-
             Boolean responseMessage = manager.getAgent(username).isInContest();
 
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(responseMessage));
-
-        }catch (ContestNotExistException | ContestNotReadyException e){
+        }catch (UserNotExistException e){
             ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
             System.out.println(e.getMessage());
         }catch (Exception e){

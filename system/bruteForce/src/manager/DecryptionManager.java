@@ -5,6 +5,7 @@ import decryptionDtos.AgentTaskDTO;
 import logic.*;
 import machineDtos.EngineDTO;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
@@ -64,7 +65,7 @@ public class DecryptionManager {
 
     public Set<String> getWordsDictionary() {
 
-        return wordsDictionary;
+        return Collections.unmodifiableSet(wordsDictionary);
     }
 
     public void decryptMessage(int taskSize, DifficultyLevel level, String message, List<Integer> rotorsId, String reflectorId, Counter tasksMade, int agentsNumber){

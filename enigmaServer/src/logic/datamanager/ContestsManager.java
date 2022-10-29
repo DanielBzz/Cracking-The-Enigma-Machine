@@ -120,6 +120,7 @@ public class ContestsManager extends DataManager<UserContest> {
         return isUserExists(username) && userNameToData.get(username) != null;
     }
 
+    @Override
     public List<CandidateDataDTO> getCandidates(String contest, int lastVersion) throws ContestNotExistException {
 
         if(!isContestExist(contest)){

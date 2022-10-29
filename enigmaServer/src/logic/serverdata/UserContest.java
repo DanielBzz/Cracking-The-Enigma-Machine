@@ -4,8 +4,8 @@ package logic.serverdata;
 import contestDtos.CandidateDataDTO;
 import contestDtos.ContestDetailsDTO;
 import decryptionDtos.DictionaryDTO;
-import exceptions.ReadyForContestException;
 import exceptions.NotInDictionaryException;
+import exceptions.ReadyForContestException;
 import javafx.util.Pair;
 import logic.DecipherLogic;
 import logic.EnigmaSystemEngine;
@@ -17,6 +17,7 @@ import manager.DecryptionManager;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class UserContest {
 
@@ -139,7 +140,11 @@ public class UserContest {
     public void startContest() {
 
         inContest = true;
-
+        competitors.forEach(team -> team.startCompeting(machineEngine,decryptionManager,encryptedMessage,field.getLevel(),updateCandidatesConsumer()));
         //should update teams and make them start create tasks;
+    }
+
+    public Consumer<List<CandidateDataDTO>> updateCandidatesConsumer(){
+        return newCandidates -> candidates.addNewCandidates(newCandidates);
     }
 }

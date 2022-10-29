@@ -1,5 +1,6 @@
-package servlets;
+package servlets.agent;
 
+import contestDtos.AgentInfoDTO;
 import exceptions.ContestNotExistException;
 import exceptions.ContestNotReadyException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,8 +11,8 @@ import logic.datamanager.AgentManager;
 import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
 
-@WebServlet(name = "GetTasksDataServlet", urlPatterns = "getTasksData")
-public class GetTasksDataServlet extends HttpServlet {
+@WebServlet(name = "GetAgentInfoServlet", urlPatterns = "/agentManager/getAgentInfo")
+public class GetAgentInfoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 
         String username = SessionUtils.getUsername(request);
@@ -24,16 +25,14 @@ public class GetTasksDataServlet extends HttpServlet {
         }
 
         try{
-
-            Boolean responseMessage = manager.getAgent(username).isInContest();
+            AgentInfoDTO responseMessage = manager.getAgent(username).getAgentInfo();
 
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(responseMessage));
-
         }catch (ContestNotExistException | ContestNotReadyException e){
             ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
             System.out.println(e.getMessage());
         }catch (Exception e){
-            ServletUtils.createResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,null);
+            ServletUtils.createResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getMessage());
         }
     }
 }

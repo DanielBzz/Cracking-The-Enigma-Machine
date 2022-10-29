@@ -28,8 +28,7 @@ public class UBoatClient extends Application {
             fxmlLoader.setLocation(clientMainApp);
             Parent root = fxmlLoader.load();
             uBoatAppMainController = fxmlLoader.getController();
-            uBoatAppMainController.loadMainAppForm(getClass().getResource(Constants.UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION),Constants.UBOAT_CLIENT);
-
+            uBoatAppMainController.loadMainAppForm(ClassLoader.getSystemResource(Constants.UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION),Constants.UBOAT_CLIENT);
             Scene scene = new Scene(root, 700, 600);
             primaryStage.setScene(scene);
             primaryStage.show();

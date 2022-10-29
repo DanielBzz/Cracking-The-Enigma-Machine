@@ -1,19 +1,29 @@
 package logic.datamanager;
 
 import contestDtos.ActivePlayerDTO;
+import exceptions.UserNotExistException;
 import logic.serverdata.Agent;
-import logic.serverdata.Team;
 
 import java.util.Set;
 
 public class AgentManager extends DataManager<Agent> {
 
-    public synchronized Agent getAgent(String userName){
+    @Override
+    public synchronized boolean addUser(String username){
+        boolean nameOk = super.addUser(username);
+        if(nameOk){
+            userNameToData.put(username,new Agent(username));
+        }
 
-        return userNameToData.get(userName);
+        return nameOk;
     }
-    public synchronized String getAlliesName(String userName){
-        return userNameToData.get(userName).getAlliesName();
+
+    public synchronized Agent getAgent(String userName) throws UserNotExistException {
+
+        if(!isUserExists(userName)){
+            throw new UserNotExistException(userName);
+        }
+        return userNameToData.get(userName);
     }
 
     @Override
@@ -22,4 +32,7 @@ public class AgentManager extends DataManager<Agent> {
     }
 
 
+    public String getTeamName(String userName) {
+        return userNameToData.get(userName).getAlliesName();
+    }
 }

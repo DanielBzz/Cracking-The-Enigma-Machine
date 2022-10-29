@@ -1,11 +1,10 @@
 package logic.datamanager;
 
 import contestDtos.ActivePlayerDTO;
+import contestDtos.CandidateDataDTO;
+import exceptions.UserNotExistException;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public abstract class DataManager<T> {
 
@@ -35,6 +34,10 @@ public abstract class DataManager<T> {
     }
 
     public abstract Set<ActivePlayerDTO> getConnectedUsersDetails(String userName);
+
+    public abstract List<CandidateDataDTO> getCandidates(String userName, int version) throws UserNotExistException;
+
+
 
     public boolean isUserExists(String username) {
 

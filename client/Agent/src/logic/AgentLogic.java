@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 import static constants.Constants.REQUEST_PATH_IS_CONTEST_ON;
 import static util.Constants.REQUEST_PATH_PULL_TASKS;
@@ -112,7 +113,6 @@ public class AgentLogic extends RefresherController {//need to change name of th
         String finalUrl = HttpUrl
                 .parse(REQUEST_PATH_PULL_TASKS)
                 .newBuilder()
-                .addQueryParameter("amount", String.valueOf(amountOfTasksInSingleTake))
                 .build()
                 .toString();
 
@@ -129,6 +129,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
                         AgentTask[] newTasks = Constants.GSON_INSTANCE.fromJson(response.body().toString(), AgentTask[].class);
                         List<WebAgentTask> improvedTasks = new ArrayList<>();
                         for (AgentTask task:newTasks) {
+                            task.getDetails().setAnswerConsumer(answersConsumer());
                             improvedTasks.add(new WebAgentTask(task.getEnigmaMachine(), task.getDetails()));
                             totalTakenTasks.incrementAndGet();
                         }
@@ -166,7 +167,10 @@ public class AgentLogic extends RefresherController {//need to change name of th
             totalFinishedTasks.incrementAndGet();
         }
         //need to check the creation of the body
-        RequestBody body = RequestBody.create(MediaType.get("application/json; charset=utf-8"), Constants.GSON_INSTANCE.toJson(newCandidates));
+        RequestBody body = new MultipartBody.Builder()
+                .addFormDataPart("candidates","candidates" ,
+                        RequestBody.create(Constants.GSON_INSTANCE.toJson(newCandidates),MediaType.get("application/json; charset=utf-8")))
+                .build();
 
         try (Response res = HttpClientUtil.runPost(REQUEST_PATH_PUSH_CANDIDATES, body)) {
 
@@ -187,6 +191,18 @@ public class AgentLogic extends RefresherController {//need to change name of th
         appController.setPassive();
         agentTasks.clear();
         //threadPool.shutdown();
+    }
+
+    private Consumer<AgentAnswerDTO> answersConsumer(){
+
+        return answer ->
+        {
+            try {
+                answersQueue.put(answer);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        };
     }
 
     public void startContest(){

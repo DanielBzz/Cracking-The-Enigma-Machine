@@ -7,23 +7,26 @@ import java.util.List;
 
 public class CandidatesManager {
     private final List<CandidateDataDTO> candidates = new ArrayList<>();
-    private int lastVersion = 0;
 
     public synchronized void addNewCandidates(List<CandidateDataDTO> candidates){
 
-        candidates.forEach(candidate-> {
-            lastVersion++;
-            candidates.add(candidate);
-        });
+        this.candidates.addAll(candidates);
     }
 
     public synchronized List<CandidateDataDTO> getNewCandidates(int version){
 
-        if(version < 0 || version > lastVersion){
+        if(version < 0 || version > candidates.size()){
             version = 0;
         }
 
         return candidates.subList(version, candidates.size());
     }
 
+    public void clear(){
+       candidates.clear();
+    }
+
+    public int getSize(){
+        return candidates.size();
+    }
 }

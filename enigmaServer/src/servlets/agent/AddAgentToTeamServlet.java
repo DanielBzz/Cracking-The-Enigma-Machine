@@ -1,4 +1,4 @@
-package servlets;
+package servlets.agent;
 
 
 import jakarta.servlet.ServletException;
@@ -7,14 +7,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.datamanager.AgentManager;
-import logic.datamanager.ContestsManager;
 import logic.datamanager.TeamsManager;
 import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
 
 import java.io.IOException;
 
-@WebServlet(name = "AddAgentToTeamServlet", urlPatterns = "/agent/addAgentToTeam")
+@WebServlet(name = "AddAgentToTeamServlet", urlPatterns = "/agentManager/addAgentToTeam")
 public class AddAgentToTeamServlet extends HttpServlet {
 
     @Override
@@ -40,7 +39,7 @@ public class AddAgentToTeamServlet extends HttpServlet {
             manager.addAgent(teamManagerName);
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, null);
         }catch(Exception e){
-            ServletUtils.createResponse(response, HttpServletResponse.SC_CONFLICT, null);
+            ServletUtils.createResponse(response, HttpServletResponse.SC_CONFLICT, e.getMessage());
         }
 
     }

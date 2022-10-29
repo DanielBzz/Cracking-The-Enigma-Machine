@@ -13,7 +13,7 @@
                <content>
                   <ScrollPane fitToHeight="true" fitToWidth="true">
                      <content>
-                        <fx:include fx:id="uBoatRoomMachineComponent" source="../subComponents/uBoat-room-machine.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <fx:include fx:id="uBoatRoomMachineComponent" source="../subComponents/uBoat-room-machine.fxml" />
                      </content>
                   </ScrollPane>
                </content>
@@ -22,7 +22,7 @@
                <content>
                   <ScrollPane fitToHeight="true" fitToWidth="true">
                      <content>
-                        <fx:include fx:id="uBoatRoomContestComponent" minHeight="-Infinity" minWidth="-Infinity" source="../subComponents/uBoat-room-contest.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <fx:include fx:id="uBoatRoomContestComponent" source="../subComponents/uBoat-room-contest.fxml" />
                      </content>
                   </ScrollPane>
                </content>

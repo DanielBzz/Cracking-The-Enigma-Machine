@@ -25,16 +25,10 @@ import static util.Constants.REQUEST_PATH_ADD_AGENT_TO_TEAM;
 public class EnteringAgentDetailsController implements Presenter {
     ClientMainController mainAppController;
 
-    @FXML
-    private ScrollPane alliesListComponent;
-    @FXML
-    private AlliesListController alliesListComponentController;
-
-    @FXML
-    private Slider amountOfAgentsSlider;
-
-    @FXML
-    private TextField amountOfTasksField;
+    @FXML private ScrollPane alliesListComponent;
+    @FXML private AlliesListController alliesListComponentController;
+    @FXML private Slider amountOfAgentsSlider;
+    @FXML private TextField amountOfTasksField;
 
     //need to make it relevant to agents
     @FXML
@@ -75,8 +69,5 @@ public class EnteringAgentDetailsController implements Presenter {
 
             }
         });
-
-     //   parentController.changeContest(contestTableComponentController.getSelectedContest());
-
     }
 }

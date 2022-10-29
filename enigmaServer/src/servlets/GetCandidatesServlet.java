@@ -7,7 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logic.datamanager.ContestsManager;
+import logic.datamanager.DataManager;
 import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
 
@@ -18,15 +18,15 @@ public class GetCandidatesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 
         String username = SessionUtils.getUsername(request);
-        ContestsManager manager = ServletUtils.getContestManager(request.getServletContext());
-
-        if (username == null || !manager.isUserExists(username)) {
-            ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED, null);
-            //resp.sendRedirect(); -> want to send redirect to login servlet/page.
-            return;
-        }
 
         try{
+            DataManager manager = ServletUtils.getDataManager(request.getServletContext(), SessionUtils.getAccess(request));
+            if (username == null || !manager.isUserExists(username)) {
+                ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED, null);
+                //resp.sendRedirect(); -> want to send redirect to login servlet/page.
+                return;
+            }
+
             int userVersion = Integer.parseInt(request.getParameter("version"));
             List<CandidateDataDTO> newCandidates = manager.getCandidates(username,userVersion);
             int newVersion = userVersion + newCandidates.size();

@@ -13,7 +13,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import logic.events.EncryptMessageEventListener;
@@ -40,7 +40,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary {
     @FXML private EncryptController encryptComponentController;
     @FXML private Button readyButton;
     @FXML private Button logoutButton;
-    @FXML private AnchorPane candidatesTableComponent;
+    @FXML private ScrollPane candidatesTableComponent;
     @FXML private CandidatesTableController candidatesTableComponentController;
     @FXML private GridPane connectedTeamsComponent;
     @FXML private ConnectedUsersController connectedTeamsComponentController;

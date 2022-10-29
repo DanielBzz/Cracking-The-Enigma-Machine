@@ -1,27 +1,27 @@
 package logic.serverdata;
 
 import contestDtos.ActiveAgentDTO;
-import contestDtos.CandidateDataDTO;
-
-import java.util.ArrayList;
-import java.util.List;
+import contestDtos.AgentInfoDTO;
+import logic.datamanager.CandidatesManager;
 
 public class Agent {
 
     private final String agentName;
+    private String alliesName;
     private int amountOfThreads;
     private int amountOfTasksInASingleTake;
     private int tasksMade;
-    private String alliesName;
-    private List<CandidateDataDTO> candidates;
-    private int version;
+    private final CandidatesManager candidates;
     private boolean inContest;
 
     public Agent(String agentName) {
         this.agentName = agentName;
-        candidates = new ArrayList<>();
-        version = 0;
+        candidates = new CandidatesManager();
         tasksMade = 0;
+    }
+
+    public String getAlliesName() {
+        return alliesName;
     }
 
     public void setBasicData(int amountOfThreads, int amountOfTasksInASingleTake, String alliesName){
@@ -34,25 +34,6 @@ public class Agent {
         return amountOfTasksInASingleTake;
     }
 
-    public int getAmountOfThreads() {
-        return amountOfThreads;
-    }
-
-    public int getVersion() {
-        return version;
-    }
-
-    public List<CandidateDataDTO> getNewCandidates() {
-        return candidates.subList(version, candidates.size());
-    }
-
-    public void updateVersion(){
-        version = candidates.size();
-    }
-    public String getAgentName() {
-        return agentName;
-    }
-
     public void setInContest(boolean inContest) {
         this.inContest = inContest;
     }
@@ -61,13 +42,11 @@ public class Agent {
         return inContest;
     }
 
-    public String getAlliesName() {
-
-        return alliesName;
-    }
-
     public ActiveAgentDTO agentDetails(){
-        return new ActiveAgentDTO(agentName,amountOfThreads,amountOfTasksInASingleTake, candidates.size(),tasksMade);
+        return new ActiveAgentDTO(agentName,amountOfThreads,amountOfTasksInASingleTake, candidates.getSize(),tasksMade);
     }
 
+    public AgentInfoDTO getAgentInfo(){
+        return new AgentInfoDTO(agentName,alliesName,amountOfTasksInASingleTake,amountOfThreads);
+    }
 }
