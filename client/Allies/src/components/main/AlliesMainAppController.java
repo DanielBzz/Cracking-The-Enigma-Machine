@@ -34,6 +34,7 @@ public class AlliesMainAppController implements AppMainController {
     public void setClientMainController(ClientMainController clientMainController) {
         this.parentController = clientMainController;
         parentController.getUserNameProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println(newValue);
             if (newValue!= null && !newValue.equals("")) {
                 dashboardComponentController.setActive();
             }
@@ -63,5 +64,14 @@ public class AlliesMainAppController implements AppMainController {
         // need to enable contest tab and maybe disable first tab
         contestComponentController.setBasicThingsForContest(responseDetails);
 
+    }
+
+    public void ContestInactive() {
+        contestComponentController.setInactive();
+    }
+
+    public void dashboardInactive(){
+        dashboardComponentController.setInactive();
+        contestComponentController.setActive();
     }
 }

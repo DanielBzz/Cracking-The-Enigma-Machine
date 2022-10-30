@@ -16,10 +16,13 @@ public class GetAvailableContestsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 
-        ContestsManager manager = ServletUtils.getContestManager(request.getServletContext());
-        Set<ContestDetailsDTO> contestsDetails =  manager.getContestsDetails();
-
-        ServletUtils.createResponse(response,HttpServletResponse.SC_OK,ServletUtils.GSON_INSTANCE.toJson(contestsDetails));
+        try {
+            ContestsManager manager = ServletUtils.getContestManager(request.getServletContext());
+            Set<ContestDetailsDTO> contestsDetails =  manager.getContestsDetails();
+            ServletUtils.createResponse(response,HttpServletResponse.SC_OK,ServletUtils.GSON_INSTANCE.toJson(contestsDetails));
+        }catch (Exception e){
+            ServletUtils.createResponse(response,HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getMessage());
+        }
     }
 
 }

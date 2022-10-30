@@ -5,7 +5,6 @@ import contestDtos.ContestDetailsDTO;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
-import util.ContestPresenter;
 import util.RefresherController;
 
 import java.util.Arrays;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class ContestDetailsTableController extends RefresherController {
-    private ContestPresenter parentController;
     @FXML private TableView<ContestDetailsDTO> detailsTable;
 
     @Override
@@ -28,11 +26,6 @@ public class ContestDetailsTableController extends RefresherController {
         if(nameOfChosen!= null && chosenContest.isPresent()){
             detailsTable.getSelectionModel().select(chosenContest.get());
         }
-    }
-
-    public void setParentController(ContestPresenter parentController) {
-
-        this.parentController = parentController;
     }
 
     public void addContest(ContestDetailsDTO newContest){

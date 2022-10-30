@@ -2,7 +2,6 @@ package components.subComponents;
 
 import components.AgentsListController;
 import components.AlliesListController;
-import components.ContestDetailsTableController;
 import components.main.AlliesMainAppController;
 import contestDtos.ContestDetailsDTO;
 import contestDtos.TeamDetailsContestDTO;
@@ -11,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import util.Constants;
@@ -51,8 +49,6 @@ public class AlliesContestController implements Presenter {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-        alliesTableComponentController.startListRefresher(Constants.REQUEST_PATH_GET_TEAMS_IN_CONTEST);
-        agentsTableComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
 
         // not finish
     }
@@ -92,4 +88,15 @@ public class AlliesContestController implements Presenter {
 
         new Alert(Alert.AlertType.INFORMATION,msg, ButtonType.OK);
     }
+
+    public void setActive(){
+        alliesTableComponentController.startListRefresher(Constants.REQUEST_PATH_GET_TEAMS_IN_CONTEST);
+        agentsTableComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
+    }
+
+    public void setInactive(){
+        alliesTableComponentController.stopListRefresher();
+        agentsTableComponentController.stopListRefresher();
+    }
+
 }

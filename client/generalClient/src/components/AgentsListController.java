@@ -8,16 +8,17 @@ import util.RefresherController;
 
 public class AgentsListController extends RefresherController {
 
-    @FXML private TableView<ActiveAgentDTO> alliesTable;
+    @FXML private TableView<ActiveAgentDTO> agentsTable;
 
     public void addTeam(ActiveAgentDTO newAgent){
-        alliesTable.getItems().add(newAgent);
+        agentsTable.getItems().add(newAgent);
     }
 
     public void cleanTable(){
-        alliesTable.getItems().clear();
+        if(agentsTable.getItems()!= null) {
+            agentsTable.getItems().clear();
+        }
     }
-
 
     @Override
     public void updateList(String jsonUserList) {

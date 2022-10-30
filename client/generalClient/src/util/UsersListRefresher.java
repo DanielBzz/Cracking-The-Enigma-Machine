@@ -34,11 +34,12 @@ public class UsersListRefresher extends TimerTask {
 
                 if(response.code() == 200){
                     userListConsumer.accept(response.body().string());
-                    response.body().close();
                 }
                 else {
                     System.out.println(response.code() + "  " +response.body().string());
                 }
+
+                response.close();
             }
         });
     }
