@@ -54,7 +54,7 @@ public class AlliesDashboardController {
     public void setActive(){
         contestTableComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
         agentsTableComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
-        parentController.ContestInactive()
+        parentController.ContestInactive();
     }
 
     public void setInactive(){
