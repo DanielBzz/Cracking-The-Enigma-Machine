@@ -10,6 +10,7 @@ import java.util.Set;
 
 public class AgentManager extends DataManager<Agent> {
 
+
     @Override
     public synchronized boolean addUser(String username){
         boolean nameOk = super.addUser(username);
@@ -29,7 +30,8 @@ public class AgentManager extends DataManager<Agent> {
     }
 
     @Override
-    public Set<ActivePlayerDTO> getConnectedUsersDetails(String userName) { // should return the agent that connected to this allie
+    public Set<ActivePlayerDTO> getConnectedUsersDetails(String userName) { // should return all the allies that connected to the server
+        System.out.println("in AgentManager - need to understand how to get all the teams???");
         return null;
     }
 

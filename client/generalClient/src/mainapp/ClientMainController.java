@@ -1,5 +1,6 @@
 package mainapp;
 
+import components.DynamicComponent;
 import constants.Constants;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -49,10 +50,11 @@ public class ClientMainController implements Closeable, Loggable {
     private void setMainPanelTo(Parent pane) {
         mainPanel.getChildren().clear();
         mainPanel.getChildren().add(pane);
-        AnchorPane.setBottomAnchor(pane, 1.0);
-        AnchorPane.setTopAnchor(pane, 1.0);
-        AnchorPane.setLeftAnchor(pane, 1.0);
-        AnchorPane.setRightAnchor(pane, 1.0);
+        DynamicComponent.fitToPane(pane);
+//        AnchorPane.setBottomAnchor(pane, 1.0);
+//        AnchorPane.setTopAnchor(pane, 1.0);
+//        AnchorPane.setLeftAnchor(pane, 1.0);
+//        AnchorPane.setRightAnchor(pane, 1.0);
     }
 
     @Override
@@ -80,6 +82,7 @@ public class ClientMainController implements Closeable, Loggable {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(resourceFromClient);
             appComponent = (Parent) fxmlLoader.load();
+
             appComponentController = fxmlLoader.getController();
             appComponentController.setClientMainController(this);
             access = loginAccess;

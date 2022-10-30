@@ -15,6 +15,7 @@ public class AlliesListController extends RefresherController {
     }
 
     public void cleanTable(){
+
         alliesTable.getItems().clear();
     }
 
@@ -28,11 +29,14 @@ public class AlliesListController extends RefresherController {
 
     @Override
     public void updateList(String jsonUserList) {
+
         ActivePlayerDTO[] usersList = Constants.GSON_INSTANCE.fromJson(jsonUserList,ActivePlayerDTO[].class);
 
         cleanTable();
-        for(ActivePlayerDTO player : usersList){
-            addTeam(player);
+        if (usersList != null) {
+            for(ActivePlayerDTO player : usersList){
+                addTeam(player);
+            }
         }
     }
 }

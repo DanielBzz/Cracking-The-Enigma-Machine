@@ -6,6 +6,7 @@ import components.subComponents.AgentProgressAndStatusController;
 import components.subComponents.ContestAndTeamDataController;
 import contestDtos.AgentInfoDTO;
 import contestDtos.AgentProgressDTO;
+import contestDtos.CandidateDataDTO;
 import http.HttpClientUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
@@ -17,6 +18,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.List;
 
 import static util.Constants.REQUEST_PATH_GET_AGENT_INFO;
 
@@ -76,6 +78,10 @@ public class AgentMainAppController implements AppMainController {
     @Override
     public void loadClientMainPage() {
 
+    }
+
+    public synchronized void updateCandidates(List<CandidateDataDTO> newCandidates){
+        agentsCandidatesComponentController.updateCandidates(newCandidates);
     }
 
     public void setActive(){

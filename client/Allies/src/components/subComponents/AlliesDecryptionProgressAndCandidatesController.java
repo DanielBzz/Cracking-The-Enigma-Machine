@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 import components.AgentsListController;
 import components.CandidatesTableController;
 import components.ContestDetailsTableController;
+import components.DynamicComponent;
 import contestDtos.ContestDetailsDTO;
 import http.HttpClientUtil;
 import javafx.beans.property.BooleanProperty;
@@ -11,6 +12,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
@@ -46,7 +48,9 @@ public class AlliesDecryptionProgressAndCandidatesController {
         try {
             FXMLLoader load = new FXMLLoader();
             load.setLocation(CandidatesTableController.class.getResource("candidates-table.fxml"));
-            candidatesPlace.getChildren().add(load.load());
+            Node newComponent = load.load();
+            candidatesPlace.getChildren().add(newComponent);
+            DynamicComponent.fitToPane(newComponent);
             candidatesTableController = load.getController();
 
         } catch (IOException e) {

@@ -34,7 +34,7 @@ public class ReadFileServlet extends HttpServlet {
 
         try {
             String fileContent = ServletUtils.getBody(req.getParts());
-            UserContest contest = createContestDetailsForUser(fileContent,resp);
+            UserContest contest = createContestDetailsForUser(fileContent,resp, userName);
             if(contest != null && contestsManager.addContestForUser(userName,contest)) {
                 String[] jsonStrings = new String[2];
                 jsonStrings[0] = ServletUtils.GSON_INSTANCE.toJson(contest.getEngineInfo());
@@ -52,7 +52,7 @@ public class ReadFileServlet extends HttpServlet {
         }
     }
 
-    private UserContest createContestDetailsForUser(String xmlFileContent, HttpServletResponse resp){
+    private UserContest createContestDetailsForUser(String xmlFileContent, HttpServletResponse resp, String userName){
 
         System.out.println(xmlFileContent);
         EnigmaEngine engineForUser = new EnigmaEngine();
@@ -70,6 +70,6 @@ public class ReadFileServlet extends HttpServlet {
             return null;
         }
 
-        return new UserContest(engineForUser,dmForUser,field);
+        return new UserContest(engineForUser,dmForUser,field, userName);
     }
 }

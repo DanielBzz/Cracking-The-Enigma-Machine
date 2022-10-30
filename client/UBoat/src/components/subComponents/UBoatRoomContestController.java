@@ -2,6 +2,7 @@ package components.subComponents;
 
 import components.CandidatesTableController;
 import components.ConnectedUsersController;
+import components.DynamicComponent;
 import components.body.details.MachineConfigurationController;
 import components.body.main.EncryptController;
 import components.body.main.EncryptableByDictionary;
@@ -14,6 +15,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -72,14 +74,19 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
         try {
             FXMLLoader load = new FXMLLoader();
             load.setLocation(ConnectedUsersController.class.getResource("ConnectedUsersComponent.fxml"));
-            connectedTeamsPlace.getChildren().add(load.load());
+            Node usersComponent = load.load();
+            connectedTeamsPlace.getChildren().add(usersComponent);
+            DynamicComponent.fitToPane(usersComponent);
             connectedTeamsComponentController = load.getController();
 
 
             load = new FXMLLoader();
             load.setLocation(CandidatesTableController.class.getResource("candidates-table.fxml"));
-            candidatesTablePlace.getChildren().add(load.load());
+            Node candidatesComponent = load.load();
+            candidatesTablePlace.getChildren().add(candidatesComponent);
+            DynamicComponent.fitToPane(candidatesComponent);
             candidatesTableComponentController = load.getController();
+
             candidatesTableComponentController.setWinnerChecker(this);
 
         } catch (IOException e) {

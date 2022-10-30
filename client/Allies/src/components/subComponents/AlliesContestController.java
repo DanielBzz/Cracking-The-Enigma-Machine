@@ -2,11 +2,13 @@ package components.subComponents;
 
 import components.AgentsListController;
 import components.AlliesListController;
+import components.DynamicComponent;
 import components.main.AlliesMainAppController;
 import contestDtos.ContestDetailsDTO;
 import contestDtos.TeamDetailsContestDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -36,13 +38,18 @@ public class AlliesContestController implements Presenter {
         try {
             FXMLLoader load = new FXMLLoader();
             load.setLocation(AgentsListController.class.getResource("agents-list.fxml"));
-            agentsTablePlace.getChildren().add(load.load());
+            Node agentComponent = load.load();
+            agentsTablePlace.getChildren().add(agentComponent);
+            DynamicComponent.fitToPane(agentComponent);
             agentsTableComponentController = load.getController();
+
 
 
             load = new FXMLLoader();
             load.setLocation(AlliesListController.class.getResource("allies-list.fxml"));
-            alliesTablePlace.getChildren().add(load.load());
+            Node alliesComponent = load.load();
+            alliesTablePlace.getChildren().add(alliesComponent);
+            DynamicComponent.fitToPane(alliesComponent);
             alliesTableComponentController = load.getController();
 
         } catch (IOException e) {

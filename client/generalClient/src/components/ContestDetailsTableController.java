@@ -22,6 +22,8 @@ public class ContestDetailsTableController extends RefresherController {
                 contests.stream().filter(contest -> contest.getContestManagerName().equals(nameOfChosen)).findFirst()
                 : Optional.empty();
 
+        //contests.forEach(contest->detailsTable.getItems().add(contest));
+
         detailsTable.setItems(FXCollections.observableList(contests));
         if(nameOfChosen!= null && chosenContest.isPresent()){
             detailsTable.getSelectionModel().select(chosenContest.get());

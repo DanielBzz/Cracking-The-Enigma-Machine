@@ -167,8 +167,8 @@ public class AgentLogic extends RefresherController {//need to change name of th
             });
             totalFinishedTasks.incrementAndGet();
         }
-        //need to check the creation of the body
-
+        //need to check if we need to put it in platform run later
+        appController.updateCandidates(newCandidates);
         String json = constants.Constants.GSON_INSTANCE.toJson(newCandidates);
 
         RequestBody body =

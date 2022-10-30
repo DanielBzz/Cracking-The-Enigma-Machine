@@ -25,13 +25,15 @@ public class UserContest {
     private final EnigmaSystemEngine machineEngine;
     private final DecryptionManager decryptionManager;
     private final BattleField field;
+    private final String managerName;
     private String encryptedMessage;
     private boolean ready;
     private boolean inContest;
     private final Set<Team> competitors = new HashSet<>();
     private CandidatesManager candidates;
 
-    public UserContest(EnigmaSystemEngine machineEngine, DecryptionManager decryptionManager, BattleField field) {
+    public UserContest(EnigmaSystemEngine machineEngine, DecryptionManager decryptionManager, BattleField field, String managerName) {
+        this.managerName = managerName;
         this.machineEngine = machineEngine;
         this.decryptionManager = decryptionManager;
         this.field = field;
@@ -130,7 +132,7 @@ public class UserContest {
 
         ContestDetailsDTO dto = new ContestDetailsDTO(
                 field.getBattleName(),
-                null,
+                managerName,
                 inContest,field.getLevel().name(),
                 new Pair<>(field.getNumberOfAllies(),competitors.size()),
                 decryptionManager.getTaskAmount(), encryptedMessage);

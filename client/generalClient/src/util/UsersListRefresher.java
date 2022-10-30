@@ -33,7 +33,15 @@ public class UsersListRefresher extends TimerTask {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
 
                 if(response.code() == 200){
-                    userListConsumer.accept(response.body().string());
+                    String responseBody;
+                    try{
+                        responseBody = response.body().string();
+                    }catch (NullPointerException e){
+                        responseBody = "";
+                        System.out.println();
+                    }
+                    System.out.println("responseBody of UserListRefresher is: " + responseBody);
+                    userListConsumer.accept(responseBody);
                 }
                 else {
                     System.out.println(response.code() + "  " +response.body().string());

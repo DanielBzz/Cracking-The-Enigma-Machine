@@ -2,11 +2,14 @@ package components.subComponents;
 
 import com.sun.istack.internal.NotNull;
 import components.AlliesListController;
+import components.DynamicComponent;
 import http.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -40,9 +43,13 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
         try {
             FXMLLoader load = new FXMLLoader();
             load.setLocation(AlliesListController.class.getResource("allies-list.fxml"));
-            alliesListPlace.getChildren().add(load.load());
+            Node newComponent = load.load();
+            alliesListPlace.getChildren().add(newComponent);
+            DynamicComponent.fitToPane(newComponent);
+
             alliesListComponentController = load.getController();
             alliesListComponentController.startListRefresher(REQUEST_PATH_USERS_UPDATE);
+
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
