@@ -20,11 +20,6 @@ public class AlliesMainAppController implements AppMainController {
 
         if(dashboardComponentController!= null) {
             dashboardComponentController.setAlliesMainAppController(this);
-            parentController.getUserNameProperty().addListener((observable, oldValue, newValue) -> {
-                if (!newValue.equals("")) {
-                    dashboardComponentController.setActive();
-                }
-            });
             dashboardComponentController.initial();
         }
         if(contestComponentController!= null){
@@ -38,6 +33,11 @@ public class AlliesMainAppController implements AppMainController {
     @Override
     public void setClientMainController(ClientMainController clientMainController) {
         this.parentController = clientMainController;
+        parentController.getUserNameProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue!= null && !newValue.equals("")) {
+                dashboardComponentController.setActive();
+            }
+        });
     }
 
     @Override

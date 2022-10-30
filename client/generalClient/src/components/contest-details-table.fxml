@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" minHeight="50.0" minWidth="125.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.ContestDetailsTableController.">
+<ScrollPane fitToHeight="true" fitToWidth="true" minHeight="50.0" minWidth="125.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.ContestDetailsTableController">
    <content>
       <TableView fx:id="detailsTable" minHeight="200.0" minWidth="402.0">
         <columns>

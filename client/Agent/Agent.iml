@@ -13,5 +13,14 @@
     <orderEntry type="library" name="gson-2.8.8" level="project" />
     <orderEntry type="module" module-name="BruteForce" />
     <orderEntry type="module" module-name="enigmaMachine" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../out/artifacts/generalClient_jar/generalClient.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

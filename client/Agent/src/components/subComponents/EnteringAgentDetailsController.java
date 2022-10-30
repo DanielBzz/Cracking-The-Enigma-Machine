@@ -2,14 +2,11 @@ package components.subComponents;
 
 import com.sun.istack.internal.NotNull;
 import components.AlliesListController;
-import components.CandidatesTableController;
-import components.ConnectedUsersController;
 import http.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
