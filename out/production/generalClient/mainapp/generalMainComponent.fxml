@@ -20,7 +20,7 @@
          </rowConstraints>
          <children>
             <Label id="greeting-label" fx:id="userGreetingLabel" text="Hello Mosh" />
-            <Label id="chat-app-client-header" alignment="CENTER" maxWidth="1.7976931348623157E308" text="UBoat Player" GridPane.columnIndex="1" />
+            <Label id="chat-app-client-header" fx:id="userTypeLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" text="UBoat Player" GridPane.columnIndex="1" />
             <AnchorPane fx:id="mainPanel" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
          </children>
       </GridPane>

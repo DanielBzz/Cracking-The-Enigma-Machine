@@ -6,6 +6,7 @@ import components.main.AgentMainAppController;
 import constants.Constants;
 import contestDtos.AgentProgressDTO;
 import contestDtos.CandidateDataDTO;
+import contestDtos.ContestDetailsDTO;
 import decryptionDtos.AgentAnswerDTO;
 import decryptionDtos.AgentTaskDTO;
 import http.HttpClientUtil;
@@ -16,6 +17,7 @@ import util.RefresherController;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -50,14 +52,11 @@ public class AgentLogic extends RefresherController {//need to change name of th
 
     @Override
     public void updateList(String jsonUserList) {
-        try{
-            //very sensitive
-            inContest = Constants.GSON_INSTANCE.fromJson(jsonUserList, Boolean.class);
-            if(inContest && agentTasks.size() == 0){
-                startContest();
-            }
-        }catch (Exception e){
-            System.out.println("There was a problem with the body of the response and couldnt convert string to boolean");
+        String[] res = Constants.GSON_INSTANCE.fromJson(jsonUserList, String[].class);
+        inContest = Boolean.valueOf(res[0]);
+        if(inContest && agentTasks.size() == 0){
+            ContestDetailsDTO contestData = Constants.GSON_INSTANCE.fromJson(res[1], ContestDetailsDTO.class);
+            startContest(contestData);
         }
     }
 
@@ -215,7 +214,8 @@ public class AgentLogic extends RefresherController {//need to change name of th
         };
     }
 
-    public void startContest(){
+    public void startContest(ContestDetailsDTO contestData){
+        appController.addContestDetailsToScreen(contestData);
         pullTasks();
     }
 

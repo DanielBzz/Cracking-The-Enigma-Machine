@@ -31,7 +31,7 @@ public class TeamsManager extends DataManager<Team>{
     }
 
     public synchronized String getContestName(String userName){
-        return userNameToData.get(userName).getContestName();
+        return userNameToData.get(userName).getContestManagerName();
     }
 
     @Override

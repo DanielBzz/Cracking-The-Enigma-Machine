@@ -2,6 +2,7 @@ package components.subComponents;
 
 import components.AgentsListController;
 import components.ActivePlayerListController;
+import components.ContestDetailsController;
 import components.DynamicComponent;
 import components.main.AlliesMainAppController;
 import contestDtos.ContestDetailsDTO;
@@ -26,8 +27,8 @@ public class AlliesContestController implements Presenter, TeamTableHolder {
     private AlliesMainAppController parentController;
     @FXML private GridPane alliesDecryptionProgressAndCandidatesComponent;
     @FXML private AlliesDecryptionProgressAndCandidatesController alliesDecryptionProgressAndCandidatesComponentController;
-    @FXML private BorderPane contestDataAreaComponent;
-    @FXML private ContestDetailsController contestDataAreaComponentController;
+    @FXML private AnchorPane contestDataAreaComponent;
+    private ContestDetailsController contestDataAreaComponentController;
     @FXML private AnchorPane alliesTablePlace;
     private ActivePlayerListController alliesTableComponentController;
     @FXML private AnchorPane agentsTablePlace;
@@ -46,7 +47,12 @@ public class AlliesContestController implements Presenter, TeamTableHolder {
             DynamicComponent.fitToPane(agentComponent);
             agentsTableComponentController = load.getController();
 
-
+            load = new FXMLLoader();
+            load.setLocation(ContestDetailsController.class.getResource("contest-details.fxml"));
+            Node contestComponent = load.load();
+            contestDataAreaComponent.getChildren().add(contestComponent);
+            DynamicComponent.fitToPane(contestComponent);
+            contestDataAreaComponentController = load.getController();
 
             load = new FXMLLoader();
             load.setLocation(ActivePlayerListController.class.getResource("activePlayerList.fxml"));
@@ -60,7 +66,6 @@ public class AlliesContestController implements Presenter, TeamTableHolder {
             System.out.println(e.getMessage());
         }
 
-        // not finish
     }
 
     public void setBasicThingsForContest(TeamDetailsContestDTO responseDetails){

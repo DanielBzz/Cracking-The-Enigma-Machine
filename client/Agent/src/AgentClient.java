@@ -10,6 +10,8 @@ import util.Constants;
 import java.io.IOException;
 import java.net.URL;
 
+import static constants.Constants.AGENT_TYPE;
+
 public class AgentClient extends Application {
 
     ClientMainController mainAppController;
@@ -25,7 +27,7 @@ public class AgentClient extends Application {
             Parent root = fxmlLoader.load();
             mainAppController = fxmlLoader.getController();
             mainAppController.loadMainAppForm(getClass().getResource(Constants.AGENT_ENTER_DETAILS_FXML_RESOURCE_LOCATION),Constants.AGENT_CLIENT);
-
+            mainAppController.setUserType(AGENT_TYPE);
             Scene scene = new Scene(root, 700, 600);
             primaryStage.setScene(scene);
             primaryStage.show();

@@ -74,12 +74,12 @@ public class ContestsManager extends DataManager<UserContest> {
 
         if(!isContestExist(userName)) {
             throw new ContestNotExistException(userName);
-        } else if (competitor.getContestName() != null) {
+        } else if (competitor.getContestManagerName() != null) {
             throw new Error("User already in contest");
         }
 
         userNameToData.get(userName).addCompetitor(competitor);
-        competitor.setContestName(userName);
+        competitor.setContestManagerName(userName);
     }
 
     public void setContestUserReady(String username) throws ContestNotExistException {
@@ -136,7 +136,7 @@ public class ContestsManager extends DataManager<UserContest> {
     public synchronized void removeUser(String username){
 
         if(isContestExist(username)){
-            userNameToData.get(username).getCompetitors().forEach(competitor-> competitor.setContestName(null));
+            userNameToData.get(username).getCompetitors().forEach(competitor-> competitor.setContestManagerName(null));
         }
 
         super.removeUser(username);
