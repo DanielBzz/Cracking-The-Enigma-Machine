@@ -25,7 +25,6 @@ public class ReadFileServlet extends HttpServlet {
         String userName = SessionUtils.getUsername(req);
         ContestsManager contestsManager = ServletUtils.getContestManager(req.getServletContext());
 
-        System.out.println(userName);
         if(userName == null || !contestsManager.isUserExists(userName)) {
             ServletUtils.createResponse(resp,HttpServletResponse.SC_UNAUTHORIZED,null);
             //resp.sendRedirect(); -> want to send redirect to login servlet/page.

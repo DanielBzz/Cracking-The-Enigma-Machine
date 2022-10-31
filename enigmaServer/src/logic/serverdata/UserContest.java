@@ -90,9 +90,9 @@ public class UserContest {
             }
         }
 
-        encryptedMessage = newMessage;
+        encryptedMessage = machineEngine.encryptString(newMessage);
 
-        return machineEngine.encryptString(newMessage);
+        return encryptedMessage;
     }
     public void addCompetitor(Team newCompetitor){
 
@@ -164,5 +164,9 @@ public class UserContest {
                 candidates.addNewCandidates(newCandidates);
             }
         };
+    }
+
+    public void removeCompetitor(Team competitor) {
+        competitors.remove(competitor);
     }
 }

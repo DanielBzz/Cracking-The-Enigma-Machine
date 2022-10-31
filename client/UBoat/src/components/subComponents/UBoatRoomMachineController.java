@@ -4,6 +4,7 @@ import components.body.details.CodeCalibrationController;
 import components.body.details.EngineDetailsController;
 import components.body.main.EngineDtoReturnableParentController;
 import components.main.UBoatMainAppController;
+import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import machineDtos.EngineDTO;
@@ -56,13 +57,8 @@ public class UBoatRoomMachineController implements EngineDtoReturnableParentCont
                 (observable, oldValue, newValue) ->  parentController.initialMachineConfiguration(newValue));
     }
 
-    public void disableCodeCalibration(){
-        codeCalibrationComponent.setDisable(true);
-    }
-
-    //not sure if need but:
-    public void enableCodeCalibration(){
-        codeCalibrationComponent.setDisable(false);
+    public BooleanProperty codeCalibrationDisableProperty(){
+        return codeCalibrationComponent.disableProperty();
     }
 
 }

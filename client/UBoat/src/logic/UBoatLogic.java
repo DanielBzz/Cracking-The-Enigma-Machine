@@ -38,7 +38,7 @@ public class UBoatLogic {
         if (!f.exists()) {
             return;
         }
-
+        System.out.println(filePath);
         RequestBody body =
                 new MultipartBody.Builder()
                         .addFormDataPart("file", f.getName(), RequestBody.create(f, MediaType.parse("text/plain")))
@@ -135,14 +135,32 @@ public class UBoatLogic {
         });
     }
 
-
-
     public StringProperty encryptedMessageProperty() {
         return encryptedMessage;
     }
 
     public void logOut() {
+        String finalUrl = HttpUrl.parse(constants.Constants.REQUEST_PATH_LOGOUT).newBuilder()
+                .build().toString();
 
+        HttpClientUtil.runAsyncGet(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("FAILURE --- the server continue to competing");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if(response.code()!=200){
+                    System.out.println("NOT LOGOUT WELL");
+                } else {
+                    Platform.runLater(()->appController.initialFileLoadable());
+                    System.out.println("LOGOUT WORKS GREAT");
+                }
+
+                response.close();
+            }
+        });
     }
 
     public void finishContest(CandidateDataDTO winnerCandidate) {

@@ -67,12 +67,6 @@ public class AgentMainAppController implements AppMainController {
         candidatesTable.getItems().clear();
     }
 
-    @Override
-    public void loadClientMainPage() {
-
-    }
-
-
     public synchronized void updateCandidates(List<CandidateDataDTO> newCandidates) {
         newCandidates.forEach(candidate->candidatesTable.getItems().add(candidate));
     }

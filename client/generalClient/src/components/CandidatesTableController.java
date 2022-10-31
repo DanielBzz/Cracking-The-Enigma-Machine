@@ -38,7 +38,9 @@ public class CandidatesTableController {
     }
 
     public void cancelRefresher(){
-        timer.cancel();
+        if(timer!=null) {
+            timer.cancel();
+        }
     }
 
     public void updateCandidates(List<CandidateDataDTO> newCandidates) {

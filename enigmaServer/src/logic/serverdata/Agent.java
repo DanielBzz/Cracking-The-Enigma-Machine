@@ -7,7 +7,7 @@ import logic.datamanager.CandidatesManager;
 public class Agent {
 
     private final String agentName;
-    private String alliesName;
+    private String teamName;
     private int amountOfThreads;
     private int amountOfTasksInASingleTake;
     private int tasksMade;
@@ -20,14 +20,14 @@ public class Agent {
         tasksMade = 0;
     }
 
-    public String getAlliesName() {
-        return alliesName;
+    public String getTeamName() {
+        return teamName;
     }
 
     public void setBasicData(int amountOfThreads, int amountOfTasksInASingleTake, String alliesName){
         this.amountOfThreads = amountOfThreads;
         this.amountOfTasksInASingleTake = amountOfTasksInASingleTake;
-        this.alliesName = alliesName;
+        this.teamName = alliesName;
     }
 
     public int getAmountOfTasksInASingleTake() {
@@ -47,12 +47,16 @@ public class Agent {
     }
 
     public AgentInfoDTO getAgentInfo(){
-        return new AgentInfoDTO(agentName,alliesName,amountOfTasksInASingleTake,amountOfThreads);
+        return new AgentInfoDTO(agentName, teamName,amountOfTasksInASingleTake,amountOfThreads);
     }
 
     public void endTasks() {
 
         inContest = false;
         tasksMade = 0;
+    }
+
+    public void setTeam(String team) {
+        teamName = team;
     }
 }

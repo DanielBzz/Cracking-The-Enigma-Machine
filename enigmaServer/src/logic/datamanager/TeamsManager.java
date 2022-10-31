@@ -4,8 +4,10 @@ import agent.AgentTask;
 import contestDtos.ActivePlayerDTO;
 import contestDtos.CandidateDataDTO;
 import exceptions.ContestIsFinishedException;
+import exceptions.ContestNotExistException;
 import exceptions.ContestNotReadyException;
 import exceptions.UserNotExistException;
+import logic.serverdata.Agent;
 import logic.serverdata.Team;
 
 import java.util.ArrayList;
@@ -25,12 +27,23 @@ public class TeamsManager extends DataManager<Team>{
         return isAdded;
     }
 
+    @Override
+    public synchronized void removeUser(String username){
+
+        if(isUserExists(username)){
+            userNameToData.get(username).removeTeam();
+        }
+
+        super.removeUser(username);
+    }
+
     public synchronized Team getTeam(String userName){
 
         return userNameToData.get(userName);
     }
 
     public synchronized String getContestName(String userName){
+
         return userNameToData.get(userName).getContestName();
     }
 
@@ -123,5 +136,15 @@ public class TeamsManager extends DataManager<Team>{
         }
 
         team.addCandidates(newCandidates);
+    }
+
+    public void removeAgentFromTeam(String teamName, Agent agent) {
+
+        if(!isUserExists(teamName)) {
+            throw new ContestNotExistException(teamName);
+        }
+
+        userNameToData.get(teamName).removeAgent(agent);
+
     }
 }

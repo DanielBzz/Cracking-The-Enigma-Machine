@@ -30,7 +30,7 @@ public abstract class FileLoadable {
 
     public abstract void initialFileSelectedEvents();
 
-    protected void initialFileLoadable(){
+    public void initialFileLoadable(){
 
         selectedFileProperty.set("-");
         isGoodFileSelected.set(false);
