@@ -43,8 +43,8 @@ public class TeamsManager extends DataManager<Team>{
     }
 
     public synchronized String getContestName(String userName){
+        return userNameToData.get(userName).getContestManagerName();
 
-        return userNameToData.get(userName).getContestName();
     }
 
     @Override
@@ -94,8 +94,8 @@ public class TeamsManager extends DataManager<Team>{
         team.setReady(true);
     }
 
-    public void addAgent(String alliesName){
-     //   userNameToData.get(alliesName).increaseNumOfAgents();
+    public void addAgent(String alliesName, ActivePlayerDTO newAgent){
+        getTeam(alliesName).addAgentToTeam(newAgent);
     }
 
     public List<AgentTask> getTasks(String username, int amountOfTasks) throws UserNotExistException, InterruptedException {

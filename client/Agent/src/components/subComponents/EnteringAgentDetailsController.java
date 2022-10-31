@@ -54,6 +54,7 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
             System.out.println(e.getMessage());
         }
     }
+
     @FXML
     void readyButtonListener(ActionEvent event) {
 

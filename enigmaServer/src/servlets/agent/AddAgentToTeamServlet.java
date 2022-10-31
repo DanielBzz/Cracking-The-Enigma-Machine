@@ -1,6 +1,7 @@
 package servlets.agent;
 
 
+import contestDtos.ActivePlayerDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -36,7 +37,9 @@ public class AddAgentToTeamServlet extends HttpServlet {
 
             TeamsManager manager = ServletUtils.getTeamsManager(request.getServletContext());
             String teamManagerName = request.getParameter(ServletUtils.TEAM_MANAGER_ATTRIBUTE_NAME);
-            manager.addAgent(teamManagerName);
+            manager.addAgent(teamManagerName, new ActivePlayerDTO(userName, amountOfThreads, amountOfTasksInASingleTake));
+
+            //need to add response body with all of that details!!!
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, null);
         }catch(Exception e){
             ServletUtils.createResponse(response, HttpServletResponse.SC_CONFLICT, e.getMessage());

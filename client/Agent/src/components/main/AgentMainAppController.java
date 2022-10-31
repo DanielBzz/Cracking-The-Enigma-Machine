@@ -6,6 +6,7 @@ import components.subComponents.ContestAndTeamDataController;
 import contestDtos.AgentInfoDTO;
 import contestDtos.AgentProgressDTO;
 import contestDtos.CandidateDataDTO;
+import contestDtos.ContestDetailsDTO;
 import http.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -22,6 +23,7 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.util.List;
 
+import static constants.Constants.AGENT_TYPE;
 import static util.Constants.REQUEST_PATH_GET_AGENT_INFO;
 
 public class AgentMainAppController implements AppMainController {
@@ -35,6 +37,7 @@ public class AgentMainAppController implements AppMainController {
 
     @FXML
     public void initialize(){
+
         getBasicInfo(this);
         if(agentProgressAndStatusComponentController!= null){
             agentProgressAndStatusComponentController.setAgentMainAppController(this);
@@ -65,6 +68,15 @@ public class AgentMainAppController implements AppMainController {
         contestAndTeamDataComponentController.clearTable();
         agentProgressAndStatusComponentController.clearDetails();
         candidatesTable.getItems().clear();
+    }
+
+    @Override
+    public void loadClientMainPage() {
+
+    }
+
+    public void addContestDetailsToScreen(ContestDetailsDTO contestData){
+        contestAndTeamDataComponentController.updateContestData(contestData);
     }
 
     public synchronized void updateCandidates(List<CandidateDataDTO> newCandidates) {

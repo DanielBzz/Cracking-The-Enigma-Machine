@@ -22,6 +22,7 @@ import java.net.URL;
 public class ClientMainController implements Closeable, Loggable {
     @FXML private Label userGreetingLabel;
     @FXML private AnchorPane mainPanel;
+    @FXML private Label userTypeLabel;
     private GridPane loginComponent;
     private LoginController loginComponentController;
     private Parent appComponent;
@@ -39,6 +40,10 @@ public class ClientMainController implements Closeable, Loggable {
         userGreetingLabel.textProperty().bind(Bindings.concat("Hello ", currentUserName));
         loadLoginPage();
         //appComponentController.loadClientMainPage();
+    }
+
+    public void setUserType(String type){
+        userTypeLabel.setText(type);
     }
 
     @Override

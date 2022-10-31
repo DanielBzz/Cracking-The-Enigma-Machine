@@ -10,6 +10,8 @@ import util.Constants;
 import java.io.IOException;
 import java.net.URL;
 
+import static constants.Constants.UBOAT_TYPE;
+
 public class UBoatClient extends Application {
 
     private ClientMainController uBoatAppMainController;
@@ -29,6 +31,7 @@ public class UBoatClient extends Application {
             Parent root = fxmlLoader.load();
             uBoatAppMainController = fxmlLoader.getController();
             uBoatAppMainController.loadMainAppForm(ClassLoader.getSystemResource(Constants.UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION),Constants.UBOAT_CLIENT);
+            uBoatAppMainController.setUserType(UBOAT_TYPE);
             Scene scene = new Scene(root, 700, 600);
             primaryStage.setScene(scene);
             primaryStage.show();
