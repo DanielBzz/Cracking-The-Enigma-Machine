@@ -14,10 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.Response;
+import okhttp3.*;
 import util.Constants;
 import util.Presenter;
 import util.tableHolderInterfaces.TeamTableHolder;
@@ -61,7 +58,7 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
     void readyButtonListener(ActionEvent event) {
 
         String teamManager = alliesListComponentController.getSelectedAlliesName();
-        String amountOfThreads = String.valueOf(amountOfAgentsSlider.getValue());
+        String amountOfThreads = String.valueOf((int)amountOfAgentsSlider.getValue());
         String amountOfTasksInASingleTake = amountOfTasksField.getText();
 
         String finalUrl = HttpUrl
@@ -81,18 +78,21 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    System.out.println("Could not response well, url:" + finalUrl);
+
+                try(ResponseBody responseBody = response.body()){
+                    if(response.code() == 200){
+                        alliesListComponentController.stopListRefresher();
+                        Platform.runLater(() -> {
+                            mainAppController.loadMainAppForm(getClass().getResource(Constants.AGENT_MAIN_APP_FXML_RESOURCE_LOCATION),Constants.AGENT_CLIENT);
+                            mainAppController.switchToMainApp();
+                        });
+                    }
+
+                    if (!response.isSuccessful()) {
+                        System.out.println("Could not response well, url:" + finalUrl);
+                        System.out.printf(response.code() + "   " + responseBody.string());
+                    }
                 }
-
-                System.out.println("Agent was added successfully!");
-                alliesListComponentController.stopListRefresher();
-                //need to check if it works
-                Platform.runLater(() -> {
-                    mainAppController.loadMainAppForm(getClass().getResource(Constants.AGENT_MAIN_APP_FXML_RESOURCE_LOCATION),Constants.AGENT_CLIENT);
-                    mainAppController.switchToMainApp();
-                });
-
             }
         });
     }

@@ -9,8 +9,8 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import util.tableHolderInterfaces.ActiveTableHolder;
 import util.RefresherController;
+import util.tableHolderInterfaces.ActiveTableHolder;
 import util.tableHolderInterfaces.AgentTableHolder;
 import util.tableHolderInterfaces.TeamTableHolder;
 
@@ -29,7 +29,7 @@ public class ActivePlayerListController extends RefresherController {
         usersTable.getColumns().get(0).setCellValueFactory(new PropertyValueFactory("name"));
         usersTable.getColumns().get(1).setCellValueFactory(new PropertyValueFactory("amount"));
         usersTable.getColumns().get(2).setCellValueFactory(new PropertyValueFactory("size"));
-        usersTable.getSelectionModel().cellSelectionEnabledProperty().bind(chooseable);
+        //usersTable.getSelectionModel().selectedIndexProperty.bind(chooseable);
     }
 
     public void setTableHolder(ActiveTableHolder holder){
@@ -73,23 +73,16 @@ public class ActivePlayerListController extends RefresherController {
     public void updateList(String jsonUserList) {
 
         List<ActivePlayerDTO> usersList = Arrays.asList(Constants.GSON_INSTANCE.fromJson(jsonUserList,ActivePlayerDTO[].class));
-        Optional<ActivePlayerDTO> chosenAllie = null;
-
-        if (chooseable.get()) {
-            String nameOfChosen = getSelectedAlliesName();
-            chosenAllie = nameOfChosen != null ?
+        String nameOfChosen = getSelectedAlliesName();
+        Optional<ActivePlayerDTO> chosenAllie = nameOfChosen != null ?
                     usersList.stream().filter(allie -> allie.getName().equals(nameOfChosen)).findFirst()
                     : Optional.empty();
 
-        }
-
         Platform.runLater(()->{
-            clearComponent();
-            usersList.forEach(this::addTeam);
+            usersTable.setItems(FXCollections.observableList(usersList));
         });
 
-        usersTable.setItems(FXCollections.observableList(usersList));
-        if(chooseable.get() && chosenAllie != null && chosenAllie.isPresent()){
+        if(nameOfChosen != null && chosenAllie.isPresent()){
             usersTable.getSelectionModel().select(chosenAllie.get());
         }
     }

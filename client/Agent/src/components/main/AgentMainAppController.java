@@ -1,15 +1,13 @@
 package components.main;
 
 import com.sun.istack.internal.NotNull;
-import components.CandidatesTableController;
 import components.subComponents.AgentProgressAndStatusController;
 import components.subComponents.ContestAndTeamDataController;
 import contestDtos.AgentInfoDTO;
 import contestDtos.AgentProgressDTO;
 import contestDtos.CandidateDataDTO;
-import contestDtos.ContestDetailsDTO;
-import decryptionDtos.AgentAnswerDTO;
 import http.HttpClientUtil;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
@@ -23,25 +21,16 @@ import okhttp3.Response;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
 
 import static util.Constants.REQUEST_PATH_GET_AGENT_INFO;
 
 public class AgentMainAppController implements AppMainController {
     private ClientMainController parentController;
     private AgentLogic agentLogic;
-
-    @FXML
-    private ScrollPane contestAndTeamDataComponent;
-    @FXML
-    private ContestAndTeamDataController contestAndTeamDataComponentController;
-
-    @FXML
-    private ScrollPane agentProgressAndStatusComponent;
-    @FXML
-    private AgentProgressAndStatusController agentProgressAndStatusComponentController;
-
+    @FXML private ScrollPane contestAndTeamDataComponent;
+    @FXML private ContestAndTeamDataController contestAndTeamDataComponentController;
+    @FXML private ScrollPane agentProgressAndStatusComponent;
+    @FXML private AgentProgressAndStatusController agentProgressAndStatusComponentController;
     @FXML private TableView<CandidateDataDTO> candidatesTable;
 
     @FXML
@@ -106,17 +95,16 @@ public class AgentMainAppController implements AppMainController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() == 200) {
-                    if(response.body() != null){
-                        AgentInfoDTO basicAgentInfo = constants.Constants.GSON_INSTANCE.fromJson(response.body().toString(), AgentInfoDTO.class);//maybe when writing to the json it enters in a bad way
-                        agentLogic = new AgentLogic(thisController, basicAgentInfo.getAgentName(), basicAgentInfo.getAmountOfTasksInSingleTake(), basicAgentInfo.getAmountOfThreads());
-                        if(contestAndTeamDataComponentController!= null) {
-                            contestAndTeamDataComponentController.setAgentMainAppController(thisController);
-                            contestAndTeamDataComponentController.setTeamNameLabel(basicAgentInfo.getTeamName());
-                            contestAndTeamDataComponentController.initial();
-                        }
-                        response.body().close();
-                    }
+                    AgentInfoDTO basicAgentInfo = constants.Constants.GSON_INSTANCE.fromJson(response.body().string(), AgentInfoDTO.class);
+                    agentLogic = new AgentLogic(thisController, basicAgentInfo.getAgentName(), basicAgentInfo.getAmountOfTasksInSingleTake(), basicAgentInfo.getAmountOfThreads());
 
+                    Platform.runLater(()->{
+                        contestAndTeamDataComponentController.setAgentMainAppController(thisController);
+                        contestAndTeamDataComponentController.setTeamNameLabel(basicAgentInfo.getTeamName());
+                        contestAndTeamDataComponentController.initial();
+                    });
+
+                    response.body().close();
                     System.out.println("Allies was added successfully!");
                 }
                 else {

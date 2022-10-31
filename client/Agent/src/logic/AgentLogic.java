@@ -44,7 +44,6 @@ public class AgentLogic extends RefresherController {//need to change name of th
     private final int amountOfThreads;
     private AtomicInteger tasksLeftBeforeNewTake;
     private Boolean inContest;
-
     private AtomicInteger totalTakenTasks;
     private AtomicInteger totalFinishedTasks;
     private AtomicInteger totalAmountOfCandidates;

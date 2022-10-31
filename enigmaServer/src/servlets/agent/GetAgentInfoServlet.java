@@ -26,8 +26,9 @@ public class GetAgentInfoServlet extends HttpServlet {
 
         try{
             AgentInfoDTO responseMessage = manager.getAgent(username).getAgentInfo();
-
-            ServletUtils.createResponse(response, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(responseMessage));
+            String res = ServletUtils.GSON_INSTANCE.toJson(responseMessage);
+            System.out.println(res);
+            ServletUtils.createResponse(response, HttpServletResponse.SC_OK, res);
         }catch (ContestNotExistException | ContestNotReadyException e){
             ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
             System.out.println(e.getMessage());
