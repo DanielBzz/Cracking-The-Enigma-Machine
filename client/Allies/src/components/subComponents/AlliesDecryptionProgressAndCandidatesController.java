@@ -1,9 +1,7 @@
 package components.subComponents;
 
 import com.sun.istack.internal.NotNull;
-import components.AgentsListController;
 import components.CandidatesTableController;
-import components.ContestDetailsTableController;
 import components.DynamicComponent;
 import contestDtos.ContestDetailsDTO;
 import http.HttpClientUtil;
@@ -16,10 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.Response;
+import okhttp3.*;
 
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -81,12 +76,15 @@ public class AlliesDecryptionProgressAndCandidatesController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.code() == 200) {
-                    candidatesTableController.startListRefresher(thereIsWinner());
-                    inContest.set(true);
-                }
-                else {
-                    System.out.println("Could not response well, url:" + finalUrl);
+                try (ResponseBody responseBody = response.body()){
+                    if (response.code() == 200) {
+                        candidatesTableController.startListRefresher(thereIsWinner());
+                        inContest.set(true);
+                    }
+                    else {
+                        System.out.println("Could not response well, url:" + finalUrl);
+                        System.out.println(response.code() + "   "  + response.body().string());
+                    }
                 }
             }
         });

@@ -7,16 +7,14 @@ import components.DynamicComponent;
 import components.main.AlliesMainAppController;
 import contestDtos.TeamDetailsContestDTO;
 import http.HttpClientUtil;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.Response;
+import okhttp3.*;
 import util.Constants;
 
 import java.io.IOException;
@@ -98,20 +96,21 @@ public class AlliesDashboardController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.code() == 200) {
-                    parentController.dashboardInactive();
-                    if(response.body() != null){
-                        TeamDetailsContestDTO responseDetails = constants.Constants.GSON_INSTANCE.fromJson(response.body().string(),TeamDetailsContestDTO.class);
-                        parentController.updateNewContest(responseDetails);
+                try(ResponseBody responseBody = response.body()) {
+                    if (response.code() == 200) {
+                        TeamDetailsContestDTO responseDetails = constants.Constants.GSON_INSTANCE.fromJson(responseBody.string(), TeamDetailsContestDTO.class);
+                        System.out.printf(String.valueOf(responseDetails));
+                        System.out.println(responseDetails.getContestDetails().getBattleFieldName());
+                        Platform.runLater(() -> {
+                            parentController.updateNewContest(responseDetails);
+                            parentController.dashboardInactive();
+                        });
+                    } else {
+                        System.out.println("Could not response well, url:" + finalUrl);
+                        System.out.println(response.code() + "  " + response.body().string());
                     }
-                    System.out.println("Allies was added successfully!");
                 }
-                else {
-                    System.out.println("Could not response well, url:" + finalUrl);
-                }
-                response.close();
             }
         });
-
     }
 }

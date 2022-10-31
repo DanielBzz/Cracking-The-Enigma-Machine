@@ -59,12 +59,12 @@ public class ContestsManager extends DataManager<UserContest> {
 
         Set<ActivePlayerDTO> teamDetails = new HashSet<>();
 
-        if(isContestExist(userName)) {
+        if(!isContestExist(userName)) {
             throw new ContestNotExistException(userName);
         }
 
         for (Team team : userNameToData.get(userName).getCompetitors()) {
-                teamDetails.add(team.teamDetails());
+                teamDetails.add(team.getTeamDetails());
         }
 
         return teamDetails;

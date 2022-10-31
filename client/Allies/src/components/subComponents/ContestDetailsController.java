@@ -3,12 +3,12 @@ package components.subComponents;
 import contestDtos.ContestDetailsDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 
 import static constants.Constants.FROM_SEPARATOR;
-import static util.Constants.*;
+import static util.Constants.ACTIVE_CONTEST;
+import static util.Constants.WAITING_CONTEST;
 
-public class ContestDetailsController extends Pane {
+public class ContestDetailsController {
 
     @FXML private Label battleFieldLabel;
     @FXML private Label contestManagerLabel;
@@ -18,7 +18,7 @@ public class ContestDetailsController extends Pane {
     private int maxAmountOfTeams;
     private int currentAmountOfTeams;
 
-    public ContestDetailsController(ContestDetailsDTO contestDetails){
+    public void initial(ContestDetailsDTO contestDetails) {
         battleFieldLabel.setText(contestDetails.getBattleFieldName());
         contestManagerLabel.setText(contestDetails.getContestManagerName());
         statusLabel.setText(contestDetails.isStatus() ? ACTIVE_CONTEST : WAITING_CONTEST);

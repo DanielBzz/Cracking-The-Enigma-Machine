@@ -97,7 +97,7 @@ public class UBoatLogic {
                        if (response.code() == 200) {
                            codeSetEventHandler.fireEvent(constants.Constants.GSON_INSTANCE.fromJson(body, EngineDTO.class));
                        } else {
-                           appController.showPopUpMessage(response.code() + " " + body);
+                           Platform.runLater(()->appController.showPopUpMessage(response.code() + " " + body));
                        }
                     });
                 }

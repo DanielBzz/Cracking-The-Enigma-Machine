@@ -5,6 +5,7 @@ import contestDtos.ContestDetailsDTO;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import util.RefresherController;
 
 import java.util.Arrays;
@@ -14,6 +15,15 @@ import java.util.Optional;
 public class ContestDetailsTableController extends RefresherController {
     @FXML private TableView<ContestDetailsDTO> detailsTable;
 
+    @FXML
+    public void initialize(){
+        detailsTable.getColumns().get(0).setCellValueFactory(new PropertyValueFactory("battleFieldName"));
+        detailsTable.getColumns().get(1).setCellValueFactory(new PropertyValueFactory("contestManagerName"));
+        detailsTable.getColumns().get(2).setCellValueFactory(new PropertyValueFactory("status"));
+        detailsTable.getColumns().get(3).setCellValueFactory(new PropertyValueFactory("level"));
+        detailsTable.getColumns().get(4).setCellValueFactory(new PropertyValueFactory("teams"));
+    }
+
     @Override
     public void updateList(String jsonUserList){
         List<ContestDetailsDTO> contests = Arrays.asList(Constants.GSON_INSTANCE.fromJson(jsonUserList,ContestDetailsDTO[].class));
@@ -21,8 +31,6 @@ public class ContestDetailsTableController extends RefresherController {
         Optional<ContestDetailsDTO> chosenContest = nameOfChosen != null ?
                 contests.stream().filter(contest -> contest.getContestManagerName().equals(nameOfChosen)).findFirst()
                 : Optional.empty();
-
-        //contests.forEach(contest->detailsTable.getItems().add(contest));
 
         detailsTable.setItems(FXCollections.observableList(contests));
         if(nameOfChosen!= null && chosenContest.isPresent()){

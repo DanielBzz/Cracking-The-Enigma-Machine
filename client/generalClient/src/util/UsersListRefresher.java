@@ -1,9 +1,11 @@
 package util;
 
 import http.HttpClientUtil;
+import javafx.application.Platform;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -32,22 +34,17 @@ public class UsersListRefresher extends TimerTask {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
 
-                if(response.code() == 200){
-                    String responseBody;
-                    try{
-                        responseBody = response.body().string();
-                    }catch (NullPointerException e){
-                        responseBody = "";
-                        System.out.println();
-                    }
-                    System.out.println("responseBody of UserListRefresher is: " + responseBody);
-                    userListConsumer.accept(responseBody);
-                }
-                else {
-                    System.out.println(response.code() + "  " +response.body().string());
-                }
+                try(ResponseBody responseBody = response.body()){
+                    if(response.code() == 200){
+                        String res = responseBody.string();
 
-                response.close();
+                        Platform.runLater(()->userListConsumer.accept(res));
+                        System.out.println("responseBody of UserListRefresher is: " + res);
+                    }
+                    else {
+                        System.out.println(response.code() + "  " +response.body().string());
+                    }
+                }
             }
         });
     }

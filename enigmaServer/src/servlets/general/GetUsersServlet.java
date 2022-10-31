@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import logic.datamanager.AgentManager;
 import logic.datamanager.DataManager;
 import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
@@ -39,7 +40,14 @@ public class GetUsersServlet extends HttpServlet {
                 return;
             }
 
-            Set<ActivePlayerDTO> users = manager.getConnectedUsersDetails(userRequest);
+            Set<ActivePlayerDTO> users;
+
+            if(manager instanceof AgentManager){
+                users = ServletUtils.getTeamsManager(req.getServletContext()).getTeamsDetails();
+            }else{
+                users = manager.getConnectedUsersDetails(userRequest);
+            }
+
             ServletUtils.createResponse(resp, HttpServletResponse.SC_OK,ServletUtils.GSON_INSTANCE.toJson(users));
 
         }catch (Exception | Error e){
