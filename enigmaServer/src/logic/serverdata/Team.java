@@ -51,6 +51,11 @@ public class Team {
         return contestManagerName;
     }
 
+    public synchronized void addAgentToTeam(ActivePlayerDTO agent){
+        Agent newAgent = new Agent(agent.getName());
+        newAgent.setBasicData(agent.getAmount(), agent.getSize(), teamName);
+        teamAgents.add(newAgent);
+    }
     public boolean isReady() {
         return ready;
     }
