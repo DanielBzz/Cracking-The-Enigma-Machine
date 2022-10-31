@@ -1,7 +1,7 @@
 package components.subComponents;
 
-import components.AgentsListController;
 import components.ActivePlayerListController;
+import components.AgentsListController;
 import components.DynamicComponent;
 import components.main.AlliesMainAppController;
 import contestDtos.ContestDetailsDTO;
@@ -17,12 +17,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import util.Constants;
 import util.Presenter;
-import util.tableHolderInterfaces.TeamTableHolder;
+import util.tableHolderInterfaces.Disconnectable;
 
 import java.io.IOException;
 
 
-public class AlliesContestController implements Presenter, TeamTableHolder {
+public class AlliesContestController implements Presenter, Disconnectable {
     private AlliesMainAppController parentController;
     @FXML private GridPane alliesDecryptionProgressAndCandidatesComponent;
     @FXML private AlliesDecryptionProgressAndCandidatesController alliesDecryptionProgressAndCandidatesComponentController;
@@ -46,8 +46,6 @@ public class AlliesContestController implements Presenter, TeamTableHolder {
             DynamicComponent.fitToPane(agentComponent);
             agentsTableComponentController = load.getController();
 
-
-
             load = new FXMLLoader();
             load.setLocation(ActivePlayerListController.class.getResource("activePlayerList.fxml"));
             Node alliesComponent = load.load();
@@ -61,6 +59,12 @@ public class AlliesContestController implements Presenter, TeamTableHolder {
         }
 
         // not finish
+    }
+
+    @Override
+    public void disconnectFromContest(){
+        parentController.contestInactive();
+        clearComponent();
     }
 
     public void setBasicThingsForContest(TeamDetailsContestDTO responseDetails){

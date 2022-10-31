@@ -60,7 +60,7 @@ public class AlliesDashboardController implements AgentTableHolder {
     public void setActive(){
         contestTableComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
         agentsTableComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
-        parentController.ContestInactive();
+        //parentController.contestInactive();
     }
 
     public void setInactive(){

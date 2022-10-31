@@ -16,7 +16,7 @@ public abstract class RefresherController {
 
     public void stopListRefresher(){        // should activate when contest starts
        if(timer != null){
-           timer.cancel();
+     //      timer.cancel();
         }
     }
 

@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import util.RefresherController;
 import util.tableHolderInterfaces.ActiveTableHolder;
 import util.tableHolderInterfaces.AgentTableHolder;
+import util.tableHolderInterfaces.Disconnectable;
 import util.tableHolderInterfaces.TeamTableHolder;
 
 import java.util.Arrays;
@@ -71,6 +72,10 @@ public class ActivePlayerListController extends RefresherController {
 
     @Override
     public void updateList(String jsonUserList) {
+
+        if(jsonUserList == null && parentController instanceof Disconnectable){
+            ((Disconnectable) parentController).disconnectFromContest();
+        }
 
         List<ActivePlayerDTO> usersList = Arrays.asList(Constants.GSON_INSTANCE.fromJson(jsonUserList,ActivePlayerDTO[].class));
         String nameOfChosen = getSelectedAlliesName();

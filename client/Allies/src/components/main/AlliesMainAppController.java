@@ -66,9 +66,9 @@ public class AlliesMainAppController implements AppMainController {
 
     }
 
-    public void ContestInactive() {
+    public void contestInactive() {
         contestComponentController.setInactive();
-        contestComponentController.setActive();
+        dashboardComponentController.setActive();
         dashboardTab.disableProperty().set(false);
     }
 
