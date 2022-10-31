@@ -4,6 +4,7 @@ import components.subComponents.AlliesContestController;
 import components.subComponents.AlliesDashboardController;
 import contestDtos.TeamDetailsContestDTO;
 import javafx.fxml.FXML;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.GridPane;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
@@ -14,6 +15,8 @@ public class AlliesMainAppController implements AppMainController {
     @FXML private AlliesDashboardController dashboardComponentController;
     @FXML private GridPane contestComponent;
     @FXML private AlliesContestController contestComponentController;
+    @FXML private Tab contestTab;
+    @FXML private Tab dashboardTab;
 
     @FXML
     public void initialize(){
@@ -25,6 +28,7 @@ public class AlliesMainAppController implements AppMainController {
         if(contestComponentController!= null){
             contestComponentController.setAlliesMainAppController(this);
             contestComponentController.initial();
+            contestTab.disableProperty().bind(dashboardTab.disableProperty().not());
         }
 
     }
@@ -60,7 +64,6 @@ public class AlliesMainAppController implements AppMainController {
     //-------------------------------------------------------------------------------------
 
     public void updateNewContest(TeamDetailsContestDTO responseDetails) {       // get all the details and should update contest component
-
         // need to enable contest tab and maybe disable first tab
         contestComponentController.setBasicThingsForContest(responseDetails);
 
@@ -68,10 +71,13 @@ public class AlliesMainAppController implements AppMainController {
 
     public void ContestInactive() {
         contestComponentController.setInactive();
+        contestComponentController.setActive();
+        dashboardTab.disableProperty().set(false);
     }
 
     public void dashboardInactive(){
         dashboardComponentController.setInactive();
         contestComponentController.setActive();
+        dashboardTab.disableProperty().set(true);
     }
 }

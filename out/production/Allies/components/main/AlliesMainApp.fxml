@@ -24,7 +24,7 @@
          <center>
             <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                <tabs>
-                  <Tab text="Dashboard">
+                  <Tab fx:id="dashboardTab" text="Dashboard">
                      <content>
                         <ScrollPane fitToHeight="true" fitToWidth="true">
                            <content>
@@ -33,7 +33,7 @@
                         </ScrollPane>
                      </content>
                   </Tab>
-                  <Tab text="Contest">
+                  <Tab fx:id="contestTab" text="Contest">
                      <content>
                         <ScrollPane fitToHeight="true" fitToWidth="true">
                            <content>

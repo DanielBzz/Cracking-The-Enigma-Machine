@@ -15,7 +15,9 @@ public abstract class RefresherController {
     }
 
     public void stopListRefresher(){        // should activate when contest starts
-        timer.cancel();
+       if(timer != null){
+           // timer.cancel();
+        }
     }
 
     public abstract void updateList(String jsonUserList);

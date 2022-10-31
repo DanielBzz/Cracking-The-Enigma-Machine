@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import util.Constants;
 import util.Presenter;
@@ -23,8 +24,9 @@ import java.io.IOException;
 public class AlliesContestController implements Presenter {
     private AlliesMainAppController parentController;
     @FXML private GridPane alliesDecryptionProgressAndCandidatesComponent;
-    @FXML private AlliesDecryptionProgressAndCandidatesController alliesDecryptionProgressAndCandidatesController;
-    @FXML private AnchorPane contestDataArea;
+    @FXML private AlliesDecryptionProgressAndCandidatesController alliesDecryptionProgressAndCandidatesComponentController;
+    @FXML private BorderPane contestDataAreaComponent;
+    @FXML private ContestDetailsController contestDataAreaComponentController;
     @FXML private AnchorPane alliesTablePlace;
     private AlliesListController alliesTableComponentController;
     @FXML private AnchorPane agentsTablePlace;
@@ -62,7 +64,7 @@ public class AlliesContestController implements Presenter {
 
     public void setBasicThingsForContest(TeamDetailsContestDTO responseDetails){
         changeContest(responseDetails.getContestDetails());
-        alliesDecryptionProgressAndCandidatesController.initial(responseDetails.getContestDetails());
+        alliesDecryptionProgressAndCandidatesComponentController.initial(responseDetails.getContestDetails());
         totalTasksLabel.setText(String.valueOf(responseDetails.getContestDetails().getTaskSize()));
     }
 
@@ -71,9 +73,9 @@ public class AlliesContestController implements Presenter {
     }
 
     public void clearComponent(){
-        alliesTableComponentController.cleanTable();
+        alliesTableComponentController.clearComponent();
         agentsTableComponentController.cleanTable();
-        alliesDecryptionProgressAndCandidatesController.clearController();
+        alliesDecryptionProgressAndCandidatesComponentController.clearController();
         //need to clear also the rest of the component
     }
 
@@ -86,9 +88,8 @@ public class AlliesContestController implements Presenter {
     }
 
     private void changeContest(ContestDetailsDTO contestDetails) {
-
-        contestDataArea.getChildren().clear();
-        contestDataArea.getChildren().add(new ContestDetailsController(contestDetails));
+        
+        contestDataAreaComponentController.initial(contestDetails);
     }
 
     public void popUpMessage(String msg) {

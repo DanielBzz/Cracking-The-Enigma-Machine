@@ -15,6 +15,7 @@ public class AgentsListController extends RefresherController {
     }
 
     public void cleanTable(){
+        //delete print
         if(agentsTable.getItems()!= null) {
             System.out.println("agentsTable.getItems() = " + agentsTable.getItems());
             agentsTable.getItems().clear();

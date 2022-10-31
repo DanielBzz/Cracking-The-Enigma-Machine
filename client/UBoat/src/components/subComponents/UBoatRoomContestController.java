@@ -1,7 +1,7 @@
 package components.subComponents;
 
+import components.AlliesListController;
 import components.CandidatesTableController;
-import components.ConnectedUsersController;
 import components.DynamicComponent;
 import components.body.details.MachineConfigurationController;
 import components.body.main.EncryptController;
@@ -46,12 +46,10 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
     @FXML private EncryptController encryptComponentController;
     @FXML private Button readyButton;
     @FXML private Button logoutButton;
-    //@FXML private ScrollPane candidatesTableComponent;
     @FXML private AnchorPane connectedTeamsPlace;
     @FXML private HBox candidatesTablePlace;
     private CandidatesTableController candidatesTableComponentController;
-    //@FXML private GridPane connectedTeamsComponent;
-    private ConnectedUsersController connectedTeamsComponentController;
+    private AlliesListController connectedTeamsController;
     private DictionaryDTO dictionaryDetails;
     private final BooleanProperty isPrepareForContest = new SimpleBooleanProperty(false);
 
@@ -73,11 +71,11 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
 
         try {
             FXMLLoader load = new FXMLLoader();
-            load.setLocation(ConnectedUsersController.class.getResource("ConnectedUsersComponent.fxml"));
+            load.setLocation(AlliesListController.class.getResource("allies-list.fxml"));
             Node usersComponent = load.load();
             connectedTeamsPlace.getChildren().add(usersComponent);
             DynamicComponent.fitToPane(usersComponent);
-            connectedTeamsComponentController = load.getController();
+            connectedTeamsController = load.getController();
 
 
             load = new FXMLLoader();
@@ -213,7 +211,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
     }
 
     public void setActive() {
-        connectedTeamsComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
+        connectedTeamsController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
         candidatesTableComponentController.clear();
         isPrepareForContest.set(false);
     }
@@ -239,7 +237,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
 
     private void clearAfterContest(){
         candidatesTableComponentController.clear();
-        connectedTeamsComponentController.clearComponent();
+        connectedTeamsController.clearComponent();
         encryptComponentController.clearButtonActionListener(new ActionEvent());
     }
 }

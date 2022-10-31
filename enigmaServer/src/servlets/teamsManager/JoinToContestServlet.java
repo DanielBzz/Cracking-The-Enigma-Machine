@@ -37,7 +37,6 @@ public class JoinToContestServlet extends HttpServlet {
             ContestDetailsDTO contestDetails = manager.getContestDetails(contestManagerName);
             Set<ActivePlayerDTO> competitorsTeams = manager.getConnectedUsersDetails(contestManagerName);
             Set<ActivePlayerDTO> teamAgents = teamsManager.getConnectedUsersDetails(userName);
-
             TeamDetailsContestDTO responseDetails = new TeamDetailsContestDTO(contestDetails,competitorsTeams,teamAgents);
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(responseDetails));
         } catch (Error e){

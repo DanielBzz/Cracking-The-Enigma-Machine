@@ -60,7 +60,7 @@ public class Team {
         if(ready && taskSize!=0 && teamAgents.size()!=0 && contestName!= null){
             this.ready = true;
         } else if (ready) {
-            throw new Exception("can't initial team is ready, set correct arguments");
+            throw new Exception("can't initial team is ready,your task size/agents not initial yet");
         }else {
             this.ready = false;
         }
@@ -106,7 +106,7 @@ public class Team {
         return agentsDetails;
     }
 
-    public ActivePlayerDTO teamDetails(){
+    public synchronized ActivePlayerDTO getTeamDetails(){
 
         return new ActivePlayerDTO(teamName, agentsDetails().size(), taskSize);
     }

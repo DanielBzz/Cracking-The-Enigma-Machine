@@ -29,7 +29,6 @@
             <fx:include fx:id="alliesDecryptionProgressAndCandidatesComponent" source="allies-decryption-progress-and-candidates.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="contestDataArea" />
       <GridPane GridPane.columnIndex="3" GridPane.rowIndex="3">
         <columnConstraints>
           <ColumnConstraints hgrow="NEVER" />
@@ -65,5 +64,10 @@
       </GridPane>
       <AnchorPane fx:id="alliesTablePlace" GridPane.columnIndex="2" />
       <AnchorPane fx:id="agentsTablePlace" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <fx:include fx:id="contestDataAreaComponent" source="contest-details.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
    </children>
 </GridPane>

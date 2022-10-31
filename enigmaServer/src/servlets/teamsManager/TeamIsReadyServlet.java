@@ -12,7 +12,7 @@ import servlets.utils.SessionUtils;
 
 import java.io.IOException;
 
-@WebServlet(name = "TeamIsReadyServlet", urlPatterns = "/teamManager/SetTeamReady")
+@WebServlet(name = "TeamIsReadyServlet", urlPatterns = "/teamManager/setTeamReady")
 public class TeamIsReadyServlet extends HttpServlet {
 
     private static final String TASK_SIZE_ATTRIBUTE = "taskSize";

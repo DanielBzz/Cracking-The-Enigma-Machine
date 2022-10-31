@@ -51,10 +51,6 @@ public class ClientMainController implements Closeable, Loggable {
         mainPanel.getChildren().clear();
         mainPanel.getChildren().add(pane);
         DynamicComponent.fitToPane(pane);
-//        AnchorPane.setBottomAnchor(pane, 1.0);
-//        AnchorPane.setTopAnchor(pane, 1.0);
-//        AnchorPane.setLeftAnchor(pane, 1.0);
-//        AnchorPane.setRightAnchor(pane, 1.0);
     }
 
     @Override

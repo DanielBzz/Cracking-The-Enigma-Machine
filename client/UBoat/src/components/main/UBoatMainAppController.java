@@ -45,7 +45,7 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
             uBoatRoomMachineComponent.disableProperty().bind(uBoatRoomContestComponentController.isPrepareForContestProperty());
             uBoatRoomContestComponentController.setParentController(this);
             uBoatRoomContestComponentController.initial();
-            contestTab.disableProperty().bind(uBoatRoomContestComponentController.getIsConfigurationSetProperty().not());
+            contestTab.disableProperty().bind(isGoodFileSelectedProperty().not());
             initialFileSelectedEvents();
         }
     }

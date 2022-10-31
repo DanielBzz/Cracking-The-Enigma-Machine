@@ -9,6 +9,7 @@ import exceptions.UserNotExistException;
 import logic.serverdata.Team;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -53,6 +54,20 @@ public class TeamsManager extends DataManager<Team>{
         }
 
         return team.getNewCandidates(version);
+    }
+
+    public Set<ActivePlayerDTO> getTeamsDetails(){
+
+        Set<ActivePlayerDTO> teamDetails = new HashSet<>();
+
+        for (String user: userNameToData.keySet()) {
+            Team team = userNameToData.get(user);
+            if(team != null){
+                teamDetails.add(team.getTeamDetails());
+            }
+        }
+
+        return teamDetails;
     }
 
     public void setUserReady(String username, int teamTaskSize) throws Exception {
