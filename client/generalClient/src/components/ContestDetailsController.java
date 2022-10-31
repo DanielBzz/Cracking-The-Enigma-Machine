@@ -1,12 +1,11 @@
-package components.subComponents;
+package components;
 
 import contestDtos.ContestDetailsDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-import static constants.Constants.FROM_SEPARATOR;
-import static util.Constants.ACTIVE_CONTEST;
-import static util.Constants.WAITING_CONTEST;
+import static constants.Constants.*;
+
 
 public class ContestDetailsController {
 

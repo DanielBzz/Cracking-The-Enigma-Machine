@@ -22,7 +22,7 @@ public class Team {
 
     private final String teamName;
     private int taskSize;
-    private String contestName;
+    private String contestManagerName;
     private boolean ready;
     private boolean inContest;
     private final List<Agent> teamAgents = new ArrayList<>();
@@ -42,22 +42,27 @@ public class Team {
         return teamName;
     }
 
-    public void setContestName(String contestName) {
-        this.contestName = contestName;
+    public void setContestManagerName(String contestManagerName) {
+        this.contestManagerName = contestManagerName;
     }
 
-    public String getContestName() {
+    public String getContestManagerName() {
 
-        return contestName;
+        return contestManagerName;
     }
 
+    public synchronized void addAgentToTeam(ActivePlayerDTO agent){
+        Agent newAgent = new Agent(agent.getName());
+        newAgent.setBasicData(agent.getAmount(), agent.getSize(), teamName);
+        teamAgents.add(newAgent);
+    }
     public boolean isReady() {
         return ready;
     }
 
     public void setReady(boolean ready) throws Exception {
 
-        if(ready && taskSize!=0 && teamAgents.size()!=0 && contestName!= null){
+        if(ready && taskSize!=0 && teamAgents.size()!=0 && contestManagerName!= null){
             this.ready = true;
         } else if (ready) {
             throw new Exception("can't initial team is ready,your task size/agents not initial yet");
@@ -145,7 +150,7 @@ public class Team {
         winnerCandidate = winner;
         taskProducerThread.interrupt();
         inContest = false;
-        contestName = null;
+        contestManagerName = null;
         taskSize = 0;
         teamAgents.forEach(Agent::endTasks);
         teamAgents.clear();

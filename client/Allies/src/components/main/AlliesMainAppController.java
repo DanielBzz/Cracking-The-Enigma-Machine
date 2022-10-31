@@ -10,6 +10,9 @@ import javafx.scene.layout.GridPane;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
 
+import static constants.Constants.AGENT_TYPE;
+import static constants.Constants.ALLIES_TYPE;
+
 public class AlliesMainAppController implements AppMainController {
     private ClientMainController parentController;
     @FXML private GridPane dashboardComponent;

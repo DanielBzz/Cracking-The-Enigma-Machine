@@ -1,8 +1,10 @@
 package components.subComponents;
 
+import components.ContestDetailsController;
 import components.ContestDetailsTableController;
 import components.DynamicComponent;
 import components.main.AgentMainAppController;
+import contestDtos.ContestDetailsDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -21,13 +23,12 @@ public class ContestAndTeamDataController implements ContestPresenter {
     private Label teamNameLabel;
     @FXML
     private AnchorPane contestDetailsPlace;
-    @FXML
-    private ContestDetailsTableController contestDetailsComponentController;
+    private ContestDetailsController contestDetailsComponentController;
 
     public void initial(){
         try {
             FXMLLoader load = new FXMLLoader();
-            load.setLocation(ContestDetailsTableController.class.getResource("contest-details-table.fxml"));
+            load.setLocation(ContestDetailsController.class.getResource("contest-details.fxml"));
             Node agentComponent = load.load();
             contestDetailsPlace.getChildren().add(agentComponent);
             DynamicComponent.fitToPane(agentComponent);
@@ -39,6 +40,10 @@ public class ContestAndTeamDataController implements ContestPresenter {
         }
     }
 
+    public void updateContestData(ContestDetailsDTO contestData){
+        contestDetailsComponentController.initial(contestData);
+    }
+
     public void setAgentMainAppController(AgentMainAppController agentMainAppController) {
         this.parentController = agentMainAppController;
     }
@@ -48,11 +53,7 @@ public class ContestAndTeamDataController implements ContestPresenter {
     }
 
     public void clearTable(){
-        contestDetailsComponentController.cleanTable();
-    }
-
-    public void setActive(){
-        contestDetailsComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
+        contestDetailsPlace.getChildren().clear();
     }
 
 }
