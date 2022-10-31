@@ -10,6 +10,7 @@ import components.main.UBoatMainAppController;
 import contestDtos.CandidateDataDTO;
 import decryptionDtos.DictionaryDTO;
 import http.HttpClientUtil;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -136,6 +137,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
 
                     if (response.code() == 200) {
                         candidatesTableComponentController.startListRefresher(null);
+                        parentController.disableCodeCalibration();
                         System.out.println("encrypted message was updated and now the server is waiting for the teams to set ready!");
                     } else {
                         isPrepareForContest.set(false);

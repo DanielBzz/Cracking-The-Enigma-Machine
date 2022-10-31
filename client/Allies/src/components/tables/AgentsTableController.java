@@ -4,6 +4,7 @@ import constants.Constants;
 import contestDtos.ActivePlayerDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import util.RefresherController;
 
 public class AgentsTableController extends RefresherController {

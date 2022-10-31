@@ -22,7 +22,7 @@
             </Label>
          </top>
          <center>
-            <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <TabPane fx:id="doubleTabPane" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                <tabs>
                   <Tab fx:id="dashboardTab" text="Dashboard">
                      <content>

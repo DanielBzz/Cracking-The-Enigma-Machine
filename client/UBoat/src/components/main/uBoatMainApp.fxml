@@ -5,32 +5,37 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.main.UBoatMainAppController">
-   <center>
-      <TabPane fx:id="bodyComponent" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-          <Tab text="Machine">
-               <content>
-                  <ScrollPane fitToHeight="true" fitToWidth="true">
+
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.main.UBoatMainAppController">
+   <content>
+      <BorderPane minHeight="0.0" minWidth="0.0">
+         <center>
+            <TabPane fx:id="bodyComponent" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Machine">
                      <content>
-                        <fx:include fx:id="uBoatRoomMachineComponent" source="../subComponents/uBoat-room-machine.fxml" />
+                        <ScrollPane fitToHeight="true" fitToWidth="true">
+                           <content>
+                              <fx:include fx:id="uBoatRoomMachineComponent" source="../subComponents/uBoat-room-machine.fxml" />
+                           </content>
+                        </ScrollPane>
                      </content>
-                  </ScrollPane>
-               </content>
-          </Tab>
-          <Tab fx:id="contestTab" text="Contest">
-               <content>
-                  <ScrollPane fitToHeight="true" fitToWidth="true">
+                </Tab>
+                <Tab fx:id="contestTab" text="Contest">
                      <content>
-                        <fx:include fx:id="uBoatRoomContestComponent" source="../subComponents/uBoat-room-contest.fxml" />
+                        <ScrollPane fitToHeight="true" fitToWidth="true">
+                           <content>
+                              <fx:include fx:id="uBoatRoomContestComponent" source="../subComponents/uBoat-room-contest.fxml" />
+                           </content>
+                        </ScrollPane>
                      </content>
-                  </ScrollPane>
-               </content>
-          </Tab>
-        </tabs>
-      </TabPane>
-   </center>
-   <top>
-      <fx:include fx:id="headerComponent" source="../../../../../windowsUI/src/components/header/header.fxml" />
-   </top>
-</BorderPane>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </center>
+         <top>
+            <fx:include fx:id="headerComponent" source="../../../../../windowsUI/src/components/header/header.fxml" />
+         </top>
+      </BorderPane>
+   </content>
+</ScrollPane>

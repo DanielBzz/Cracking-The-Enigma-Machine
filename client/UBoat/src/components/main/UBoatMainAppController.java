@@ -141,4 +141,13 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
     public void announceTheWinner(CandidateDataDTO winnerCandidate) {
         uBoatLogic.finishContest(winnerCandidate);
     }
+
+    public void disableCodeCalibration(){
+        uBoatRoomMachineComponentController.disableCodeCalibration();
+    }
+
+    //not sure if need but:
+    public void enableCodeCalibration(){
+        uBoatRoomMachineComponentController.disableCodeCalibration();
+    }
 }

@@ -7,9 +7,13 @@ import components.subComponents.ContestAndTeamDataController;
 import contestDtos.AgentInfoDTO;
 import contestDtos.AgentProgressDTO;
 import contestDtos.CandidateDataDTO;
+import contestDtos.ContestDetailsDTO;
+import decryptionDtos.AgentAnswerDTO;
 import http.HttpClientUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import logic.AgentLogic;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
@@ -19,6 +23,8 @@ import okhttp3.Response;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 import static util.Constants.REQUEST_PATH_GET_AGENT_INFO;
 
@@ -36,10 +42,7 @@ public class AgentMainAppController implements AppMainController {
     @FXML
     private AgentProgressAndStatusController agentProgressAndStatusComponentController;
 
-    @FXML
-    private ScrollPane agentsCandidatesComponent;
-    @FXML
-    private CandidatesTableController agentsCandidatesComponentController;
+    @FXML private TableView<CandidateDataDTO> candidatesTable;
 
     @FXML
     public void initialize(){
@@ -47,9 +50,9 @@ public class AgentMainAppController implements AppMainController {
         if(agentProgressAndStatusComponentController!= null){
             agentProgressAndStatusComponentController.setAgentMainAppController(this);
         }
-        if(agentsCandidatesComponentController!= null){
-            agentsCandidatesComponentController.setWhoFoundTheAnswerLabel("agent");
-        }
+        candidatesTable.getColumns().get(0).setCellValueFactory(new PropertyValueFactory("decryptedMessage"));
+        candidatesTable.getColumns().get(1).setCellValueFactory(new PropertyValueFactory("foundersName"));
+        candidatesTable.getColumns().get(2).setCellValueFactory(new PropertyValueFactory("configuration"));
     }
 
     public void updateTasksData(AgentProgressDTO data){
@@ -72,7 +75,7 @@ public class AgentMainAppController implements AppMainController {
     public void clearComponent() {
         contestAndTeamDataComponentController.clearTable();
         agentProgressAndStatusComponentController.clearDetails();
-        agentsCandidatesComponentController.clear();
+        candidatesTable.getItems().clear();
     }
 
     @Override
@@ -80,19 +83,18 @@ public class AgentMainAppController implements AppMainController {
 
     }
 
-    public synchronized void updateCandidates(List<CandidateDataDTO> newCandidates){
-        agentsCandidatesComponentController.updateCandidates(newCandidates);
+
+    public synchronized void updateCandidates(List<CandidateDataDTO> newCandidates) {
+        newCandidates.forEach(candidate->candidatesTable.getItems().add(candidate));
     }
 
     public void setActive(){
         //agentProgressAndStatusComponentController.startListRefresher(Constants.REQUEST_PATH_GET_TASKS_DATA);
         //contestAndTeamDataComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
-        //agentsCandidatesComponentController.startListRefresher();
     }
 
     public void setPassive(){
         //agentProgressAndStatusComponentController.stopListRefresher();
-        agentsCandidatesComponentController.cancelRefresher();
     }
     public void getBasicInfo(AgentMainAppController thisController){
         HttpClientUtil.runAsyncGet(REQUEST_PATH_GET_AGENT_INFO, new Callback() {
@@ -105,11 +107,12 @@ public class AgentMainAppController implements AppMainController {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() == 200) {
                     if(response.body() != null){
-                        AgentInfoDTO basicAgentInfo = constants.Constants.GSON_INSTANCE.fromJson(response.body().toString(), AgentInfoDTO.class);
+                        AgentInfoDTO basicAgentInfo = constants.Constants.GSON_INSTANCE.fromJson(response.body().toString(), AgentInfoDTO.class);//maybe when writing to the json it enters in a bad way
                         agentLogic = new AgentLogic(thisController, basicAgentInfo.getAgentName(), basicAgentInfo.getAmountOfTasksInSingleTake(), basicAgentInfo.getAmountOfThreads());
                         if(contestAndTeamDataComponentController!= null) {
                             contestAndTeamDataComponentController.setAgentMainAppController(thisController);
                             contestAndTeamDataComponentController.setTeamNameLabel(basicAgentInfo.getTeamName());
+                            contestAndTeamDataComponentController.initial();
                         }
                         response.body().close();
                     }
