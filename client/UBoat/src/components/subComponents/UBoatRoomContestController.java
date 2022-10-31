@@ -1,6 +1,6 @@
 package components.subComponents;
 
-import components.AlliesListController;
+import components.ActivePlayerListController;
 import components.CandidatesTableController;
 import components.DynamicComponent;
 import components.body.details.MachineConfigurationController;
@@ -10,7 +10,6 @@ import components.main.UBoatMainAppController;
 import contestDtos.CandidateDataDTO;
 import decryptionDtos.DictionaryDTO;
 import http.HttpClientUtil;
-import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -30,6 +29,7 @@ import okhttp3.HttpUrl;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 import util.WinnerChecker;
+import util.tableHolderInterfaces.TeamTableHolder;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 
 import static util.Constants.REQUEST_PATH_SET_READY;
 
-public class UBoatRoomContestController implements EncryptableByDictionary, WinnerChecker<CandidateDataDTO> {
+public class UBoatRoomContestController implements EncryptableByDictionary, WinnerChecker<CandidateDataDTO>, TeamTableHolder {
 
     private UBoatMainAppController parentController;
     @FXML private BorderPane machineConfigurationComponent;
@@ -50,7 +50,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
     @FXML private AnchorPane connectedTeamsPlace;
     @FXML private HBox candidatesTablePlace;
     private CandidatesTableController candidatesTableComponentController;
-    private AlliesListController connectedTeamsController;
+    private ActivePlayerListController connectedTeamsController;
     private DictionaryDTO dictionaryDetails;
     private final BooleanProperty isPrepareForContest = new SimpleBooleanProperty(false);
 
@@ -72,11 +72,12 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
 
         try {
             FXMLLoader load = new FXMLLoader();
-            load.setLocation(AlliesListController.class.getResource("allies-list.fxml"));
+            load.setLocation(ActivePlayerListController.class.getResource("activePlayerList.fxml"));
             Node usersComponent = load.load();
             connectedTeamsPlace.getChildren().add(usersComponent);
             DynamicComponent.fitToPane(usersComponent);
             connectedTeamsController = load.getController();
+            connectedTeamsController.setTableHolder(this);
 
 
             load = new FXMLLoader();

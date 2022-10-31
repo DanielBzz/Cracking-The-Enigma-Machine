@@ -1,7 +1,7 @@
 package components.subComponents;
 
 import com.sun.istack.internal.NotNull;
-import components.AlliesListController;
+import components.ActivePlayerListController;
 import components.DynamicComponent;
 import http.HttpClientUtil;
 import javafx.application.Platform;
@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -21,6 +20,7 @@ import okhttp3.HttpUrl;
 import okhttp3.Response;
 import util.Constants;
 import util.Presenter;
+import util.tableHolderInterfaces.TeamTableHolder;
 
 import java.io.IOException;
 
@@ -28,11 +28,11 @@ import static constants.Constants.REQUEST_PATH_USERS_UPDATE;
 import static util.Constants.REQUEST_PATH_ADD_AGENT_TO_TEAM;
 
 
-public class EnteringAgentDetailsController implements Presenter, AppMainController {
+public class EnteringAgentDetailsController implements Presenter, AppMainController, TeamTableHolder {
     ClientMainController mainAppController;
 
     @FXML private AnchorPane alliesListPlace;
-    private AlliesListController alliesListComponentController;
+    private ActivePlayerListController alliesListComponentController;
     @FXML private Slider amountOfAgentsSlider;
     @FXML private TextField amountOfTasksField;
 
@@ -42,12 +42,14 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
     public void initialize() {
         try {
             FXMLLoader load = new FXMLLoader();
-            load.setLocation(AlliesListController.class.getResource("allies-list.fxml"));
+            load.setLocation(ActivePlayerListController.class.getResource("activePlayerList.fxml"));
             Node newComponent = load.load();
             alliesListPlace.getChildren().add(newComponent);
             DynamicComponent.fitToPane(newComponent);
 
             alliesListComponentController = load.getController();
+            alliesListComponentController.setTableHolder(this);
+            alliesListComponentController.setChooseable(true);
             alliesListComponentController.startListRefresher(REQUEST_PATH_USERS_UPDATE);
 
         } catch (IOException e) {

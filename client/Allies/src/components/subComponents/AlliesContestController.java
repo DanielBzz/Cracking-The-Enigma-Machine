@@ -1,7 +1,7 @@
 package components.subComponents;
 
 import components.AgentsListController;
-import components.AlliesListController;
+import components.ActivePlayerListController;
 import components.DynamicComponent;
 import components.main.AlliesMainAppController;
 import contestDtos.ContestDetailsDTO;
@@ -17,18 +17,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import util.Constants;
 import util.Presenter;
+import util.tableHolderInterfaces.TeamTableHolder;
 
 import java.io.IOException;
 
 
-public class AlliesContestController implements Presenter {
+public class AlliesContestController implements Presenter, TeamTableHolder {
     private AlliesMainAppController parentController;
     @FXML private GridPane alliesDecryptionProgressAndCandidatesComponent;
     @FXML private AlliesDecryptionProgressAndCandidatesController alliesDecryptionProgressAndCandidatesComponentController;
     @FXML private BorderPane contestDataAreaComponent;
     @FXML private ContestDetailsController contestDataAreaComponentController;
     @FXML private AnchorPane alliesTablePlace;
-    private AlliesListController alliesTableComponentController;
+    private ActivePlayerListController alliesTableComponentController;
     @FXML private AnchorPane agentsTablePlace;
     private AgentsListController agentsTableComponentController;
     @FXML private Label totalTasksLabel;
@@ -48,12 +49,12 @@ public class AlliesContestController implements Presenter {
 
 
             load = new FXMLLoader();
-            load.setLocation(AlliesListController.class.getResource("allies-list.fxml"));
+            load.setLocation(ActivePlayerListController.class.getResource("activePlayerList.fxml"));
             Node alliesComponent = load.load();
             alliesTablePlace.getChildren().add(alliesComponent);
             DynamicComponent.fitToPane(alliesComponent);
             alliesTableComponentController = load.getController();
-
+            alliesTableComponentController.setTableHolder(this);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
