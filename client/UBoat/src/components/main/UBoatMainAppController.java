@@ -20,7 +20,7 @@ import mainapp.AppMainController;
 import mainapp.ClientMainController;
 
 import static constants.Constants.AGENT_TYPE;
-import static constants.Constants.UBOAT_TYPE;
+
 
 public class UBoatMainAppController extends FileLoadable implements AppMainController, CodeSetEventListener {
 

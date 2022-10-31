@@ -10,6 +10,7 @@ import util.Constants;
 import java.io.IOException;
 import java.net.URL;
 
+import static constants.Constants.ALLIES_HEADER;
 import static constants.Constants.ALLIES_TYPE;
 
 public class AlliesClientMain extends Application {
@@ -27,7 +28,7 @@ public class AlliesClientMain extends Application {
             Parent root = fxmlLoader.load();
             mainAppController = fxmlLoader.getController();
             mainAppController.loadMainAppForm(getClass().getResource(Constants.ALLIES_MAIN_APP_FXML_RESOURCE_LOCATION),Constants.ALLIES_CLIENT);
-            mainAppController.setUserType(ALLIES_TYPE);
+            mainAppController.setUserType(ALLIES_HEADER);
             Scene scene = new Scene(root, 700, 600);
             primaryStage.setScene(scene);
             primaryStage.show();

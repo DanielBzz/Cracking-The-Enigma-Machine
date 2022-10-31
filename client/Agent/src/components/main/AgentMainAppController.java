@@ -70,11 +70,6 @@ public class AgentMainAppController implements AppMainController {
         candidatesTable.getItems().clear();
     }
 
-    @Override
-    public void loadClientMainPage() {
-
-    }
-
     public void addContestDetailsToScreen(ContestDetailsDTO contestData){
         contestAndTeamDataComponentController.updateContestData(contestData);
     }
