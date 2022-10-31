@@ -5,6 +5,7 @@ import components.subComponents.AlliesDashboardController;
 import contestDtos.TeamDetailsContestDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
@@ -17,6 +18,7 @@ public class AlliesMainAppController implements AppMainController {
     @FXML private AlliesContestController contestComponentController;
     @FXML private Tab contestTab;
     @FXML private Tab dashboardTab;
+    @FXML private TabPane doubleTabPane;
 
     @FXML
     public void initialize(){
@@ -79,5 +81,13 @@ public class AlliesMainAppController implements AppMainController {
         dashboardComponentController.setInactive();
         contestComponentController.setActive();
         dashboardTab.disableProperty().set(true);
+    }
+
+    public void switchPanes(){
+        if(doubleTabPane.getSelectionModel().getSelectedIndex() == 1){
+            doubleTabPane.getSelectionModel().select(0);
+        }else{
+            doubleTabPane.getSelectionModel().select(1);
+        }
     }
 }

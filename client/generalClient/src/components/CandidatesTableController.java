@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import util.CandidatesRefresher;
 import util.WinnerChecker;
 
@@ -23,6 +24,13 @@ public class CandidatesTableController {
     private TimerTask candidatesRefresher;
     private Timer timer;
 
+    //can be checked after starting a contest
+    @FXML
+    public void initialize(){
+        candidatesTable.getColumns().get(0).setCellValueFactory(new PropertyValueFactory("decryptedMessage"));
+        candidatesTable.getColumns().get(1).setCellValueFactory(new PropertyValueFactory("foundersName"));
+        candidatesTable.getColumns().get(2).setCellValueFactory(new PropertyValueFactory("configuration"));
+    }
     public void startListRefresher(Consumer<String> finishContestConsumer) {
         candidatesRefresher = new CandidatesRefresher(this::updateCandidates,finishContestConsumer,0);
         timer = new Timer();

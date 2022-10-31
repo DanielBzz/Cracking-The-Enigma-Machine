@@ -2,9 +2,11 @@ package components;
 
 import constants.Constants;
 import contestDtos.ActivePlayerDTO;
+import contestDtos.ContestDetailsDTO;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -55,24 +57,37 @@ public class AlliesListController extends RefresherController {
     @Override
     public void updateList(String jsonUserList) {
 
+//        List<ActivePlayerDTO> usersList = Arrays.asList(Constants.GSON_INSTANCE.fromJson(jsonUserList,ActivePlayerDTO[].class));
+//        Optional<ActivePlayerDTO> chosenAllie = null;
+//
+//        if (chooseable.get()) {
+//            String nameOfChosen = getSelectedAlliesName();
+//            chosenAllie = nameOfChosen != null ?
+//                    usersList.stream().filter(allie -> allie.getName().equals(nameOfChosen)).findFirst()
+//                    : Optional.empty();
+//
+//        }
+//
+////        Platform.runLater(()->{
+////            clearComponent();
+////            usersList.forEach(this::addTeam);
+////        });
+//
+//        alliesTable.setItems(FXCollections.observableList(usersList));
+//        if(/*chooseable.get() && */chosenAllie != null && chosenAllie.isPresent()){
+//            alliesTable.getSelectionModel().select(chosenAllie.get());
+//        }
+
         List<ActivePlayerDTO> usersList = Arrays.asList(Constants.GSON_INSTANCE.fromJson(jsonUserList,ActivePlayerDTO[].class));
-        Optional<ActivePlayerDTO> chosenAllie = null;
+        String nameOfChosen = getSelectedAlliesName();
+        Optional<ActivePlayerDTO> chosenAlly = nameOfChosen != null ?
+                usersList.stream().filter(ally -> ally.getName().equals(nameOfChosen)).findFirst()
+                : Optional.empty();
 
-        if (chooseable.get()) {
-            String nameOfChosen = getSelectedAlliesName();
-            chosenAllie = nameOfChosen != null ?
-                    usersList.stream().filter(allie -> allie.getName().equals(nameOfChosen)).findFirst()
-                    : Optional.empty();
-
+        alliesTable.setItems(FXCollections.observableList(usersList));
+        if(nameOfChosen!= null && chosenAlly.isPresent()){
+            alliesTable.getSelectionModel().select(chosenAlly.get());
         }
 
-        Platform.runLater(()->{
-            clearComponent();
-            usersList.forEach(this::addTeam);
-        });
-
-        if(chooseable.get() && chosenAllie != null && chosenAllie.isPresent()){
-            alliesTable.getSelectionModel().select(chosenAllie.get());
-        }
     }
 }

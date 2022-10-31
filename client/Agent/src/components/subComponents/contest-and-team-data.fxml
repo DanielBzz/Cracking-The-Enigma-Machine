@@ -29,11 +29,7 @@
                   </HBox>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0">
-               <children>
-                  <fx:include fx:id="contestDetailsComponent" minHeight="50.0" prefHeight="50.0" source="../../../../generalClient/src/components/contest-details-table.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               </children>
-            </AnchorPane>
+          <AnchorPane fx:id="contestDetailsPlace" minHeight="0.0" minWidth="0.0" />
         </items>
       </SplitPane>
    </content>

@@ -1,10 +1,10 @@
 package components.subComponents;
 
 import com.sun.istack.internal.NotNull;
-import components.AgentsListController;
 import components.ContestDetailsTableController;
 import components.DynamicComponent;
 import components.main.AlliesMainAppController;
+import components.tables.AgentsTableController;
 import contestDtos.TeamDetailsContestDTO;
 import http.HttpClientUtil;
 import javafx.application.Platform;
@@ -26,7 +26,7 @@ public class AlliesDashboardController {
 
     private AlliesMainAppController parentController;
     @FXML private AnchorPane agentsPlace;
-    private AgentsListController agentsTableComponentController;
+    private AgentsTableController agentsTableComponentController;
     @FXML private AnchorPane contestDetailsPlace;
     private ContestDetailsTableController contestTableComponentController;
     @FXML private Button joinButton;
@@ -34,7 +34,7 @@ public class AlliesDashboardController {
     public void initial(){
         try {
             FXMLLoader load = new FXMLLoader();
-            load.setLocation(AgentsListController.class.getResource("agents-list.fxml"));
+            load.setLocation(AgentsTableController.class.getResource("agents-table.fxml"));
             Node agentComponent = load.load();
             agentsPlace.getChildren().add(agentComponent);
             DynamicComponent.fitToPane(agentComponent);
@@ -104,6 +104,7 @@ public class AlliesDashboardController {
                         Platform.runLater(() -> {
                             parentController.updateNewContest(responseDetails);
                             parentController.dashboardInactive();
+                            parentController.switchPanes();
                         });
                     } else {
                         System.out.println("Could not response well, url:" + finalUrl);

@@ -11,8 +11,8 @@
 
 <GridPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.subComponents.UBoatRoomContestController">
   <columnConstraints>
-    <ColumnConstraints hgrow="ALWAYS" />
-    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+    <ColumnConstraints hgrow="SOMETIMES" />
+    <ColumnConstraints hgrow="SOMETIMES" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
@@ -20,7 +20,7 @@
     <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <HBox alignment="BOTTOM_LEFT" spacing="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <HBox alignment="CENTER_RIGHT" spacing="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <Button fx:id="readyButton" minWidth="60.0" mnemonicParsing="false" onAction="#readyButtonListener" text="Ready!" />
             <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonListener" text="Loguot" />

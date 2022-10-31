@@ -56,4 +56,13 @@ public class UBoatRoomMachineController implements EngineDtoReturnableParentCont
                 (observable, oldValue, newValue) ->  parentController.initialMachineConfiguration(newValue));
     }
 
+    public void disableCodeCalibration(){
+        codeCalibrationComponent.setDisable(true);
+    }
+
+    //not sure if need but:
+    public void enableCodeCalibration(){
+        codeCalibrationComponent.setDisable(false);
+    }
+
 }
