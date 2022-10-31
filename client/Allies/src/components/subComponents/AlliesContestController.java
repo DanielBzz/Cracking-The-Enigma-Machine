@@ -98,7 +98,7 @@ public class AlliesContestController implements Presenter, TeamTableHolder {
         contestDataAreaComponentController.initial(contestDetails);
     }
 
-    public void popUpMessage(String msg) {
+    public void sowPopUpMessage(String msg) {
 
         new Alert(Alert.AlertType.INFORMATION,msg, ButtonType.OK);
     }
@@ -112,5 +112,4 @@ public class AlliesContestController implements Presenter, TeamTableHolder {
         alliesTableComponentController.stopListRefresher();
         agentsTableComponentController.stopListRefresher();
     }
-
 }

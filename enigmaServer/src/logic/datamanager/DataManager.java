@@ -44,5 +44,4 @@ public abstract class DataManager<T> {
 
         return userNameToData.containsKey(username);
     }
-
 }

@@ -42,6 +42,6 @@ public class AgentManager extends DataManager<Agent> {
 
 
     public String getTeamName(String userName) {
-        return userNameToData.get(userName).getAlliesName();
+        return userNameToData.get(userName).getTeamName();
     }
 }

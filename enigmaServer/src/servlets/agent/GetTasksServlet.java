@@ -31,7 +31,7 @@ public class GetTasksServlet extends HttpServlet {
         try{
             TeamsManager allies = ServletUtils.getTeamsManager(request.getServletContext());
             Agent agentRequest = manager.getAgent(username);
-            List<AgentTask> newTasks = allies.getTasks(agentRequest.getAlliesName(),agentRequest.getAmountOfTasksInASingleTake());
+            List<AgentTask> newTasks = allies.getTasks(agentRequest.getTeamName(),agentRequest.getAmountOfTasksInASingleTake());
 
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(newTasks));
         }catch (UserNotExistException | ContestNotReadyException e){

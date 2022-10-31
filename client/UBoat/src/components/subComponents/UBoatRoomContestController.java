@@ -106,6 +106,8 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
 
     @FXML
     void logoutButtonListener(ActionEvent event) {
+        candidatesTableComponentController.cancelRefresher();
+        connectedTeamsController.stopListRefresher();
         parentController.close();
     }
 
@@ -138,7 +140,6 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
 
                     if (response.code() == 200) {
                         candidatesTableComponentController.startListRefresher(null);
-                        parentController.disableCodeCalibration();
                         System.out.println("encrypted message was updated and now the server is waiting for the teams to set ready!");
                     } else {
                         isPrepareForContest.set(false);
@@ -207,7 +208,6 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
     }
 
     public void clearComponent(){
-
         clearAfterContest();
         machineConfigurationComponentController.clearComponent();
         dictionaryDetails = null;
@@ -226,14 +226,14 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
     @Override
     public void checkIfWinner(CandidateDataDTO arg) {
 
-        if(encryptComponentController.getMessageToEncrypt().equals(arg.getDecryptedMessage())){
+        if(getStringWithoutSpecialChars(encryptComponentController.getMessageToEncrypt()).equals(arg.getDecryptedMessage())){
             finishContest(arg);
         }
     }
 
     private void finishContest(CandidateDataDTO winnerCandidate) {
-        setActive();
         clearAfterContest();
+        setActive();
         parentController.showPopUpMessage("the winner is: " + winnerCandidate.getFoundersName());
         parentController.announceTheWinner(winnerCandidate);
     }

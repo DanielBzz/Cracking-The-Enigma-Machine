@@ -112,9 +112,4 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
     public void clearComponent() {
 
     }
-
-    @Override
-    public void loadClientMainPage() {
-
-    }
 }

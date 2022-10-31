@@ -61,11 +61,6 @@ public class AlliesMainAppController implements AppMainController {
         dashboardComponentController.clearComponent();
         contestComponentController.clearComponent();
     }
-
-    @Override
-    public void loadClientMainPage() {
-
-    }
     //-------------------------------------------------------------------------------------
 
     public void updateNewContest(TeamDetailsContestDTO responseDetails) {       // get all the details and should update contest component

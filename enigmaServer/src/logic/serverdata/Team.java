@@ -162,4 +162,13 @@ public class Team {
     public Runnable getTask() throws InterruptedException {
         return taskQueue.take();
     }
+
+    public void removeTeam() {
+        teamAgents.forEach(agent -> agent.setTeam(null));
+    }
+
+    public synchronized void removeAgent(Agent agent) {
+
+        teamAgents.remove(agent);
+    }
 }

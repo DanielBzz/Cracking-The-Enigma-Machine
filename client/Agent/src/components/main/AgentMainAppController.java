@@ -78,6 +78,7 @@ public class AgentMainAppController implements AppMainController {
     public void addContestDetailsToScreen(ContestDetailsDTO contestData){
         contestAndTeamDataComponentController.updateContestData(contestData);
     }
+
     public synchronized void updateCandidates(List<CandidateDataDTO> newCandidates) {
         newCandidates.forEach(candidate->candidatesTable.getItems().add(candidate));
     }

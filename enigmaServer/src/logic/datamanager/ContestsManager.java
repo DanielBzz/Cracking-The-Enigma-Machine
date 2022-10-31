@@ -82,6 +82,15 @@ public class ContestsManager extends DataManager<UserContest> {
         competitor.setContestManagerName(userName);
     }
 
+    public void removeCompetitorFromContest(String contestUser, Team competitor){
+
+        if(!isContestExist(contestUser)) {
+            throw new ContestNotExistException(contestUser);
+        }
+
+        userNameToData.get(contestUser).removeCompetitor(competitor);
+    }
+
     public void setContestUserReady(String username) throws ContestNotExistException {
 
         if(!isContestExist(username)){

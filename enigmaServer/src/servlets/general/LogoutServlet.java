@@ -1,45 +1,51 @@
 package servlets.general;
 
+import exceptions.UserNotExistException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import logic.datamanager.AgentManager;
 import logic.datamanager.ContestsManager;
 import logic.datamanager.DataManager;
+import logic.datamanager.TeamsManager;
+import logic.serverdata.Agent;
+import logic.serverdata.Team;
 import servlets.utils.ServletUtils;
 import servlets.utils.SessionUtils;
 
 import java.io.IOException;
 
-import static servlets.utils.ServletUtils.*;
-
-@WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
+@WebServlet(name = "LogoutServlet", urlPatterns = "/logout")
 public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String usernameFromSession = SessionUtils.getUsername(request);
-        String userType = request.getParameter("usertype");
-        switch (userType){
-            case CONTEST_MANAGER_ATTRIBUTE_NAME:
-                ContestsManager contestManager = ServletUtils.getContestManager(getServletContext());
-                removeUser(usernameFromSession, contestManager, request);
-                break;
-            case TEAM_MANAGER_ATTRIBUTE_NAME:
+        String accessLevel = SessionUtils.getAccess(request);
 
-                //handle with allies logout
-                break;
-            case AGENT_ATTRIBUTE_NAME:
-                //handle with agent logout
-                break;
-            default:
-                //error
-                break;
+        try {
+            DataManager manager = ServletUtils.getDataManager(request.getServletContext(),accessLevel);
+            removeUser(usernameFromSession,manager,request);
+            ServletUtils.createResponse(response,HttpServletResponse.SC_OK,null);
+        } catch (Exception e) {
+            ServletUtils.createResponse(response,HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getMessage());
         }
-        SessionUtils.clearSession(request);
     }
-    public void removeUser(String usernameFromSession, DataManager user, HttpServletRequest request){
+
+    public void removeUser(String usernameFromSession, DataManager user, HttpServletRequest request) throws UserNotExistException {
         if (usernameFromSession != null) {
+            if(user instanceof TeamsManager){
+                ContestsManager contest = ServletUtils.getContestManager(request.getServletContext());
+                Team teamToRemove = ((TeamsManager) user).getTeam(usernameFromSession);
+                contest.removeCompetitorFromContest(teamToRemove.getContestName(),teamToRemove);
+            } else if (user instanceof AgentManager) {
+                TeamsManager teamsManager = ServletUtils.getTeamsManager(request.getServletContext());
+                Agent agent = ((AgentManager) user).getAgent(usernameFromSession);
+                teamsManager.removeAgentFromTeam(agent.getTeamName(),agent);
+            }
+
             user.removeUser(usernameFromSession);
             SessionUtils.clearSession(request);
         }
+
     }
 }

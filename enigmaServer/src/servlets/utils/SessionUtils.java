@@ -21,8 +21,9 @@ public class SessionUtils {
         return sessionAttribute != null ? sessionAttribute.toString() : null;
     }
 
-    public static void clearSession (HttpServletRequest request) {      // when logout use it
+    public static void clearSession (HttpServletRequest request) {
 
-        request.getSession().invalidate();
+        request.getSession().removeAttribute(USERNAME_ATTRIBUTE);
+        request.getSession().removeAttribute(ACCESS_ATTRIBUTE);
     }
 }

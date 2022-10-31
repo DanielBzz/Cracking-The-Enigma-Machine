@@ -45,7 +45,7 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
             headerComponentController.initial();
             uBoatRoomMachineComponentController.setParentController(this);
             uBoatRoomMachineComponentController.initial();
-            uBoatRoomMachineComponent.disableProperty().bind(uBoatRoomContestComponentController.isPrepareForContestProperty());
+            uBoatRoomMachineComponentController.codeCalibrationDisableProperty().bind(uBoatRoomContestComponentController.isPrepareForContestProperty());
             uBoatRoomContestComponentController.setParentController(this);
             uBoatRoomContestComponentController.initial();
             contestTab.disableProperty().bind(isGoodFileSelectedProperty().not());
@@ -68,14 +68,8 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
 
     @Override
     public void clearComponent(){
-        initialFileLoadable();
         uBoatRoomMachineComponentController.clearDetails();
         uBoatRoomContestComponentController.clearComponent();
-    }
-
-    @Override
-    public void loadClientMainPage() {
-        //parentController.loadMainAppForm(getClass().getResource(Constants.UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION));
     }
 
     //------------------------------------------- ----------------------------
@@ -94,7 +88,7 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
         uBoatRoomContestComponent.disableProperty().bind(isGoodFileSelectedProperty().not());
         selectedFileProperty().addListener((observable, oldValue, newValue) -> {
             setIsGoodFileSelected(false);
-            //clearComponent();
+            clearComponent();
             uBoatLogic.uploadFileToServer(selectedFileProperty().get());
         });
 
@@ -143,14 +137,5 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
 
     public void announceTheWinner(CandidateDataDTO winnerCandidate) {
         uBoatLogic.finishContest(winnerCandidate);
-    }
-
-    public void disableCodeCalibration(){
-        uBoatRoomMachineComponentController.disableCodeCalibration();
-    }
-
-    //not sure if need but:
-    public void enableCodeCalibration(){
-        uBoatRoomMachineComponentController.disableCodeCalibration();
     }
 }

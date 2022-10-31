@@ -5,6 +5,7 @@ import components.CandidatesTableController;
 import components.DynamicComponent;
 import contestDtos.ContestDetailsDTO;
 import http.HttpClientUtil;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -82,8 +83,9 @@ public class AlliesDecryptionProgressAndCandidatesController {
                         inContest.set(true);
                     }
                     else {
+                        String error = responseBody.string();
+                        Platform.runLater(()->parentController.sowPopUpMessage(response.code() + ": "  + error));
                         System.out.println("Could not response well, url:" + finalUrl);
-                        System.out.println(response.code() + "   "  + response.body().string());
                     }
                 }
             }
@@ -142,7 +144,7 @@ public class AlliesDecryptionProgressAndCandidatesController {
     Consumer<String> thereIsWinner(){
         return msg -> {
             finishContest();
-            parentController.popUpMessage(msg);
+            parentController.sowPopUpMessage(msg);
         };
     }
 

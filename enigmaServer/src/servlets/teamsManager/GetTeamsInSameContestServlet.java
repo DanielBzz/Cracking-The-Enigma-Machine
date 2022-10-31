@@ -24,8 +24,13 @@ public class GetTeamsInSameContestServlet extends HttpServlet {
         String username = SessionUtils.getUsername(req);
         TeamsManager teamsManager = ServletUtils.getTeamsManager(req.getServletContext());
 
-        if(teamsManager.isUserExists(username) || teamsManager.getContestName(username).isEmpty()){
+        if(teamsManager.isUserExists(username)){
             ServletUtils.createResponse(resp, HttpServletResponse.SC_UNAUTHORIZED, null);
+            return;
+        }
+
+        if(teamsManager.getContestName(username) == null || teamsManager.getContestName(username).isEmpty()){
+            ServletUtils.createResponse(resp, HttpServletResponse.SC_NO_CONTENT, null);
             return;
         }
 
