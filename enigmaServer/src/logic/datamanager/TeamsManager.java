@@ -111,7 +111,7 @@ public class TeamsManager extends DataManager<Team>{
         }
 
         synchronized (team) {
-            if (team.isInContest()) {
+            if (!team.isInContest()) {//changed to !team.isInContest()
                 throw new ContestNotReadyException();
             }
         }

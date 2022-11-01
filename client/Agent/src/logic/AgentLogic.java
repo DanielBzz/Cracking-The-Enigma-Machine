@@ -43,9 +43,9 @@ public class AgentLogic extends RefresherController {//need to change name of th
     private final int amountOfThreads;
     private AtomicInteger tasksLeftBeforeNewTake;
     private Boolean inContest;
-    private AtomicInteger totalTakenTasks;
-    private AtomicInteger totalFinishedTasks;
-    private AtomicInteger totalAmountOfCandidates;
+    private AtomicInteger totalTakenTasks = new AtomicInteger();
+    private AtomicInteger totalFinishedTasks = new AtomicInteger();
+    private AtomicInteger totalAmountOfCandidates = new AtomicInteger();
 
     @Override
     public void updateList(String jsonUserList) {
@@ -70,10 +70,10 @@ public class AgentLogic extends RefresherController {//need to change name of th
             else{
                 super.run();
                 if(tasksLeftBeforeNewTake.decrementAndGet() == 0){
-                    Platform.runLater(pullTasks());
+                    Platform.runLater(()->pullTasks());
                     tasksLeftBeforeNewTake.set(amountOfTasksInSingleTake);
                 }
-                Platform.runLater(pushAnswers());
+                Platform.runLater(()->pushAnswers());
             }
         }
     }
@@ -87,7 +87,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
         agentTasks = new LinkedBlockingQueue<>(amountOfThreads);
         //need to check for the keep alive parameter
         threadPool = new ThreadPoolExecutor(amountOfThreads, amountOfThreads + 5,5, TimeUnit.SECONDS,agentTasks,createThreadFactory());
-
+        threadPool.prestartAllCoreThreads();
         startListRefresher(REQUEST_PATH_IS_CONTEST_ON);
     }
 
@@ -104,7 +104,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
         };
     }
 
-    public Runnable pullTasks(){
+    public void pullTasks(){
 
         String finalUrl = HttpUrl
                 .parse(REQUEST_PATH_PULL_TASKS)
@@ -122,7 +122,8 @@ public class AgentLogic extends RefresherController {//need to change name of th
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() == 200) {
                     if(response.body() != null){
-                        AgentTask[] newTasks = Constants.GSON_INSTANCE.fromJson(response.body().toString(), AgentTask[].class);
+                        System.out.println(response.body());
+                        AgentTask[] newTasks = Constants.GSON_INSTANCE.fromJson(response.body().string(), AgentTask[].class);
                         System.out.println("tasks that were pulled: " + newTasks.toString());
                         List<WebAgentTask> improvedTasks = new ArrayList<>();
                         for (AgentTask task:newTasks) {
@@ -145,14 +146,14 @@ public class AgentLogic extends RefresherController {//need to change name of th
                     }
                 }
                 else {
-                    System.out.println("Could not response well, url:" + finalUrl);
+                    System.out.println("Could not response well, " +response.code() +": "+ response.body().string() +",  url:" + finalUrl);
                 }
             }
         });
-        return null;
+
     }
 
-    public Runnable pushAnswers(){
+    public void pushAnswers(){
         List<AgentAnswerDTO> newAnswers = new ArrayList<>();
         answersQueue.drainTo(newAnswers);
 
@@ -193,7 +194,6 @@ public class AgentLogic extends RefresherController {//need to change name of th
             }
         });
 
-        return null;
     }
 
     public void finishContest(){

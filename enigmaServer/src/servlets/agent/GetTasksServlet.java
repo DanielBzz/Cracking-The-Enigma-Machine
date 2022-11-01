@@ -35,7 +35,7 @@ public class GetTasksServlet extends HttpServlet {
 
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(newTasks));
         }catch (UserNotExistException | ContestNotReadyException e){
-            ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
+            ServletUtils.createResponse(response, HttpServletResponse.SC_CONFLICT,e.getMessage());
             System.out.println(e.getMessage());
         }catch (Exception e){
             ServletUtils.createResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,null);
