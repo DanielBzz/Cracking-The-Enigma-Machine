@@ -73,7 +73,9 @@ public class AgentLogic extends RefresherController {//need to change name of th
                     Platform.runLater(()->pullTasks());
                     tasksLeftBeforeNewTake.set(amountOfTasksInSingleTake);
                 }
-                Platform.runLater(()->pushAnswers());
+                if(!answersQueue.isEmpty()){
+                    Platform.runLater(()->pushAnswers());
+                }
             }
         }
     }
@@ -159,21 +161,22 @@ public class AgentLogic extends RefresherController {//need to change name of th
 
         List<CandidateDataDTO> newCandidates = new ArrayList<>();
         for (AgentAnswerDTO answer: newAnswers) {
-            //need to make sure who is the configuration and who is the message
             answer.getDecryptedMessagesCandidates().forEach((configuration, message)->{
                 newCandidates.add(new CandidateDataDTO(message.toString(), name, configuration));
                 totalAmountOfCandidates.incrementAndGet();
             });
             totalFinishedTasks.incrementAndGet();
         }
-        //need to check if we need to put it in platform run later
+
         appController.updateCandidates(newCandidates);
         String json = constants.Constants.GSON_INSTANCE.toJson(newCandidates);
 
         RequestBody body =
                 new MultipartBody.Builder()
-                        .addFormDataPart("candidates", json)
+                        .addFormDataPart("file", json)
                         .build();
+
+        System.out.println("On push answers, before send request, going to push: " + body);
 
         HttpClientUtil.runAsyncPost(REQUEST_PATH_PUSH_CANDIDATES, body, new Callback() {
             @Override
@@ -191,6 +194,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
                         System.out.println("there was a problem to update the server with the new candidates");
                     }
                 }
+
             }
         });
 
