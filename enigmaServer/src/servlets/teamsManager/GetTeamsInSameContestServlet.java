@@ -29,18 +29,20 @@ public class GetTeamsInSameContestServlet extends HttpServlet {
             return;
         }
 
-        if(teamsManager.getContestName(username) == null || teamsManager.getContestName(username).isEmpty()){
-            System.out.printf("disconnected from contest and send 204");
-            ServletUtils.createResponse(resp, HttpServletResponse.SC_RESET_CONTENT, null);
-            return;
-        }
-
         try {
+            if(teamsManager.getContestName(username) == null || teamsManager.getContestName(username).isEmpty()){
+                System.out.printf("disconnected from contest and send 204");
+                ServletUtils.createResponse(resp, HttpServletResponse.SC_RESET_CONTENT, null);
+                return;
+            }
+
             ContestsManager contestsManager = ServletUtils.getContestManager(req.getServletContext());
             Set<ActivePlayerDTO> competitors = contestsManager.getConnectedUsersDetails(teamsManager.getContestName(username));
             ServletUtils.createResponse(resp, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(competitors));
         }catch (ContestNotExistException e){
             ServletUtils.createResponse(resp, HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+        }catch (Exception e){
+            ServletUtils.createResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }

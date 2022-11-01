@@ -42,7 +42,12 @@ public class TeamsManager extends DataManager<Team>{
         return userNameToData.get(userName);
     }
 
-    public synchronized String getContestName(String userName){
+    public synchronized String getContestName(String userName) throws UserNotExistException {
+
+        if(!isUserExists(userName)){
+            throw new UserNotExistException(userName);
+        }
+
         return userNameToData.get(userName).getContestManagerName();
 
     }

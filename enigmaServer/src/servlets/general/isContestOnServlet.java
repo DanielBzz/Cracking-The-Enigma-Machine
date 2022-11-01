@@ -44,9 +44,9 @@ public class isContestOnServlet extends HttpServlet {
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(contestDetails));
 
         }catch (UserNotExistException e){
-            ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
+            ServletUtils.createResponse(response, HttpServletResponse.SC_RESET_CONTENT, e.getMessage());
             System.out.println(e.getMessage());
-        }catch(ContestNotExistException e){
+        } catch(ContestNotExistException e){
             ServletUtils.createResponse(response, HttpServletResponse.SC_NO_CONTENT,"still not connect to contest");
 
         }catch (Exception | Error e){

@@ -28,7 +28,6 @@ import static util.Constants.REQUEST_PATH_ADD_AGENT_TO_TEAM;
 public class EnteringAgentDetailsController implements Presenter, AppMainController, TeamTableHolder {
 
     private ClientMainController mainAppController;
-
     @FXML private AnchorPane alliesListPlace;
     private ActivePlayerListController alliesListComponentController;
     @FXML private Slider amountOfAgentsSlider;
@@ -57,7 +56,7 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
     @FXML
     void readyButtonListener(ActionEvent event) {
 
-        String teamManager = alliesListComponentController.getSelectedAlliesName();
+        String teamManager = alliesListComponentController.getSelectedUserName();
         String amountOfThreads = String.valueOf((int)amountOfAgentsSlider.getValue());
         String amountOfTasksInASingleTake = amountOfTasksField.getText();
 

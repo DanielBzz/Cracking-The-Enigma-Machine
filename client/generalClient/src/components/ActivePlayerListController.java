@@ -2,7 +2,6 @@ package components;
 
 import constants.Constants;
 import contestDtos.ActivePlayerDTO;
-import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -55,11 +54,11 @@ public class ActivePlayerListController extends RefresherController {
 
     public void clearComponent(){
 
-            usersTable.getItems().clear();
+        usersTable.getItems().clear();
     }
 
 
-    public String getSelectedAlliesName(){
+    public String getSelectedUserName(){
 
         return usersTable.getSelectionModel().getSelectedItem() != null ?
                 usersTable.getSelectionModel().getSelectedItem().getName() :
@@ -75,15 +74,15 @@ public class ActivePlayerListController extends RefresherController {
         }
 
         List<ActivePlayerDTO> usersList = Arrays.asList(Constants.GSON_INSTANCE.fromJson(jsonUserList,ActivePlayerDTO[].class));
-        String nameOfChosen = getSelectedAlliesName();
+        String nameOfChosen = getSelectedUserName();
+        System.out.println("in useer list update  : " +nameOfChosen);
         Optional<ActivePlayerDTO> chosenAllie = nameOfChosen != null ?
                     usersList.stream().filter(allie -> allie.getName().equals(nameOfChosen)).findFirst()
                     : Optional.empty();
+        System.out.println("in useer list update  : " +chosenAllie.isPresent());
 
-        Platform.runLater(()->{
-            clearComponent();
-            usersList.forEach(this::addTeam);
-        });
+        clearComponent();
+        usersList.forEach(this::addTeam);
 
         if(nameOfChosen != null && chosenAllie.isPresent()){
             usersTable.getSelectionModel().select(chosenAllie.get());
