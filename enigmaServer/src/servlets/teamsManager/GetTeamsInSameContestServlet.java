@@ -31,7 +31,7 @@ public class GetTeamsInSameContestServlet extends HttpServlet {
 
         if(teamsManager.getContestName(username) == null || teamsManager.getContestName(username).isEmpty()){
             System.out.printf("disconnected from contest and send 204");
-            ServletUtils.createResponse(resp, HttpServletResponse.SC_NO_CONTENT, null);
+            ServletUtils.createResponse(resp, HttpServletResponse.SC_RESET_CONTENT, null);
             return;
         }
 

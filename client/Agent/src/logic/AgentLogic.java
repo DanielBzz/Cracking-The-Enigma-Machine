@@ -49,13 +49,25 @@ public class AgentLogic extends RefresherController {//need to change name of th
 
     @Override
     public void updateList(String jsonUserList) {
-        String[] res = Constants.GSON_INSTANCE.fromJson(jsonUserList, String[].class);
-        inContest = Boolean.valueOf(res[0]);
-        System.out.println("on update list of in contest at agent, inContest = " + inContest);
-        if(inContest && agentTasks.size() == 0){
-            ContestDetailsDTO contestData = Constants.GSON_INSTANCE.fromJson(res[1], ContestDetailsDTO.class);
+
+        ContestDetailsDTO contestData = Constants.GSON_INSTANCE.fromJson(jsonUserList, ContestDetailsDTO.class);
+
+        inContest = contestData.isStatus();
+
+        if(!inContest){
+            appController.addContestDetailsToScreen(contestData);
+        }
+        else if(agentTasks.size() == 0){
             Platform.runLater(()->startContest(contestData));
         }
+
+//        String[] res = Constants.GSON_INSTANCE.fromJson(jsonUserList, String[].class);
+//        inContest = Boolean.valueOf(res[0]);
+//        System.out.println("on update list of in contest at agent, inContest = " + inContest);
+//        if(inContest && agentTasks.size() == 0){
+//            ContestDetailsDTO contestData = Constants.GSON_INSTANCE.fromJson(res[1], ContestDetailsDTO.class);
+//            Platform.runLater(()->startContest(contestData));
+//        }
     }
 
     public class WebAgentTask extends AgentTask {
@@ -88,7 +100,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
         //need to check for the keep alive parameter
         threadPool = new ThreadPoolExecutor(amountOfThreads, amountOfThreads + 5,5, TimeUnit.SECONDS,agentTasks,createThreadFactory());
         threadPool.prestartAllCoreThreads();
-        startListRefresher(REQUEST_PATH_IS_CONTEST_ON);
+        startListRefresher(constants.Constants.REQUEST_PATH_IS_CONTEST_ON);
     }
 
     private ThreadFactory createThreadFactory(){

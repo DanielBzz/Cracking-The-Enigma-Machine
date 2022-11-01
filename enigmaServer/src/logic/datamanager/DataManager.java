@@ -42,6 +42,6 @@ public abstract class DataManager<T> {
 
     public boolean isUserExists(String username) {
 
-        return userNameToData.containsKey(username);
+        return username != null && userNameToData.containsKey(username);
     }
 }

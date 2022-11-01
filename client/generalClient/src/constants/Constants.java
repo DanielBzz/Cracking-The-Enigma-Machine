@@ -20,10 +20,10 @@ public class Constants {
     public final static String REQUEST_PATH_LOGOUT = FULL_SERVER_PATH + "/logout";
     public final static String REQUEST_PATH_USERS_UPDATE = FULL_SERVER_PATH + "/getUsers";
     public final static String REQUEST_PATH_GET_CANDIDATES = FULL_SERVER_PATH + "/getCandidates";
+    public final static String REQUEST_PATH_IS_CONTEST_ON = FULL_SERVER_PATH + "/isContestOn";
 
     public final static String ALLIES_TYPE = "allies";
     public final static String AGENT_TYPE = "agent";
-    public final static String REQUEST_PATH_IS_CONTEST_ON = FULL_SERVER_PATH + "/isContestOn";
 
     public final static String ACTIVE_CONTEST = "active";
     public final static String WAITING_CONTEST = "waiting";
