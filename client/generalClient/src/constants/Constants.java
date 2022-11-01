@@ -22,9 +22,6 @@ public class Constants {
     public final static String REQUEST_PATH_GET_CANDIDATES = FULL_SERVER_PATH + "/getCandidates";
     public final static String REQUEST_PATH_IS_CONTEST_ON = FULL_SERVER_PATH + "/isContestOn";
 
-
-
-
     public final static String ALLIES_TYPE = "allies";
     public final static String AGENT_TYPE = "agent";
 
@@ -34,8 +31,6 @@ public class Constants {
     public final static String UBOAT_HEADER = "UBoat Player";
     public final static String ALLIES_HEADER = "Allies Player";
     public final static String AGENT_HEADER = "Agent Player";
-
-
     public final static String AGENT_IN_CONTEST_TYPE = "agent in contest";
     public final static String FROM_SEPARATOR = " / ";
 

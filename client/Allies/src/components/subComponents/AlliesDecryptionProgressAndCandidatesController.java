@@ -83,9 +83,11 @@ public class AlliesDecryptionProgressAndCandidatesController {
                         inContest.set(true);
                     }
                     else {
-                        String error = responseBody.string();
-                        Platform.runLater(()->parentController.sowPopUpMessage(response.code() + ": "  + error));
-                        System.out.println("Could not response well, url:" + finalUrl);
+                        String error = response.code() +":  " + responseBody.string();
+                        Platform.runLater(()->parentController.sowPopUpMessage(error));
+                        System.out.println(
+                                "Could not response well, " +response.code() +": "+ error +",  url:" + finalUrl);
+
                     }
                 }
             }
@@ -143,13 +145,8 @@ public class AlliesDecryptionProgressAndCandidatesController {
 
     Consumer<String> thereIsWinner(){
         return msg -> {
-            finishContest();
+            inFinishedContest();
             parentController.sowPopUpMessage(msg);
         };
-    }
-
-    private void finishContest() {
-
-        // should perform all the ui end contest
     }
 }

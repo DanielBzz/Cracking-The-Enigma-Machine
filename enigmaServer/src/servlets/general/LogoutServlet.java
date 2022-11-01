@@ -36,7 +36,7 @@ public class LogoutServlet extends HttpServlet {
             if(user instanceof TeamsManager){
                 ContestsManager contest = ServletUtils.getContestManager(request.getServletContext());
                 Team teamToRemove = ((TeamsManager) user).getTeam(usernameFromSession);
-                contest.removeCompetitorFromContest(teamToRemove.getContestName(),teamToRemove);
+                contest.removeCompetitorFromContest(teamToRemove.getContestManagerName(),teamToRemove);
             } else if (user instanceof AgentManager) {
                 TeamsManager teamsManager = ServletUtils.getTeamsManager(request.getServletContext());
                 Agent agent = ((AgentManager) user).getAgent(usernameFromSession);

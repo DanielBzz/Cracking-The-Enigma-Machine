@@ -9,7 +9,7 @@
       <TableView fx:id="candidatesTable" minHeight="200.0" minWidth="297.0" prefHeight="200.0">
          <columns>
             <TableColumn maxWidth="400.0" minWidth="75.0" prefWidth="-1.0" text="Decrypted Message" />
-            <TableColumn fx:id="whoFoundTheAnswerLabel" maxWidth="300.0" minWidth="100.0" prefWidth="-1.0" text="Team" />
+            <TableColumn maxWidth="300.0" minWidth="100.0" prefWidth="-1.0" text="Team" />
             <TableColumn maxWidth="400.0" minWidth="120.0" prefWidth="-1.0" text="Configuration" />
          </columns>
          <columnResizePolicy>

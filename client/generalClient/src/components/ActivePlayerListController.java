@@ -5,7 +5,6 @@ import contestDtos.ActivePlayerDTO;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -56,10 +55,7 @@ public class ActivePlayerListController extends RefresherController {
 
     public void clearComponent(){
 
-        if(usersTable !=null){
             usersTable.getItems().clear();
-        }
-        stopListRefresher();
     }
 
 
@@ -75,6 +71,7 @@ public class ActivePlayerListController extends RefresherController {
 
         if(jsonUserList == null && parentController instanceof Disconnectable){
             ((Disconnectable) parentController).disconnectFromContest();
+            return;
         }
 
         List<ActivePlayerDTO> usersList = Arrays.asList(Constants.GSON_INSTANCE.fromJson(jsonUserList,ActivePlayerDTO[].class));
@@ -84,7 +81,8 @@ public class ActivePlayerListController extends RefresherController {
                     : Optional.empty();
 
         Platform.runLater(()->{
-            usersTable.setItems(FXCollections.observableList(usersList));
+            clearComponent();
+            usersList.forEach(this::addTeam);
         });
 
         if(nameOfChosen != null && chosenAllie.isPresent()){

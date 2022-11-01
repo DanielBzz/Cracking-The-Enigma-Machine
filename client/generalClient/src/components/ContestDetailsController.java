@@ -48,4 +48,13 @@ public class ContestDetailsController {
     public Label getStatusLabel() {
         return statusLabel;
     }
+
+    public void clearComponent() {
+        battleFieldLabel.setText("");
+        contestManagerLabel.setText("");
+        statusLabel.setText("");
+        levelLabel.setText("");
+        teamsLabel.setText("");
+
+    }
 }

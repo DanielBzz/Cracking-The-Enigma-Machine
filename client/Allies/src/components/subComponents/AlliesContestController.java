@@ -5,7 +5,6 @@ import components.AgentsListController;
 import components.ContestDetailsController;
 import components.DynamicComponent;
 import components.main.AlliesMainAppController;
-import contestDtos.ContestDetailsDTO;
 import contestDtos.TeamDetailsContestDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -73,8 +72,8 @@ public class AlliesContestController implements Presenter, Disconnectable {
         clearComponent();
     }
 
-    public void setBasicThingsForContest(TeamDetailsContestDTO responseDetails){
-        changeContest(responseDetails.getContestDetails());
+    public void setNewContestForAllie(TeamDetailsContestDTO responseDetails){
+        contestDataAreaComponentController.initial(responseDetails.getContestDetails());
         alliesDecryptionProgressAndCandidatesComponentController.initial(responseDetails.getContestDetails());
         totalTasksLabel.setText(String.valueOf(responseDetails.getContestDetails().getTaskSize()));
     }
@@ -87,7 +86,7 @@ public class AlliesContestController implements Presenter, Disconnectable {
         alliesTableComponentController.clearComponent();
         agentsTableComponentController.cleanTable();
         alliesDecryptionProgressAndCandidatesComponentController.clearController();
-        //need to clear also the rest of the component
+        contestDataAreaComponentController.clearComponent();
     }
 
     public void addProducedTasks(int moreTasks){
@@ -96,11 +95,6 @@ public class AlliesContestController implements Presenter, Disconnectable {
 
     public void addFinishedTasks(int moreTasks){
         finishedTasksLabel.setText(String.valueOf(Integer.parseInt(finishedTasksLabel.getText()) + moreTasks));
-    }
-
-    private void changeContest(ContestDetailsDTO contestDetails) {
-        
-        contestDataAreaComponentController.initial(contestDetails);
     }
 
     public void sowPopUpMessage(String msg) {
@@ -116,5 +110,6 @@ public class AlliesContestController implements Presenter, Disconnectable {
     public void setInactive(){
         alliesTableComponentController.stopListRefresher();
         agentsTableComponentController.stopListRefresher();
+        alliesDecryptionProgressAndCandidatesComponentController.inFinishedContest();
     }
 }
