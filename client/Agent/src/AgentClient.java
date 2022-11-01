@@ -29,7 +29,7 @@ public class AgentClient extends Application {
             mainAppController = fxmlLoader.getController();
             mainAppController.loadMainAppForm(getClass().getResource(Constants.AGENT_ENTER_DETAILS_FXML_RESOURCE_LOCATION),Constants.AGENT_CLIENT);
             mainAppController.setUserType(AGENT_HEADER);
-            Scene scene = new Scene(root, 700, 600);
+            Scene scene = new Scene(root, 1000 , 900);
             primaryStage.setScene(scene);
             primaryStage.show();
 

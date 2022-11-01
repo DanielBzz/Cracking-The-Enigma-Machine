@@ -26,13 +26,13 @@ import static util.Constants.REQUEST_PATH_ADD_AGENT_TO_TEAM;
 
 
 public class EnteringAgentDetailsController implements Presenter, AppMainController, TeamTableHolder {
+
     private ClientMainController mainAppController;
 
     @FXML private AnchorPane alliesListPlace;
     private ActivePlayerListController alliesListComponentController;
     @FXML private Slider amountOfAgentsSlider;
     @FXML private TextField amountOfTasksField;
-
 
     @FXML
     public void initialize() {

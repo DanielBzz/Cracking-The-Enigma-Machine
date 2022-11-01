@@ -3,7 +3,6 @@ package components;
 import contestDtos.CandidateDataDTO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import util.CandidatesRefresher;
@@ -20,7 +19,6 @@ public class CandidatesTableController {
 
     private WinnerChecker<CandidateDataDTO> winnerChecker;
     @FXML private TableView<CandidateDataDTO> candidatesTable;
-    @FXML private TableColumn<CandidateDataDTO, String> whoFoundTheAnswerLabel;
     private TimerTask candidatesRefresher;
     private Timer timer;
 
@@ -59,14 +57,9 @@ public class CandidatesTableController {
     }
 
     public void clear(){
-        candidatesTable.getItems().clear();
-        if(timer!=null){
-            timer.cancel();
+        if(candidatesTable.getItems()!=null && candidatesTable.getItems().size()!=0){
+            candidatesTable.getItems().clear();
         }
-    }
-
-    public void setWhoFoundTheAnswerLabel(String foundAnswersType){
-        whoFoundTheAnswerLabel.setText(foundAnswersType);
     }
 
     public void setWinnerChecker(WinnerChecker<CandidateDataDTO> winnerChecker) {

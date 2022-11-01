@@ -12,7 +12,6 @@ import java.net.URL;
 
 import static constants.Constants.UBOAT_HEADER;
 
-
 public class UBoatClient extends Application {
 
     private ClientMainController uBoatAppMainController;
