@@ -39,10 +39,10 @@ public class AddAgentToTeamServlet extends HttpServlet {
 
             TeamsManager manager = ServletUtils.getTeamsManager(request.getServletContext());
             String teamManagerName = request.getParameter(ServletUtils.TEAM_MANAGER_ATTRIBUTE_NAME);
-            ActivePlayerDTO newAgent = new ActivePlayerDTO(userName, amountOfThreads, amountOfTasksInASingleTake);
-            System.out.println("in AddAgentToTeamServlet, going to add: " + newAgent);
+            //ActivePlayerDTO newAgent = new ActivePlayerDTO(userName, amountOfThreads, amountOfTasksInASingleTake);
+            //System.out.println("in AddAgentToTeamServlet, going to add: " + newAgent);
 
-            manager.addAgent(teamManagerName, newAgent);
+            manager.addAgent(teamManagerName, agentManager.getAgent(userName));
 
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, null);
         }catch(Exception e){

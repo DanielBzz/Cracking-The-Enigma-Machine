@@ -54,7 +54,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
         System.out.println("on update list of in contest at agent, inContest = " + inContest);
         if(inContest && agentTasks.size() == 0){
             ContestDetailsDTO contestData = Constants.GSON_INSTANCE.fromJson(res[1], ContestDetailsDTO.class);
-            Platform.runLater(startContest(contestData));
+            Platform.runLater(()->startContest(contestData));
         }
     }
 
@@ -214,10 +214,9 @@ public class AgentLogic extends RefresherController {//need to change name of th
         };
     }
 
-    public Runnable startContest(ContestDetailsDTO contestData){
+    public void startContest(ContestDetailsDTO contestData){
         appController.addContestDetailsToScreen(contestData);
         pullTasks();
-        return null;
     }
 
     public void logOut() {
