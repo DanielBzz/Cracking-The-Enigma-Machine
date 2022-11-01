@@ -37,6 +37,10 @@ public class AlliesContestController implements Presenter, Disconnectable {
 
     public void initial() {
 
+        if(alliesDecryptionProgressAndCandidatesComponentController!=null){
+            alliesDecryptionProgressAndCandidatesComponentController.setAlliesContestController(this);
+        }
+
         try {
             FXMLLoader load = new FXMLLoader();
             load.setLocation(AgentsListController.class.getResource("agents-list.fxml"));

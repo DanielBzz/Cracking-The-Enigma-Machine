@@ -44,11 +44,7 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
             alliesListComponentController = load.getController();
             alliesListComponentController.setTableHolder(this);
             alliesListComponentController.setChooseable(true);
-            mainAppController.getUserNameProperty().addListener((observable, oldValue, newValue) -> {
-                if(newValue!=""){
-                    alliesListComponentController.startListRefresher(REQUEST_PATH_USERS_UPDATE);
-                }
-            } );
+            alliesListComponentController.startListRefresher(REQUEST_PATH_USERS_UPDATE);
 
         } catch (IOException e) {
             e.printStackTrace();
