@@ -50,11 +50,17 @@ public class CandidatesRefresher extends TimerTask {
                             CandidateDataDTO[] newCandidates = Constants.GSON_INSTANCE.fromJson(res[1], CandidateDataDTO[].class);
                             updateCandidatesConsumer.accept(Arrays.asList(newCandidates));
                         }
+
+                        System.out.println(
+                                "Could not response well, " +response.code() +": "+ response.body().string() +",  url:" + finalUrl);
                     } else if (response.code() == 202) {
                         cancel();
                         finishContestConsumer.accept(responseBody.string());
+                        System.out.println(
+                                "Could not response well, " +response.code() +": "+ response.body().string() +",  url:" + finalUrl);
                     } else {
-                        System.out.println(response.code() + "update candidates failed");
+                        System.out.println(
+                                "Could not response well, " +response.code() +": "+ response.body().string() +",  url:" + finalUrl);
                     }
                 }
             }

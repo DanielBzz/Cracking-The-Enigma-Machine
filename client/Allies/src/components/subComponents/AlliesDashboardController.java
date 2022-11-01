@@ -12,7 +12,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import okhttp3.*;
 import util.Constants;
@@ -60,7 +62,6 @@ public class AlliesDashboardController implements AgentTableHolder {
     public void setActive(){
         contestTableComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
         agentsTableComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
-        parentController.ContestInactive();
     }
 
     public void setInactive(){
@@ -79,7 +80,7 @@ public class AlliesDashboardController implements AgentTableHolder {
         String contestManagerName = contestTableComponentController.getChosenContestUserName();
 
         if(contestManagerName == null){
-            // send message to user(pop up message)
+            new Alert(Alert.AlertType.WARNING, "Contest not chosen", ButtonType.OK);
             return;
         }
 
@@ -106,11 +107,10 @@ public class AlliesDashboardController implements AgentTableHolder {
                         Platform.runLater(() -> {
                             parentController.updateNewContest(responseDetails);
                             parentController.dashboardInactive();
-                            parentController.switchPanes();
                         });
                     } else {
-                        System.out.println("Could not response well, url:" + finalUrl);
-                        System.out.println(response.code() + "  " + response.body().string());
+                        System.out.println(
+                                "Could not response well, " +response.code() +": "+ response.body().string() +",  url:" + finalUrl);
                     }
                 }
             }

@@ -23,7 +23,6 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.util.List;
 
-import static constants.Constants.AGENT_TYPE;
 import static util.Constants.REQUEST_PATH_GET_AGENT_INFO;
 
 public class AgentMainAppController implements AppMainController {

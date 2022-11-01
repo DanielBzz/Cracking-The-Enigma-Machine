@@ -10,9 +10,6 @@ import javafx.scene.layout.GridPane;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
 
-import static constants.Constants.AGENT_TYPE;
-import static constants.Constants.ALLIES_TYPE;
-
 public class AlliesMainAppController implements AppMainController {
     private ClientMainController parentController;
     @FXML private GridPane dashboardComponent;
@@ -63,29 +60,23 @@ public class AlliesMainAppController implements AppMainController {
     }
     //-------------------------------------------------------------------------------------
 
-    public void updateNewContest(TeamDetailsContestDTO responseDetails) {       // get all the details and should update contest component
+    public void updateNewContest(TeamDetailsContestDTO responseDetails) {
         // need to enable contest tab and maybe disable first tab
-        contestComponentController.setBasicThingsForContest(responseDetails);
+        contestComponentController.setNewContestForAllie(responseDetails);
 
     }
 
-    public void ContestInactive() {
+    public void contestInactive() {
         contestComponentController.setInactive();
-        contestComponentController.setActive();
+        dashboardComponentController.setActive();
         dashboardTab.disableProperty().set(false);
+        doubleTabPane.getSelectionModel().select(0);
     }
 
     public void dashboardInactive(){
         dashboardComponentController.setInactive();
         contestComponentController.setActive();
         dashboardTab.disableProperty().set(true);
-    }
-
-    public void switchPanes(){
-        if(doubleTabPane.getSelectionModel().getSelectedIndex() == 1){
-            doubleTabPane.getSelectionModel().select(0);
-        }else{
-            doubleTabPane.getSelectionModel().select(1);
-        }
+        doubleTabPane.getSelectionModel().select(1);
     }
 }

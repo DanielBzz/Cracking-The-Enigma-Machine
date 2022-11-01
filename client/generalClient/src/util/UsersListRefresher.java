@@ -39,10 +39,15 @@ public class UsersListRefresher extends TimerTask {
                         String res = responseBody.string();
 
                         Platform.runLater(()->userListConsumer.accept(res));
-                        System.out.println("responseBody of UserListRefresher is: " + res);
-                    }
-                    else {
-                        System.out.println(response.code() + "  " +response.body().string());
+                        System.out.println(
+                                "response well, " +response.code() +": "+ res +",  url:" + url);
+                    } else if (response.code() == 204) {
+                        Platform.runLater(()->userListConsumer.accept(null));
+                        System.out.println(
+                                "response well, " +response.code() +": "+ response.body().string() +",  url:" + url);
+                    } else {
+                        System.out.println(
+                                "Could not response well, " +response.code() +": "+ response.body().string() +",  url:" + url);
                     }
                 }
             }

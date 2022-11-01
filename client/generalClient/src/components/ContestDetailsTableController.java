@@ -2,7 +2,6 @@ package components;
 
 import constants.Constants;
 import contestDtos.ContestDetailsDTO;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -32,7 +31,9 @@ public class ContestDetailsTableController extends RefresherController {
                 contests.stream().filter(contest -> contest.getContestManagerName().equals(nameOfChosen)).findFirst()
                 : Optional.empty();
 
-        detailsTable.setItems(FXCollections.observableList(contests));
+        cleanTable();
+        contests.forEach(this::addContest);
+
         if(nameOfChosen!= null && chosenContest.isPresent()){
             detailsTable.getSelectionModel().select(chosenContest.get());
         }
@@ -44,8 +45,9 @@ public class ContestDetailsTableController extends RefresherController {
     }
 
     public void cleanTable(){
-
-        detailsTable.getItems().clear();
+        if(detailsTable !=null && detailsTable.getItems().size() != 0) {
+            detailsTable.getItems().clear();
+        }
     }
 
     public String getChosenContestUserName(){
