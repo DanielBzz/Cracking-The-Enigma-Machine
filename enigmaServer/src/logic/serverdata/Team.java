@@ -51,10 +51,11 @@ public class Team {
         return contestManagerName;
     }
 
-    public synchronized void addAgentToTeam(ActivePlayerDTO agent){
-        Agent newAgent = new Agent(agent.getName());
-        newAgent.setBasicData(agent.getAmount(), agent.getSize(), teamName);
-        teamAgents.add(newAgent);
+    public synchronized void addAgentToTeam(Agent agent){
+        //Agent newAgent = new Agent(agent.getName());
+        //newAgent.setBasicData(agent.getAmount(), agent.getSize(), teamName);
+        teamAgents.add(agent);
+        System.out.println("in Team- addAgentToTeam: " + agent);
     }
     public boolean isReady() {
         return ready;
@@ -138,6 +139,7 @@ public class Team {
         taskProducerThread = new Thread(new TasksProducer(details,taskSize,taskQueue,level));
         taskProducerThread.start();
 
+        System.out.println("in Team, startCompeting, agents are: " + teamAgents);
         teamAgents.forEach(agent -> agent.setInContest(true));
     }
 

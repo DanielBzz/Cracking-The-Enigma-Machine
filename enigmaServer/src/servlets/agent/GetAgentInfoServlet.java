@@ -23,7 +23,7 @@ public class GetAgentInfoServlet extends HttpServlet {
             //resp.sendRedirect(); -> want to send redirect to login servlet/page.
             return;
         }
-
+        System.out.println("in");
         try{
             AgentInfoDTO responseMessage = manager.getAgent(username).getAgentInfo();
             String res = ServletUtils.GSON_INSTANCE.toJson(responseMessage);

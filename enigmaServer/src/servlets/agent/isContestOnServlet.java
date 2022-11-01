@@ -31,6 +31,7 @@ public class isContestOnServlet extends HttpServlet {
 
         try{
             Boolean inContest = agentManager.getAgent(username).isInContest();
+            System.out.println("inContest = " + inContest);
             String[] responseMessage = new String[2];
             responseMessage[0] = String.valueOf(inContest);
             responseMessage[1] = null;

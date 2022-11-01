@@ -40,10 +40,22 @@
          </children>
       </AnchorPane>
       <AnchorPane fx:id="connectedTeamsPlace" GridPane.columnIndex="1" GridPane.rowSpan="2" />
-      <HBox fx:id="candidatesTablePlace" alignment="CENTER_LEFT" spacing="20.0" GridPane.rowIndex="2">
+      <GridPane GridPane.rowIndex="2">
+        <columnConstraints>
+          <ColumnConstraints hgrow="NEVER" minWidth="30.0" />
+          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <Label text="Candidates:" />
+            <AnchorPane fx:id="candidatesTablePlace" GridPane.columnIndex="1" />
+            <Label text="Candidates: ">
+               <GridPane.margin>
+                  <Insets left="5.0" right="5.0" />
+               </GridPane.margin>
+            </Label>
          </children>
-      </HBox>
+      </GridPane>
    </children>
 </GridPane>

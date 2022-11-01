@@ -26,7 +26,9 @@ import static util.Constants.REQUEST_PATH_ADD_AGENT_TO_TEAM;
 
 
 public class EnteringAgentDetailsController implements Presenter, AppMainController, TeamTableHolder {
-    ClientMainController mainAppController;
+
+    private ClientMainController mainAppController;
+
     @FXML private AnchorPane alliesListPlace;
     private ActivePlayerListController alliesListComponentController;
     @FXML private Slider amountOfAgentsSlider;
@@ -68,6 +70,7 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
                 .build()
                 .toString();
 
+        System.out.println("after pressing ready button in second screen of agent, before request been sent");
         HttpClientUtil.runAsyncGet(finalUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -79,6 +82,7 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
 
                 try(ResponseBody responseBody = response.body()){
                     if(response.code() == 200){
+                        System.out.println("on response to add agent to team, in second screen of agent");
                         alliesListComponentController.stopListRefresher();
                         Platform.runLater(() -> {
                             mainAppController.loadMainAppForm(getClass().getResource(Constants.AGENT_MAIN_APP_FXML_RESOURCE_LOCATION),Constants.AGENT_CLIENT);

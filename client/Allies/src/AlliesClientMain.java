@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import static constants.Constants.ALLIES_HEADER;
+import static constants.Constants.ALLIES_TYPE;
 
 public class AlliesClientMain extends Application {
 

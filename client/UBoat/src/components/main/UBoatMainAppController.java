@@ -18,6 +18,7 @@ import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
+import static constants.Constants.AGENT_TYPE;
 
 public class UBoatMainAppController extends FileLoadable implements AppMainController, CodeSetEventListener {
 

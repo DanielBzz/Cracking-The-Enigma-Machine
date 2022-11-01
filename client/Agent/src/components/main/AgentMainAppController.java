@@ -77,14 +77,6 @@ public class AgentMainAppController implements AppMainController {
         newCandidates.forEach(candidate->candidatesTable.getItems().add(candidate));
     }
 
-    public void setActive(){
-        //agentProgressAndStatusComponentController.startListRefresher(Constants.REQUEST_PATH_GET_TASKS_DATA);
-        //contestAndTeamDataComponentController.startListRefresher(Constants.REQUEST_PATH_GET_CONTESTS);
-    }
-
-    public void setPassive(){
-        //agentProgressAndStatusComponentController.stopListRefresher();
-    }
     public void getBasicInfo(AgentMainAppController thisController){
         HttpClientUtil.runAsyncGet(REQUEST_PATH_GET_AGENT_INFO, new Callback() {
             @Override
@@ -95,6 +87,7 @@ public class AgentMainAppController implements AppMainController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() == 200) {
+                    System.out.println("on response from getBasicInfo");
                     AgentInfoDTO basicAgentInfo = constants.Constants.GSON_INSTANCE.fromJson(response.body().string(), AgentInfoDTO.class);
                     agentLogic = new AgentLogic(thisController, basicAgentInfo.getAgentName(), basicAgentInfo.getAmountOfTasksInSingleTake(), basicAgentInfo.getAmountOfThreads());
 
@@ -105,7 +98,7 @@ public class AgentMainAppController implements AppMainController {
                     });
 
                     response.body().close();
-                    System.out.println("Allies was added successfully!");
+                    System.out.println("agent got info successfully!");
                 }
                 else {
                     System.out.println("Could not response well, url:" + REQUEST_PATH_GET_AGENT_INFO);

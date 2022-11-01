@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import static constants.Constants.AGENT_HEADER;
+import static constants.Constants.AGENT_TYPE;
 
 public class AgentClient extends Application {
 
