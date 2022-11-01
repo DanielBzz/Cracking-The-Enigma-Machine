@@ -20,9 +20,11 @@ public class AddAgentToTeamServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        System.out.println("in add agent to team servlet");
         String userName = SessionUtils.getUsername(request);
         AgentManager agentManager = ServletUtils.getAgentManager(request.getServletContext());
 
+        System.out.println("is " + userName + "exists: " + agentManager.isUserExists(userName));
         if (userName == null || !agentManager.isUserExists(userName)) {
             ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED, null);
             //resp.sendRedirect(); -> want to send redirect to login servlet/page.
@@ -37,11 +39,14 @@ public class AddAgentToTeamServlet extends HttpServlet {
 
             TeamsManager manager = ServletUtils.getTeamsManager(request.getServletContext());
             String teamManagerName = request.getParameter(ServletUtils.TEAM_MANAGER_ATTRIBUTE_NAME);
-            manager.addAgent(teamManagerName, new ActivePlayerDTO(userName, amountOfThreads, amountOfTasksInASingleTake));
+            ActivePlayerDTO newAgent = new ActivePlayerDTO(userName, amountOfThreads, amountOfTasksInASingleTake);
+            System.out.println("in AddAgentToTeamServlet, going to add: " + newAgent);
 
-            //need to add response body with all of that details!!!
+            manager.addAgent(teamManagerName, newAgent);
+
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, null);
         }catch(Exception e){
+            System.out.println("in AddAgentToTeamServlet, had an exception: " + e.getMessage());
             ServletUtils.createResponse(response, HttpServletResponse.SC_CONFLICT, e.getMessage());
         }
 

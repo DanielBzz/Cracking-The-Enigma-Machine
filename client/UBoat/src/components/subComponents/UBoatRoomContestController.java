@@ -48,7 +48,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
     @FXML private Button readyButton;
     @FXML private Button logoutButton;
     @FXML private AnchorPane connectedTeamsPlace;
-    @FXML private HBox candidatesTablePlace;
+    @FXML private AnchorPane candidatesTablePlace;
     private CandidatesTableController candidatesTableComponentController;
     private ActivePlayerListController connectedTeamsController;
     private DictionaryDTO dictionaryDetails;

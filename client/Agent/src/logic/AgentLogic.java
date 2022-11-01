@@ -17,15 +17,12 @@ import util.RefresherController;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-import static constants.Constants.REQUEST_PATH_IS_CONTEST_ON;
-import static util.Constants.REQUEST_PATH_PULL_TASKS;
-import static util.Constants.REQUEST_PATH_PUSH_CANDIDATES;
+import static util.Constants.*;
 
 /*
 * החלק הלוגי של הסוכן
@@ -54,9 +51,10 @@ public class AgentLogic extends RefresherController {//need to change name of th
     public void updateList(String jsonUserList) {
         String[] res = Constants.GSON_INSTANCE.fromJson(jsonUserList, String[].class);
         inContest = Boolean.valueOf(res[0]);
+        System.out.println("on update list of in contest at agent, inContest = " + inContest);
         if(inContest && agentTasks.size() == 0){
             ContestDetailsDTO contestData = Constants.GSON_INSTANCE.fromJson(res[1], ContestDetailsDTO.class);
-            startContest(contestData);
+            Platform.runLater(startContest(contestData));
         }
     }
 
@@ -125,6 +123,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
                 if (response.code() == 200) {
                     if(response.body() != null){
                         AgentTask[] newTasks = Constants.GSON_INSTANCE.fromJson(response.body().toString(), AgentTask[].class);
+                        System.out.println("tasks that were pulled: " + newTasks.toString());
                         List<WebAgentTask> improvedTasks = new ArrayList<>();
                         for (AgentTask task:newTasks) {
                             task.getDetails().setAnswerConsumer(answersConsumer());
@@ -140,9 +139,10 @@ public class AgentLogic extends RefresherController {//need to change name of th
                             }
                         }
                         response.body().close();
+                        System.out.println("on response of pullTasks, response body != null");
+                    }else{
+                        System.out.println("on response of pullTasks, response body = null");
                     }
-
-                    System.out.println("Allies was added successfully!");
                 }
                 else {
                     System.out.println("Could not response well, url:" + finalUrl);
@@ -197,8 +197,8 @@ public class AgentLogic extends RefresherController {//need to change name of th
     }
 
     public void finishContest(){
-        appController.setPassive();
-        agentTasks.clear();
+        //appController.setPassive();
+        //agentTasks.clear();
         //threadPool.shutdown();
     }
 
@@ -214,9 +214,10 @@ public class AgentLogic extends RefresherController {//need to change name of th
         };
     }
 
-    public void startContest(ContestDetailsDTO contestData){
+    public Runnable startContest(ContestDetailsDTO contestData){
         appController.addContestDetailsToScreen(contestData);
         pullTasks();
+        return null;
     }
 
     public void logOut() {

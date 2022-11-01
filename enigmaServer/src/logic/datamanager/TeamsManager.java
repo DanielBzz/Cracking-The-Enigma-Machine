@@ -95,6 +95,7 @@ public class TeamsManager extends DataManager<Team>{
     }
 
     public void addAgent(String alliesName, ActivePlayerDTO newAgent){
+        System.out.println("in TeamManager- addAgent, going to add: " + newAgent);
         getTeam(alliesName).addAgentToTeam(newAgent);
     }
 
