@@ -45,11 +45,4 @@ public class AgentProgressAndStatusController {
         this.totalCandidatesLabel.setText("");
     }
 
-//    @Override
-//    public void updateList(String jsonUserList) {
-//
-//
-//        AgentProgressDTO newDetails = Constants.GSON_INSTANCE.fromJson(jsonUserList, AgentProgressDTO.class);
-//        updateData(newDetails);
-//    }
 }

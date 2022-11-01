@@ -39,6 +39,7 @@ public class AgentMainAppController implements AppMainController {
 
         getBasicInfo(this);
         if(agentProgressAndStatusComponentController!= null){
+            System.out.println("in agent main app going to set the controller for the agent progress");
             agentProgressAndStatusComponentController.setAgentMainAppController(this);
         }
         candidatesTable.getColumns().get(0).setCellValueFactory(new PropertyValueFactory("decryptedMessage"));

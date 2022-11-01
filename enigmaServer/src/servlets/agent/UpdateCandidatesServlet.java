@@ -26,7 +26,6 @@ public class UpdateCandidatesServlet extends HttpServlet {
         AgentManager agentManager = getAgentManager(request.getServletContext());
 
         if(userName == null || !agentManager.isUserExists(userName) || agentManager.getTeamName(userName) == null){
-            System.out.println("-------------------------------------------in update candidates, problem with the user name / team does not exists");
             ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED, null);
             return;
         }

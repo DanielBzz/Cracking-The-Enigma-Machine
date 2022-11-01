@@ -69,6 +69,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
             }
             else{
                 super.run();
+                totalFinishedTasks.incrementAndGet();
                 if(tasksLeftBeforeNewTake.decrementAndGet() == 0){
                     Platform.runLater(()->pullTasks());
                     tasksLeftBeforeNewTake.set(amountOfTasksInSingleTake);
@@ -165,7 +166,6 @@ public class AgentLogic extends RefresherController {//need to change name of th
                 newCandidates.add(new CandidateDataDTO(message.toString(), name, configuration));
                 totalAmountOfCandidates.incrementAndGet();
             });
-            totalFinishedTasks.incrementAndGet();
         }
 
         appController.updateCandidates(newCandidates);
@@ -188,7 +188,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
             public void onResponse(Call call, Response response) throws IOException {
                 try(ResponseBody responseBody = response.body()){
                     if (response.code() == 200) {
-                        appController.updateTasksData(new AgentProgressDTO(agentTasks.size(), totalTakenTasks.get(), totalFinishedTasks.get(), totalAmountOfCandidates.get()));
+                        Platform.runLater(()->appController.updateTasksData(new AgentProgressDTO(agentTasks.size(), totalTakenTasks.get(), totalFinishedTasks.get(), totalAmountOfCandidates.get())));
                         System.out.println("server was updated with the new candidates");
                     } else {
                         System.out.println("there was a problem to update the server with the new candidates");
