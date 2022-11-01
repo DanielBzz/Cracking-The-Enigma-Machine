@@ -168,7 +168,7 @@ public class UBoatLogic {
         String finalUrl = HttpUrl.parse(Constants.REQUEST_PATH_FINISH_CONTEST).newBuilder()
                 .addQueryParameter("message", winnerCandidate.getDecryptedMessage())
                 .addQueryParameter("winnerTeam", winnerCandidate.getFoundersName())
-                .addQueryParameter("configuration", winnerCandidate.getConfiguration())
+                .addQueryParameter("configuration", winnerCandidate.getConfiguration().toString())
                 .build().toString();
 
         HttpClientUtil.runAsyncGet(finalUrl, new Callback() {

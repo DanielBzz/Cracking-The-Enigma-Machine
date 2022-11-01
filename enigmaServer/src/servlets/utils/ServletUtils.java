@@ -104,9 +104,12 @@ public class ServletUtils {
 
         StringBuilder fileContent = new StringBuilder();
 
+        System.out.println("=================== before the for each loop ======================");
         fileParts.forEach(part -> {
             try {
+                System.out.println("=============== before append =========================");
                 fileContent.append(readFromInputStream(part.getInputStream()));
+                System.out.println("=============== after append =========================");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

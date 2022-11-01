@@ -43,8 +43,9 @@ public class CandidatesRefresher extends TimerTask {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
 
                 try(ResponseBody responseBody = response.body()){
+                    String resBodyString = response.body().string();
                     if(response.code() == 200){
-                        String[] res = Constants.GSON_INSTANCE.fromJson(response.body().string(), String[].class);
+                        String[] res = Constants.GSON_INSTANCE.fromJson(resBodyString, String[].class);
                         if(version != Integer.parseInt(res[0])){
                             version = Integer.parseInt(res[0]);
                             CandidateDataDTO[] newCandidates = Constants.GSON_INSTANCE.fromJson(res[1], CandidateDataDTO[].class);
@@ -52,7 +53,7 @@ public class CandidatesRefresher extends TimerTask {
                         }
 
                         System.out.println(
-                                "Could not response well, " +response.code() +": "+ response.body().string() +",  url:" + finalUrl);
+                                "Could not response well, " +response.code() +": "+ resBodyString +",  url:" + finalUrl);
                     } else if (response.code() == 202) {
                         cancel();
                         finishContestConsumer.accept(responseBody.string());
@@ -60,7 +61,7 @@ public class CandidatesRefresher extends TimerTask {
                                 "response well, " +response.code() +": "+ response.body().string() +",  url:" + finalUrl);
                     } else {
                         System.out.println(
-                                "Could not response well, " +response.code() +": "+ response.body().string() +",  url:" + finalUrl);
+                                "Could not response well, " +response.code() +": "+ resBodyString +",  url:" + finalUrl);
                     }
                 }
             }
