@@ -27,13 +27,10 @@ import static util.Constants.REQUEST_PATH_ADD_AGENT_TO_TEAM;
 
 public class EnteringAgentDetailsController implements Presenter, AppMainController, TeamTableHolder {
     ClientMainController mainAppController;
-
     @FXML private AnchorPane alliesListPlace;
     private ActivePlayerListController alliesListComponentController;
     @FXML private Slider amountOfAgentsSlider;
     @FXML private TextField amountOfTasksField;
-
-    //need to make it relevant to agents
 
     @FXML
     public void initialize() {
@@ -47,7 +44,11 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
             alliesListComponentController = load.getController();
             alliesListComponentController.setTableHolder(this);
             alliesListComponentController.setChooseable(true);
-            alliesListComponentController.startListRefresher(REQUEST_PATH_USERS_UPDATE);
+            mainAppController.getUserNameProperty().addListener((observable, oldValue, newValue) -> {
+                if(newValue!=""){
+                    alliesListComponentController.startListRefresher(REQUEST_PATH_USERS_UPDATE);
+                }
+            } );
 
         } catch (IOException e) {
             e.printStackTrace();
