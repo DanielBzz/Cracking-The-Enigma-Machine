@@ -41,7 +41,7 @@ public class UsersListRefresher extends TimerTask {
                         Platform.runLater(()->userListConsumer.accept(res));
                         System.out.println(
                                 "response well, " +response.code() +": "+ res +",  url:" + url);
-                    } else if (response.code() == 204) {
+                    } else if (response.code() == 205) {
                         Platform.runLater(()->userListConsumer.accept(null));
                         System.out.println(
                                 "response well, " +response.code() +": "+ response.body().string() +",  url:" + url);

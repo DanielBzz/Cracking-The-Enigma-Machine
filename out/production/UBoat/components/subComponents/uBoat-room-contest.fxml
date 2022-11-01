@@ -15,18 +15,18 @@
     <ColumnConstraints hgrow="SOMETIMES" />
   </columnConstraints>
   <rowConstraints>
-      <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
-    <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
+      <RowConstraints valignment="BOTTOM" vgrow="NEVER" />
+    <RowConstraints valignment="BOTTOM" vgrow="NEVER" />
     <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <HBox alignment="CENTER_RIGHT" spacing="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <HBox alignment="BOTTOM_RIGHT" spacing="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <Button fx:id="readyButton" minWidth="60.0" mnemonicParsing="false" onAction="#readyButtonListener" text="Ready!" />
             <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonListener" text="Loguot" />
          </children>
          <GridPane.margin>
-            <Insets bottom="15.0" left="10.0" />
+            <Insets bottom="15.0" left="10.0" right="10.0" />
          </GridPane.margin>
       </HBox>
     <AnchorPane>
@@ -46,7 +46,7 @@
           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <AnchorPane fx:id="candidatesTablePlace" GridPane.columnIndex="1" />

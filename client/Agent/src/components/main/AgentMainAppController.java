@@ -19,6 +19,7 @@ import mainapp.ClientMainController;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import util.Constants;
 
 import java.io.IOException;
 import java.util.List;
@@ -60,6 +61,7 @@ public class AgentMainAppController implements AppMainController {
     public void close() {
         agentLogic.logOut();
         clearComponent();
+        parentController.loadMainAppForm(getClass().getResource(Constants.AGENT_ENTER_DETAILS_FXML_RESOURCE_LOCATION),Constants.AGENT_CLIENT);
         parentController.switchToLogin();
     }
 

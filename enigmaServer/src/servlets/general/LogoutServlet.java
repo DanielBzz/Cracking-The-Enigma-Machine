@@ -1,5 +1,6 @@
 package servlets.general;
 
+import exceptions.ContestNotExistException;
 import exceptions.UserNotExistException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -33,15 +34,17 @@ public class LogoutServlet extends HttpServlet {
 
     public void removeUser(String usernameFromSession, DataManager user, HttpServletRequest request) throws UserNotExistException {
         if (usernameFromSession != null) {
-            if(user instanceof TeamsManager){
-                ContestsManager contest = ServletUtils.getContestManager(request.getServletContext());
-                Team teamToRemove = ((TeamsManager) user).getTeam(usernameFromSession);
-                contest.removeCompetitorFromContest(teamToRemove.getContestManagerName(),teamToRemove);
-            } else if (user instanceof AgentManager) {
-                TeamsManager teamsManager = ServletUtils.getTeamsManager(request.getServletContext());
-                Agent agent = ((AgentManager) user).getAgent(usernameFromSession);
-                teamsManager.removeAgentFromTeam(agent.getTeamName(),agent);
-            }
+           try {
+               if (user instanceof TeamsManager) {
+                   ContestsManager contest = ServletUtils.getContestManager(request.getServletContext());
+                   Team teamToRemove = ((TeamsManager) user).getTeam(usernameFromSession);
+                   contest.removeCompetitorFromContest(teamToRemove.getContestManagerName(), teamToRemove);
+               } else if (user instanceof AgentManager) {
+                   TeamsManager teamsManager = ServletUtils.getTeamsManager(request.getServletContext());
+                   Agent agent = ((AgentManager) user).getAgent(usernameFromSession);
+                   teamsManager.removeAgentFromTeam(agent.getTeamName(), agent);
+               }
+           }catch (ContestNotExistException ignored){}
 
             user.removeUser(usernameFromSession);
             SessionUtils.clearSession(request);

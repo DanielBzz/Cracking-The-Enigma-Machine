@@ -5,6 +5,7 @@ import components.AgentsListController;
 import components.ContestDetailsController;
 import components.DynamicComponent;
 import components.main.AlliesMainAppController;
+import contestDtos.ContestDetailsDTO;
 import contestDtos.TeamDetailsContestDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,12 +17,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import util.Constants;
 import util.Presenter;
+import util.RefresherController;
 import util.tableHolderInterfaces.Disconnectable;
 
 import java.io.IOException;
 
 
-public class AlliesContestController implements Presenter, Disconnectable {
+public class AlliesContestController extends RefresherController implements Presenter, Disconnectable {
     private AlliesMainAppController parentController;
     @FXML private GridPane alliesDecryptionProgressAndCandidatesComponent;
     @FXML private AlliesDecryptionProgressAndCandidatesController alliesDecryptionProgressAndCandidatesComponentController;
@@ -109,11 +111,26 @@ public class AlliesContestController implements Presenter, Disconnectable {
     public void setActive(){
         alliesTableComponentController.startListRefresher(Constants.REQUEST_PATH_GET_TEAMS_IN_CONTEST);
         agentsTableComponentController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
+        startListRefresher(constants.Constants.REQUEST_PATH_IS_CONTEST_ON);
     }
 
     public void setInactive(){
         alliesTableComponentController.stopListRefresher();
         agentsTableComponentController.stopListRefresher();
         alliesDecryptionProgressAndCandidatesComponentController.inFinishedContest();
+        stopListRefresher();
+    }
+
+    @Override
+    public void updateList(String jsonUserList) {
+
+        ContestDetailsDTO contestData = constants.Constants.GSON_INSTANCE.fromJson(jsonUserList, ContestDetailsDTO.class);
+
+        contestDataAreaComponentController.initial(contestData);
+        alliesDecryptionProgressAndCandidatesComponentController.updateEncryptedMessage(contestData.getEncryptedMessage());
+
+        if(contestData.isStatus()){
+            stopListRefresher();
+        }
     }
 }

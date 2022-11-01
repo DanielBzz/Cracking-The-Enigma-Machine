@@ -104,7 +104,7 @@ public class ClientMainController implements Closeable, Loggable {
         return access;
     }
 
-    public void switchToLogin() {       // should activate when press on logout \ the server send redirect to log in
+    public void switchToLogin() {
         Platform.runLater(() -> {
             currentUserName.set("");
             //uBoatRoomComponentController.setInActive();

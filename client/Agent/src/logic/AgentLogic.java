@@ -49,11 +49,21 @@ public class AgentLogic extends RefresherController {//need to change name of th
 
     @Override
     public void updateList(String jsonUserList) {
-        String[] res = Constants.GSON_INSTANCE.fromJson(jsonUserList, String[].class);
-        inContest = Boolean.valueOf(res[0]);
-        System.out.println("on update list of in contest at agent, inContest = " + inContest);
-        if(inContest && agentTasks.size() == 0){
-            ContestDetailsDTO contestData = Constants.GSON_INSTANCE.fromJson(res[1], ContestDetailsDTO.class);
+
+        if(jsonUserList == null){
+            stopListRefresher();
+            appController.close();
+            return;
+        }
+
+        ContestDetailsDTO contestData = Constants.GSON_INSTANCE.fromJson(jsonUserList, ContestDetailsDTO.class);
+
+        inContest = contestData.isStatus();
+
+        if(!inContest){
+            appController.addContestDetailsToScreen(contestData);
+        }
+        else if(agentTasks.size() == 0){
             Platform.runLater(()->startContest(contestData));
         }
     }
@@ -91,7 +101,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
         //need to check for the keep alive parameter
         threadPool = new ThreadPoolExecutor(amountOfThreads, amountOfThreads + 5,5, TimeUnit.SECONDS,agentTasks,createThreadFactory());
         threadPool.prestartAllCoreThreads();
-        startListRefresher(REQUEST_PATH_IS_CONTEST_ON);
+        startListRefresher(constants.Constants.REQUEST_PATH_IS_CONTEST_ON);
     }
 
     private ThreadFactory createThreadFactory(){
@@ -169,6 +179,8 @@ public class AgentLogic extends RefresherController {//need to change name of th
         }
 
         appController.updateCandidates(newCandidates);
+
+
         String json = constants.Constants.GSON_INSTANCE.toJson(newCandidates);
 
         RequestBody body =
@@ -224,6 +236,25 @@ public class AgentLogic extends RefresherController {//need to change name of th
     }
 
     public void logOut() {
+        String finalUrl = HttpUrl.parse(constants.Constants.REQUEST_PATH_LOGOUT).newBuilder()
+                .build().toString();
 
+        HttpClientUtil.runAsyncGet(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@org.jetbrains.annotations.NotNull Call call, @org.jetbrains.annotations.NotNull IOException e) {
+                System.out.println("FAILURE --- the server continue to competing");
+            }
+
+            @Override
+            public void onResponse(@org.jetbrains.annotations.NotNull Call call, @org.jetbrains.annotations.NotNull Response response) throws IOException {
+                if(response.code()!=200){
+                    System.out.println("NOT LOGOUT WELL");
+                } else {
+                    System.out.println("LOGOUT WORKS GREAT");
+                }
+
+                response.close();
+            }
+        });
     }
 }

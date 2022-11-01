@@ -39,7 +39,7 @@ public class JoinToContestServlet extends HttpServlet {
             Set<ActivePlayerDTO> teamAgents = teamsManager.getConnectedUsersDetails(userName);
             TeamDetailsContestDTO responseDetails = new TeamDetailsContestDTO(contestDetails,competitorsTeams,teamAgents);
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, ServletUtils.GSON_INSTANCE.toJson(responseDetails));
-        } catch (Error e){
+        } catch (Error | Exception e){
             ServletUtils.createResponse(response, HttpServletResponse.SC_CONFLICT, e.getMessage());
         }
     }
