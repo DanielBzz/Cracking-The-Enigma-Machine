@@ -43,7 +43,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
     private final int amountOfTasksInSingleTake;
     private final int amountOfThreads;
     private AtomicInteger tasksLeftBeforeNewTake;
-    private Boolean inContest;
+    private boolean inContest;
     private AtomicInteger totalTakenTasks = new AtomicInteger();
     private AtomicInteger totalFinishedTasks = new AtomicInteger();
     private AtomicInteger totalAmountOfCandidates = new AtomicInteger();
@@ -59,14 +59,22 @@ public class AgentLogic extends RefresherController {//need to change name of th
 
         ContestDetailsDTO contestData = Constants.GSON_INSTANCE.fromJson(jsonUserList, ContestDetailsDTO.class);
 
+        if(inContest && !contestData.isStatus()){
+            finishContest();
+            inContest = contestData.isStatus();
+            return;
+        }
+
         inContest = contestData.isStatus();
 
-        if(!inContest){
-            appController.addContestDetailsToScreen(contestData);
-        }
-        else if(agentTasks.size() == 0){
+        if(inContest && agentTasks.size() == 0){
             Platform.runLater(()->startContest(contestData));
+
+        } else if(!inContest && contestData.getContestManagerName() != null){
+            appController.addContestDetailsToScreen(contestData);
+
         }
+
     }
 
     public class WebAgentTask extends AgentTask {
@@ -75,13 +83,12 @@ public class AgentLogic extends RefresherController {//need to change name of th
         }
         @Override
         public void run() {
-            if(!inContest){
-                finishContest();
-            }
-            else{
-                super.run();
+            super.run();
+
+            if(inContest){
                 totalFinishedTasks.incrementAndGet();
                 if(tasksLeftBeforeNewTake.decrementAndGet() == 0){
+
                     Platform.runLater(()->pullTasks());
                     tasksLeftBeforeNewTake.set(amountOfTasksInSingleTake);
                 }
@@ -179,7 +186,6 @@ public class AgentLogic extends RefresherController {//need to change name of th
 
         appController.updateCandidates(newCandidates);
 
-
         String json = constants.Constants.GSON_INSTANCE.toJson(newCandidates);
 
         RequestBody body =
@@ -212,14 +218,15 @@ public class AgentLogic extends RefresherController {//need to change name of th
     }
 
     public void finishContest(){
-        threadPool.shutdown();
-        agentTasks.clear();
-        tasksLeftBeforeNewTake.set(amountOfTasksInSingleTake);
-        totalTakenTasks.set(0);
-         totalFinishedTasks.set(0);
-        totalAmountOfCandidates.set(0);
 
         try {
+            threadPool.shutdown();
+            threadPool.awaitTermination(1, TimeUnit.SECONDS);
+            agentTasks.clear();
+            tasksLeftBeforeNewTake.set(amountOfTasksInSingleTake);
+            totalTakenTasks.set(0);
+            totalFinishedTasks.set(0);
+            totalAmountOfCandidates.set(0);
             Thread.sleep(5000);
             appController.clearComponent();
         } catch (InterruptedException e) {
@@ -240,6 +247,8 @@ public class AgentLogic extends RefresherController {//need to change name of th
     }
 
     public void startContest(ContestDetailsDTO contestData){
+        System.out.println("/////////////////////////////////in startContest of agentLogic///////////////////////////////////////");
+
         appController.addContestDetailsToScreen(contestData);
         pullTasks();
     }
