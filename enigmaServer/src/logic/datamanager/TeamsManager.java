@@ -142,6 +142,7 @@ public class TeamsManager extends DataManager<Team>{
         }
 
         team.addCandidates(newCandidates);
+        team.increaseTotalFinishedTasks();
     }
 
     public void removeAgentFromTeam(String teamName, Agent agent) {
@@ -153,4 +154,24 @@ public class TeamsManager extends DataManager<Team>{
         userNameToData.get(teamName).removeAgent(agent);
 
     }
+
+    public synchronized int getTeamsProducedTasks(String userName){
+
+        if(!isUserExists(userName)) {
+            throw new ContestNotExistException(userName);
+        }
+
+        return userNameToData.get(userName).getProducedTasks();
+    }
+
+    public synchronized int getTeamsTotalFinishedTasks(String userName){
+
+        if(!isUserExists(userName)) {
+            throw new ContestNotExistException(userName);
+        }
+
+        return userNameToData.get(userName).getTotalFinishedTasks();
+    }
+
+
 }

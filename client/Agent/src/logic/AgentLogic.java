@@ -1,6 +1,7 @@
 package logic;
 
 import agent.AgentTask;
+
 import com.sun.istack.internal.NotNull;
 import components.main.AgentMainAppController;
 import constants.Constants;
@@ -84,9 +85,7 @@ public class AgentLogic extends RefresherController {//need to change name of th
                     Platform.runLater(()->pullTasks());
                     tasksLeftBeforeNewTake.set(amountOfTasksInSingleTake);
                 }
-                if(!answersQueue.isEmpty()){
-                    Platform.runLater(()->pushAnswers());
-                }
+                Platform.runLater(()->pushAnswers());
             }
         }
     }

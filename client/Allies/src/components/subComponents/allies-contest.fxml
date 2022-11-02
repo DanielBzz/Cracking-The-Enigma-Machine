@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -19,6 +17,7 @@
       <RowConstraints minHeight="202.0" valignment="CENTER" vgrow="SOMETIMES" />
       <RowConstraints minHeight="20.0" valignment="BOTTOM" vgrow="NEVER" />
       <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
     <RowConstraints vgrow="NEVER" />
   </rowConstraints>
    <children>
@@ -29,41 +28,13 @@
             <fx:include fx:id="alliesDecryptionProgressAndCandidatesComponent" source="allies-decryption-progress-and-candidates.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <GridPane GridPane.columnIndex="3" GridPane.rowIndex="3">
-        <columnConstraints>
-          <ColumnConstraints hgrow="NEVER" />
-          <ColumnConstraints hgrow="SOMETIMES" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints vgrow="NEVER" />
-          <RowConstraints vgrow="NEVER" />
-            <RowConstraints vgrow="NEVER" />
-          <RowConstraints vgrow="NEVER" />
-        </rowConstraints>
-         <children>
-            <Label fx:id="finishedTasksLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label fx:id="producedTasksLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="Total Tasks: " GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets bottom="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Label>
-            <Label fx:id="totalTasksLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="Finished Tasks: " GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets bottom="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Label>
-            <Label text="Produced Tasks: " GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets bottom="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </Label>
-            <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" />
-         </children>
-      </GridPane>
       <AnchorPane fx:id="alliesTablePlace" GridPane.columnIndex="2" />
       <AnchorPane fx:id="agentsTablePlace" GridPane.columnIndex="3" GridPane.rowIndex="2" />
       <AnchorPane fx:id="contestDataAreaComponent" prefHeight="200.0" prefWidth="200.0" />
+      <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="3">
+         <children>
+            <fx:include fx:id="progressDataComponent" source="progress-data.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
    </children>
 </GridPane>
