@@ -10,6 +10,7 @@ import components.main.UBoatMainAppController;
 import contestDtos.CandidateDataDTO;
 import decryptionDtos.DictionaryDTO;
 import http.HttpClientUtil;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -234,10 +235,12 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
     }
 
     private void finishContest(CandidateDataDTO winnerCandidate) {
-        parentController.showPopUpMessage("the winner is: " + winnerCandidate.getFoundersName());
-        clearAfterContest();
-        setActive();
-        parentController.announceTheWinner(winnerCandidate);
+        Platform.runLater(()->{
+            parentController.announceTheWinner(winnerCandidate);
+            parentController.showPopUpMessage("the winner is: " + winnerCandidate.getFoundersName());
+            clearAfterContest();
+            setActive();
+        });
     }
 
     private void clearAfterContest(){

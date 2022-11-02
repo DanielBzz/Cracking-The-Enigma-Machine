@@ -153,9 +153,9 @@ public class UserContest {
             throw new ContestNotReadyException();
         }
 
-        inContest = false;
         competitors.forEach(competitor -> competitor.endCompeting(winner));
         competitors.clear();
+        inContest = false;
     }
 
     public Consumer<List<CandidateDataDTO>> updateCandidatesConsumer(){

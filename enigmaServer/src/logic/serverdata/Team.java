@@ -99,6 +99,7 @@ public class Team {
     public List<CandidateDataDTO> getNewCandidates(int lastVersion) throws ContestIsFinishedException {
 
         if(winnerCandidate != null){
+            inContest = false;
             throw new ContestIsFinishedException(winnerCandidate);
         }
 
@@ -120,6 +121,7 @@ public class Team {
 
     public void startCompeting(EnigmaSystemEngine machineEngine, DecryptionManager decryptionManager, String encryptedMessage, DifficultyLevel level, Consumer<List<CandidateDataDTO>> listConsumer){
 
+        winnerCandidate = null;
         inContest = true;
         ready = false;
         AgentTaskDTO details = new AgentTaskDTO();
@@ -152,10 +154,8 @@ public class Team {
             throw new ContestNotExistException(teamName);
         }
 
-        System.out.println("================================= finish competing for allie ============================================");
         winnerCandidate = winner;
         taskProducerThread.interrupt();
-        inContest = false;
         contestManagerName = null;
         taskSize = 0;
         teamAgents.forEach(Agent::endTasks);

@@ -56,7 +56,7 @@ public class ProgressDataController extends RefresherController {
             progress.setValue(0);
         }
         else{
-            progress.setValue(progressData.getFinishedTasks() / Integer.parseInt(totalTasksLabel.getText()));
+            progress.setValue((progressData.getFinishedTasks() / Integer.parseInt(totalTasksLabel.getText())) * 100);
         }
     }
 
