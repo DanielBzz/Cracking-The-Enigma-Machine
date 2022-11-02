@@ -20,9 +20,10 @@ public class isContestOnServlet extends HttpServlet {
 
         String username = SessionUtils.getUsername(request);
         String contestManagerName = null;
+        DataManager manager = null;
 
         try{
-            DataManager manager = ServletUtils.getDataManager(request.getServletContext(),SessionUtils.getAccess(request));
+            manager = ServletUtils.getDataManager(request.getServletContext(),SessionUtils.getAccess(request));
 
             if (username == null || !manager.isUserExists(username)) {
                 ServletUtils.createResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "user not exist");
@@ -47,8 +48,12 @@ public class isContestOnServlet extends HttpServlet {
             ServletUtils.createResponse(response, HttpServletResponse.SC_RESET_CONTENT, e.getMessage());
             System.out.println(e.getMessage());
         } catch(ContestNotExistException e){
-            ServletUtils.createResponse(response, HttpServletResponse.SC_NO_CONTENT,"still not connect to contest");
-
+            if(manager instanceof AgentManager){
+                ContestDetailsDTO contestDetails = new ContestDetailsDTO(null,null,false,null,null,0,null);
+                ServletUtils.createResponse(response, HttpServletResponse.SC_OK,ServletUtils.GSON_INSTANCE.toJson(contestDetails));
+            }else {
+                ServletUtils.createResponse(response, HttpServletResponse.SC_NO_CONTENT, "still not connect to contest");
+            }
         }catch (Exception | Error e){
             ServletUtils.createResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,e.getMessage());
         }
