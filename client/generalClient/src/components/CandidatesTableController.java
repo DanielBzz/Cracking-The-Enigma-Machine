@@ -65,4 +65,8 @@ public class CandidatesTableController {
     public void setWinnerChecker(WinnerChecker<CandidateDataDTO> winnerChecker) {
         this.winnerChecker = winnerChecker;
     }
+
+    public int size() {
+        return candidatesTable.getItems().size();
+    }
 }

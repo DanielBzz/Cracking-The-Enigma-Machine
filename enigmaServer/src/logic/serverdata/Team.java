@@ -97,7 +97,7 @@ public class Team {
 
     public List<CandidateDataDTO> getNewCandidates(int lastVersion) throws ContestIsFinishedException {
 
-        if(winnerCandidate !=null){
+        if(winnerCandidate != null){
             throw new ContestIsFinishedException(winnerCandidate);
         }
 
@@ -149,6 +149,7 @@ public class Team {
             throw new ContestNotExistException(teamName);
         }
 
+        System.out.println("================================= finish competing for allie ============================================");
         winnerCandidate = winner;
         taskProducerThread.interrupt();
         inContest = false;

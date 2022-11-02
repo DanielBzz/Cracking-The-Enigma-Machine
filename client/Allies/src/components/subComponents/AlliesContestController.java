@@ -89,6 +89,7 @@ public class AlliesContestController extends RefresherController implements Pres
     }
 
     public void clearComponent(){
+        System.out.println("============================clearing all contest component after contest =====================");
         alliesTableComponentController.clearComponent();
         agentsTableComponentController.cleanTable();
         alliesDecryptionProgressAndCandidatesComponentController.clearController();
@@ -103,9 +104,9 @@ public class AlliesContestController extends RefresherController implements Pres
         finishedTasksLabel.setText(String.valueOf(Integer.parseInt(finishedTasksLabel.getText()) + moreTasks));
     }
 
-    public void sowPopUpMessage(String msg) {
-
-        new Alert(Alert.AlertType.INFORMATION,msg, ButtonType.OK);
+    public void showPopUpMessage(String msg) {
+        System.out.println("======================================need to print winner nowww");
+        new Alert(Alert.AlertType.INFORMATION,msg, ButtonType.OK).show();
     }
 
     public void setActive(){
@@ -132,5 +133,9 @@ public class AlliesContestController extends RefresherController implements Pres
         if(contestData.isStatus()){
             stopListRefresher();
         }
+    }
+
+    public void backToDashboard() {
+        parentController.contestInactive();
     }
 }

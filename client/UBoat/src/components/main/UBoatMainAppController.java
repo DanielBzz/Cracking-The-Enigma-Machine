@@ -18,7 +18,6 @@ import machineDtos.EngineDTO;
 import machineDtos.MachineInfoDTO;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
-import static constants.Constants.AGENT_TYPE;
 
 public class UBoatMainAppController extends FileLoadable implements AppMainController, CodeSetEventListener {
 
@@ -106,7 +105,7 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
 
     public void showPopUpMessage(String messageToShow){
 
-        new Alert(Alert.AlertType.ERROR, messageToShow, ButtonType.OK).show();
+        new Alert(Alert.AlertType.INFORMATION, messageToShow, ButtonType.OK).show();
     }
 
     public void addListenerForCodeSet(CodeSetEventListener listener){

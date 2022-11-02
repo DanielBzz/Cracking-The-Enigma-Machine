@@ -3,6 +3,7 @@ package util;
 import constants.Constants;
 import contestDtos.CandidateDataDTO;
 import http.HttpClientUtil;
+import javafx.application.Platform;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -56,7 +57,8 @@ public class CandidatesRefresher extends TimerTask {
                                 "Could not response well, " +response.code() +": "+ resBodyString +",  url:" + finalUrl);
                     } else if (response.code() == 202) {
                         cancel();
-                        finishContestConsumer.accept(responseBody.string());
+                        Platform.runLater(()->finishContestConsumer.accept(resBodyString));
+
                         System.out.println(
                                 "response well, " +response.code() +": "+ response.body().string() +",  url:" + finalUrl);
                     } else {

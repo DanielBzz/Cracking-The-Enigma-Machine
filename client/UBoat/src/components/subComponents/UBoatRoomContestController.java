@@ -20,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import logic.events.EncryptMessageEventListener;
 import machineDtos.EngineDTO;
 import okhttp3.Call;
@@ -69,6 +68,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
             parentController.getEncryptedMessageProperty().addListener(
                     (observable, oldValue, newValue) ->  encryptComponentController.setEncryptedMessageLabel(newValue));
         }
+        logoutButton.disableProperty().bind(isPrepareForContest);
 
         try {
             FXMLLoader load = new FXMLLoader();
@@ -216,6 +216,7 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
     public void setActive() {
         connectedTeamsController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
         candidatesTableComponentController.clear();
+        candidatesTableComponentController.cancelRefresher();
         isPrepareForContest.set(false);
     }
 
@@ -226,15 +227,20 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
     @Override
     public void checkIfWinner(CandidateDataDTO arg) {
 
-        if(getStringWithoutSpecialChars(encryptComponentController.getMessageToEncrypt()).equals(arg.getDecryptedMessage())){
+        System.out.println("====== in check winner = =============");
+        System.out.println(encryptComponentController.getMessageToEncrypt().toLowerCase());
+        System.out.printf(arg.getDecryptedMessage().toLowerCase());
+
+        if(getStringWithoutSpecialChars(encryptComponentController.getMessageToEncrypt().toLowerCase()).
+                equals(arg.getDecryptedMessage().toLowerCase())){
             finishContest(arg);
         }
     }
 
     private void finishContest(CandidateDataDTO winnerCandidate) {
+        parentController.showPopUpMessage("the winner is: " + winnerCandidate.getFoundersName());
         clearAfterContest();
         setActive();
-        parentController.showPopUpMessage("the winner is: " + winnerCandidate.getFoundersName());
         parentController.announceTheWinner(winnerCandidate);
     }
 

@@ -172,8 +172,8 @@ public class AgentLogic extends RefresherController {//need to change name of th
 
         List<CandidateDataDTO> newCandidates = new ArrayList<>();
         for (AgentAnswerDTO answer: newAnswers) {
-            answer.getDecryptedMessagesCandidates().forEach((configuration, message)->{
-                newCandidates.add(new CandidateDataDTO(message.toString(), name, configuration));
+            answer.getDecryptedMessagesCandidates().forEach((message, configuration)->{
+                newCandidates.add(new CandidateDataDTO(message, name, configuration.toString()));
                 totalAmountOfCandidates.incrementAndGet();
             });
         }
