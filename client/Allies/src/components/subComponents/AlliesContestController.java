@@ -106,7 +106,7 @@ public class AlliesContestController extends RefresherController implements Pres
 
     public void showPopUpMessage(String msg) {
         System.out.println("======================================need to print winner nowww");
-        new Alert(Alert.AlertType.INFORMATION,msg, ButtonType.OK).show();
+        new Alert(Alert.AlertType.INFORMATION,msg, ButtonType.OK).showAndWait();
     }
 
     public void setActive(){

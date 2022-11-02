@@ -213,9 +213,19 @@ public class AgentLogic extends RefresherController {//need to change name of th
     }
 
     public void finishContest(){
-        //appController.setPassive();
-        //agentTasks.clear();
-        //threadPool.shutdown();
+        threadPool.shutdown();
+        agentTasks.clear();
+        tasksLeftBeforeNewTake.set(amountOfTasksInSingleTake);
+        totalTakenTasks.set(0);
+         totalFinishedTasks.set(0);
+        totalAmountOfCandidates.set(0);
+
+        try {
+            Thread.sleep(5000);
+            appController.clearComponent();
+        } catch (InterruptedException e) {
+            System.out.println("can't sleep now");;
+        }
     }
 
     private Consumer<AgentAnswerDTO> answersConsumer(){

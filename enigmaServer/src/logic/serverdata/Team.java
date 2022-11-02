@@ -156,7 +156,6 @@ public class Team {
         contestManagerName = null;
         taskSize = 0;
         teamAgents.forEach(Agent::endTasks);
-        teamAgents.clear();
         synchronized (taskQueue){
             taskQueue.clear();
         }

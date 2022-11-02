@@ -227,10 +227,6 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
     @Override
     public void checkIfWinner(CandidateDataDTO arg) {
 
-        System.out.println("====== in check winner = =============");
-        System.out.println(encryptComponentController.getMessageToEncrypt().toLowerCase());
-        System.out.printf(arg.getDecryptedMessage().toLowerCase());
-
         if(getStringWithoutSpecialChars(encryptComponentController.getMessageToEncrypt().toLowerCase()).
                 equals(arg.getDecryptedMessage().toLowerCase())){
             finishContest(arg);
