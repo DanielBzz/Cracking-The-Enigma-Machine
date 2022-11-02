@@ -31,8 +31,6 @@ public class AlliesDecryptionProgressAndCandidatesController {
     @FXML private Button readyButton;
     @FXML private AnchorPane candidatesPlace;
     private CandidatesTableController candidatesTableController;
-    @FXML private ProgressBar decryptionProgressBar;
-    @FXML private Label decryptionProgressLabel;
     @FXML private Label encryptedMessageLabel;
     private final BooleanProperty inContest = new SimpleBooleanProperty(false);
 
@@ -62,6 +60,7 @@ public class AlliesDecryptionProgressAndCandidatesController {
     @FXML
     void readyButtonOnAction(ActionEvent event) {
 
+        parentController.startProgressListener();
         String finalUrl = HttpUrl
                 .parse(REQUEST_PATH_SET_READY)
                 .newBuilder()
@@ -100,7 +99,7 @@ public class AlliesDecryptionProgressAndCandidatesController {
     }
 
     public void inFinishedContest(){
-
+        parentController.stopProgressRefresher();
         candidatesTableController.cancelRefresher();
         inContest.setValue(false);
     }
@@ -111,15 +110,15 @@ public class AlliesDecryptionProgressAndCandidatesController {
     }
 
     public void onTaskFinished(){
-        decryptionProgressBar.progressProperty().unbind();
-        decryptionProgressLabel.textProperty().unbind();
+        //decryptionProgressBar.progressProperty().unbind();
+        //decryptionProgressLabel.textProperty().unbind();
         readyButton.setDisable(false);
     }
 
     public void clearController() {
         candidatesTableController.clear();
         //decryptionProgressLabel.setText("0%");
-        decryptionProgressBar.setProgress(0);
+        //decryptionProgressBar.setProgress(0);
 
     }
 

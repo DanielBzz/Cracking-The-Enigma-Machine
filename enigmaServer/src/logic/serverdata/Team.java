@@ -5,6 +5,7 @@ import contestDtos.CandidateDataDTO;
 import decryptionDtos.AgentTaskDTO;
 import exceptions.ContestIsFinishedException;
 import exceptions.ContestNotExistException;
+import javafx.beans.property.SimpleIntegerProperty;
 import logic.*;
 import logic.datamanager.CandidatesManager;
 import machineDtos.EngineDTO;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 public class Team {
@@ -31,6 +33,8 @@ public class Team {
     private Consumer<List<CandidateDataDTO>> contestManagerConsumer;
     private Thread taskProducerThread;
     private CandidateDataDTO winnerCandidate;
+    private SimpleIntegerProperty producedTasks = new SimpleIntegerProperty();
+    private int totalFinishedTasks = 0;
 
     public Team(String teamName) {
         this.teamName = teamName;
@@ -52,8 +56,6 @@ public class Team {
     }
 
     public synchronized void addAgentToTeam(Agent agent){
-        //Agent newAgent = new Agent(agent.getName());
-        //newAgent.setBasicData(agent.getAmount(), agent.getSize(), teamName);
         teamAgents.add(agent);
         System.out.println("in Team- addAgentToTeam: " + agent);
     }
@@ -136,7 +138,9 @@ public class Team {
             details.setEngineComponentsDTO(((EnigmaEngine)machineEngine).getEngineComponentsDto());
         }
 
-        taskProducerThread = new Thread(new TasksProducer(details,taskSize,taskQueue,level));
+        TasksProducer tasksProducer = new TasksProducer(details,taskSize,taskQueue,level);
+        producedTasks.bind(tasksProducer.getTaskProducerProperty());
+        taskProducerThread = new Thread(tasksProducer);
         taskProducerThread.start();
 
         System.out.println("in Team, startCompeting, agents are: " + teamAgents);
@@ -172,5 +176,15 @@ public class Team {
     public synchronized void removeAgent(Agent agent) {
 
         teamAgents.remove(agent);
+    }
+
+    public int getProducedTasks(){
+        return producedTasks.getValue();
+    }
+    public synchronized void increaseTotalFinishedTasks(){
+        totalFinishedTasks++;
+    }
+    public synchronized int getTotalFinishedTasks(){
+        return totalFinishedTasks;
     }
 }

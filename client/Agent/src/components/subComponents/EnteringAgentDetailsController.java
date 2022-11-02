@@ -10,8 +10,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.StringConverter;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
 import okhttp3.*;
@@ -31,7 +34,7 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
     @FXML private AnchorPane alliesListPlace;
     private ActivePlayerListController alliesListComponentController;
     @FXML private Slider amountOfAgentsSlider;
-    @FXML private TextField amountOfTasksField;
+    @FXML private Spinner<Integer> amountOfTasksSpinner;
 
     @FXML
     public void initialize() {
@@ -51,6 +54,7 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
+        amountOfTasksSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE));
     }
 
     @FXML
@@ -58,7 +62,7 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
 
         String teamManager = alliesListComponentController.getSelectedUserName();
         String amountOfThreads = String.valueOf((int)amountOfAgentsSlider.getValue());
-        String amountOfTasksInASingleTake = amountOfTasksField.getText();
+        String amountOfTasksInASingleTake = String.valueOf(amountOfTasksSpinner.getValue());
 
         String finalUrl = HttpUrl
                 .parse(REQUEST_PATH_ADD_AGENT_TO_TEAM)

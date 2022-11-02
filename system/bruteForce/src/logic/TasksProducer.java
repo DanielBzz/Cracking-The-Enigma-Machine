@@ -1,6 +1,8 @@
 package logic;
 
 import decryptionDtos.AgentTaskDTO;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ public class TasksProducer implements Runnable{
     private final AgentTaskDTO details;
     private final int taskSize;
     private final BlockingQueue<Runnable> agentTasks;
+    private SimpleIntegerProperty tasksProduced = new SimpleIntegerProperty(0);
     DifficultyLevel level;
 
     public TasksProducer(AgentTaskDTO details, int taskSize,
@@ -34,6 +37,7 @@ public class TasksProducer implements Runnable{
             AgentTaskDTO newDetails = new AgentTaskDTO(details);
             newDetails.setInitialPositions(createSubTask(tasksMade,taskSize,numOfRotors,ABC));
             level.initialTasks(newDetails,agentTasks);
+            tasksProduced.setValue(tasksProduced.get() + 1);
             tasksMade+=taskSize;
             System.out.println("task number " + i);
             i++;
@@ -43,6 +47,7 @@ public class TasksProducer implements Runnable{
             AgentTaskDTO newDetails = new AgentTaskDTO(details);
             newDetails.setInitialPositions(createSubTask(tasksMade,tasksAmount - tasksMade,numOfRotors,ABC));
             level.initialTasks(details,agentTasks);
+            tasksProduced.setValue(tasksProduced.get() + 1);
             System.out.println("task number " + i);
             i++;
         }
@@ -68,5 +73,9 @@ public class TasksProducer implements Runnable{
         }
 
         return initialPositions;
+    }
+
+    public SimpleIntegerProperty getTaskProducerProperty() {
+        return tasksProduced;
     }
 }

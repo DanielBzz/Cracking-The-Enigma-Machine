@@ -12,5 +12,6 @@ public class Constants {
     public final static String REQUEST_PATH_GET_CONTESTS = ALLIES_REQUEST_PATH + "/getContests";
     public final static String REQUEST_PATH_GET_TEAMS_IN_CONTEST = ALLIES_REQUEST_PATH + "/getTeamsInContest";
     public final static String REQUEST_PATH_SET_READY = ALLIES_REQUEST_PATH + "/setTeamReady";
+    public final static String REQUEST_PATH_GET_PROGRESS_DATA = ALLIES_REQUEST_PATH + "/getProgressData";
 
 }

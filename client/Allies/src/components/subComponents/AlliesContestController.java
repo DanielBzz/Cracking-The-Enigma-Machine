@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import util.Constants;
@@ -21,6 +22,8 @@ import util.RefresherController;
 import util.tableHolderInterfaces.Disconnectable;
 
 import java.io.IOException;
+
+import static util.Constants.REQUEST_PATH_GET_PROGRESS_DATA;
 
 
 public class AlliesContestController extends RefresherController implements Presenter, Disconnectable {
@@ -33,14 +36,22 @@ public class AlliesContestController extends RefresherController implements Pres
     private ActivePlayerListController alliesTableComponentController;
     @FXML private AnchorPane agentsTablePlace;
     private AgentsListController agentsTableComponentController;
-    @FXML private Label totalTasksLabel;
-    @FXML private Label producedTasksLabel;
-    @FXML private Label finishedTasksLabel;
+//    @FXML private Label totalTasksLabel;
+//    @FXML private Label producedTasksLabel;
+//    @FXML private Label finishedTasksLabel;
+
+    @FXML private ScrollPane progressDataComponent;
+    @FXML private ProgressDataController progressDataComponentController;
 
     public void initial() {
 
         if(alliesDecryptionProgressAndCandidatesComponentController!=null){
             alliesDecryptionProgressAndCandidatesComponentController.setAlliesContestController(this);
+        }
+
+        if(progressDataComponentController!=null){
+            progressDataComponentController.setAlliesContestController(this);
+            progressDataComponentController.initial();
         }
 
         try {
@@ -81,7 +92,8 @@ public class AlliesContestController extends RefresherController implements Pres
     public void setNewContestForAllie(TeamDetailsContestDTO responseDetails){
         contestDataAreaComponentController.initial(responseDetails.getContestDetails());
         alliesDecryptionProgressAndCandidatesComponentController.initial(responseDetails.getContestDetails());
-        totalTasksLabel.setText(String.valueOf(responseDetails.getContestDetails().getTaskSize()));
+
+        progressDataComponentController.updateTotalTasksLabel((int) responseDetails.getContestDetails().getTaskSize());
     }
 
     public void setAlliesMainAppController(AlliesMainAppController alliesMainAppController) {
@@ -94,15 +106,16 @@ public class AlliesContestController extends RefresherController implements Pres
         agentsTableComponentController.cleanTable();
         alliesDecryptionProgressAndCandidatesComponentController.clearController();
         contestDataAreaComponentController.clearComponent();
+        progressDataComponentController.clearComponent();
     }
 
-    public void addProducedTasks(int moreTasks){
-        producedTasksLabel.setText(String.valueOf(Integer.parseInt(producedTasksLabel.getText()) + moreTasks));
-    }
-
-    public void addFinishedTasks(int moreTasks){
-        finishedTasksLabel.setText(String.valueOf(Integer.parseInt(finishedTasksLabel.getText()) + moreTasks));
-    }
+//    public void addProducedTasks(int moreTasks){
+//        producedTasksLabel.setText(String.valueOf(Integer.parseInt(producedTasksLabel.getText()) + moreTasks));
+//    }
+//
+//    public void addFinishedTasks(int moreTasks){
+//        finishedTasksLabel.setText(String.valueOf(Integer.parseInt(finishedTasksLabel.getText()) + moreTasks));
+//    }
 
     public void showPopUpMessage(String msg) {
         System.out.println("======================================need to print winner nowww");
@@ -133,6 +146,14 @@ public class AlliesContestController extends RefresherController implements Pres
         if(contestData.isStatus()){
             stopListRefresher();
         }
+    }
+
+    public void startProgressListener(){
+        progressDataComponentController.startListRefresher(REQUEST_PATH_GET_PROGRESS_DATA);
+    }
+
+    public void stopProgressRefresher(){
+        progressDataComponentController.stopListRefresher();
     }
 
     public void backToDashboard() {

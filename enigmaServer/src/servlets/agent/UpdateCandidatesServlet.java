@@ -38,6 +38,7 @@ public class UpdateCandidatesServlet extends HttpServlet {
             CandidateDataDTO[] newCandidates = GSON_INSTANCE.fromJson(ServletUtils.getBody(request.getParts()), CandidateDataDTO[].class);
             System.out.println("-------------------------------------------going to add the new candidates------------------------------------");
             teamsManager.addCandidates(teamName,Arrays.stream(newCandidates).collect(Collectors.toList()));
+
             ServletUtils.createResponse(response, HttpServletResponse.SC_OK, null);
         } catch (Exception e){
             e.printStackTrace();
