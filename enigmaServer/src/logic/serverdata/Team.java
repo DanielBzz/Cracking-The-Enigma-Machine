@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 public class Team {
@@ -160,6 +159,8 @@ public class Team {
         contestManagerName = null;
         taskSize = 0;
         teamAgents.forEach(Agent::endTasks);
+        producedTasks = new SimpleIntegerProperty();
+        totalFinishedTasks = 0;
         synchronized (taskQueue){
             taskQueue.clear();
         }

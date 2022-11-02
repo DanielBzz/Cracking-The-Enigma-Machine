@@ -1,35 +1,23 @@
 package components.subComponents;
 
-import components.main.AlliesMainAppController;
 import constants.Constants;
 import contestDtos.AlliesProgressDTO;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.FloatProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleFloatProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import util.RefresherController;
 
 public class ProgressDataController extends RefresherController {
+
     private AlliesContestController parentController;
-    @FXML
-    private Label totalTasksLabel;
-
-    @FXML
-    private Label producedTasksLabel;
-
-    @FXML
-    private Label finishedTasksLabel;
-
-    @FXML
-    private ProgressBar decryptionProgressBar;
-
-    @FXML
-    private Label decryptionProgressLabel;
-
+    @FXML private Label totalTasksLabel;
+    @FXML private Label producedTasksLabel;
+    @FXML private Label finishedTasksLabel;
+    @FXML private ProgressBar decryptionProgressBar;
+    @FXML private Label decryptionProgressLabel;
     private FloatProperty progress = new SimpleFloatProperty();
 
     public void initial(){

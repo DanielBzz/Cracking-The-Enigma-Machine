@@ -12,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -36,10 +35,6 @@ public class AlliesContestController extends RefresherController implements Pres
     private ActivePlayerListController alliesTableComponentController;
     @FXML private AnchorPane agentsTablePlace;
     private AgentsListController agentsTableComponentController;
-//    @FXML private Label totalTasksLabel;
-//    @FXML private Label producedTasksLabel;
-//    @FXML private Label finishedTasksLabel;
-
     @FXML private ScrollPane progressDataComponent;
     @FXML private ProgressDataController progressDataComponentController;
 
@@ -108,14 +103,6 @@ public class AlliesContestController extends RefresherController implements Pres
         contestDataAreaComponentController.clearComponent();
         progressDataComponentController.clearComponent();
     }
-
-//    public void addProducedTasks(int moreTasks){
-//        producedTasksLabel.setText(String.valueOf(Integer.parseInt(producedTasksLabel.getText()) + moreTasks));
-//    }
-//
-//    public void addFinishedTasks(int moreTasks){
-//        finishedTasksLabel.setText(String.valueOf(Integer.parseInt(finishedTasksLabel.getText()) + moreTasks));
-//    }
 
     public void showPopUpMessage(String msg) {
         System.out.println("======================================need to print winner nowww");
