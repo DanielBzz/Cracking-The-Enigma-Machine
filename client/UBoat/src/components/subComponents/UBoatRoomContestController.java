@@ -23,10 +23,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import logic.events.EncryptMessageEventListener;
 import machineDtos.EngineDTO;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.Response;
+import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import util.WinnerChecker;
 import util.tableHolderInterfaces.TeamTableHolder;
@@ -139,12 +136,16 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
 
-                    if (response.code() == 200) {
-                        candidatesTableComponentController.startListRefresher(null);
-                        System.out.println("encrypted message was updated and now the server is waiting for the teams to set ready!");
-                    } else {
-                        isPrepareForContest.set(false);
-                        parentController.showPopUpMessage(response.code() + " " + response.body().string());
+                    try(ResponseBody body = response.body()) {
+                        if (response.code() == 200) {
+                            candidatesTableComponentController.startListRefresher(null);
+                            System.out.println("encrypted message was updated and now the server is waiting for the teams to set ready!");
+                        } else {
+                            String msg = response.code() + " " + body.string();
+                            isPrepareForContest.set(false);
+                            Platform.runLater(() ->
+                                    parentController.showPopUpMessage(msg));
+                        }
                     }
                 }
             });

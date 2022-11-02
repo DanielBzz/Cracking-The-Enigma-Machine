@@ -153,6 +153,7 @@ public class UserContest {
             throw new ContestNotReadyException();
         }
 
+        encryptedMessage = null;
         competitors.forEach(competitor -> competitor.endCompeting(winner));
         competitors.clear();
         inContest = false;

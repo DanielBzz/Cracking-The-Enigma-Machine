@@ -60,7 +60,7 @@ public class CandidatesRefresher extends TimerTask {
                         Platform.runLater(()->finishContestConsumer.accept(resBodyString));
 
                         System.out.println(
-                                "response well, " +response.code() +": "+ response.body().string() +",  url:" + finalUrl);
+                                "response well, " +response.code() +": "+ resBodyString +",  url:" + finalUrl);
                     } else {
                         System.out.println(
                                 "Could not response well, " +response.code() +": "+ resBodyString +",  url:" + finalUrl);

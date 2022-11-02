@@ -19,8 +19,6 @@ public class UBoatClient extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        //primaryStage.setMinHeight(600);
-        //primaryStage.setMinWidth(600);
         primaryStage.setTitle("UBoat App");
 
         URL clientMainApp = ClientMainController.class.getResource("generalMainComponent.fxml");

@@ -47,7 +47,8 @@ public class UBoatLogic {
         HttpClientUtil.runAsyncPost(Constants.REQUEST_PATH_READ_FILE, body, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                appController.showPopUpMessage(e.getMessage());
+                Platform.runLater(()->
+                    appController.showPopUpMessage(e.getMessage()));
             }
 
             @Override
@@ -127,7 +128,8 @@ public class UBoatLogic {
                             codeSetEventHandler.fireEvent(resMsg.getEngineDTO());
                             encryptedMessage.set(resMsg.getEncryptedMsg());
                         } else {
-                            appController.showPopUpMessage(response.code() + " " + body);
+                            Platform.runLater(()->
+                                appController.showPopUpMessage(response.code() + " " + body));
                         }
                     });
                 }

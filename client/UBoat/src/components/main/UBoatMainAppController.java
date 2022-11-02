@@ -5,7 +5,6 @@ import components.subComponents.UBoatRoomContestController;
 import components.subComponents.UBoatRoomMachineController;
 import contestDtos.CandidateDataDTO;
 import decryptionDtos.DictionaryDTO;
-import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -106,8 +105,7 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
 
     public void showPopUpMessage(String messageToShow){
 
-        Platform.runLater(()->
-            new Alert(Alert.AlertType.INFORMATION, messageToShow, ButtonType.OK).showAndWait());
+        new Alert(Alert.AlertType.INFORMATION, messageToShow, ButtonType.OK).showAndWait();
     }
 
     public void addListenerForCodeSet(CodeSetEventListener listener){

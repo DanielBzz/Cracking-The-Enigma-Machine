@@ -100,6 +100,7 @@ public class Team {
 
         if(winnerCandidate != null){
             inContest = false;
+            contestManagerName = null;
             throw new ContestIsFinishedException(winnerCandidate);
         }
 
@@ -156,7 +157,6 @@ public class Team {
 
         winnerCandidate = winner;
         taskProducerThread.interrupt();
-        contestManagerName = null;
         taskSize = 0;
         teamAgents.forEach(Agent::endTasks);
         producedTasks = new SimpleIntegerProperty();
