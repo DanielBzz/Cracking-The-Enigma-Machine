@@ -216,7 +216,6 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
 
     public void setActive() {
         connectedTeamsController.startListRefresher(constants.Constants.REQUEST_PATH_USERS_UPDATE);
-        candidatesTableComponentController.clear();
         candidatesTableComponentController.cancelRefresher();
         isPrepareForContest.set(false);
     }
@@ -236,10 +235,10 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
 
     private void finishContest(CandidateDataDTO winnerCandidate) {
         Platform.runLater(()->{
+            setActive();
             parentController.announceTheWinner(winnerCandidate);
             parentController.showPopUpMessage("the winner is: " + winnerCandidate.getFoundersName());
             clearAfterContest();
-            setActive();
         });
     }
 

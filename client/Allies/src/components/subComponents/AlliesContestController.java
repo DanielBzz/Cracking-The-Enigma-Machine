@@ -132,11 +132,9 @@ public class AlliesContestController extends RefresherController implements Pres
 
         if(contestData.isStatus()){
             stopListRefresher();
-        }
-    }
+            progressDataComponentController.startListRefresher(REQUEST_PATH_GET_PROGRESS_DATA);
 
-    public void startProgressListener(){
-        progressDataComponentController.startListRefresher(REQUEST_PATH_GET_PROGRESS_DATA);
+        }
     }
 
     public void stopProgressRefresher(){

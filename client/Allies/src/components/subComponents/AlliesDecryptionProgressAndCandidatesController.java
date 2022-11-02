@@ -60,7 +60,6 @@ public class AlliesDecryptionProgressAndCandidatesController {
     @FXML
     void readyButtonOnAction(ActionEvent event) {
 
-        parentController.startProgressListener();
         String finalUrl = HttpUrl
                 .parse(REQUEST_PATH_SET_READY)
                 .newBuilder()
@@ -99,8 +98,8 @@ public class AlliesDecryptionProgressAndCandidatesController {
     }
 
     public void inFinishedContest(){
-        parentController.stopProgressRefresher();
         candidatesTableController.cancelRefresher();
+        parentController.stopProgressRefresher();
         inContest.setValue(false);
     }
 
@@ -117,9 +116,6 @@ public class AlliesDecryptionProgressAndCandidatesController {
 
     public void clearController() {
         candidatesTableController.clear();
-        //decryptionProgressLabel.setText("0%");
-        //decryptionProgressBar.setProgress(0);
-
     }
 
     private void initialTaskSpinner(double taskSize){
@@ -146,7 +142,7 @@ public class AlliesDecryptionProgressAndCandidatesController {
         return msg -> {
             Platform.runLater(()-> {
                 System.out.println("===================================================== found the winner ==========================s");
-                inFinishedContest();
+                parentController.setInactive();
                 parentController.showPopUpMessage(msg);
                 parentController.clearComponent();
                 parentController.backToDashboard();
