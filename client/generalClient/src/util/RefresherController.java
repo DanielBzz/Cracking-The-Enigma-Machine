@@ -14,6 +14,13 @@ public abstract class RefresherController {
         timer.schedule(listRefresher, constants.Constants.REFRESH_RATE, constants.Constants.REFRESH_RATE);
     }
 
+    public void startListRefresher(String requestUrl, long time){
+
+        listRefresher = new UsersListRefresher(this::updateList, requestUrl);
+        timer = new Timer();
+        timer.schedule(listRefresher, time, time);
+    }
+
     public void stopListRefresher(){        // should activate when contest starts
        if(timer != null){
            timer.cancel();

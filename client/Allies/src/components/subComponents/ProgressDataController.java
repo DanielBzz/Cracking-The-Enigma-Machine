@@ -2,6 +2,7 @@ package components.subComponents;
 
 import constants.Constants;
 import contestDtos.AlliesProgressDTO;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
@@ -53,12 +54,13 @@ public class ProgressDataController extends RefresherController {
         producedTasksLabel.setText(String.valueOf(progressData.getProducedTasks()));
         finishedTasksLabel.setText(String.valueOf(progressData.getFinishedTasks()));
         if(Integer.parseInt(totalTasksLabel.getText()) == 0){
-            progress.setValue(0);
+            Platform.runLater(()->progress.setValue(0));
+
         }
         else{
             System.out.println("********************in progressDataControler***************************");
-            System.out.println((progressData.getFinishedTasks() / Integer.parseInt(totalTasksLabel.getText())) * 100);
-            progress.set((progressData.getFinishedTasks() / Integer.parseInt(totalTasksLabel.getText())) * 100);
+            System.out.println((progressData.getFinishedTasks() / Double.parseDouble(totalTasksLabel.getText())));
+            Platform.runLater(()->progress.set((float) (progressData.getFinishedTasks() / Double.parseDouble(totalTasksLabel.getText()))));
         }
     }
 

@@ -220,9 +220,10 @@ public class AgentLogic extends RefresherController {//need to change name of th
     public void finishContest(){
 
         try {
-            threadPool.shutdown();
-            threadPool.awaitTermination(1, TimeUnit.SECONDS);
+//            threadPool.shutdown();
+//            threadPool.awaitTermination(1, TimeUnit.SECONDS);
             agentTasks.clear();
+            answersQueue.clear();
             tasksLeftBeforeNewTake.set(amountOfTasksInSingleTake);
             totalTakenTasks.set(0);
             totalFinishedTasks.set(0);
