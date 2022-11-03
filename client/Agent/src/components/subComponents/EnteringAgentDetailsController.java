@@ -12,7 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
 import mainapp.AppMainController;
@@ -54,7 +53,8 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-        amountOfTasksSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE));
+
+        initialTaskSpinner();
     }
 
     @FXML
@@ -105,6 +105,24 @@ public class EnteringAgentDetailsController implements Presenter, AppMainControl
     @Override
     public void setClientMainController(ClientMainController clientMainController) {
         this.mainAppController = clientMainController;
+    }
+
+    private void initialTaskSpinner(){
+
+        amountOfTasksSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1,Integer.MAX_VALUE));
+        amountOfTasksSpinner.getValueFactory().setConverter(new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer object) {return object.toString();}
+            @Override
+            public Integer fromString(String string) {
+                try {
+                    return Integer.parseInt(string);
+                }catch (NumberFormatException e){
+                    return 2;
+                }
+            }
+        });
+        amountOfTasksSpinner.getValueFactory().setValue(1);
     }
 
     @Override

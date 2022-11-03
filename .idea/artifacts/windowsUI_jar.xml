@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="windowsUI:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/windowsUI_jar</output-path>
+    <root id="archive" name="windowsUI.jar">
+      <element id="module-output" name="windowsUI" />
+      <element id="module-output" name="engine" />
+      <element id="module-output" name="enigmaMachine" />
+      <element id="module-output" name="DTOS" />
+      <element id="module-output" name="BruteForce" />
+      <element id="module-output" name="consoleUI" />
+    </root>
+  </artifact>
+</component>

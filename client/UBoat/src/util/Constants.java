@@ -4,7 +4,7 @@ import static constants.Constants.FULL_SERVER_PATH;
 
 public class Constants {
 
-    public final static String UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION = "components/main/uBoatMainApp.fxml";
+    public final static String UBOAT_MAIN_APP_FXML_RESOURCE_LOCATION = "/components/main/uBoatMainApp.fxml";
 
     //- - - - - - - - - - - uBoat requests path - - - - - - - - - - - - - - - //
     public final static String UBOAT_CLIENT = "contestManager";

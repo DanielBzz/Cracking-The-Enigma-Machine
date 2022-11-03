@@ -38,8 +38,10 @@ import static util.Constants.REQUEST_PATH_SET_READY;
 public class UBoatRoomContestController implements EncryptableByDictionary, WinnerChecker<CandidateDataDTO>, TeamTableHolder {
 
     private UBoatMainAppController parentController;
+    @FXML private AnchorPane machineConfigurationComponentPlace;
     @FXML private BorderPane machineConfigurationComponent;
     @FXML private MachineConfigurationController machineConfigurationComponentController;
+    @FXML private AnchorPane encryptComponentPlace;
     @FXML private GridPane encryptComponent;
     @FXML private EncryptController encryptComponentController;
     @FXML private Button readyButton;
@@ -52,6 +54,26 @@ public class UBoatRoomContestController implements EncryptableByDictionary, Winn
     private final BooleanProperty isPrepareForContest = new SimpleBooleanProperty(false);
 
     public void initial(){
+
+        try {
+            FXMLLoader load = new FXMLLoader();
+            load.setLocation(MachineConfigurationController.class.getResource("machineConfigurationComponent.fxml"));
+            machineConfigurationComponent = load.load();
+            machineConfigurationComponentPlace.getChildren().add(machineConfigurationComponent);
+            DynamicComponent.fitToPane(machineConfigurationComponent);
+            machineConfigurationComponentController = load.getController();
+
+            load = new FXMLLoader();
+            load.setLocation(EncryptController.class.getResource("encryptComponent.fxml"));
+            encryptComponent = load.load();
+            encryptComponentPlace.getChildren().add(encryptComponent);
+            DynamicComponent.fitToPane(encryptComponent);
+            encryptComponentController = load.getController();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
 
         if(machineConfigurationComponentController != null){
             machineConfigurationComponentController.setParentController(this);

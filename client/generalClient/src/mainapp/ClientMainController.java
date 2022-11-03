@@ -1,7 +1,6 @@
 package mainapp;
 
 import components.DynamicComponent;
-import constants.Constants;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
@@ -64,7 +63,7 @@ public class ClientMainController implements Closeable, Loggable {
     }
 
     private void loadLoginPage() {
-        URL loginPageUrl = getClass().getResource(Constants.LOGIN_PAGE_FXML_RESOURCE_LOCATION);
+        URL loginPageUrl = LoginController.class.getResource("login.fxml");
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(loginPageUrl);

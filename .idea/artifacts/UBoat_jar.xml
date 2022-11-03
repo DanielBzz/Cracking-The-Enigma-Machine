@@ -1,17 +1,22 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="generalClient:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/generalClient_jar</output-path>
-    <root id="archive" name="generalClient.jar">
-      <element id="module-output" name="generalClient" />
+  <artifact type="jar" name="UBoat:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/UBoat_jar</output-path>
+    <root id="archive" name="UBoat.jar">
+      <element id="module-output" name="UBoat" />
       <element id="module-output" name="DTOS" />
       <element id="module-output" name="enigmaMachine" />
       <element id="module-output" name="BruteForce" />
       <element id="module-output" name="engine" />
+      <element id="module-output" name="windowsUI" />
+      <element id="module-output" name="consoleUI" />
+      <element id="module-output" name="generalClient" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/okHttp/okio-2.8.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/json/gson-2.8.8.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/okHttp/kotlin-stdlib-1.4.10.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/okHttp/okhttp-4.9.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/generalClient_jar/generalClient.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/okHttp/kotlin-stdlib-common-1.4.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/okHttp/okhttp-4.9.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/windowsUI_jar/windowsUI.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/okHttp/annotations-13.0.jar" path-in-jar="/" />
     </root>
   </artifact>

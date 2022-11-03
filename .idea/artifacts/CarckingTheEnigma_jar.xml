@@ -1,0 +1,28 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="CarckingTheEnigma:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/CarckingTheEnigma_jar</output-path>
+    <root id="archive" name="CarckingTheEnigma.jar">
+      <element id="module-output" name="DTOS" />
+      <element id="module-output" name="enigmaMachine" />
+      <element id="module-output" name="BruteForce" />
+      <element id="module-output" name="engine" />
+      <element id="module-output" name="windowsUI" />
+      <element id="module-output" name="consoleUI" />
+      <element id="module-output" name="generalClient" />
+      <element id="module-output" name="enigmaServer" />
+      <element id="module-output" name="UBoat" />
+      <element id="module-output" name="Allies" />
+      <element id="module-output" name="Agent" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/okHttp/okio-2.8.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/json/gson-2.8.8.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/generalClient_jar/generalClient.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/okHttp/kotlin-stdlib-1.4.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/windowsUI_jar/windowsUI.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/okHttp/annotations-13.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Program Files/apache-tomcat-10.0.26/lib/jsp-api.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Program Files/apache-tomcat-10.0.26/lib/servlet-api.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/okHttp/okhttp-4.9.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/okHttp/kotlin-stdlib-common-1.4.10.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

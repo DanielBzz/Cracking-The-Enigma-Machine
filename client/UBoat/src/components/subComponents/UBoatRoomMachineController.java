@@ -1,23 +1,51 @@
 package components.subComponents;
 
+import components.DynamicComponent;
 import components.body.details.CodeCalibrationController;
 import components.body.details.EngineDetailsController;
 import components.body.main.EngineDtoReturnableParentController;
 import components.main.UBoatMainAppController;
 import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import machineDtos.EngineDTO;
+
+import java.io.IOException;
 
 public class UBoatRoomMachineController implements EngineDtoReturnableParentController {
 
     private UBoatMainAppController parentController;
-    @FXML private BorderPane engineDetailsComponent;
-    @FXML private EngineDetailsController engineDetailsComponentController;
-    @FXML private BorderPane codeCalibrationComponent;
-    @FXML private CodeCalibrationController codeCalibrationComponentController;
+    @FXML private AnchorPane engineDetailsPlace;
+    private BorderPane engineDetailsComponent;
+    private EngineDetailsController engineDetailsComponentController;
+    @FXML private AnchorPane codeCalibrationPlace;
+    private BorderPane codeCalibrationComponent;
+    private CodeCalibrationController codeCalibrationComponentController;
 
     public void initial(){
+
+        try {
+            FXMLLoader load = new FXMLLoader();
+            load.setLocation(EngineDetailsController.class.getResource("engineDetailsComponent.fxml"));
+            engineDetailsComponent = load.load();
+            engineDetailsPlace.getChildren().add(engineDetailsComponent);
+            DynamicComponent.fitToPane(engineDetailsComponent);
+            engineDetailsComponentController = load.getController();
+
+            load = new FXMLLoader();
+            load.setLocation(CodeCalibrationController.class.getResource("codeCalibrationComponent.fxml"));
+            codeCalibrationComponent = load.load();
+            codeCalibrationPlace.getChildren().add(codeCalibrationComponent);
+            DynamicComponent.fitToPane(codeCalibrationComponent);
+            codeCalibrationComponentController = load.getController();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+
         if (codeCalibrationComponent != null){
             codeCalibrationComponentController.setParentController(this);
             setListenerForInitialCode();
@@ -26,6 +54,7 @@ public class UBoatRoomMachineController implements EngineDtoReturnableParentCont
         if(engineDetailsComponent != null){
             engineDetailsComponentController.setParentController(this);
         }
+
     }
 
     public void setParentController(UBoatMainAppController parentController) {

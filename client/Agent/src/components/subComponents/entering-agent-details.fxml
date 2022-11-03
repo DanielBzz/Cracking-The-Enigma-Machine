@@ -37,7 +37,7 @@
       <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <children>
             <Label text="Amount of Tasks in a Single Take: " />
-            <Spinner fx:id="amountOfTasksSpinner" />
+            <Spinner fx:id="amountOfTasksSpinner" editable="true" />
          </children>
       </HBox>
    </children>

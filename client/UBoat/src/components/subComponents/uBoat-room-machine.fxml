@@ -15,15 +15,7 @@
     <RowConstraints vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <AnchorPane GridPane.columnSpan="2">
-         <children>
-            <fx:include fx:id="engineDetailsComponent" source="../../../../../windowsUI/src/components/body/details/engineDetailsComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
-      </AnchorPane>
-      <AnchorPane GridPane.rowIndex="1">
-         <children>
-            <fx:include fx:id="codeCalibrationComponent" source="../../../../../windowsUI/src/components/body/details/codeCalibrationComponent.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
-      </AnchorPane>
+      <AnchorPane fx:id="engineDetailsPlace" GridPane.columnSpan="2" />
+      <AnchorPane fx:id="codeCalibrationPlace" GridPane.rowIndex="1" />
    </children>
 </GridPane>

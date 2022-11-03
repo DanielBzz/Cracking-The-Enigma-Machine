@@ -7,10 +7,12 @@ import contestDtos.CandidateDataDTO;
 import decryptionDtos.DictionaryDTO;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import logic.UBoatLogic;
 import logic.events.CodeSetEventListener;
@@ -19,6 +21,8 @@ import machineDtos.MachineInfoDTO;
 import mainapp.AppMainController;
 import mainapp.ClientMainController;
 
+import java.io.IOException;
+
 public class UBoatMainAppController extends FileLoadable implements AppMainController, CodeSetEventListener {
 
     private ClientMainController parentController;
@@ -26,14 +30,28 @@ public class UBoatMainAppController extends FileLoadable implements AppMainContr
     @FXML private UBoatRoomMachineController uBoatRoomMachineComponentController;
     @FXML private GridPane uBoatRoomContestComponent;
     @FXML private UBoatRoomContestController uBoatRoomContestComponentController;
-    @FXML private ScrollPane headerComponent;
-    @FXML private HeaderController headerComponentController;
+    @FXML private BorderPane mainAppPane;
+    private ScrollPane headerComponent;
+    private HeaderController headerComponentController;
     @FXML private Tab contestTab;
     private EngineDTO engineDetails;
     private UBoatLogic uBoatLogic;
 
     @FXML
     public void initialize() {
+
+        try {
+            FXMLLoader load = new FXMLLoader();
+            load.setLocation(HeaderController.class.getResource("header.fxml"));
+            headerComponent = load.load();
+            mainAppPane.setTop(headerComponent);
+            //DynamicComponent.fitToPane(headerComponent);
+            headerComponentController = load.getController();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
 
         uBoatLogic = new UBoatLogic(this);
         addListenerForCodeSet(this);

@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="enigmaServer:Web">
+    <output-path>$PROJECT_DIR$/out/artifacts/enigmaServer</output-path>
+    <root id="archive" name="enigmaServer_Web.war">
+      <element id="artifact" artifact-name="enigmaServer:Web exploded" />
+      <element id="module-output" name="DTOS" />
+      <element id="module-output" name="BruteForce" />
+      <element id="module-output" name="engine" />
+      <element id="module-output" name="enigmaMachine" />
+    </root>
+  </artifact>
+</component>
