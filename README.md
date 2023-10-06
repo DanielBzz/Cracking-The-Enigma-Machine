@@ -43,3 +43,14 @@ Agent:
 - Click on the desired "allies".
 - Select the desired number of disturbances
 - Enter the number of tasks you want to pull from the server in a single request.
+
+## Technology  and concepts used
+- Java 8.
+- Tomacat - java servlet conntainer for the server part.
+- JavaFX - for design the windows forms ui.
+- OKHTTP - for efficient HTTP requests from client to server.
+- multithreading - Dealt with multithreading aspects on the server side, including thread pool, internal blocking queue management, and thread synchronization.
+- Json - json library, used to parse data between server and client.
+- XML files - used to define the settings of a contest.
+- OOP methodology
+- Event oriented methodology.
