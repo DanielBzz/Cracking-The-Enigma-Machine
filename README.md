@@ -45,12 +45,12 @@ Agent:
 - Enter the number of tasks you want to pull from the server in a single request.
 
 ## Technology  and concepts used
-- Java 8.
-- Tomacat - java servlet conntainer for the server part.
-- JavaFX - for design the windows forms ui.
-- OKHTTP - for efficient HTTP requests from client to server.
-- multithreading - Dealt with multithreading aspects on the server side, including thread pool, internal blocking queue management, and thread synchronization.
-- Json - json library, used to parse data between server and client.
-- XML files - used to define the settings of a contest.
-- OOP methodology
-- Event oriented methodology.
+- Java 8: The core programming language used for developing the project.
+- Tomcat: A Java servlet container utilized for the server-side implementation.
+- JavaFX: Employed for designing the user interface (UI) forms and windows.
+- OKHTTP: Used to facilitate efficient HTTP requests from the client to the server.
+- Multithreading: Handled multithreading aspects on the server side, using a thread pool, internal blocking queue management, and thread synchronization.
+- JSON: Incorporated a JSON library for parsing data exchanged between the server and client.
+- XML Files: Utilized for defining the settings of a contest, providing a flexible configuration approach.
+- Object-Oriented Programming (OOP) Methodology: Adopted OOP principles to structure and design the codebase, promoting modularity and maintainability.
+- Event-Oriented Methodology: Embraced an event-driven approach to manage interactions between components, enhancing responsiveness and user experience.
